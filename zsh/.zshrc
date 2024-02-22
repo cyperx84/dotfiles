@@ -18,5 +18,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH=~/bin:$PATH
 export PATH="/usr/local/sbin:$PATH"
 source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
+export MODULAR_HOME="$HOME/.modular"
+export PATH="$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$PATH"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

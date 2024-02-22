@@ -96,6 +96,7 @@ require('lazy').setup({
     }
   },
 
+
   require 'cyperx.plugins.venv-selector',
   require 'cyperx.plugins.vim-tmux-navigator',
   require 'cyperx.plugins.gitsigns',
@@ -236,21 +237,25 @@ end
 -- UndotreeToggle
 vim.keymap.set('n', "<C-M-r>", '<Cmd>UndotreeToggle<CR>')
 
--- [[ Configure NeoTree ]]
-vim.keymap.set('n', '<C-e>', '<Cmd>Neotree toggle<CR>')
+-- [[Neotree]]
+vim.keymap.set('n', '<C-M-e>', '<Cmd>Neotree toggle<CR>')
 
 local harpoon = require("harpoon")
 
 -- REQUIRED
-harpoon:setup({})
+harpoon:setup()
 -- REQUIRED
 
-vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end)
-vim.keymap.set("n", "<C-M-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-vim.keymap.set("n", "<C-M-f>", function() harpoon:list():select(1) end)
-vim.keymap.set("n", "<C-M-d>", function() harpoon:list():select(2) end)
-vim.keymap.set("n", "<C-M-s>", function() harpoon:list():select(3) end)
-vim.keymap.set("n", "<C-M-a>", function() harpoon:list():select(4) end)
+vim.keymap.set("n", "<C-M-a>", function() harpoon:list():append() end)
+vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+vim.keymap.set("n", "<C-M-s>", function() toggle_telescope(harpoon:list()) end,
+  { desc = "Open harpoon window" })
+
+vim.keymap.set("n", "<C-M-h>", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<C-M-j>", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<C-M-k>", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<C-M-l>", function() harpoon:list():select(4) end)
 
 -- Toggle previous & next buffers stored within Harpoon list
 vim.keymap.set("n", "<C-M-P>", function() harpoon:list():prev() end)
@@ -274,8 +279,6 @@ local function toggle_telescope(harpoon_files)
   }):find()
 end
 
-vim.keymap.set("n", "<C-M-T>", function() toggle_telescope(harpoon:list()) end,
-  { desc = "Open harpoon window" })
 
 vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 
@@ -299,6 +302,7 @@ end
 vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
 vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
+vim.keymap.set('n', '<leader>p', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
@@ -323,7 +327,7 @@ vim.defer_fn(function()
       keymaps = {
         init_selection = '<c-space>',
         node_incremental = '<c-space>',
-        scope_incremental = '<C-m-s>',
+        -- scope_incremental = '<C-m-s>',
         node_decremental = '<M-space>',
       },
     },
