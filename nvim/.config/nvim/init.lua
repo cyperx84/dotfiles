@@ -95,7 +95,37 @@ require('lazy').setup({
       "rcarriga/nvim-notify",
     }
   },
+  {
+    "czheo/mojo.vim",
+    ft = { "mojo" },
+    init = function()
+      vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+        pattern = { "*.🔥" },
+        callback = function()
+          if vim.bo.filetype ~= "mojo" then
+            vim.bo.filetype = "mojo"
+          end
+        end,
+      })
 
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "mojo",
+        callback = function()
+          local modular = vim.env.MODULAR_HOME
+          local lsp_cmd = modular .. "/pkg/packages.modular.com_mojo/bin/mojo-lsp-server"
+
+          vim.bo.expandtab = true
+          vim.bo.shiftwidth = 4
+          vim.bo.softtabstop = 4
+
+          vim.lsp.start({
+            name = "mojo",
+            cmd = { lsp_cmd },
+          })
+        end,
+      })
+    end,
+  },
 
   require 'cyperx.plugins.venv-selector',
   require 'cyperx.plugins.vim-tmux-navigator',
@@ -243,7 +273,7 @@ vim.keymap.set('n', '<C-M-e>', '<Cmd>Neotree toggle<CR>')
 local harpoon = require("harpoon")
 
 -- REQUIRED
-harpoon:setup()
+harpoon:setup({})
 -- REQUIRED
 
 vim.keymap.set("n", "<C-M-a>", function() harpoon:list():append() end)

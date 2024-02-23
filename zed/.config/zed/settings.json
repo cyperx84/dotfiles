@@ -14,5 +14,54 @@
   },
   "vim_mode": true,
   "ui_font_size": 16,
-  "buffer_font_size": 16
+  "buffer_font_size": 16,
+  // disable cursor blink
+  "cursor_blink": false,
+  // use relative line numbers
+  "relative_line_numbers": true,
+  // hide the scroll bar
+  "scrollbar": {
+    "show": "never"
+  },
+  "context": "Editor && (vim_mode == normal || vim_mode == visual) && !VimWaiting && !menu",
+  "bindings": {
+    // put key-bindings here if you want them to work in normal & visual mode
+  },
+  "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+  "bindings": {
+    // put key-bindings here if you want them to work only in normal mode
+    // "down": ["workspace::SendKeystrokes", "4 j"]
+    // "up": ["workspace::SendKeystrokes", "4 k"]
+  },
+  "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
+  "bindings": {
+    // visual, visual line & visual block modes
+  },
+  "context": "Editor && vim_mode == insert && !menu",
+  "bindings": {
+    // put key-bindings here if you want them to work in insert mode
+    // e.g.
+    // "j j": "vim::NormalBefore" // remap jj in insert mode to escape.
+  },
+  // allow cursor to reach edges of screen
+  "vertical_scroll_margin": 0,
+  "context": "Dock",
+  "bindings": {
+    "ctrl-w h": [
+      "workspace::ActivatePaneInDirection",
+      "Left"
+    ],
+    "ctrl-w l": [
+      "workspace::ActivatePaneInDirection",
+      "Right"
+    ],
+    "ctrl-w k": "workspace::ActivatePaneInDirection",
+    "Up"
+  ],
+  "ctrl-w j": [
+    "workspace::ActivatePaneInDirection",
+    "Down"
+  ]
+  // ... or other keybindings
+}
 }
