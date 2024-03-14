@@ -34,16 +34,10 @@ vim.keymap.set('n', '<C-M-c>', '<Cmd>ChatGPT<CR>', { desc = 'ChatGPT' })
 
 -- Obsidian
 vim.keymap.set('n', '<leader>on', '<Cmd>ObsidianNew<CR>', { desc = 'Obsidian New' })
-vim.keymap.set('n', '<leader>oO', '<Cmd>ObsidianOpen<CR>', { desc = 'Obsidian Open' })
 vim.keymap.set('n', '<leader>or', '<Cmd>ObsidianRename<CR>', { desc = 'Obsidian Rename' })
 vim.keymap.set('n', '<leader>of', '<Cmd>ObsidianFollowLink vsplit<CR>', { desc = 'Obsidian Follow Link Split V' })
 vim.keymap.set('n', '<leader>oF', '<Cmd>ObsidianFollowLink hsplit<CR>', { desc = 'Obsidian Follow Link Split H' })
 vim.keymap.set('n', '<leader>oo', '<Cmd>ObsidianQuickSwitch<CR>', { desc = 'Obsidian Quick Switcher' })
-vim.keymap.set('n', '<leader>og', '<Cmd>ObsidianSearch<CR>', { desc = 'Obsidian Grep Search' })
-vim.keymap.set('n', '<leader>ot', '<Cmd>ObsidianTags<CR>', { desc = 'Obsidian Tags' })
-vim.keymap.set('n', '<leader>ob', '<Cmd>ObsidianBacklinks<CR>', { desc = 'Obsidian Backlinks' })
-vim.keymap.set('n', '<leader>ol', '<Cmd>Obsidianlink<CR>', { desc = 'Obsidian Link' })
-vim.keymap.set('n', '<leader>oL', '<Cmd>ObsidianlinkNew<CR>', { desc = 'Obsidian Link New' })
 vim.keymap.set('n', '<leader>oe', '<Cmd>ObsidianExtractNote<CR>', { desc = 'Obsidian Link New' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier

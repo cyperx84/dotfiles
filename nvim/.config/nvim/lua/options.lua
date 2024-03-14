@@ -56,7 +56,7 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
-vim.g.python3_host_prog = '/usr/bin/python3'
+vim.g.python3_host_prog = '/Library/Frameworks/Python.framework/Versions/3.12/bin/python3'
 
 vim.o.hlsearch = false
 
