@@ -15,7 +15,7 @@ return {
             toggle_diff = '<C-d>',
             toggle_settings = '<C-o>',
             toggle_help = '<C-h>',
-            cycle_windows = '<Tab>',
+            cycle_windows = '<C-M-l>',
             use_output_as_input = '<C-i>',
           },
         },
@@ -67,7 +67,7 @@ return {
           },
         },
         popup_layout = {
-          default = 'center',
+          default = 'right',
           center = {
             width = '80%',
             height = '80%',
@@ -125,7 +125,7 @@ return {
           },
           submit = '<C-Enter>',
           submit_n = '<Enter>',
-          max_visible_lines = 40,
+          max_visible_lines = 80,
         },
         settings_window = {
           setting_sign = '  ',

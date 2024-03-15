@@ -30,7 +30,7 @@ return {
       -- Useful for getting pretty icons, but requires special font.
       --  If you already have a Nerd Font, or terminal set up with fallback fonts
       --  you can enable this
-      { 'nvim-tree/nvim-web-devicons' },
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -73,18 +73,11 @@ return {
 
       -- Enable telescope extensions, if they are installed
       pcall(require('telescope').load_extension, 'fzf')
-
       pcall(require('telescope').load_extension, 'ui-select')
-      -- Load harpoon telescope extension
       pcall(require('telescope').load_extension, 'harpoon')
-
-      -- Enable telescope fzf native, if installed
       pcall(require('telescope').load_extension, 'media_files')
-
-      -- Enable telescope noice, if installed
       pcall(require('telescope').load_extension, 'noice')
 
-      -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })

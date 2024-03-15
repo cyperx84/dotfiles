@@ -47,21 +47,13 @@ require('lazy').setup {
   require 'cyperx/plugins/gitsigns',
 
   require 'cyperx/plugins/which-key',
-
   require 'cyperx/plugins/telescope',
-
   require 'cyperx/plugins/lspconfig',
-
   require 'cyperx/plugins/conform',
-
   require 'cyperx/plugins/cmp',
-
   require 'cyperx/plugins/colorscheme',
-
   require 'cyperx/plugins/todo-comments',
-
   require 'cyperx/plugins/mini',
-
   require 'cyperx/plugins/treesitter',
 
   require 'cyperx/plugins/mojo',

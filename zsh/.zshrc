@@ -11,7 +11,7 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 
 zstyle ':omz:update' frequency 13
 
-ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="false"
 
 COMPLETION_WAITING_DOTS="true"
 
@@ -64,12 +64,11 @@ if [[ -n $VIRTUAL_ENV && -e $VIRTUAL_ENV/bin/activate ]]; then
   source $VIRTUAL_ENV/bin/activate
 fi
 
-alias venv='. ./venv/bin/activate'
-alias mkvenv='python3 -m venv .venv && venv'
 alias nvim-cyperx='NVIM_APPNAME="nvim-cyperx" nvim'
 alias v=nvim-cyperx
-alias nv=nvim
+alias n=nvim
 alias nvk='NVIM_APPNAME="nvim-kickstart" nvim'
-alias tm=tmux
+alias t=tmux
+alias p=python3
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
