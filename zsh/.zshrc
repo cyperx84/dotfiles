@@ -48,12 +48,13 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nvim'
-else
-  export EDITOR='nvim'
-fi
+export EDITOR='nvim'
+export VISUAL='nvim'
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='nvim'
+# else
+#   export EDITOR='nvim'
+# fi
 
 export PATH="/Frameworks/Library/Python.framework/Versions/3.12/bin:$PATH"
 export MODULAR_HOME="$HOME/.modular"
@@ -70,5 +71,6 @@ alias n=nvim
 alias nvk='NVIM_APPNAME="nvim-kickstart" nvim'
 alias t=tmux
 alias p=python3
+alias notes="nvim ~/library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"

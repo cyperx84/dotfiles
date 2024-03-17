@@ -18,7 +18,7 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 -- vim.keymap.set('n', '<C-u>', "<Cmd>lua vim.cmd('normal! n'); MiniAnimate.execute_after('scroll', 'normal! zz')<CR>")
 
 -- Neotree
-vim.keymap.set('n', '<C-M-e>', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
+vim.keymap.set('n', '<C-e>', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 
 -- UndotreeToggle
 vim.keymap.set('n', '<C-M-r>', '<Cmd>UndotreeToggle<CR>', { desc = 'Open Undotree toggle' })
@@ -36,7 +36,7 @@ vim.keymap.set('n', '<C-M-c>', '<Cmd>ChatGPT<CR>', { desc = 'ChatGPT' })
 vim.keymap.set('n', '<leader>on', '<Cmd>ObsidianNew<CR>', { desc = 'Obsidian New' })
 vim.keymap.set('n', '<leader>or', '<Cmd>ObsidianRename<CR>', { desc = 'Obsidian Rename' })
 vim.keymap.set('n', '<leader>of', '<Cmd>ObsidianFollowLink vsplit<CR>', { desc = 'Obsidian Follow Link Split V' })
-vim.keymap.set('n', '<leader>oF', '<Cmd>ObsidianFollowLink hsplit<CR>', { desc = 'Obsidian Follow Link Split H' })
+vim.keymap.set('n', '<leader>os', '<Cmd>ObsidianFollowLink hsplit<CR>', { desc = 'Obsidian Follow Link Split H' })
 vim.keymap.set('n', '<leader>oo', '<Cmd>ObsidianQuickSwitch<CR>', { desc = 'Obsidian Quick Switcher' })
 vim.keymap.set('n', '<leader>oe', '<Cmd>ObsidianExtractNote<CR>', { desc = 'Obsidian Link New' })
 
