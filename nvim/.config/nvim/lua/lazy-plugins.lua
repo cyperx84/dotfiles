@@ -41,6 +41,17 @@ require('lazy').setup {
   require 'cyperx/plugins/obsidian',
   require 'cyperx/plugins/mojo',
 
+  {
+    'mfussenegger/nvim-dap-python',
+    ft = 'python',
+    dependancies = {
+      'mfussenegger/nvim-dap',
+    },
+    config = function()
+      require('dap-python').setup '~/.virtualenvs/debugpy/bin/python'
+    end,
+  },
+
   -- require 'cyperx/plugins/image',
 
   -- { import = 'custom.plugins' },
