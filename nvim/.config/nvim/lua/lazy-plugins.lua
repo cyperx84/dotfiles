@@ -25,16 +25,14 @@ require('lazy').setup {
   require 'cyperx/plugins/todo-comments',
   require 'cyperx/plugins/mini',
   require 'cyperx/plugins/treesitter',
-  require 'cyperx/plugins/debug',
   require 'cyperx/plugins/indent_line',
   require 'cyperx/plugins/gitsigns',
 
+  require 'cyperx/plugins/debug',
+
   require 'cyperx/plugins/neotree',
-
   require 'cyperx/plugins/tmux-navigator',
-
   require 'cyperx/plugins/harpoon-config',
-
   require 'cyperx/plugins/jackmort-chatgpt',
 
   require 'cyperx/plugins/venv-selector',
@@ -48,7 +46,7 @@ require('lazy').setup {
       'mfussenegger/nvim-dap',
     },
     config = function()
-      require('dap-python').setup '/usr/bin/python'
+      require('dap-python').setup '~/.virtualenvs/debugpy/bin/python'
     end,
   },
 

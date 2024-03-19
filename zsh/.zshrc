@@ -13,8 +13,6 @@ zstyle ':omz:update' frequency 13
 
 ENABLE_CORRECTION="false"
 
-COMPLETION_WAITING_DOTS="true"
-
 HIST_STAMPS="dd/mm/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
@@ -37,7 +35,6 @@ plugins=(
   python
   man
   ruby
-  rust
   ripgrep
   ssh
   thor
@@ -65,17 +62,19 @@ if [[ -n $VIRTUAL_ENV && -e $VIRTUAL_ENV/bin/activate ]]; then
   source $VIRTUAL_ENV/bin/activate
 fi
 
+alias n=nvim
 alias nvim-cyperx='NVIM_APPNAME="nvim-cyperx" nvim'
 alias v=nvim-cyperx
-alias n=nvim
 alias nvk='NVIM_APPNAME="nvim-kickstart" nvim'
 
 alias t=tmux
 alias p=python3
-alias notes="cd ~/library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
 alias l=lsd
 alias ll='lsd -la'
 alias s='source bin/activate'
+alias venv='python3 -m venv .'
+
+alias notes="cd ~/library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
