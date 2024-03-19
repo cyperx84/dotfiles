@@ -48,9 +48,11 @@ require('lazy').setup {
       'mfussenegger/nvim-dap',
     },
     config = function()
-      require('dap-python').setup '~/.virtualenvs/debugpy/bin/python'
+      require('dap-python').setup '/usr/bin/python'
     end,
   },
+
+  -- { 'girishji/pythondoc.vim', opts = {} },
 
   -- require 'cyperx/plugins/image',
 
@@ -123,7 +125,7 @@ vim.filetype.add {
 local ft_to_parser = require('nvim-treesitter.parsers').filetype_to_parsername
 ft_to_parser.mdx = 'markdown'
 
-package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?/init.lua;'
-package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?.lua;'
+-- package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?/init.lua;'
+-- package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?.lua;'
 
 -- vim: ts=2 sts=2 sw=2 et

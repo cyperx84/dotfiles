@@ -72,7 +72,7 @@ alias nvk='NVIM_APPNAME="nvim-kickstart" nvim'
 
 alias t=tmux
 alias p=python3
-alias notes="nvim ~/library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes/INDEX.md"
+alias notes="cd ~/library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
 alias l=lsd
 alias ll='lsd -la'
 alias s='source bin/activate'

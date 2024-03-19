@@ -37,7 +37,7 @@ vim.keymap.set('n', '<leader>on', '<Cmd>ObsidianNew<CR>', { desc = 'Obsidian New
 vim.keymap.set('n', '<leader>or', '<Cmd>ObsidianRename<CR>', { desc = 'Obsidian Rename' })
 vim.keymap.set('n', '<leader>os', '<Cmd>ObsidianFollowLink vsplit<CR>', { desc = 'Obsidian Follow Link Split V' })
 vim.keymap.set('n', '<leader>oh', '<Cmd>ObsidianFollowLink hsplit<CR>', { desc = 'Obsidian Follow Link Split H' })
-vim.keymap.set('n', '<leader>oo', '<Cmd>ObsidianQuickSwitch<CR>', { desc = 'Obsidian Quick Switcher' })
+vim.keymap.set('n', '<leader>op', '<Cmd>ObsidianQuickSwitch<CR>', { desc = 'Obsidian Quick Switcher' })
 vim.keymap.set('n', '<leader>oe', '<Cmd>ObsidianExtractNote<CR>', { desc = 'Obsidian Link New' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
