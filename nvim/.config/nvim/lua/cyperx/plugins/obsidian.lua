@@ -39,6 +39,8 @@ return {
           new = '<C-x>',
           -- Insert a link to the selected note.
           insert_link = '<C-l>',
+          -- Open the selected note in a new split.
+          open = '<C-s>',
         },
       },
       -- see below for full list of options 👇

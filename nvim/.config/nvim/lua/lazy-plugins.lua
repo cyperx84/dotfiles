@@ -1,4 +1,5 @@
 require('lazy').setup {
+
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   { 'numToStr/Comment.nvim', opts = {} },
 
@@ -6,16 +7,7 @@ require('lazy').setup {
 
   { 'github/copilot.vim' },
 
-  {
-    'folke/noice.nvim',
-    event = 'VeryLazy',
-    opts = {},
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'rcarriga/nvim-notify',
-    },
-  },
-
+  require 'cyperx/plugins/noice',
   require 'cyperx/plugins/which-key',
   require 'cyperx/plugins/telescope',
   require 'cyperx/plugins/lspconfig',
@@ -29,6 +21,7 @@ require('lazy').setup {
   require 'cyperx/plugins/gitsigns',
 
   require 'cyperx/plugins/debug',
+  require 'cyperx/plugins/dap-python',
 
   require 'cyperx/plugins/neotree',
   require 'cyperx/plugins/tmux-navigator',
@@ -38,20 +31,31 @@ require('lazy').setup {
   require 'cyperx/plugins/venv-selector',
   require 'cyperx/plugins/obsidian',
   require 'cyperx/plugins/mojo',
-
-  {
-    'mfussenegger/nvim-dap-python',
-    ft = 'python',
-    dependancies = {
-      'mfussenegger/nvim-dap',
-    },
-    config = function()
-      require('dap-python').setup '~/.virtualenvs/debugpy/bin/python'
-    end,
-  },
-
   -- { 'girishji/pythondoc.vim', opts = {} },
-
+  -- {
+  --   'nvimdev/dashboard-nvim',
+  --   event = 'VimEnter',
+  --   theme = 'hyper',
+  --   config = function()
+  --     require('dashboard').setup {
+  --       -- config
+  --       center = {
+  --         {
+  --           icon = '',
+  --           icon_hl = 'group',
+  --           desc = 'description',
+  --           desc_hl = 'group',
+  --           key = 'shortcut key in dashboard buffer not keymap !!',
+  --           key_hl = 'group',
+  --           key_format = ' [%s]', -- `%s` will be substituted with value of `key`
+  --           action = '',
+  --         },
+  --       },
+  --       footer = {},
+  --     }
+  --   end,
+  --   dependencies = { { 'nvim-tree/nvim-web-devicons' } },
+  -- },
   -- require 'cyperx/plugins/image',
 
   -- { import = 'custom.plugins' },
@@ -88,7 +92,7 @@ vim.keymap.set('n', '<C-M-e>', function()
   harpoon.ui:toggle_quick_menu(harpoon:list())
 end)
 
-vim.keymap.set('n', '<C-M-s>', function()
+vim.keymap.set('n', '<C-M-t>', function()
   toggle_telescope(harpoon:list())
 end, { desc = 'Open harpoon window' })
 

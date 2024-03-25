@@ -53,6 +53,8 @@ else
   export EDITOR='vim'
 fi
 
+
+
 export PATH="/Frameworks/Library/Python.framework/Versions/3.12/bin:$PATH"
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$PATH"
@@ -74,7 +76,12 @@ alias ll='lsd -la'
 alias s='source bin/activate'
 alias venv='python3 -m venv .'
 
+alias config="cd $HOME/dotfiles && nvim"
 alias notes="cd ~/library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
+
+#add scripts for gh copilot
+alias ghce="gh copilot explain"
+alias ghcs="gh copilot suggest"
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"

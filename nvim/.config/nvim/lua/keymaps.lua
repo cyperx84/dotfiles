@@ -26,8 +26,8 @@ vim.keymap.set('n', '<C-M-r>', '<Cmd>UndotreeToggle<CR>', { desc = 'Open Undotre
 -- Diagnostic
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- ChatGPT
 vim.keymap.set('n', '<C-M-c>', '<Cmd>ChatGPT<CR>', { desc = 'ChatGPT' })
@@ -35,8 +35,6 @@ vim.keymap.set('n', '<C-M-c>', '<Cmd>ChatGPT<CR>', { desc = 'ChatGPT' })
 -- Obsidian
 vim.keymap.set('n', '<leader>on', '<Cmd>ObsidianNew<CR>', { desc = 'Obsidian New' })
 vim.keymap.set('n', '<leader>or', '<Cmd>ObsidianRename<CR>', { desc = 'Obsidian Rename' })
-vim.keymap.set('n', '<leader>os', '<Cmd>ObsidianFollowLink vsplit<CR>', { desc = 'Obsidian Follow Link Split V' })
-vim.keymap.set('n', '<leader>oh', '<Cmd>ObsidianFollowLink hsplit<CR>', { desc = 'Obsidian Follow Link Split H' })
 vim.keymap.set('n', '<leader>op', '<Cmd>ObsidianQuickSwitch<CR>', { desc = 'Obsidian Quick Switcher' })
 vim.keymap.set('n', '<leader>oe', '<Cmd>ObsidianExtractNote<CR>', { desc = 'Obsidian Link New' })
 
