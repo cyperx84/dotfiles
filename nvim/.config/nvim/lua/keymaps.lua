@@ -8,6 +8,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Exit insert mode without hitting Esc
 vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Esc' })
 
+vim.keymap.set('n', '<M-,>', '<c-w>5<')
 -- Keymaps for better default experience
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 

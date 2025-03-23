@@ -22,7 +22,6 @@ plugins=(
   ansible
   brew
   dotenv
-  fd
   flutter
   fzf
   gh
@@ -35,7 +34,6 @@ plugins=(
   python
   man
   ruby
-  ripgrep
   ssh
   thor
   tmux
@@ -69,6 +67,17 @@ alias nvim-cyperx='NVIM_APPNAME="nvim-cyperx" nvim'
 alias v=nvim-cyperx
 alias nvk='NVIM_APPNAME="nvim-kickstart" nvim'
 
+vv() {
+  # Assumes all configs exist in directories named ~/.config/nvim-*
+  local config=$(fd --max-depth 1 --glob 'nvim-*' ~/.config | fzf --prompt="Neovim Configs > " --height=~50% --layout=reverse --border --exit-0)
+ 
+  # If I exit fzf without selecting a config, don't open Neovim
+  [[ -z $config ]] && echo "No config selected" && return
+ 
+  # Open Neovim with the selected config
+  NVIM_APPNAME=$(basename $config) nvim $@
+}
+
 alias t=tmux
 alias p=python3
 alias l=lsd
@@ -85,3 +94,6 @@ alias ghcs="gh copilot suggest"
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/cyperx/.lmstudio/bin"

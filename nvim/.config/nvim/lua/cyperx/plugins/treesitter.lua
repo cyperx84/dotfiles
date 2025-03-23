@@ -36,8 +36,8 @@ return {
       require('nvim-treesitter.configs').setup(opts)
 
       -- Add mdx to treesitter
-      local ft_to_parser = require('nvim-treesitter.parsers').filetype_to_parsername
-      ft_to_parser.mdx = 'markdown'
+      -- local ft_to_parser = require('nvim-treesitter.parsers').filetype_to_parsername
+      --      ft_to_parser.mdx = 'markdown'
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
       --

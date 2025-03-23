@@ -5,8 +5,6 @@ require('lazy').setup {
 
   { 'mbbill/undotree' },
 
-  { 'github/copilot.vim' },
-
   require 'cyperx/plugins/noice',
   require 'cyperx/plugins/which-key',
   require 'cyperx/plugins/telescope',
@@ -26,11 +24,112 @@ require('lazy').setup {
   require 'cyperx/plugins/neotree',
   require 'cyperx/plugins/tmux-navigator',
   require 'cyperx/plugins/harpoon-config',
-  require 'cyperx/plugins/jackmort-chatgpt',
 
-  require 'cyperx/plugins/venv-selector',
+  -- require 'cyperx/plugins/venv-selector',
   require 'cyperx/plugins/obsidian',
-  require 'cyperx/plugins/mojo',
+  {
+    'nvimdev/dashboard-nvim',
+    event = 'VimEnter',
+    opts = function()
+      local logo = [[
+                                                                             
+               ████ ██████           █████      ██                     
+              ███████████             █████                             
+              █████████ ███████████████████ ███   ███████████   
+             █████████  ███    █████████████ █████ ██████████████   
+            █████████ ██████████ █████████ █████ █████ ████ █████   
+          ███████████ ███    ███ █████████ █████ █████ ████ █████  
+         ██████  █████████████████████ ████ █████ █████ ████ ██████
+      ]]
+
+      logo = string.rep('\n', 8) .. logo .. '\n\n'
+
+      local opts = {
+        theme = 'doom',
+        hide = {
+          -- this is taken care of by lualine
+          -- enabling this messes up the actual laststatus setting after loading a file
+          statusline = false,
+        },
+        config = {
+          header = vim.split(logo, '\n'),
+          -- stylua: ignore
+          center = {
+            { action = "Telescope find_files", desc = " Find file", icon = " ", key = "f" },
+            { action = "ene | startinsert", desc = " New file", icon = " ", key = "n" },
+            { action = "Telescope oldfiles", desc = " Recent files", icon = " ", key = "r" },
+            { action = "Telescope live_grep", desc = " Find text", icon = " ", key = "g" },
+            -- {
+            --   action = [[lua require("lazyvim.util").telescope.config_files()()]],
+            --   desc = " Config",
+            --   icon = " ",
+            --   key = "c"
+            -- },
+            -- { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
+            -- { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "x" },
+            { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
+            { action = "qa", desc = " Quit", icon = " ", key = "q" },
+          },
+          footer = function()
+            local stats = require('lazy').stats()
+            local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+            return { '⚡ Neovim loaded ' .. stats.loaded .. '/' .. stats.count .. ' plugins in ' .. ms .. 'ms' }
+          end,
+        },
+      }
+
+      for _, button in ipairs(opts.config.center) do
+        button.desc = button.desc .. string.rep(' ', 43 - #button.desc)
+        button.key_format = '  %s'
+      end
+
+      -- close Lazy and re-open when the dashboard is ready
+      if vim.o.filetype == 'lazy' then
+        vim.cmd.close()
+        vim.api.nvim_create_autocmd('User', {
+          pattern = 'DashboardLoaded',
+          callback = function()
+            require('lazy').show()
+          end,
+        })
+      end
+
+      return opts
+    end,
+  },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('oil').setup {
+        default_file_explorer = true,
+        delete_to_trash = true,
+        skip_confirm_for_simple_edits = true,
+        view_options = {
+          show_hidden = true,
+          natural_order = true,
+          is_always_hidden = function(name, _)
+            return name == '..' or name == '.git'
+          end,
+        },
+        float = {
+          padding = 2,
+          max_width = 90,
+          max_height = 0,
+        },
+        win_options = {
+          wrap = true,
+          winblend = 0,
+        },
+        keymaps = {
+          ['<C-c>'] = false,
+          ['q'] = 'actions.close',
+        },
+      }
+    end,
+  },
+  -- require 'cyperx/plugins/mojo',
   -- { 'girishji/pythondoc.vim', opts = {} },
   -- {
   --   'nvimdev/dashboard-nvim',
@@ -86,7 +185,7 @@ local function toggle_telescope(harpoon_files)
 end
 
 vim.keymap.set('n', '<C-M-a>', function()
-  harpoon:list():append()
+  harpoon:list():add()
 end)
 vim.keymap.set('n', '<C-M-e>', function()
   harpoon.ui:toggle_quick_menu(harpoon:list())
@@ -124,10 +223,8 @@ vim.filetype.add {
   pattern = {},
 }
 -- Add mdx to treesitter
-local ft_to_parser = require('nvim-treesitter.parsers').filetype_to_parsername
-ft_to_parser.mdx = 'markdown'
 
--- package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?/init.lua;'
--- package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?.lua;'
+package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?/init.lua;'
+package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?.lua;'
 
 -- vim: ts=2 sts=2 sw=2 et
