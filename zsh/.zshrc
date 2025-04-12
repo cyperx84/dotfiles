@@ -22,7 +22,6 @@ plugins=(
   ansible
   brew
   dotenv
-  flutter
   fzf
   gh
   git
@@ -57,15 +56,8 @@ export PATH="/Frameworks/Library/Python.framework/Versions/3.12/bin:$PATH"
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$PATH"
 
-# python virtual env quality of life
-if [[ -n $VIRTUAL_ENV && -e $VIRTUAL_ENV/bin/activate ]]; then
-  source $VIRTUAL_ENV/bin/activate
-fi
 
-alias n=nvim
-alias nvim-cyperx='NVIM_APPNAME="nvim-cyperx" nvim'
-alias v=nvim-cyperx
-alias nvk='NVIM_APPNAME="nvim-kickstart" nvim'
+alias n='NVIM_APPNAME="nvim" nvim'
 
 vv() {
   # Assumes all configs exist in directories named ~/.config/nvim-*
@@ -78,22 +70,61 @@ vv() {
   NVIM_APPNAME=$(basename $config) nvim $@
 }
 
+# Quality of life keymaps
 alias t=tmux
-alias p=python3
+alias python=python3
 alias l=lsd
 alias ll='lsd -la'
+
 alias s='source bin/activate'
 alias venv='python3 -m venv .'
 
-alias config="cd $HOME/dotfiles && nvim"
+alias conf="cd $HOME/dotfiles && nvim"
+
 alias notes="cd ~/library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
 
-#add scripts for gh copilot
-alias ghce="gh copilot explain"
-alias ghcs="gh copilot suggest"
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 
+# ----- Bat (better cat) -----
+
+export BAT_THEME=tokyonight_night
+
+# ---- Eza (better ls) -----
+alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+
+export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+    export|unset) fzf --preview "eval 'echo $'{}"         "$@" ;;
+    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    *)            fzf --preview "bat -n --color=always --line-range :500 {}" "$@" ;;
+  esac
+}
+
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/cyperx/.lmstudio/bin"
+
+# Added by Windsurf
+export PATH="/Users/cyperx/.codeium/windsurf/bin:$PATH"
+
+# ---- Zoxide (better cd) ----
+eval "$(zoxide init zsh)"
+
+alias cd="z"
+
+# thefuck alias
+eval $(thefuck --alias)
+eval $(thefuck --alias fk)
+
+source ~/fzf-git.sh/fzf-git.sh

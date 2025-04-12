@@ -69,6 +69,8 @@
 #               prepend '\' at the end of the previous line.
 #
 #               an EOL character signifies the end of the bind.
+#
+cmd - return : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~
 
 # ############################################################### #
 # THE FOLLOWING SECTION CONTAIN SIMPLE MAPPINGS DEMONSTRATING HOW #
