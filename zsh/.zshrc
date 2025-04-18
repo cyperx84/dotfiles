@@ -89,7 +89,7 @@ export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 
 # ----- Bat (better cat) -----
 
-export BAT_THEME=tokyonight_night
+# export BAT_THEME=tokyonight_night
 
 # ---- Eza (better ls) -----
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
