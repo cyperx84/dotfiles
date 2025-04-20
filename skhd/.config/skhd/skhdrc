@@ -70,8 +70,6 @@
 #
 #               an EOL character signifies the end of the bind.
 #
-cmd - return : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~
-
 # ############################################################### #
 # THE FOLLOWING SECTION CONTAIN SIMPLE MAPPINGS DEMONSTRATING HOW #
 # TO INTERACT WITH THE YABAI WM. THESE ARE SUPPOSED TO BE USED AS #
@@ -141,10 +139,10 @@ ctrl + cmd - e : yabai -m window --toggle split
 # alt - p : yabai -m window --toggle sticky --toggle pip
 #
 # Moving windows
-shift + alt - h : yabai -m window --warp west
-shift + alt - j : yabai -m window --warp south
-shift + alt - k : yabai -m window --warp north
-shift + alt - l : yabai -m window --warp east
+shift + ctrl - h : yabai -m window --warp west
+shift + ctrl - j : yabai -m window --warp south
+shift + ctrl - k : yabai -m window --warp north
+shift + ctrl - l : yabai -m window --warp east
 
 # change window focus within space
 alt - j : yabai -m window --focus south

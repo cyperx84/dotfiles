@@ -56,9 +56,10 @@ export PATH="/Frameworks/Library/Python.framework/Versions/3.12/bin:$PATH"
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$PATH"
 
-
+# NVIM
 alias n='NVIM_APPNAME="nvim" nvim'
 
+# NVIM config selecting
 vv() {
   # Assumes all configs exist in directories named ~/.config/nvim-*
   local config=$(fd --max-depth 1 --glob 'nvim-*' ~/.config | fzf --prompt="Neovim Configs > " --height=~50% --layout=reverse --border --exit-0)
@@ -89,7 +90,7 @@ export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 
 # ----- Bat (better cat) -----
 
-# export BAT_THEME=tokyonight_night
+export BAT_THEME=tokyonight_night
 
 # ---- Eza (better ls) -----
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"

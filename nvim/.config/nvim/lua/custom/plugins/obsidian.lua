@@ -65,7 +65,7 @@ return {
       -- },
 
       ui = {
-        enable = true, -- using render-markdown.nvim instead
+        enable = false, -- using render-markdown.nvim instead
       },
     })
 
