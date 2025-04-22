@@ -3,7 +3,7 @@ return {
     'loctvl842/monokai-pro.nvim',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'monokai-pro-machine'
+      vim.cmd.colorscheme 'tokyonight-night'
     end,
 
     -- Change the name of the colorscheme plugin below, and then

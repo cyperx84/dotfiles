@@ -20,8 +20,16 @@ return {
         new_note_search = true,
       },
       new_notes_location = "notes_subdir",
+      -- note_id_func = function(title)
+      --   return (title:gsub(" ", "%%20"))
+      -- end,
       note_id_func = function(title)
-        return (title:gsub(" ", "%%20"))
+        local slug = title
+          :gsub("^%s*(.-)%s*$", "%1")   -- trim
+          :gsub("%s+", "-")            -- spaces → dashes
+          :gsub("[^%w%-]", "")         -- strip punctuation / symbols
+          :lower()                     -- lower‑case
+        return slug
       end,
       note_frontmatter_func = function(note)
         local out = { id = note.id, aliases = note.aliases, tags = note.tags }
