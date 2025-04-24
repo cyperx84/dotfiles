@@ -10,11 +10,34 @@ return {
     require("obsidian").setup({
       workspaces = {
         {
+          name = "buf-parent",
+          path = function()
+            return assert(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
+          end,
+        },
+        {
           name = "ObsidianVault",
-          path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes",
+          path = "/Users/cyperx/vaults/brain",
+        },
+        {
+          name = "CodeVault",
+          path = "/Users/cyperx/vaults/code-vault",
+        },
+        {
+          name = "IncludeVault",
+          path = "/Users/cyperx/vaults/include-vault",
+        },
+        {
+          name = "MusicVault",
+          path = "/Users/cyperx/vaults/music-vault",
+        },
+        {
+          name = "SnowVault",
+          path = "/Users/cyperx/vaults/snow-vault",
         },
       },
       completion = {
+        default = true,
         nvim_cmp = true,
         min_chars = 2,
         new_note_search = true,

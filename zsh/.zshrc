@@ -82,14 +82,13 @@ alias venv='python3 -m venv .'
 
 alias conf="cd $HOME/dotfiles && nvim"
 
-alias notes="cd ~/library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
+alias notes="cd ~/vaults/brain && nvim INDEX.md"
 
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 
 # ----- Bat (better cat) -----
-
 export BAT_THEME=tokyonight_night
 
 # ---- Eza (better ls) -----
@@ -129,3 +128,4 @@ eval $(thefuck --alias)
 eval $(thefuck --alias fk)
 
 source ~/fzf-git.sh/fzf-git.sh
+alias cld="/Users/cyperx/.claude/local/claude"
