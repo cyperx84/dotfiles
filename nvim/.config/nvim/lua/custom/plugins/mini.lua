@@ -34,7 +34,7 @@ return {
 
       require('mini.files').setup()
       require('mini.pick').setup()
-      require('mini.animate').setup { scroll = { enable = true } }
+      require('mini.animate').setup { scroll = { enable = false } }
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim

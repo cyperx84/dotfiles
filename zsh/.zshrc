@@ -82,8 +82,8 @@ alias venv='python3 -m venv .'
 
 alias conf="cd $HOME/dotfiles && nvim"
 
-alias notes="cd ~/vaults/brain && nvim INDEX.md"
-
+# notes brain
+alias no="cd ~/vaults/brain && nvim INDEX.md"
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
@@ -128,4 +128,9 @@ eval $(thefuck --alias)
 eval $(thefuck --alias fk)
 
 source ~/fzf-git.sh/fzf-git.sh
+
+export PATH=$PATH:/Users/cyperx/.claude/local
 alias cld="/Users/cyperx/.claude/local/claude"
+alias claude="/Users/cyperx/.claude/local/claude"
+
+export PATH="/opt/homebrew/anaconda3/bin:$PATH"
