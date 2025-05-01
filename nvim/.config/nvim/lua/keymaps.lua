@@ -1,4 +1,4 @@
--- [[ Basic Keymaps ]]key
+-- [[ Basic Keymaps ]]keykey
 --  See `:help vim.keymap.set()`
 
 -- Clear highlights on search when pressing <Esc> in normal mode
@@ -57,13 +57,26 @@ vim.keymap.set('n', '-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory
 -- Neotree
 vim.keymap.set('n', '<C-e>', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 
+-- Neogit
+vim.keymap.set("n", "<leader>ng", "<cmd>Neogit kind=floating<CR>", { desc = "Neogit Floating" })
+vim.keymap.set("n", "<leader>nG", "<cmd>Neogit kind=auto<CR>", { desc = "Neogit Auto" })
+vim.keymap.set("n", "<leader>nb", "<cmd>Neogit branch kind=auto<CR>", { desc = "Neogit Branch" })
+vim.keymap.set("n", "<leader>nB", "<cmd>Neogit branch_config kind=auto<CR>", { desc = "Neogit Branch Config" })
+vim.keymap.set("n", "<leader>nc", "<cmd>Neogit commit kind=auto<CR>", { desc = "Neogit Commit" })
+vim.keymap.set("n", "<leader>nd", "<cmd>Neogit diff kind=auto<CR>", { desc = "Neogit Diff" })
+vim.keymap.set("n", "<leader>nl", "<cmd>Neogit log kind=auto<CR>", { desc = "Neogit Log" })
+vim.keymap.set("n", "<leader>ns", "<cmd>Neogit stash kind=auto<CR>", { desc = "Neogit Stash" })
+vim.keymap.set("n", "<leader>nm", "<cmd>Neogit merge kind=auto<CR>", { desc = "Neogit Merge" })
+vim.keymap.set("n", "<leader>np", "<cmd>Neogit pull<CR>", { desc = "Neogit pull" })
+vim.keymap.set("n", "<leader>nP", "<cmd>Neogit push<CR>", { desc = "Neogit push" })
+
 -- Dismiss Noice Message
-vim.keymap.set("n", "<leader>nd", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })
+vim.keymap.set("n", "<leader>dd", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })
 
 -- Obsidian
 vim.keymap.set("n", "<leader>oc", "<cmd>lua require('obsidian').util.toggle_checkbox()<CR>",
   { desc = "Obsidian Check Checkbox" })
-vim.keymap.set("n", "<leader>ot", "<cmd>ObsidianTags<CR>", { desc = "Insert Obsidian Template" })
+vim.keymap.set("n", "<leader>ot", "<cmd>ObsidianTags<CR>", { desc = "Obsidian Tags" })
 vim.keymap.set("n", "<leader>oO", "<cmd>ObsidianOpen<CR>", { desc = "Open in Obsidian App" })
 vim.keymap.set("n", "<leader>ob", "<cmd>ObsidianBacklinks<CR>", { desc = "Show ObsidianBacklinks" })
 vim.keymap.set("n", "<leader>ol", "<cmd>ObsidianLinks<CR>", { desc = "Show ObsidianLinks" })
