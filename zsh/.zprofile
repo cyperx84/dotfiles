@@ -6,4 +6,4 @@ PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:${PATH}"
 export PATH
 
 # Display Message of the Day (MOTD)
-./motd.sh
+~/./motd.sh
