@@ -1,39 +1,23 @@
 return {
-  "epwalsh/obsidian.nvim",
-  version = "*",
+  'epwalsh/obsidian.nvim',
+  version = '*',
   lazy = true,
-  ft = "markdown",
+  ft = 'markdown',
   dependencies = {
-    "nvim-lua/plenary.nvim",
+    'nvim-lua/plenary.nvim',
   },
   config = function()
-    require("obsidian").setup({
+    require('obsidian').setup {
       workspaces = {
         {
-          name = "buf-parent",
+          name = 'buf-parent',
           path = function()
             return assert(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
           end,
         },
         {
-          name = "ObsidianVault",
-          path = "/Users/cyperx/vaults/brain",
-        },
-        {
-          name = "CodeVault",
-          path = "/Users/cyperx/vaults/code-vault",
-        },
-        {
-          name = "IncludeVault",
-          path = "/Users/cyperx/vaults/include-vault",
-        },
-        {
-          name = "MusicVault",
-          path = "/Users/cyperx/vaults/music-vault",
-        },
-        {
-          name = "SnowVault",
-          path = "/Users/cyperx/vaults/snow-vault",
+          name = 'ObsidianVault',
+          path = '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes',
         },
       },
       completion = {
@@ -41,16 +25,16 @@ return {
         min_chars = 2,
         new_note_search = true,
       },
-      new_notes_location = "notes_subdir",
+      new_notes_location = 'notes_subdir',
       -- note_id_func = function(title)
       --   return (title:gsub(" ", "%%20"))
       -- end,
       note_id_func = function(title)
         local slug = title
-          :gsub("^%s*(.-)%s*$", "%1")   -- trim
-          :gsub("%s+", "-")            -- spaces → dashes
-          :gsub("[^%w%-]", "")         -- strip punctuation / symbols
-          :lower()                     -- lower‑case
+          :gsub('^%s*(.-)%s*$', '%1') -- trim
+          :gsub('%s+', '-') -- spaces → dashes
+          :gsub('[^%w%-]', '') -- strip punctuation / symbols
+          :lower() -- lower‑case
         return slug
       end,
       note_frontmatter_func = function(note)
@@ -79,7 +63,27 @@ return {
           end,
           opts = { buffer = true },
         },
-      },      -- templates = {
+      },
+      picker = {
+        -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
+        name = 'telescope.nvim',
+        -- Optional, configure key mappings for the picker. These are the defaults.
+        -- Not all pickers support all mappings.
+        note_mappings = {
+          -- Create a new note from your query.
+          new = '<C-x>',
+          -- Insert a link to the selected note.
+          insert_link = '<C-l>',
+        },
+        tag_mappings = {
+          -- Add tag(s) to current note.
+          tag_note = '<C-x>',
+          -- Insert a tag at the current location.
+          insert_tag = '<C-l>',
+        },
+      },
+
+      -- templates = {
       --   subdir = "Templates",
       --   date_format = "%Y-%m-%d",
       --   time_format = "%H:%M",
@@ -97,14 +101,14 @@ return {
       ui = {
         enable = false, -- using render-markdown.nvim instead
       },
-    })
+    }
 
     -- Conceal setup for markdown
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = "markdown",
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = 'markdown',
       callback = function()
         vim.opt_local.conceallevel = 2
-        vim.opt_local.concealcursor = "nc"
+        vim.opt_local.concealcursor = 'nc'
       end,
     })
   end,

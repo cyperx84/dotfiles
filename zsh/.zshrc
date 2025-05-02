@@ -83,7 +83,7 @@ alias venv='python3 -m venv .'
 alias conf="cd $HOME/dotfiles && nvim"
 
 # notes brain
-alias no="cd ~/vaults/brain && nvim INDEX.md"
+alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
