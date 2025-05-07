@@ -1,0 +1,9 @@
+font-family = MonaspiceAr NFM
+font-family-bold = MonaspiceKr Bold
+font-family-italic = MonaspiceRn Italic
+font-family-bold-italic = MonaspiceXe Medium Italic
+# 1) Remove Ghostty’s Clear Screen on Ctrl-L
+keybind = ctrl+l=unbind
+
+# 2) Forward the literal ^L (0x0C) to tmux
+# keybind = unconsumed:ctrl+l=text:\x0c

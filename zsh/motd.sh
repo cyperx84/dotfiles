@@ -78,24 +78,19 @@ EOF
 }
 
 
-print_footer() {
-  tips=(
-    "Tip: ssh into your rigs like a boss 💀"
-    "Quote: Code, carve, repeat."
-    "Glitch mode: engage."
-  )
-  tip_index=$(( RANDOM % ${#tips[@]} ))
-  echo "${RAINBOW[RANDOM % LEN]}▶${RESET} ${tips[$tip_index]}"
-  echo
-}
+# print_footer() {
+#   tips=(
+#     "Tip: ssh into your rigs like a boss 💀"
+#     "Quote: Code, carve, repeat."
+#     "Glitch mode: engage."
+#   )
+#   tip_index=$(( RANDOM % ${#tips[@]} ))
+#   echo "${RAINBOW[RANDOM % LEN]}▶${RESET} ${tips[$tip_index]}"
+#   echo
+# }
 
 # ─── MAIN ───────────────────────────────────────────────────────────────────
 print_sysinfo
 print_logo
 print_skull
-print_footer
 
-# Battery levels# macOS
-BAT=$(pmset -g batt | awk 'NR==2 { gsub(/%;.*/,"",$3); print $3 "%" }')
-STAT=$(pmset -g batt | awk 'NR==2 { print $2 }' | tr -d ';')
-echo "🔋 ${BAT} (${STAT})"

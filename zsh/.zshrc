@@ -1,61 +1,33 @@
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-export ZSH="$HOME/.oh-my-zsh"
-
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-zstyle ':omz:update' frequency 13
-
 ENABLE_CORRECTION="false"
 
 HIST_STAMPS="dd/mm/yyyy"
+# Source fzf keybinds
+[ -f ~/.fzf/shell/key-bindings.zsh ] && source ~/.fzf/shell/key-bindings.zsh
+[ -f ~/.fzf/shell/completion.zsh ] && source ~/.fzf/shell/completion.zsh
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+# Custom FZF preview for ALT-C
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
+# Manual keybind fix for Ghostty
+bindkey '\ec' __fzf_cd__
 
-plugins=(
-  ansible
-  brew
-  dotenv
-  fzf
-  gh
-  git
-  github
-  golang
-  macos
-  pass
-  pip
-  python
-  man
-  ruby
-  ssh
-  thor
-  tmux
-  tmuxinator
-  vscode
-  zoxide
-)
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
 
-source $ZSH/oh-my-zsh.sh
+bindkey -r '^L'
+eval "$(starship init zsh)"
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 export EDITOR=nvim
 export VISUAL=nvim
+
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='nvim'
 else
   export EDITOR='vim'
 fi
-
-
-
-export PATH="/Frameworks/Library/Python.framework/Versions/3.12/bin:$PATH"
-export MODULAR_HOME="$HOME/.modular"
-export PATH="$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$PATH"
-
 # NVIM
 alias n='NVIM_APPNAME="nvim" nvim'
 
@@ -85,17 +57,12 @@ alias conf="cd $HOME/dotfiles && nvim"
 # notes brain
 alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
 
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-export PATH="/opt/homebrew/opt/curl/bin:$PATH"
-
 # ----- Bat (better cat) -----
 export BAT_THEME=tokyonight_night
 
 # ---- Eza (better ls) -----
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 
-export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
-export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
 
 # Advanced customization of fzf options via _fzf_comprun function
 # - The first argument to the function is the name of the command.
@@ -111,13 +78,6 @@ _fzf_comprun() {
     *)            fzf --preview "bat -n --color=always --line-range :500 {}" "$@" ;;
   esac
 }
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/cyperx/.lmstudio/bin"
-
-# Added by Windsurf
-export PATH="/Users/cyperx/.codeium/windsurf/bin:$PATH"
-
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
 
@@ -127,10 +87,10 @@ alias cd="z"
 eval $(thefuck --alias)
 eval $(thefuck --alias fk)
 
-source ~/fzf-git.sh/fzf-git.sh
-
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
 export PATH=$PATH:/Users/cyperx/.claude/local
 alias cld="/Users/cyperx/.claude/local/claude"
 alias claude="/Users/cyperx/.claude/local/claude"
 
-export PATH="/opt/homebrew/anaconda3/bin:$PATH"
+eval "$(starship init zsh)"
