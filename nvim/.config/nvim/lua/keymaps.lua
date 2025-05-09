@@ -85,6 +85,11 @@ vim.keymap.set("n", "<leader>os", "<cmd>ObsidianSearch<CR>", { desc = "Search Ob
 vim.keymap.set("n", "<leader>oo", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Quick Switch" })
 vim.keymap.set("n", "<leader>ow", "<cmd>ObsidianWorkspace<CR>", { desc = "Workspace" })
 
+-- Toggle Transparent
+vim.keymap.set("n", "<leader>tt", "<cmd>TransparentToggle<CR>", { desc = "Transparent Toggle" })
+
+-- MCPHub
+vim.keymap.set("n", "<leader>m", "<cmd>MCPHub<CR>", { desc = "MCPHub" })
 
 -- Jump between markdown headers
 vim.keymap.set("n", "gj", [[/^##\+ .*<CR>]], { buffer = true, silent = true })

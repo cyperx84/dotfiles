@@ -38,7 +38,7 @@ return {
       desc = "Harpoon File 7",
     })
     vim.keymap.set("n", "<C-M-g>", function() ui.nav_file(7) end, {
-      desc = "Harpoon File 7",
+      desc = "Harpoon File 8",
     })
   end,
 }

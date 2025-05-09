@@ -18,7 +18,9 @@ bindkey -r '^L'
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# intel mac zsh-autosuggestions
+# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 export EDITOR=nvim
 export VISUAL=nvim
