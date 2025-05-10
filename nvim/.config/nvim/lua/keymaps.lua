@@ -58,7 +58,7 @@ vim.keymap.set('n', '-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory
 vim.keymap.set('n', '<C-e>', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 
 -- Neogit
-vim.keymap.set("n", "<leader>ng", "<cmd>Neogit kind=floating<CR>", { desc = "Neogit Floating" })
+vim.keymap.set("n", "<leader>ng", "<cmd>Neogit kind=split<CR>", { desc = "Neogit Floating" })
 vim.keymap.set("n", "<leader>nG", "<cmd>Neogit kind=auto<CR>", { desc = "Neogit Auto" })
 vim.keymap.set("n", "<leader>nb", "<cmd>Neogit branch kind=auto<CR>", { desc = "Neogit Branch" })
 vim.keymap.set("n", "<leader>nB", "<cmd>Neogit branch_config kind=auto<CR>", { desc = "Neogit Branch Config" })

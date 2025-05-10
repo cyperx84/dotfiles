@@ -1,27 +1,22 @@
 ENABLE_CORRECTION="false"
 
-HIST_STAMPS="dd/mm/yyyy"
+HIST_STAMPS="dd/mm/yy"
+
+autoload -U compinit; compinit
 # Source fzf keybinds
 [ -f ~/.fzf/shell/key-bindings.zsh ] && source ~/.fzf/shell/key-bindings.zsh
 [ -f ~/.fzf/shell/completion.zsh ] && source ~/.fzf/shell/completion.zsh
-
 # Custom FZF preview for ALT-C
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
-# Manual keybind fix for Ghostty
-bindkey '\ec' __fzf_cd__
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8,bold'
 
-# Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
-
-bindkey -r '^L'
-eval "$(starship init zsh)"
-export STARSHIP_CONFIG=~/.config/starship/starship.toml
-
+source ~/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 # intel mac zsh-autosuggestions
 # source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
 export EDITOR=nvim
 export VISUAL=nvim
 
@@ -50,6 +45,8 @@ alias t=tmux
 alias python=python3
 alias l=lsd
 alias ll='lsd -la'
+
+alias gs='git status'
 
 alias s='source bin/activate'
 alias venv='python3 -m venv .'
@@ -95,4 +92,5 @@ export PATH=$PATH:/Users/cyperx/.claude/local
 alias cld="/Users/cyperx/.claude/local/claude"
 alias claude="/Users/cyperx/.claude/local/claude"
 
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"

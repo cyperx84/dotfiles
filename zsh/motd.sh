@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 # MOTD: Glitchy Rainbow Header + System Info + Tips
 # ------------------------------------------------
-
 # — Color Palette
 RED=$(printf '\033[38;5;196m')
 ORANGE=$(printf '\033[38;5;202m')
@@ -90,7 +89,18 @@ EOF
 # }
 
 # ─── MAIN ───────────────────────────────────────────────────────────────────
-print_sysinfo
 print_logo
 print_skull
+macchina
+
+
+
+
+
+
+
+
+
+
+
 
