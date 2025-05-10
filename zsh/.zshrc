@@ -88,3 +88,4 @@ alias claude="/Users/cyperx/.claude/local/claude"
 
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
+export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"
