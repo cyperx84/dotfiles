@@ -23,8 +23,6 @@ print_sysinfo() {
   user_host="$(whoami)@$(hostname -s)"
   datetime="$(date '+%Y-%m-%d %H:%M')"
   uptime_str="$(uptime | sed -E 's/^.*up ([^,]*), .*$/\1/')"
-  load="$(sysctl -n vm.loadavg | awk '{print $2","$3","$4}')"
-
   echo "${WHITE}${user_host}${RESET} · ${PINK}${datetime}${RESET} · up ${GREEN}${uptime_str}${RESET} · load ${RED}${load}${RESET}"
   echo
 }
@@ -40,13 +38,12 @@ print_logo() {
   printf "%s        ░         ▒ ▒ ░░  ░░          ░     ░░   ░  ░    ░  %s\n" "$BLUE" "$RESET"
   printf "%s        ░ ░       ░ ░                    ░   ░      ░    ░  %s\n" "$BLUE" "$RESET"
   printf "%s          ░       ░                   ░  ░   ░      ░    ░  %s\n" "$BLUE" "$RESET"
-  printf "%s          ░       ░                   ░      ░           ░  %s\n" "$BLUE" "$RESET"
   echo
 }
 
 print_skull() {
   echo
-  DRIP_COLS=(10 18 36 45 57)   # 0-based columns to tint blue
+  DRIP_COLS=(10 18 38 45 57)   # 0-based columns to tint blue
   while IFS= read -r line; do
     out="${GREEN}"
     len=${#line}
@@ -63,28 +60,28 @@ print_skull() {
   done <<'EOF'
     .o oOOOOOOOo                                            OOOo
     Ob.OOOOOOOo  OOOo.      oOOo.                      .adOOOOOOO
-    OboO""""""""""".OOo. .oOOOOOo.    OOOo.oOOOOOo..""""""""""'OO
-    OOP.oOOOOOOOOOOO "POOOOOOOOOOOo.   `"OOOOOOOOOP,OOOOOOOOOOOB'
-    `O'OOOO'     `OOOOo"OOOOOOOOOOO` .adOOOOOOOOO"oOOO'    `OOOOo
-    .OOOO'            `OOOOOOOOOOOOOOOOOOOOOOOOOO'            `OO
-    OOOOO                 '"OOOOOOOOOOOOOOOO'`                oOO
+    OboO00ooOOO00OO.OOo. .oOOOOOo.    OOOo.oOOOOOo..OOOOOOO000OOOO
+    OOP.oOOOOOOOOOOO OPOOOOOOOOOOOo.   OOOOOOOOOOOP,OOOOOOOOOOOBO
+    oOoOOOOo     oOOOOooOOOOOOOOOOOo .adOOOOOOOOOooOOOo    oOOOOo
+    .OOOOo            oOOOOOOOOOOOOOOOOOOOOOOOOOOo            oOO
+    OOOOO                 OoOOOOOOOOOOOOOOOOOo                oOO
    oOOOOOba.                .adOOOOOOOOOOba               .adOOOOo.
   oOOOOOOOOOOOOOba.    .adOOOOOOOOOO@^OOOOOOOba.     .adOOOOOOOOOOOO
- OOOOOOOOOOOOOOOOO.OOOOOOOOOOOOOO"`  '"OOOOOOOOOOOOO.OOOOOOOOOOOOOO
- "OOOO"       "YOoOOOOMOIONODOO"`  .   '"OOROAOPOEOOOoOY"     "OOO"
-    Y           'OOOOOOOOOOOOOO: .oOOo. :OOOOOOOOOOO?'         :`
+ OOOOOOOOOOOOOOOOO.OOOOOOOOOOOOOOOo  oOOOOOOOOOOOOOO.OOOOOOOOOOOOOO
+ oOOOOo       oYOoOOOOMOIONODOOoo  .   oOOOROAOPOEOOOoOYo     oOOOo
+    Y           oOOOOOOOOOOOOOO: .oOOo. :OOOOOOOOOOO?o         :o
     :            .oO%OOOOOOOOOOo.OOOOOO.oOOOOOOOOOOOO?         .
-    .            oOOP"%OOOOOOOOoOOOOOOO?oOOOOO?OOOO"OOo
-                 '%o  OOOO"%OOOO%"%OOOOO"OOOOOO"OOO':
-                      `\$"  `OOOO' `O"Y ' `OOOO'  o             .
-    .                  .     OP"          : o     .
+    .            oOOPo%OOOOOOOOoOOOOOOO?oOOOOO?OOOOoOOo
+                 o%o  OOOOo%OOOO%o%OOOOOoOOOOOOoOOOo:
+                      o\$o  oOOOOo oOoY o oOOOOo  o             .
+    .                  .     OPo          : o     .
                               :
                               :
 EOF
   echo
 }
 
-print_footer() {
+print_tip() {
   tips=(
     "Tip: ssh into your rigs like a boss 💀"
     "Quote: Code, carve, repeat."
@@ -98,7 +95,8 @@ print_footer() {
 # ─── MAIN ───────────────────────────────────────────────────────────────────
 print_logo
 print_skull
-
+macchina
+print_tip
 
 
 
