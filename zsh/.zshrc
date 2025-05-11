@@ -7,11 +7,13 @@ autoload -U compinit; compinit
 source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
 [ -f ~/.fzf/shell/key-bindings.zsh ] && source ~/.fzf/shell/key-bindings.zsh
 [ -f ~/.fzf/shell/completion.zsh ] && source ~/.fzf/shell/completion.zsh
-export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
-export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
 source $(brew --prefix zsh-fast-syntax-highlighting)/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8,bold'
+
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
+
 _fzf_comprun() {
   local command=$1
   shift
@@ -23,6 +25,40 @@ _fzf_comprun() {
     *)            fzf --preview "bat -n --color=always --line-range :500 {}" "$@" ;;
   esac
 }
+
+lp() {
+    eza --icons --tree --color=always "$@" | while read -r line; do
+        if [[ "$line" =~ \.(png|jpg|jpeg|gif|bmp|tiff|webp)$ ]]; then
+            kitty +kitten icat "$line"
+        else
+            echo "$line"
+        fi
+    done
+}
+
+# lp() {
+#     for file in *; do
+#         if [[ -f "$file" && "$file" =~ \.(png|jpg|jpeg|gif|bmp|tiff|webp)$ ]]; then
+#             echo "\033[1;36m$file\033[0m"
+#             kitty +kitten icat "$file"
+#             echo
+#         else
+#             echo "$file"
+#         fi
+#     done
+# }
+#
+iv() {
+    for img in "$@"; do
+        if [[ -f "$img" && "$img" =~ \.(png|jpg|jpeg|gif|bmp|tiff|webp|svg)$ ]]; then
+            kitty +kitten icat "$img"
+        else
+            echo "Not an image file: $img"
+        fi
+    done
+}
+
+alias iva='find . -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.gif" -o -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.webp" -o -iname "*.svg" \) -exec kitty +kitten icat {} \;'
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -88,3 +124,4 @@ alias claude="/Users/cyperx/.claude/local/claude"
 
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
+export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"

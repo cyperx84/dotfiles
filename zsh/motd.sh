@@ -30,29 +30,37 @@ print_sysinfo() {
 }
 
 print_logo() {
-  printf "%s          ▄████▄  ▓██   ██▓ ██▓███  ▓█████  ██▀███  ▒██   ██▒%s\n" "$BLUE" "$RESET"
-  printf "%s         ▒██▀ ▀█   ▒██  ██▒▓██░  ██▒▓█   ▀ ▓██ ▒ ██▒▒▒ █ █ ▒░%s\n" "$BLUE" "$RESET"
-  printf "%s         ▒▓█    ▄   ▒██ ██░▓██░ ██▓▒▒███   ▓██ ░▄█ ▒░░  █   ░%s\n" "$BLUE" "$RESET"
-  printf "%s         ▒▓▓▄ ▄██▒  ░ ▐██▓░▒██▄█▓▒ ▒▒▓█  ▄ ▒██▀▀█▄   ░ █ █ ▒ %s\n" "$BLUE" "$RESET"
-  printf "%s         ▒ ▓███▀ ░  ░ ██▒▓░▒██▒ ░  ░░▒████▒░██▓ ▒██▒▒██▒ ▒██▒%s\n" "$BLUE" "$RESET"
-  printf "%s         ░ ░▒ ▒  ░   ██▒▒▒ ▒▓▒░ ░  ░░░ ▒░ ░░ ▒▓ ░▒▓░▒▒ ░ ░▓ ░%s\n" "$BLUE" "$RESET"
-  printf "%s           ░  ▒    ▓██ ░▒░ ░▒ ░      ░ ░  ░  ░▒ ░ ▒░░░   ░▒ ░%s\n" "$BLUE" "$RESET"
-  printf "%s         ░         ▒ ▒ ░░  ░░          ░     ░░   ░  ░    ░  %s\n" "$BLUE" "$RESET"
-  printf "%s         ░ ░       ░ ░                    ░   ░      ░    ░  %s\n" "$BLUE" "$RESET"
-  printf "%s           ░       ░                   ░  ░   ░      ░    ░  %s\n" "$BLUE" "$RESET"
-  printf "%s           ░       ░                   ░      ░           ░  %s\n" "$BLUE" "$RESET"
+  printf "%s         ▄████▄  ▓██   ██▓ ██████  ▓█████  ██▀███  ▒██   ██▒%s\n" "$BLUE" "$RESET"
+  printf "%s        ▒██▀ ▀█   ▒██  ██▒▓██░  ██▒▓█   ▀ ▓██ ▒ ██▒▒▒ █ █ ▒░%s\n" "$BLUE" "$RESET"
+  printf "%s        ▒▓█    ▄   ▒██ ██░▓██░ ██▓▒▒███   ▓██ ░▄█ ▒░░  █   ░%s\n" "$BLUE" "$RESET"
+  printf "%s        ▒▓▓▄ ▄██▒  ░ ▐██▓░▒██▄█▓▒ ▒▒▓█  ▄ ▒██▀▀█▄   ░ █ █ ▒ %s\n" "$BLUE" "$RESET"
+  printf "%s        ▒ ▓███▀ ░  ░ ██▒▓░▒██▒ ░  ░░▒████▒░██▓ ▒██▒▒██▒ ▒██▒%s\n" "$BLUE" "$RESET"
+  printf "%s        ░ ░▒ ▒  ░   ██▒▒▒ ▒▓▒░ ░  ░░░ ▒░ ░░ ▒▓ ░▒▓░▒▒ ░ ░▓ ░%s\n" "$BLUE" "$RESET"
+  printf "%s          ░  ▒    ▓██ ░▒░ ░▒ ░      ░ ░  ░  ░▒ ░ ▒░░░   ░▒ ░%s\n" "$BLUE" "$RESET"
+  printf "%s        ░         ▒ ▒ ░░  ░░          ░     ░░   ░  ░    ░  %s\n" "$BLUE" "$RESET"
+  printf "%s        ░ ░       ░ ░                    ░   ░      ░    ░  %s\n" "$BLUE" "$RESET"
+  printf "%s          ░       ░                   ░  ░   ░      ░    ░  %s\n" "$BLUE" "$RESET"
+  printf "%s          ░       ░                   ░      ░           ░  %s\n" "$BLUE" "$RESET"
   echo
 }
 
-# — Print glitch header via heredoc to avoid quoting hell
 print_skull() {
   echo
-  i=0
+  DRIP_COLS=(10 18 36 45 57)   # 0-based columns to tint blue
   while IFS= read -r line; do
-    color_index=$(( i % LEN ))
-    printf "%s%s%s\n" "${RAINBOW[$color_index]}" "$line" "$RESET"
-    ((i++))
-  done << 'EOF'
+    out="${GREEN}"
+    len=${#line}
+    for ((idx=1; idx<=len; idx++)); do        # zsh strings are 1-based
+      ch="${line[$idx]}"
+      col=$((idx-1))                          # convert to 0-based
+      if [[ " ${DRIP_COLS[*]} " == *" $col "* && "$ch" != ' ' ]]; then
+        out+="${BLUE}${ch}${GREEN}"
+      else
+        out+="$ch"
+      fi
+    done
+    printf '%s%s\n' "$out" "$RESET"
+  done <<'EOF'
     .o oOOOOOOOo                                            OOOo
     Ob.OOOOOOOo  OOOo.      oOOo.                      .adOOOOOOO
     OboO""""""""""".OOo. .oOOOOOo.    OOOo.oOOOOOo..""""""""""'OO
@@ -76,22 +84,20 @@ EOF
   echo
 }
 
-
-# print_footer() {
-#   tips=(
-#     "Tip: ssh into your rigs like a boss 💀"
-#     "Quote: Code, carve, repeat."
-#     "Glitch mode: engage."
-#   )
-#   tip_index=$(( RANDOM % ${#tips[@]} ))
-#   echo "${RAINBOW[RANDOM % LEN]}▶${RESET} ${tips[$tip_index]}"
-#   echo
-# }
+print_footer() {
+  tips=(
+    "Tip: ssh into your rigs like a boss 💀"
+    "Quote: Code, carve, repeat."
+    "Glitch mode: engage."
+  )
+  tip_index=$(( RANDOM % ${#tips[@]} ))
+  echo "${RAINBOW[RANDOM % LEN]}▶${RESET} ${tips[$tip_index]}"
+  echo
+}
 
 # ─── MAIN ───────────────────────────────────────────────────────────────────
 print_logo
 print_skull
-macchina
 
 
 
