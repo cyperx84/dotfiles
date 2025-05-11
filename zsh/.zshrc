@@ -36,18 +36,6 @@ lp() {
     done
 }
 
-# lp() {
-#     for file in *; do
-#         if [[ -f "$file" && "$file" =~ \.(png|jpg|jpeg|gif|bmp|tiff|webp)$ ]]; then
-#             echo "\033[1;36m$file\033[0m"
-#             kitty +kitten icat "$file"
-#             echo
-#         else
-#             echo "$file"
-#         fi
-#     done
-# }
-#
 iv() {
     for img in "$@"; do
         if [[ -f "$img" && "$img" =~ \.(png|jpg|jpeg|gif|bmp|tiff|webp|svg)$ ]]; then
