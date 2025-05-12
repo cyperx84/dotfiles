@@ -1,0 +1,15 @@
+theme = Monokai Remastered
+font-family = MonaspiceAr NFM 
+font-family-bold = MonaspiceKr NFM Bold
+font-family-italic =MonaspiceRn NFM Bold Italic 
+font-family-bold-italic = MonaspiceXe NFM Bold Italic
+# 1) Remove Ghostty’s Clear Screen on Ctrl-L
+keybind = ctrl+l=unbind
+background-blur-radius = 20
+mouse-hide-while-typing = true
+window-decoration = false
+keybind = global:cmd+/=toggle_quick_terminal
+macos-option-as-alt = true
+background-opacity = 0.7
+# 2) Forward the literal ^L (0x0C) to tmux
+# keybind = unconsumed:ctrl+l=text:\x0c
