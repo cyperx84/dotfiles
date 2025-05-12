@@ -1,8 +1,8 @@
 theme = Monokai Remastered
-font-family = MonaspiceAr 
-font-family-bold = MonaspiceKr NFM Bold
-font-family-italic =MonaspiceRn NFM Bold Italic 
-font-family-bold-italic = MonaspiceXe NFM Bold Italic
+font-family = Monaspace Argon Var ExtraLight Bold
+font-family-bold = Monaspace Krypton Var ExtraLight Wide Bold
+font-family-italic = Monaspace Radon  Var ExtraLight Bold Italic
+font-family-bold-italic = Monaspace Neon Var ExtraLight Bold Italic
 # 1) Remove Ghostty’s Clear Screen on Ctrl-L
 keybind = ctrl+l=unbind
 background-blur-radius = 20

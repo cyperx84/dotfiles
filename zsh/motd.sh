@@ -81,22 +81,11 @@ EOF
   echo
 }
 
-print_tip() {
-  tips=(
-    "Tip: ssh into your rigs like a boss 💀"
-    "Quote: Code, carve, repeat."
-    "Glitch mode: engage."
-  )
-  tip_index=$(( RANDOM % ${#tips[@]} ))
-  echo "${RAINBOW[RANDOM % LEN]}▶${RESET} ${tips[$tip_index]}"
-  echo
-}
+# print tips
 
 # ─── MAIN ───────────────────────────────────────────────────────────────────
 print_logo
 print_skull
-macchina
-print_tip
 
 
 
