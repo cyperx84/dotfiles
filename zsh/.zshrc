@@ -1,6 +1,7 @@
 ENABLE_CORRECTION="false"
 
 HIST_STAMPS="dd/mm/yy"
+export TERM=xterm-ghostty
 
 # FZF
 autoload -U compinit; compinit
@@ -110,8 +111,6 @@ eval $(thefuck --alias fk)
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 export PATH=$PATH:/Users/cyperx/.claude/local
-alias cld="/Users/cyperx/.claude/local/claude"
-alias claude="/Users/cyperx/.claude/local/claude"
 
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"

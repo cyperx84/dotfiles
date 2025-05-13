@@ -1,5 +1,8 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 format = """
+$character
+"""
+right_format = """
 [](color_orange)\
 $os\
 $username\
@@ -26,7 +29,7 @@ $pixi\
 [](fg:color_bg3 bg:color_bg1)\
 $time\
 [ ](fg:color_bg1)\
-$line_break$character"""
+"""
 
 palette = 'gruvbox_dark'
 
@@ -78,19 +81,19 @@ format = '[ $user ]($style)'
 [directory]
 style = "fg:color_fg0 bg:color_yellow"
 format = "[ $path ]($style)"
-truncation_length = 3
-truncation_symbol = "…/"
+truncation_length = 2
+truncation_symbol = "/"
 
 [directory.substitutions]
 "~" = "💀"
-"notes" = "🧠"
+"notes" = "📒"
 "Documents" = "📜"
 "Downloads" = "🔽"
 "Music" = "🎶"
 "Pictures" = "📸"
 "Code" = "💻"
-"dotfiles" = "💠"
-".config" = "💽"
+"dotfiles" = "..."
+".config" = "🛠️"
 
 [git_branch]
 symbol = "🪾"
@@ -105,8 +108,11 @@ format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_aqua)]($style)'
 symbol = ""
 style = "bg:color_blue"
 format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
-disabled = true
 detect_files = ["package.json", "node_modules", ".nvmrc", ".node-version"]
+
+[bun]
+symbol = "🍔"
+format = 'via [$symbol $version](bold green) '
 
 [c]
 symbol = " "
@@ -177,9 +183,9 @@ disabled = false
 
 [character]
 disabled = false
-success_symbol = '[👾>](bold fg:color_orange)'
-error_symbol = '[⛔️<](bold fg:color_red)'
-vimcmd_symbol = '[🧪](bold fg:color_green)'
+success_symbol = '[👾/>](bold fg:color_orange)'
+error_symbol = '[⛔️<=](bold fg:color_red)'
+vimcmd_symbol = '[🧪>>](bold fg:color_green)'
 vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
 vimcmd_replace_symbol = '[](bold fg:color_purple)'
 vimcmd_visual_symbol = '[](bold fg:color_yellow)'
