@@ -1,8 +1,9 @@
 theme = Monokai Remastered
-font-family = Monaspace Argon Var ExtraLight Bold
-font-family-bold = Monaspace Krypton Var ExtraLight Wide Bold
-font-family-italic = Monaspace Radon  Var ExtraLight Bold Italic
-font-family-bold-italic = Monaspace Neon Var ExtraLight Bold Italic
+font-family = MonaspiceKr NFM 
+font-family-bold = MonaspiceRd NFM 
+font-family-italic = MonaspiceRd NFM
+font-family-bold-italic = MonaspiceRd NFM
+font-size = 20
 # 1) Remove Ghostty’s Clear Screen on Ctrl-L
 keybind = ctrl+l=unbind
 background-blur-radius = 20
@@ -11,5 +12,6 @@ window-decoration = false
 keybind = global:cmd+/=toggle_quick_terminal
 macos-option-as-alt = true
 background-opacity = 0.7
+
 # 2) Forward the literal ^L (0x0C) to tmux
 # keybind = unconsumed:ctrl+l=text:\x0c

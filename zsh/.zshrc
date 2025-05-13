@@ -82,8 +82,11 @@ alias venv='python3 -m venv .'
 
 alias conf="cd $HOME/dotfiles && nvim"
 
-# notes brain
+# notes 
 alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
+
+# Code Workspaces
+alias C="cd ~/Code/"
 
 # ----- Bat (better cat) -----
 export BAT_THEME=tokyonight_night

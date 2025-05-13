@@ -82,14 +82,18 @@ truncation_length = 3
 truncation_symbol = "…/"
 
 [directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = "󰝚 "
-"Pictures" = " "
-"Code" = "󰲋 "
+"~" = "💀"
+"notes" = "🧠"
+"Documents" = "📜"
+"Downloads" = "🔽"
+"Music" = "🎶"
+"Pictures" = "📸"
+"Code" = "💻"
+"dotfiles" = "💠"
+".config" = "💽"
 
 [git_branch]
-symbol = ""
+symbol = "🪾"
 style = "bg:color_aqua"
 format = '[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)'
 
@@ -145,7 +149,7 @@ style = "bg:color_blue"
 format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [python]
-symbol = ""
+symbol = "🐍"
 style = "bg:color_blue"
 format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
@@ -163,19 +167,19 @@ style = "bg:color_bg3"
 format = '[[ $symbol( $version)( $environment) ](fg:color_fg0 bg:color_bg3)]($style)'
 
 [time]
-disabled = false
+disabled = true
 time_format = "%R"
 style = "bg:color_bg1"
-format = '[[  $time ](fg:color_fg0 bg:color_bg1)]($style)'
+format = '[[ $time ](fg:color_fg0 bg:color_bg1)]($style)'
 
 [line_break]
 disabled = false
 
 [character]
 disabled = false
-success_symbol = '[==>](bold fg:color_green)'
-error_symbol = '[](bold fg:color_red)'
-vimcmd_symbol = '[](bold fg:color_green)'
+success_symbol = '[👾>](bold fg:color_orange)'
+error_symbol = '[⛔️<](bold fg:color_red)'
+vimcmd_symbol = '[🧪](bold fg:color_green)'
 vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
 vimcmd_replace_symbol = '[](bold fg:color_purple)'
 vimcmd_visual_symbol = '[](bold fg:color_yellow)'
