@@ -13,12 +13,12 @@ fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 # complete -C '/usr/local/bin/aws_completer' aws
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-bindkey '^w' autosuggest-execute
-bindkey '^e' autosuggest-accept
+bindkey '^e' autosuggest-execute
+bindkey '^w' autosuggest-accept
 bindkey '^u' autosuggest-toggle
-bindkey '^L' vi-forward-word
-bindkey '^k' up-line-or-search
-bindkey '^j' down-line-or-search
+bindkey '^f' vi-forward-word
+bindkey '^u' up-line-or-search
+bindkey '^p' down-line-or-search
 
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
