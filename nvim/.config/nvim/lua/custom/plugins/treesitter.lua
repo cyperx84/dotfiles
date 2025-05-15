@@ -28,6 +28,7 @@ return {
         'bash',
         'ruby',
         'markdown',
+        'markdown_inline',
         'java',
         'astro',
       },

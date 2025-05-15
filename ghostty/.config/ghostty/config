@@ -11,7 +11,7 @@ font-family-bold-italic = MonaspiceRn Nerd Font Mono
 font-size = 20
 
 cursor-color = #00FF00
-cursor-style = block
+cursor-style = block_hollow
 cursor-style-blink = true
 
 
