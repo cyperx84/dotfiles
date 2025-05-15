@@ -3,7 +3,6 @@ ENABLE_CORRECTION="false"
 HIST_STAMPS="dd/mm/yy"
 export TERM=xterm-ghostty
 
-
 # FZF
 autoload -U compinit; compinit
 source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
@@ -13,7 +12,7 @@ source $(brew --prefix zsh-fast-syntax-highlighting)/share/zsh-fast-syntax-highl
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8,bold'
 
-export FZF_ALT_C_OPTS=
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
 
 _fzf_comprun() {
@@ -59,7 +58,6 @@ else
   export EDITOR='vim'
 fi
 
-# NEOVIM
 alias n='NVIM_APPNAME="nvim" nvim'
 
 # NVIM config selecting
@@ -71,10 +69,6 @@ vv() {
   # Open Neovim with the selected config
   NVIM_APPNAME=$(basename $config) nvim $@
 }
-
-# VI Mode!!!
-bindkey jk vi-cmd-mode
-
 
 # Quality of life keymaps
 alias t=tmux
