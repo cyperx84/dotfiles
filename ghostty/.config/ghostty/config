@@ -5,10 +5,16 @@ font-feature = "ss02"
 font-feature = "ss03"
 font-feature = "ss04"
 font-feature = "liga"
-font-family-bold = MonaspiceRn Nerd Font Mono 
-font-family-italic = MonaspiceKr Nerd Font Mono 
+font-family-bold = MonaspiceKr Nerd Font Mono 
+font-family-italic = MonaspiceRn Nerd Font Mono 
 font-family-bold-italic = MonaspiceRn Nerd Font Mono 
 font-size = 20
+
+cursor-color = #00FF00
+cursor-style = block
+cursor-style-blink = true
+
+
 # 1) Remove Ghostty’s Clear Screen on Ctrl-L
 keybind = ctrl+l=unbind
 background-blur-radius = 20
