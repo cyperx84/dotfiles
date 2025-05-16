@@ -3,8 +3,15 @@ HIST_STAMPS="dd/mm/yy"
 export TERM="xterm-ghostty"
 export TERM="xterm-256color"
 # export COLORTERM="truecolor"
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 autoload -U compinit; compinit
+
+# Disable bracketed paste mode
+# autoload -U edit-command-line
+# zle -N edit-command-line
+# bindkey '^X^E' edit-command-line
+# bindkey -r "\e[200~"
+# bindkey -r "\e[201~"
 
 # navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
@@ -60,7 +67,7 @@ alias ......="cd ../../../../.."
 alias nm="nmap -sC -sV -oN nmap"
 
 # K8S
-export KUBECONFIG=~/.kube/config
+# export KUBECONFIG=~/.kube/config
 alias k="kubectl"
 alias ka="kubectl apply -f"
 alias kg="kubectl get"

@@ -19,8 +19,12 @@ keybind = ctrl+l=unbind
 mouse-hide-while-typing = true
 window-decoration = false
 keybind = global:cmd+/=toggle_quick_terminal
-macos-option-as-alt = true
 background-opacity = 0.9
 background-blur = false
-# 2) Forward the literal ^L (0x0C) to tmux
-# keybind = unconsumed:ctrl+l=text:\x0c
+
+macos-option-as-alt = true
+
+macos-auto-secure-input = false
+macos-secure-input-indication = false
+keybind = "cmd+shift+s=toggle_secure_input"
+
