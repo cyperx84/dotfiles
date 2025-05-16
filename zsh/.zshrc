@@ -1,7 +1,9 @@
 ENABLE_CORRECTION="false"
 HIST_STAMPS="dd/mm/yy"
-export TERM=xterm-ghostty
-export LANG=en_US.UTF-8
+export TERM="xterm-ghostty"
+export TERM="xterm-256color"
+# export COLORTERM="truecolor"
+# export LANG=en_US.UTF-8
 autoload -U compinit; compinit
 
 # navigation
