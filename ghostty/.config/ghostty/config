@@ -8,7 +8,7 @@ font-feature = "liga"
 font-family-bold = MonaspiceRn Nerd Font Mono 
 font-family-italic = MonaspiceKr Nerd Font Mono 
 font-family-bold-italic = MonaspiceRn Nerd Font Mono 
-font-size = 16
+font-size = 20
 
 cursor-color = #00FF00
 cursor-style = block_hollow

@@ -1,25 +1,30 @@
 ENABLE_CORRECTION="false"
 HIST_STAMPS="dd/mm/yy"
+INSTALLER_NO_MODIFY_PATH=1
 export TERM="xterm-ghostty"
 export TERM="xterm-256color"
 # export COLORTERM="truecolor"
 export LANG=en_US.UTF-8
 autoload -U compinit; compinit
-
-# Disable bracketed paste mode
-# autoload -U edit-command-line
-# zle -N edit-command-line
-# bindkey '^X^E' edit-command-line
-# bindkey -r "\e[200~"
-# bindkey -r "\e[201~"
-
-# navigation
+# Navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
 f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
 fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 
+# Yazi 
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
 # source <(kubectl completion zsh)
 # complete -C '/usr/local/bin/aws_completer' aws
+
+eval "$(uv generate-shell-completion zsh)"
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '^e' autosuggest-execute
@@ -176,7 +181,6 @@ bindkey jk vi-cmd-mode
 # Quality of life keymaps
 alias cl='clear'
 alias t=tmux
-alias python=python3
 
 # Config
 alias conf="cd $HOME/dotfiles && nvim"
@@ -190,13 +194,8 @@ alias C="cd ~/Code/"
 # ----- Bat (better cat) -----
 export BAT_THEME=tokyonight_night
 
-
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
-
-# thefuck alias
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
 
 export PATH=$PATH:/Users/cyperx/.claude/local
 
