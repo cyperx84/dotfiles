@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 -- Yazi
-vim.keymap.set('n', '<C-e>', '<CMD>Yazi toggle<CR>', { desc = 'Open parent directory' })
+vim.keymap.set('n', '<C-e>', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
 -- OIL
 -- vim.keymap.set('n', '<C-e>', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
 
