@@ -139,16 +139,17 @@ ctrl + cmd - e : yabai -m window --toggle split
 # alt - p : yabai -m window --toggle sticky --toggle pip
 #
 # Moving windows
-shift + ctrl - h : yabai -m window --warp west
-shift + ctrl - j : yabai -m window --warp south
-shift + ctrl - k : yabai -m window --warp north
-shift + ctrl - l : yabai -m window --warp east
+shift + ctrl + alt - h : yabai -m window --warp west
+shift + ctrl + alt - j : yabai -m window --warp south
+shift + ctrl + alt - k : yabai -m window --warp north
+shift + ctrl + alt - l : yabai -m window --warp east
 
 # change window focus within space
-alt - j : yabai -m window --focus south
-alt - k : yabai -m window --focus north
-alt - h : zabai -m window --focus west
-alt - l : yabai -m window --focus east
+shift + ctrl - j : yabai -m window --focus south
+shift + ctrl - k : yabai -m window --focus north
+shift + ctrl - h : zabai -m window --focus west
+shift + ctrl - l : yabai -m window --focus east
+
 # swap windows
 # shift + alt - j : yabai -m window --swap south
 # shift + alt - k : yabai -m window --swap north
@@ -217,4 +218,4 @@ shift + alt - 7 : yabai -m window --space 7;
 # ctrl + alt - q : brew services stop yabai
 # ctrl + alt - s : skhd --start-service && yabai --start-service
 shift + alt + cmd - r : skhd --restart-service && yabai --restart-service
-# ctrl + alt - s : skhd --stop-service && yabai --stop-service
+#+ alt ctrl + alt - s : skhd --stop-service && yabai --stop-service

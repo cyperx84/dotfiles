@@ -2,8 +2,6 @@ return {
   "mikavilpas/yazi.nvim",
   event = "VeryLazy",
   dependencies = {
-    -- check the installation instructions at
-    -- https://github.com/folke/snacks.nvim
     "folke/snacks.nvim"
   },
   keys = {
@@ -33,6 +31,7 @@ return {
     keymaps = {
       show_help = "<f1>",
     },
+    yazi_floating_window_boarder = "none",
   },
   -- 👇 if you use `open_for_directories=true`, this is recommended
   init = function()
