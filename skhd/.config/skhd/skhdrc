@@ -145,10 +145,10 @@ shift + ctrl + alt - k : yabai -m window --warp north
 shift + ctrl + alt - l : yabai -m window --warp east
 
 # change window focus within space
-shift + ctrl - j : yabai -m window --focus south
-shift + ctrl - k : yabai -m window --focus north
-shift + ctrl - h : zabai -m window --focus west
-shift + ctrl - l : yabai -m window --focus east
+# shift + ctrl - j : yabai -m window --focus south
+# shift + ctrl - k : yabai -m window --focus north
+# shift + ctrl - h : zabai -m window --focus west
+# shift + ctrl - l : yabai -m window --focus east
 
 # swap windows
 # shift + alt - j : yabai -m window --swap south

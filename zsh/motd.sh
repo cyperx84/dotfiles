@@ -84,6 +84,7 @@ EOF
 # print tips
 
 # ─── MAIN ───────────────────────────────────────────────────────────────────
+print_sysinfo
 print_logo
 print_skull
 

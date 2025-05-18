@@ -3,7 +3,7 @@ HIST_STAMPS="dd/mm/yy"
 INSTALLER_NO_MODIFY_PATH=1
 export TERM="xterm-ghostty"
 export TERM="xterm-256color"
-# export COLORTERM="truecolor"
+export COLORTERM="truecolor"
 export LANG=en_US.UTF-8
 autoload -U compinit; compinit
 # Navigation
