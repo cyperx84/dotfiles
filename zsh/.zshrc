@@ -6,6 +6,10 @@ export TERM="xterm-256color"
 export COLORTERM="truecolor"
 export LANG=en_US.UTF-8
 autoload -U compinit; compinit
+
+export GPG_TTY=$(tty)
+# gpg-preset-passphrase --preset $(gpg --with-keygrip -K | grep -A1 "sec" | grep Keygrip | awk '{print $3}')
+
 # Navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
 f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
@@ -201,3 +205,4 @@ export PATH=$PATH:/Users/cyperx/.claude/local
 
 export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"

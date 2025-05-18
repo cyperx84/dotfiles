@@ -45,7 +45,7 @@ return {
           -- make `:Telescope find_files` chase symlinks too
           find_files = {
             follow = true,
-            hidden = true,  -- show dotfiles as well
+            hidden = false,  -- show dotfiles as well
           },
         },
         extensions = {
