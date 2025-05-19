@@ -6,12 +6,12 @@ return {
   },
   keys = {
     -- 👇 in this section, choose your own keymappings!
-    {
-      "<leader>-",
-      mode = { "n", "v" },
-      "<cmd>Yazi<cr>",
-      desc = "Open yazi at the current file",
-    },
+    -- {
+    --   "<leader>-",
+    --   mode = { "n", "v" },
+    --   "<cmd>Yazi<cr>",
+    --   desc = "Open yazi at the current file",
+    -- },
     {
       -- Open in the current working directory
       "<leader>cw",

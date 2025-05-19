@@ -155,11 +155,11 @@ iv() {
         fi
     done
 }
-
+# List all images in Dir
 alias iva='find . -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.gif" -o -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.webp" -o -iname "*.svg" \) -exec kitty +kitten icat {} \;'
 
-export EDITOR=nvim
-export VISUAL=nvim
+export EDITOR="/usr/local/bin/nvim"
+export VISUAL="/usr/local/bin/nvim"
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='nvim'

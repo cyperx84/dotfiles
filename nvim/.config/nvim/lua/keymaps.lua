@@ -50,13 +50,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+-- [[FILES]]
 -- Yazi
 vim.keymap.set('n', '<C-e>', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
 -- OIL
--- vim.keymap.set('n', '<C-e>', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
-
+vim.keymap.set('n', '-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
 -- Neotree
-vim.keymap.set('n', '-', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
+vim.keymap.set('n', '<leader>-', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 
 -- Neogit
 vim.keymap.set("n", "<leader>ng", "<cmd>Neogit kind=floating<CR>", { desc = "Neogit Floating" })
