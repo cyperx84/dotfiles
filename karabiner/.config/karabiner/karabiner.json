@@ -1,8 +1,5 @@
 {
-    "global": {
-        "check_for_updates_on_startup": false,
-        "show_in_menu_bar": false
-    },
+    "global": { "show_profile_name_in_menu_bar": true },
     "profiles": [
         {
             "devices": [
@@ -21,6 +18,52 @@
                         "vendor_id": 76
                     },
                     "manipulate_caps_lock_led": false
+                }
+            ],
+            "fn_function_keys": [
+                {
+                    "from": { "key_code": "f1" },
+                    "to": [{ "key_code": "f1" }]
+                },
+                {
+                    "from": { "key_code": "f2" },
+                    "to": [{ "key_code": "f2" }]
+                },
+                {
+                    "from": { "key_code": "f3" },
+                    "to": [{ "key_code": "f3" }]
+                },
+                {
+                    "from": { "key_code": "f4" },
+                    "to": [{ "key_code": "f4" }]
+                },
+                {
+                    "from": { "key_code": "f5" },
+                    "to": [{ "key_code": "f5" }]
+                },
+                {
+                    "from": { "key_code": "f7" },
+                    "to": [{ "key_code": "f7" }]
+                },
+                {
+                    "from": { "key_code": "f8" },
+                    "to": [{ "key_code": "print_screen" }]
+                },
+                {
+                    "from": { "key_code": "f9" },
+                    "to": [{ "consumer_key_code": "mute" }]
+                },
+                {
+                    "from": { "key_code": "f10" },
+                    "to": [{ "apple_vendor_keyboard_key_code": "spotlight" }]
+                },
+                {
+                    "from": { "key_code": "f11" },
+                    "to": [{ "consumer_key_code": "play_or_pause" }]
+                },
+                {
+                    "from": { "key_code": "f12" },
+                    "to": [{ "consumer_key_code": "mute" }]
                 }
             ],
             "name": "Default profile",
