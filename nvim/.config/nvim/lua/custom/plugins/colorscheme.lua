@@ -1,9 +1,5 @@
 return {
   {
-    'loctvl842/monokai-pro.nvim',
-    priority = 1000,
-  },
-  {
     'folke/tokyonight.nvim',
     lazy = false,
     priority = 1000,
@@ -11,5 +7,8 @@ return {
     config = function()
       vim.cmd.colorscheme 'tokyonight-storm'
     end,
+  },
+  {
+    'loctvl842/monokai-pro.nvim',
   },
 }

@@ -5,7 +5,7 @@ return {
   opts = {
     -- add any opts here
     -- for example
-    provider = 'openai',
+    provider = 'gemini',
     openai = {
       endpoint = 'https://api.openai.com/v1',
       api_key_name = 'cmd:pass show apis/OPENAI_API_KEY',
@@ -13,11 +13,20 @@ return {
       timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
       temperature = 0,
       max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
-      --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+      reasoning_effort = "high", -- low|medium|high, only used for reasoning models
+    },
+    gemini = {
+      endpoint = 'https://generativelanguage.googleapis.com',
+      api_key_name = 'cmd:pass show apis/GEMINI_API_KEY',
+      model = 'gemini-2.5-pro-preview-05-06', -- your desired model (or use gpt-4o, etc.)
+      timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
+      temperature = 0,
+      max_completion_tokens = 18192, -- Increase this to include reasoning tokens (for reasoning models)
+      reasoning_effort = "high", -- low|medium|high, only used for reasoning models
     },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-  build = 'make',
+  build = '',
   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
   dependencies = {
     'nvim-treesitter/nvim-treesitter',

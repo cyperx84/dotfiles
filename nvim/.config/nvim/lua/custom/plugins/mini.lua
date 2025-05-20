@@ -35,32 +35,7 @@ return {
       require('mini.files').setup()
       require('mini.pick').setup()
 
-      -- require('mini.animate').setup {
-      --   cursor = {
-      --     enable = true,
-      --     -- Optional: Customize timing and path for cursor animation
-      --     timing = require('mini.animate').gen_timing.linear({ duration = 100, unit = 'total' }),
-      --     path = require('mini.animate').gen_path.line(),
-      --   },
-      --   scroll = { enable = false },
-      --   resize = {
-      --     enable = true,
-      --     -- Optional: Customize timing for resize animation
-      --     -- timing = require('mini.animate').gen_timing.linear({ duration = 50, unit = 'total' }),
-      --   },
-      --   open = {
-      --     enable = true,
-      --     -- Optional: Customize timing for window open animation
-      --     -- timing = require('mini.animate').gen_timing.linear({ duration = 200, unit = 'total' }),
-      --   },
-      --   close = {
-      --     enable = true,
-      --     -- Optional: Customize timing for window close animation
-      --     -- timing = require('mini.animate').gen_timing.linear({ duration = 200, unit = 'total' }),
-      --   },
-      -- }
-
-      -- ... and there is more!
+      require('mini.colors').setup()
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
