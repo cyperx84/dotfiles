@@ -8,4 +8,15 @@
 
 ```
 # *Dotfiles*
+This is a collection of my Dotfiles
+they are copied from various places 
+
+
+
+
+
+
+
+
+
 

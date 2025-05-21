@@ -6,7 +6,7 @@ return {
     local ui = require 'harpoon.ui'
 
     -- mark the current file
-    vim.keymap.set('n', '<C-M-a>', mark.add_file, {
+    vim.keymap.set('n', '<leader>a', mark.add_file, {
       desc = 'Harpoon: Mark File',
     })
 

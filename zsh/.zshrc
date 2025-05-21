@@ -1,3 +1,4 @@
+unsetopt PROMPT_SP
 ENABLE_CORRECTION="false"
 HIST_STAMPS="dd/mm/yy"
 INSTALLER_NO_MODIFY_PATH=1
@@ -6,10 +7,12 @@ export TERM="xterm-256color"
 export COLORTERM="truecolor"
 export LANG=en_US.UTF-8
 autoload -U compinit; compinit
-
 export GPG_TTY=$(tty)
+
 # gpg-preset-passphrase --preset $(gpg --with-keygrip -K | grep -A1 "sec" | grep Keygrip | awk '{print $3}')
 
+# gopass workaround
+# source /dev/stdin <<<"$(gopass completion bash)"
 # Navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
 f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }

@@ -18,19 +18,22 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- [[FILES]]
 -- Mini.Files
+vim.keymap.set('n', '<C-e>', function()
+  local bufname = vim.api.nvim_buf_get_name(0)
+  if vim.bo.filetype == 'minifiles' or bufname:match('^MiniFiles') then
+    require('mini.files').close()
+  else
+    require('mini.files').open()
+  end
+end, { desc = 'Toggle mini.files' })
 -- vim.keymap.set('n', '<C-e>', function()
---   local bufname = vim.api.nvim_buf_get_name(0)
---   if vim.bo.filetype == 'minifiles' or bufname:match('^MiniFiles') then
---     require('mini.files').close()
---   else
---     require('mini.files').open()
---   end
--- end, { desc = 'Toggle mini.files' })
+--   require('mini.files').open()
+-- end, { desc = 'Open mini.files' })
 
 -- Yazi
--- vim.keymap.set('n', '<C-e>', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
+vim.keymap.set('n', '-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
 -- OIL
-vim.keymap.set('n', '<C-e>', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
+-- vim.keymap.set('n', '<C-e>', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
 -- Neotree
 vim.keymap.set('n', '<leader>-', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 
