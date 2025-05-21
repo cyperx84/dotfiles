@@ -23,6 +23,7 @@ vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
 vim.opt.conceallevel = 2
+vim.g.python3_host_prog = '/usr/local/bin/python3'
 vim.opt.isfname:append("@-@") -- already present in most setups
 vim.opt.isfname:append("32")  -- allow spaces in filenames
 -- vim: ts=2 sts=2 sw=2 et

@@ -7,11 +7,6 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- NOTE: Some terminals have coliding keymaps or are not able to send distinct keycodes
--- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
--- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
--- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
--- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
@@ -22,10 +17,20 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- [[FILES]]
+-- Mini.Files
+-- vim.keymap.set('n', '<C-e>', function()
+--   local bufname = vim.api.nvim_buf_get_name(0)
+--   if vim.bo.filetype == 'minifiles' or bufname:match('^MiniFiles') then
+--     require('mini.files').close()
+--   else
+--     require('mini.files').open()
+--   end
+-- end, { desc = 'Toggle mini.files' })
+
 -- Yazi
-vim.keymap.set('n', '<C-e>', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
+-- vim.keymap.set('n', '<C-e>', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
 -- OIL
-vim.keymap.set('n', '-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
+vim.keymap.set('n', '<C-e>', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
 -- Neotree
 vim.keymap.set('n', '<leader>-', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 

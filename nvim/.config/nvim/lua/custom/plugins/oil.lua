@@ -27,13 +27,13 @@ return {
         timeout_ms = 1000,
         -- Set to true to autosave buffers that are updated with LSP willRenameFiles
         -- Set to "unmodified" to only save unmodified buffers
-        autosave_changes = false,
+        autosave_changes = true,
       },
       -- Constrain the cursor to the editable parts of the oil buffer
       -- Set to `false` to disable, or "name" to keep it on the file names
       constrain_cursor = 'editable',
       -- Set to true to watch the filesystem for changes and reload oil
-      watch_for_changes = false,
+      watch_for_changes = true,
       -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
       -- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
       -- Additionally, if it is a string that matches "actions.<name>",
@@ -57,6 +57,7 @@ return {
         ['gx'] = 'actions.open_external',
         ['g.'] = { 'actions.toggle_hidden', mode = 'n' },
         ['g\\'] = { 'actions.toggle_trash', mode = 'n' },
+        ['q'] = 'actions.close',
       },
       -- Set to false to disable all of the above keymaps
       use_default_keymaps = true,
@@ -68,17 +69,14 @@ return {
         end,
       },
       float = {
-        padding = 2,
-        max_width = 90,
-        max_height = 0,
+        padding = 1,
+        max_width = 60,
+        max_height = 20,
       },
+
       win_options = {
         wrap = true,
-        winblend = 0,
-      },
-      keymaps = {
-        ['<C-c>'] = false,
-        ['q'] = 'actions.close',
+        winblend = 20,
       },
     }
   end,
