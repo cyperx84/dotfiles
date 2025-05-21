@@ -11,6 +11,12 @@ return {
         -- "size",
         -- "mtime",
       },
+      -- Buffer-local options to use for oil buffers
+      buf_options = {
+        buflisted = false,
+        bufhidden = 'hide',
+      },
+      -- Window-local options to use for oil buffers
       delete_to_trash = true,
       skip_confirm_for_simple_edits = true,
       -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
@@ -77,6 +83,14 @@ return {
       win_options = {
         wrap = true,
         winblend = 20,
+        signcolumn = 'no',
+        cursorcolumn = false,
+        foldcolumn = '0',
+        spell = false,
+        list = false,
+        conceallevel = 2,
+        concealcursor = 'nvic',
+
       },
     }
   end,

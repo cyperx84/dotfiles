@@ -46,7 +46,7 @@ keybind = "cmd+shift+s=toggle_secure_input"
 # custom-shader = shaders/fireworks-rockets.glsl
 # custom-shader = shaders/fireworks.glsl
 # custom-shader = shaders/gears-and-belts.glsl
-# custom-shader = shaders/glitchy.glsl
+custom-shader = shaders/glitchy.glsl
 # custom-shader = shaders/glow-rgbsplit-twitchy.glsl
 # custom-shader = shaders/gradient-background.glsl
 # custom-shader = shaders/inside-the-matrix.glsl
