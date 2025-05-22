@@ -71,7 +71,7 @@ return {
               api_key = 'cmd:pass show apis/GEMINI_API_KEY',
             },
             schema = {
-              model = { default = 'gemini-1.5-pro' },
+              model = { default = 'gemini-2.5-pro-preview-05-06' },
             },
           })
         end,
@@ -89,9 +89,9 @@ return {
       },
 
       strategies = {
-        chat = { adapter = 'openai' },
-        inline = { adapter = 'openai' },
-        cmd = { adapter = 'openai' },
+        chat = { adapter = 'gemini' },
+        inline = { adapter = 'gemini' },
+        cmd = { adapter = 'gemini' },
       },
     }
   end,
