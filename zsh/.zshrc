@@ -7,7 +7,9 @@ export TERM="xterm-256color"
 export COLORTERM="truecolor"
 export LANG=en_US.UTF-8
 autoload -U compinit; compinit
+# Make sure gpg-agent is up and export socket path for tools like pinentry/pass/ssh
 export GPG_TTY=$(tty)
+gpgconf --launch gpg-agent > /dev/null 2>&1
 
 # gpg-preset-passphrase --preset $(gpg --with-keygrip -K | grep -A1 "sec" | grep Keygrip | awk '{print $3}')
 
