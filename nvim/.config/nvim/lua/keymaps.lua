@@ -31,9 +31,9 @@ end, { desc = 'Toggle mini.files' })
 -- end, { desc = 'Open mini.files' })
 
 -- Yazi
-vim.keymap.set('n', '-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
+vim.keymap.set('n', '<leader>-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
 -- OIL
-vim.keymap.set('n', '<leader>-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
+vim.keymap.set('n', '-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
 -- Neotree
 vim.keymap.set('n', '<leader>e', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 

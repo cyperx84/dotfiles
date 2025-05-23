@@ -36,23 +36,28 @@ return {
     end, {
       desc = 'Harpoon File 4',
     })
-    vim.keymap.set('n', '<M-s>', function()
+    vim.keymap.set('n', '<M-g>', function()
       ui.nav_file(5)
     end, {
       desc = 'Harpoon File 5',
     })
-    vim.keymap.set('n', '<M-d>', function()
+    vim.keymap.set('n', '<M-f>', function()
       ui.nav_file(6)
     end, {
       desc = 'Harpoon File 6',
     })
-    vim.keymap.set('n', '<M-f>', function()
+    vim.keymap.set('n', '<M-d>', function()
       ui.nav_file(7)
     end, {
       desc = 'Harpoon File 7',
     })
-    vim.keymap.set('n', '<M-g>', function()
+    vim.keymap.set('n', '<M-s>', function()
       ui.nav_file(8)
+    end, {
+      desc = 'Harpoon File 8',
+    })
+    vim.keymap.set('n', '<M-a>', function()
+      ui.nav_file(9)
     end, {
       desc = 'Harpoon File 8',
     })

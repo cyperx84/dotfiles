@@ -211,3 +211,4 @@ export PATH=$PATH:/Users/cyperx/.claude/local
 export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+alias claude="/Users/cyperx/.claude/local/claude"
