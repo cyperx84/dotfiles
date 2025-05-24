@@ -27,6 +27,11 @@ macos-option-as-alt = true
 macos-auto-secure-input = false
 macos-secure-input-indication = false
 keybind = "cmd+shift+s=toggle_secure_input"
+
+
+
+
+##
 # custom-shader = shaders/animated-gradient-shader.glsl
 # custom-shader = shaders/bettercrt.glsl
 # custom-shader = shaders/bloom.glsl

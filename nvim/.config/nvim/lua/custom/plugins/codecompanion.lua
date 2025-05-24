@@ -1,6 +1,3 @@
--- local handle = io.popen("pass show path/to/anthropic-key")
--- local anthropic_key = handle:read("*a"):gsub("%s+", "")
--- handle:close()
 return {
   'olimorris/codecompanion.nvim',
   dependencies = {
@@ -74,7 +71,7 @@ return {
               api_key = 'cmd:pass show apis/GEMINI_API_KEY',
             },
             schema = {
-              model = { default = 'gemini-2.5-pro-preview-05-06' },
+              model = { default = 'gemini-2.5-flash-preview-05-20' },
             },
           })
         end,
