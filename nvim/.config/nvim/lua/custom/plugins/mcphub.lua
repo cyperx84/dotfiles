@@ -10,13 +10,11 @@ return {
             -- Server configuration
             port = 37373,                    -- Port for MCP Hub Express API
             config = vim.fn.expand("~/.config/mcphub/servers.json"), -- Config file path
-            
             native_servers = {}, -- add your native servers here
             -- Extension configurations
             auto_approve = false,
             extensions = {
                 avante = {
-                    
                 },
                 codecompanion = {
                     show_result_in_chat = true,  -- Show tool results in chat
@@ -24,7 +22,6 @@ return {
                     make_slash_commands = true, -- make /slash_commands from MCP server prompts
                 },
             },
-            
             -- UI configuration
             ui = {
                 window = {
@@ -35,11 +32,9 @@ return {
                     zindex = 50,      -- Window stack order
                 },
             },
-            
             -- Event callbacks
             on_ready = function(hub) end,  -- Called when hub is ready
             on_error = function(err) end,  -- Called on errors
-            
             -- Logging configuration
             log = {
                 level = vim.log.levels.WARN,  -- Minimum log level
