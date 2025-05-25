@@ -10,7 +10,7 @@ autoload -U compinit; compinit
 
 # Make sure gpg-agent is up and export socket path for tools like pinentry/pass/ssh
 export GPG_TTY=$(tty)
-gpgconf --launch gpg-agent > /dev/null 2>&1
+gpgconf --launch gpg-agent 
 
 # gopass workaround
 source /dev/stdin <<<"$(gopass completion bash)"
@@ -175,7 +175,7 @@ bindkey jk vi-cmd-mode
 
 # Quality of life keymaps
 alias cl='clear'
-alias t=tmux
+alias ta='tmux attach -d -t 0'
 
 # Config
 alias conf="cd $HOME/dotfiles && nvim"
