@@ -8,12 +8,11 @@ export COLORTERM="truecolor"
 export LANG=en_US.UTF-8
 autoload -U compinit; compinit
 
-# Make sure gpg-agent is up and export socket path for tools like pinentry/pass/ssh
 export GPG_TTY=$(tty)
-gpgconf --launch gpg-agent 
+gpgconf --launch gpg-agent > /dev/null 2>&1
 
-# gopass workaround
-source /dev/stdin <<<"$(gopass completion bash)"
+# gopass workaround NOTE not working
+# source /dev/stdin <<<"$(gopass completion bash)"
 
 # Navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
@@ -67,9 +66,10 @@ bindkey '^p' down-line-or-search
 
 eval "$(starship init zsh)"
 # export STARSHIP_CONFIG=~/.config/starship/starship.toml
-# export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-dark-neon.toml
+export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-dark-neon.toml
 # export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-rainbow.toml
-export STARSHIP_CONFIG=~/.config/starship/starship-no-runtime.toml
+# export STARSHIP_CONFIG=~/.config/starship/starship-no-runtime.toml
+# export STARSHIP_CONFIG=~/.config/starship/starship-jetpack.toml
 
 # Git
 alias gc="git commit -m"
@@ -148,8 +148,8 @@ alias ll="eza --color=always --long --git --icons=always"
 # List all images in Dir
 alias iva='find . -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.gif" -o -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.webp" -o -iname "*.svg" \) -exec kitty +kitten icat {} \;'
 
-export EDITOR='NVIM_APPNAME="nvim" nvim'
-export VISUAL="/usr/local/bin/nvim"
+export EDITOR='nvim'
+export VISUAL='nvim'
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='nvim'
@@ -171,7 +171,6 @@ vv() {
 
 # VI Mode!!!
 bindkey jk vi-cmd-mode
-
 
 # Quality of life keymaps
 alias cl='clear'

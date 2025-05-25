@@ -11,7 +11,7 @@ return {
         require('mcphub').setup {
           port = 37373,
           config = vim.fn.expand '~/.config/mcphub/servers.json',
-          auto_approve = false,
+          auto_approve = true,
           extensions = {
             codecompanion = {
               show_result_in_chat = true,
@@ -76,16 +76,16 @@ return {
           })
         end,
 
-        deepseek = function()
-          return require('codecompanion.adapters').extend('deepseek', {
-            env = {
-              api_key = os.getenv 'DEEPSEEK_API_KEY',
-            },
-            schema = {
-              model = { default = 'deepseek-coder' },
-            },
-          })
-        end,
+        -- deepseek = function()
+        --   return require('codecompanion.adapters').extend('deepseek', {
+        --         api_key = 'cmd:pass show apis/DEEPSEEK_API_KEY',
+        --       api_key = os.getenv 'DEEPSEEK_API_KEY',
+        --     },
+        --     schema = {
+        --       model = { default = 'deepseek-coder' },
+        --     },
+        --   })
+        -- end,
       },
 
       strategies = {

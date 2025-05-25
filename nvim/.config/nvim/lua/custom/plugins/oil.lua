@@ -82,7 +82,7 @@ return {
 
       win_options = {
         wrap = true,
-        winblend = 20,
+        -- winblend = 20,
         signcolumn = 'no',
         cursorcolumn = false,
         foldcolumn = '0',

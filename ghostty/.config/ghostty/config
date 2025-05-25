@@ -1,8 +1,8 @@
 theme = Monokai Remastered
 # font-family = "Monaspace Neon Var"
 font-family = MonaspiceNe Nerd Font Mono
-font-family-italic= MonaspiceKr Nerd Font Mono 
 font-family-bold= MonaspiceRn Nerd Font Mono 
+font-family-italic= MonaspiceKr Nerd Font Mono 
 font-family-bold-italic = MonaspiceRn Nerd Font Mono 
 font-size = 20
 font-feature = "ss01"
