@@ -11,7 +11,7 @@ autoload -U compinit; compinit
 export GPG_TTY=$(tty)
 gpgconf --launch gpg-agent > /dev/null 2>&1
 
-# gopass workaround NOTE not working
+# NOTE gopass workaround not working
 # source /dev/stdin <<<"$(gopass completion bash)"
 
 # Navigation

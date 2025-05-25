@@ -1,0 +1,113 @@
+# remap prefix from 'C-b' to 'C-a'
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+
+set -g default-terminal "xterm-ghostty"
+set -g terminal-overrides "xterm-ghostty:Tc"
+set -ga terminal-features "xterm-ghostty:RGB"
+set -gq allow-passthrough on
+
+bind r source-file ~/.tmux.conf \; display "🚀 Config reloaded."
+
+setw -g mode-keys vi
+bind-key h select-pane -L
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key l select-pane -R
+
+set-option -g escape-time 0
+
+set -g @vim_navigator_mapping_left "C-Left C-h"  # use C-h and C-Left
+set -g @vim_navigator_mapping_right "C-Right C-l"
+set -g @vim_navigator_mapping_up "C-k"
+set -g @vim_navigator_mapping_down "C-j"
+set -g @vim_navigator_mapping_prev ""  # removes the C-\ binding
+
+set -g @vim_navigator_prefix_mapping_clear_screen ""
+
+bind -r C-j resize-pane -D 5
+bind -r C-k resize-pane -U 5
+bind -r C-h resize-pane -L 5
+bind -r C-l resize-pane -R 5
+
+# Splits
+unbind s
+unbind v
+bind c new-window -c "#{pane_current_path}"
+bind s split-window -c "#{pane_current_path}"
+bind v split-window -h -c "#{pane_current_path}"
+set-option -ga update-environment "VIRTUAL_ENV"
+
+# Start windows and panes at 1, no 0
+set -g base-index 1
+set -g pane-base-index 1
+set-window-option -g pane-base-index 1
+set-option -g renumber-windows on
+
+
+# configure Tmux Plugin Manager
+set-environment -gF TMUX_PLUGIN_MANAGER_PATH '#{HOME}/.local/share/tmux/plugins/'
+
+if 'test ! -d "${TMUX_PLUGIN_MANAGER_PATH}/tpm"' {
+  run 'mkdir -p "${TMUX_PLUGIN_MANAGER_PATH}"'
+  run 'git clone https://github.com/tmux-plugins/tpm "${TMUX_PLUGIN_MANAGER_PATH}/tpm"'
+  run '${TMUX_PLUGIN_MANAGER_PATH}/tpm/bin/install_plugins'
+}
+
+set -g @plugin 'tmux-plugins/tpm'
+
+# basic plugins
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'christoomey/vim-tmux-navigator'
+set -g @continuum-restore "on"
+
+# theme / style
+set -g @plugin 'catppuccin/tmux'
+set -g @plugin 'joshmedeski/tmux-nerd-font-window-name'
+set -g @plugin 'alexwforsythe/tmux-which-key'  # prefix + space
+
+# Custom Modules
+set -g @plugin 'tmux-plugins/tmux-cpu'
+set -g @plugin 'tmux-plugins/tmux-battery'
+set -g @plugin 'dreknix/tmux-primary-ip'
+
+#Weather
+set -g @plugin 'xamut/tmux-weather'
+
+set -g @catppuccin_flavor 'mocha'
+set -g @catppuccin_window_status_style 'rounded'
+set -g @catppuccin_window_number_position 'right'
+set -g @catppuccin_window_status 'no'
+set -g @catppuccin_window_default_text '#W'
+set -g @catppuccin_window_current_fill 'number'
+set -g @catppuccin_window_current_text '#W'
+set -g @catppuccin_window_current_color '#{E:@thm_surface_2}'
+set -g @catppuccin_date_time_text '%d.%m. %H:%M'
+set -g @catppuccin_status_module_text_bg '#{E:@thm_mantle}'
+
+# source the plugin here
+run "#{TMUX_PLUGIN_MANAGER_PATH}/tmux/catppuccin.tmux"
+
+# load custom moudules
+source -F "#{d:current_file}/.custom_modules/ctp_cpu.conf"
+source -F "#{d:current_file}/.custom_modules/ctp_memory.conf"
+source -F "#{d:current_file}/.custom_modules/primary_ip.conf"
+
+# set left and right status bar
+set -g allow-rename off
+set -g status-position top
+set -g status-interval 5
+set -g status-left-length 100
+set -g status-right-length 100
+set -g status-left "#{E:@catppuccin_status_session} "
+set -gF status-right "#{E:@catppuccin_status_primary_ip}"
+set -agF status-right "#{E:@catppuccin_status_ctp_cpu}"
+set -agF status-right "#{E:@catppuccin_status_ctp_memory}"
+set -agF status-right "#{E:@catppuccin_status_weather}"
+set -ag status-right "#{E:@catppuccin_status_date_time}"
+
+# initialize tmux plugin manager and source all plugins
+run "#{TMUX_PLUGIN_MANAGER_PATH}/tpm/tpm"
+
+
