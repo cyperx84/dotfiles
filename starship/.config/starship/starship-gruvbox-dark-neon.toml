@@ -52,7 +52,7 @@ Ubuntu = "󰕈"
 SUSE = ""
 Raspbian = "󰐿"
 Mint = "󰣭"
-Macos = "💀"
+Macos = "󰯈"
 Manjaro = ""
 Linux = "󰌽"
 Gentoo = "󰣨"
@@ -79,23 +79,23 @@ format = '[ $user ]($style)'
 style = "fg:color_fg0 bg:color_yellow"
 format = "[ $path ]($style)"
 truncation_length = 2
-truncation_symbol = "../"
+truncation_symbol = "󰇘 "
 
 [directory.substitutions]
-"~" = "👾"
-"notes" = "📒"
-"Documents" = "📜"
-"Downloads" = "🔽"
-"Music" = "🎶"
-"Pictures" = "📸"
-"Code" = "🤖"
-"dotfiles" = "⚙️"
-".config" = "🛠️"
+"~" = "󱙝"
+"notes" = ""
+"Documents" = "󱔗"
+"Downloads" = ""
+"Music" = ""
+"Pictures" = ""
+"Code" = ""
+"dotfiles" = ""
+".config" = ""
 
 [git_branch]
-symbol = "🪾"
+symbol = ""
 style = "bg:color_aqua"
-format = '[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)'
+format = '[[ $symbol ](fg:color_fg0 bg:color_aqua)]($style)'
 
 [git_status]
 style = "bg:color_aqua"
@@ -108,7 +108,7 @@ format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 detect_files = ["package.json", "node_modules", ".nvmrc", ".node-version"]
 
 [bun]
-symbol = "🍔"
+symbol = ""
 format = 'via [$symbol $version](bold green) '
 
 [c]
@@ -152,12 +152,12 @@ style = "bg:color_blue"
 format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [python]
-symbol = "🐍"
+symbol = ""
 style = "bg:color_blue"
 format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [docker_context]
-symbol = "🐳"
+symbol = ""
 style = "bg:color_bg3"
 format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg3)]($style)'
 
@@ -181,8 +181,8 @@ disabled = false
 [character]
 disabled = false
 success_symbol = '[/>](bold fg:color_orange)'
-error_symbol = '[=/=](bold fg:color_red)'
-vimcmd_symbol = '[VIM](bold fg:color_green)'
+error_symbol = '[](bold fg:color_red)'
+vimcmd_symbol = '[](bold fg:color_green)'
 vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
 vimcmd_replace_symbol = '[](bold fg:color_purple)'
 vimcmd_visual_symbol = '[](bold fg:color_yellow)'
