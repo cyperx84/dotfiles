@@ -26,9 +26,6 @@ vim.keymap.set('n', '<C-e>', function()
     require('mini.files').open()
   end
 end, { desc = 'Toggle mini.files' })
--- vim.keymap.set('n', '<C-e>', function()
---   require('mini.files').open()
--- end, { desc = 'Open mini.files' })
 
 -- Yazi
 vim.keymap.set('n', '-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
@@ -38,17 +35,17 @@ vim.keymap.set('n', '<leader>-', '<CMD>Oil --float<CR>', { desc = 'Open parent d
 vim.keymap.set('n', '<leader>e', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 
 -- Neogit
-vim.keymap.set("n", "<leader>gg", "<cmd>Neogit kind=floating<CR>", { desc = "Neogit Floating" })
-vim.keymap.set("n", "<leader>gG", "<cmd>Neogit kind=split<CR>", { desc = "Neogit Auto" })
-vim.keymap.set("n", "<leader>gb", "<cmd>Neogit branch kind=auto<CR>", { desc = "Neogit Branch" })
-vim.keymap.set("n", "<leader>gB", "<cmd>Neogit branch_config kind=auto<CR>", { desc = "Neogit Branch Config" })
-vim.keymap.set("n", "<leader>gc", "<cmd>Neogit commit kind=auto<CR>", { desc = "Neogit Commit" })
-vim.keymap.set("n", "<leader>gd", "<cmd>Neogit diff kind=auto<CR>", { desc = "Neogit Diff" })
-vim.keymap.set("n", "<leader>gl", "<cmd>Neogit log kind=auto<CR>", { desc = "Neogit Log" })
-vim.keymap.set("n", "<leader>gs", "<cmd>Neogit stash kind=auto<CR>", { desc = "Neogit Stash" })
-vim.keymap.set("n", "<leader>gm", "<cmd>Neogit merge kind=auto<CR>", { desc = "Neogit Merge" })
-vim.keymap.set("n", "<leader>gP", "<cmd>Neogit pull<CR>", { desc = "Neogit pull" })
-vim.keymap.set("n", "<leader>gp", "<cmd>Neogit push<CR>", { desc = "Neogit push" })
+vim.keymap.set("n", "<leader>gg", "<cmd>Neogit kind=floating<CR>", { desc = "Floating" })
+vim.keymap.set("n", "<leader>gG", "<cmd>Neogit kind=split<CR>", { desc = "Auto" })
+vim.keymap.set("n", "<leader>gb", "<cmd>Neogit branch kind=auto<CR>", { desc = "Branch" })
+vim.keymap.set("n", "<leader>gB", "<cmd>Neogit branch_config kind=auto<CR>", { desc = "Branch Config" })
+vim.keymap.set("n", "<leader>gc", "<cmd>Neogit commit kind=auto<CR>", { desc = "Commit" })
+vim.keymap.set("n", "<leader>gd", "<cmd>Neogit diff kind=auto<CR>", { desc = "Diff" })
+vim.keymap.set("n", "<leader>gl", "<cmd>Neogit log kind=auto<CR>", { desc = "Log" })
+vim.keymap.set("n", "<leader>gs", "<cmd>Neogit stash kind=auto<CR>", { desc = "Stash" })
+vim.keymap.set("n", "<leader>gm", "<cmd>Neogit merge kind=auto<CR>", { desc = "Merge" })
+vim.keymap.set("n", "<leader>gP", "<cmd>Neogit pull<CR>", { desc = "Pull" })
+vim.keymap.set("n", "<leader>gp", "<cmd>Neogit push<CR>", { desc = "Push" })
 
 -- Dismiss Noice Message
 vim.keymap.set("n", "<leader>z", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })

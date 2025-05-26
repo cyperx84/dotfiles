@@ -174,7 +174,7 @@ bindkey jk vi-cmd-mode
 
 # Quality of life keymaps
 alias cl='clear'
-alias ta='tmux attach -d -t 0'
+alias ta='tmux attach -d'
 
 # Config
 alias conf="cd $HOME/dotfiles && nvim"
