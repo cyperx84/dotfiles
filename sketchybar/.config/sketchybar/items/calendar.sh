@@ -2,7 +2,7 @@
 calendar=(
 	icon=cal
 	# Using "JetBrainsMono Nerd Font"
-	icon.font="$FONT:Italic:20.0"
+	icon.font="$FONT:Bold:12.0"
 	# Using default "SF Pro"
 	# icon.font="$FONT:Black:12.0"
 	icon.padding_right=0

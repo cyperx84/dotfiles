@@ -1,7 +1,7 @@
-theme = Monokai Remastered
+theme = Homebrew
 font-family = MesloLGS Nerd Font Mono
-font-family-bold= MonaspiceKr Nerd Font Mono 
-font-family-italic= MonaspiceRn Nerd Font Mono 
+font-family-bold = MonaspiceKr Nerd Font Mono 
+font-family-italic = MonaspiceRn Nerd Font Mono 
 font-family-bold-italic = MonaspiceRn Nerd Font Mono 
 font-size = 20
 font-feature = "ss01"
@@ -11,7 +11,7 @@ font-feature = "ss04"
 font-feature = "liga"
 
 cursor-color = #00FF00
-cursor-style = "block_hollow"
+cursor-style = block_hollow
 cursor-style-blink = true
 
 background-blur-radius = 20

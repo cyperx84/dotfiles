@@ -41,7 +41,7 @@ defaults=(
   icon.color=$ICON_COLOR
   icon.padding_left=$PADDINGS
   icon.padding_right=$PADDINGS
-  label.font="$FONT:Semibold:20.0"
+  label.font="$FONT:Semibold:16.0"
   label.color=$LABEL_COLOR
   label.padding_left=$PADDINGS
   label.padding_right=$PADDINGS
@@ -54,7 +54,7 @@ defaults=(
   popup.background.corner_radius=9
   popup.background.border_color=$POPUP_BORDER_COLOR
   popup.background.color=$POPUP_BACKGROUND_COLOR
-  popup.blur_radius=20
+  popup.blur_radius=50
   popup.background.shadow.drawing=on
   scroll_texts=on
 )
@@ -69,7 +69,7 @@ sketchybar --default "${defaults[@]}"
 # If you click on it, you can see preferences, activity and lock screen
 source "$ITEM_DIR/apple.sh"
 
-source "$ITEM_DIR/spaces.sh"
+# source "$ITEM_DIR/spaces.sh"
 
 # I use yabai, but not sure what this does, I don't see a difference
 # Not sure if related to "skhd shortcuts should trigger the sketchybar event" in
@@ -83,7 +83,7 @@ source "$ITEM_DIR/front_app.sh"
 # Community plugin that I modified, so that it shows you the mic name
 # If you right click it you can change the mic.
 # Shows you the value of the input volume level
-source "$ITEM_DIR/mic.sh"
+# source "$ITEM_DIR/mic.sh"
 
 ###############################################################################
 #                                 Center
@@ -119,7 +119,7 @@ source "$ITEM_DIR/brew.sh"
 
 # Shows github notifications via gh cli, mine aren't working properly
 # `gh api notifications` shows nothing but `gh status` does
-source "$ITEM_DIR/github.sh"
+# source "$ITEM_DIR/github.sh"
 
 # Shows the SSID you're connected to, and the IP address assigned
 source "$ITEM_DIR/wifi.sh"
@@ -141,7 +141,7 @@ source "$ITEM_DIR/timer.sh"
 #                            Community plugins
 ###############################################################################
 
-source "$ITEM_DIR/custom_text.sh"
+# source "$ITEM_DIR/custom_text.sh"
 # source "$ITEM_DIR/notification.sh"
 
 ###############################################################################

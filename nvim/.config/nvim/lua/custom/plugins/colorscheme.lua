@@ -5,7 +5,7 @@ return {
     priority = 1000,
     opts = {},
     config = function()
-      vim.cmd.colorscheme 'monokai-pro-spectrum'
+      vim.cmd.colorscheme 'tokyonight'
     end,
   },
   {
