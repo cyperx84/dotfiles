@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Filename: ~/github/dotfiles-latest/sketchybar/felixkratz/plugins/volume_click.sh
-
 WIDTH=100
 
 detail_on() {

@@ -1,14 +1,11 @@
 #!/bin/bash
-
-# Filename: ~/github/dotfiles-latest/sketchybar/felixkratz/items/volume.sh
-
 volume_slider=(
   script="$PLUGIN_DIR/volume.sh"
   updates=on
   label.drawing=off
   icon.drawing=off
   padding_right=3
-  slider.highlight_color=$BLUE
+  slider.highlight_color=$GREEN
   slider.background.height=5
   slider.background.corner_radius=3
   slider.background.color=$BACKGROUND_2
@@ -23,7 +20,7 @@ volume_icon=(
   icon.width=0
   icon.align=left
   icon.color=$GREY
-  icon.font="$FONT:Regular:14.0"
+  icon.font="$FONT:Regular:20.0"
   label.width=25
   label.align=left
   label.font="$FONT:Regular:14.0"

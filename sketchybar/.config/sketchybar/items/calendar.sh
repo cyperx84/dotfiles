@@ -1,11 +1,8 @@
 #!/bin/bash
-
-#Filename: ~/github/dotfiles-latest/sketchybar/felixkratz/items/calendar.sh
-
 calendar=(
 	icon=cal
 	# Using "JetBrainsMono Nerd Font"
-	icon.font="$FONT:Black:14.0"
+	icon.font="$FONT:Italic:20.0"
 	# Using default "SF Pro"
 	# icon.font="$FONT:Black:12.0"
 	icon.padding_right=0

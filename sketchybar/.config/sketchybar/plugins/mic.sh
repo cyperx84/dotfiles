@@ -1,11 +1,6 @@
 #!/bin/bash
 
-# Filename: ~/github/dotfiles-latest/sketchybar/felixkratz-linkarzu/plugins/mic.sh
-# ~/github/dotfiles-latest/sketchybar/felixkratz-linkarzu/plugins/mic.sh
-
-# https://github.com/FelixKratz/SketchyBar/discussions/12#discussioncomment-1216899
-
-source "$HOME/github/dotfiles-latest/sketchybar/felixkratz-linkarzu/colors.sh"
+source "$HOME/.config/sketchybar/colors.sh"
 MIC_NAME_FILE="/tmp/${USER}_mic_name"
 
 # Attempt to get the current input device name

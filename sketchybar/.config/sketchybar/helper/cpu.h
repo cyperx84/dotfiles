@@ -7,7 +7,7 @@
 
 #define MAX_TOPPROC_LEN 28
 
-static const char TOPPROC[] = { "/bin/ps -Aceo pid,pcpu,comm -r" }; 
+static const char TOPPROC[] = { "/bin/ps -Aceo pid,pcpu,comm -r | sed '1d'" };
 static const char FILTER_PATTERN[] = { "com.apple." };
 
 struct cpu {
@@ -67,7 +67,6 @@ static inline void cpu_update(struct cpu* cpu) {
       return;
     }
 
-    fgets(line, sizeof(line), file);
     fgets(line, sizeof(line), file);
 
     char* start = strstr(line, FILTER_PATTERN);

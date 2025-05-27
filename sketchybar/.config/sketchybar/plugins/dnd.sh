@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Filename: ~/github/dotfiles-latest/sketchybar/felixkratz-linkarzu/plugins/dnd.sh
-
 source "$CONFIG_DIR/colors.sh"
 
 DND_ENABLED=$(plutil -convert json -o - ~/Library/DoNotDisturb/DB/Assertions.json | jq -r '.data[0].storeAssertionRecords')

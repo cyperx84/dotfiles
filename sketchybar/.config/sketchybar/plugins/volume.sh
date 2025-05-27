@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Filename: ~/github/dotfiles-latest/sketchybar/felixkratz/plugins/volume.sh
-
 WIDTH=100
 
 volume_change() {

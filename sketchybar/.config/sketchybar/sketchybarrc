@@ -22,7 +22,7 @@ bar=(
   color=$BAR_COLOR
   border_width=2
   border_color=$BAR_BORDER_COLOR
-  shadow=off
+  shadow=on
   position=top
   sticky=on
   padding_right=10
@@ -41,14 +41,14 @@ defaults=(
   icon.color=$ICON_COLOR
   icon.padding_left=$PADDINGS
   icon.padding_right=$PADDINGS
-  label.font="$FONT:Semibold:13.0"
+  label.font="$FONT:Semibold:20.0"
   label.color=$LABEL_COLOR
   label.padding_left=$PADDINGS
   label.padding_right=$PADDINGS
   padding_right=$PADDINGS
   padding_left=$PADDINGS
   background.height=26
-  background.corner_radius=9
+  background.corner_radius=16
   background.border_width=2
   popup.background.border_width=2
   popup.background.corner_radius=9
@@ -69,7 +69,7 @@ sketchybar --default "${defaults[@]}"
 # If you click on it, you can see preferences, activity and lock screen
 source "$ITEM_DIR/apple.sh"
 
-# source "$ITEM_DIR/spaces.sh"
+source "$ITEM_DIR/spaces.sh"
 
 # I use yabai, but not sure what this does, I don't see a difference
 # Not sure if related to "skhd shortcuts should trigger the sketchybar event" in
@@ -115,7 +115,7 @@ source "$ITEM_DIR/calendar.sh"
 source "$ITEM_DIR/brew.sh"
 
 # DND not working with sonoma, will figure it out later (hopefully)
-source "$ITEM_DIR/dnd.sh"
+# source "$ITEM_DIR/dnd.sh"
 
 # Shows github notifications via gh cli, mine aren't working properly
 # `gh api notifications` shows nothing but `gh status` does
@@ -142,7 +142,7 @@ source "$ITEM_DIR/timer.sh"
 ###############################################################################
 
 source "$ITEM_DIR/custom_text.sh"
-source "$ITEM_DIR/notification.sh"
+# source "$ITEM_DIR/notification.sh"
 
 ###############################################################################
 
