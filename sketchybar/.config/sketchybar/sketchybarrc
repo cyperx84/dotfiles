@@ -1,23 +1,13 @@
 #!/bin/bash
 
-# Filename: ~/github/dotfiles-latest/sketchybar/felixkratz/sketchybarrc
 
 source "$CONFIG_DIR/colors.sh" # Loads all defined colors
 source "$CONFIG_DIR/icons.sh"  # Loads all defined icons
 
 ITEM_DIR="$CONFIG_DIR/items"     # Directory where the items are configured
 PLUGIN_DIR="$CONFIG_DIR/plugins" # Directory where all the plugin scripts are stored
-
-# Needs to have Regular, Bold, Semibold, Heavy and Black variants
-# FONT="SF Pro"
-# FONT="JetBrainsMono Nerd Font"
-FONT="MesloLGM Nerd Font"
-
-# All paddings use this value (icon, label, background), default is 3 but I
-# decreased it
+FONT="MonaspiceRn Nerd Font Mono"
 PADDINGS=1
-
-# Setting up and starting the helper process
 HELPER=git.felix.helper
 killall helper
 (cd $CONFIG_DIR/helper && make)
@@ -28,7 +18,7 @@ launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist >/d
 
 # Setting up the general bar appearance of the bar
 bar=(
-  height=45
+  height=36
   color=$BAR_COLOR
   border_width=2
   border_color=$BAR_BORDER_COLOR
@@ -47,7 +37,7 @@ sketchybar --bar "${bar[@]}"
 # Setting up default values
 defaults=(
   updates=when_shown
-  icon.font="$FONT:Bold:14.0"
+  icon.font="$FONT:Bold:20.0"
   icon.color=$ICON_COLOR
   icon.padding_left=$PADDINGS
   icon.padding_right=$PADDINGS

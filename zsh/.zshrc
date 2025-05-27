@@ -14,6 +14,32 @@ gpgconf --launch gpg-agent > /dev/null 2>&1
 # NOTE gopass workaround not working
 # source /dev/stdin <<<"$(gopass completion bash)"
 
+# sketchybar
+# This will update the brew package count after running a brew upgrade, brew
+# update or brew outdated command
+# Personally I added "list" and "install", and everything that is after but
+# that's just a personal preference.
+# That way sketchybar updates when I run those commands as well
+if command -v sketchybar &>/dev/null; then
+
+
+# When the zshrc file is ran, reload sketchybar, in case the theme was
+# switched
+sketchybar --reload
+
+
+# Define a custom 'brew' function to wrap the Homebrew command.
+function brew() {
+	# Execute the original Homebrew command with all passed arguments.
+	command brew "$@"
+	# Check if the command includes "upgrade", "update", or "outdated".
+	if [[ $* =~ "upgrade" ]] || [[ $* =~ "update" ]] || [[ $* =~ "outdated" ]] || [[ $* =~ "list" ]] || [[ $* =~ "install" ]] || [[ $* =~ "uninstall" ]] || [[ $* =~ "bundle" ]] || [[ $* =~ "doctor" ]] || [[ $* =~ "info" ]] || [[ $* =~ "cleanup" ]]; then
+		# If so, notify SketchyBar to trigger a custom action.
+		sketchybar --trigger brew_update
+	fi
+}
+fi
+
 # Navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
 f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
@@ -76,7 +102,7 @@ alias gc="git commit -m"
 alias gca="git commit -a -m"
 alias gp="git push origin HEAD"
 alias gpu="git pull origin"
-alias gst="git status"
+alias gs="git status"
 alias glog="git log --graph --topo-order --pretty='%w(100,0,6)%C(yellow)%h%C(bold)%C(black)%d %C(cyan)%ar %C(green)%an%n%C(bold)%C(white)%s %N' --abbrev-commit"
 alias gdiff="git diff"
 alias gco="git checkout"
@@ -87,6 +113,9 @@ alias ga='git add -p'
 alias gcoall='git checkout -- .'
 alias gr='git remote'
 alias gre='git reset'
+
+#Github
+alias ghl="gh repo list"
 
 # Docker
 alias dco="docker compose"

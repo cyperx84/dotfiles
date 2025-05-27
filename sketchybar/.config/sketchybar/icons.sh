@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Filename: ~/github/dotfiles-latest/sketchybar/felixkratz/icons.sh
-
 # General Icons
 LOADING=􀖇
-APPLE=􀣺
+APPLE=󰯈 #􀣺
 PREFERENCES=􀺽
 ACTIVITY=􀒓
 LOCK=􀒳
