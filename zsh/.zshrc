@@ -97,11 +97,7 @@ bindkey '^u' up-line-or-search
 bindkey '^p' down-line-or-search
 
 eval "$(starship init zsh)"
-# export STARSHIP_CONFIG=~/.config/starship/starship.toml
-# export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-dark-neon.toml
-# export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-rainbow.toml
-export STARSHIP_CONFIG=~/.config/starship/starship-no-runtime.toml
-# export STARSHIP_CONFIG=~/.config/starship/starship-jetpack.toml
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
 # Git
 alias gc="git commit -m"
