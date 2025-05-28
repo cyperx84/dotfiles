@@ -82,13 +82,14 @@ truncation_length = 2
 truncation_symbol = "󰇘 "
 
 [directory.substitutions]
-"~" = "󱙝"
+"~" = "󰠧"
 "notes" = ""
 "Documents" = "󱔗"
 "Downloads" = ""
 "Music" = ""
 "Pictures" = ""
 "Code" = ""
+"agents" = "󱙝"
 "dotfiles" = ""
 ".config" = ""
 

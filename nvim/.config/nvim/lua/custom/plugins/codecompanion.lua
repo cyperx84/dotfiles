@@ -54,8 +54,8 @@ return {
           })
         end,
 
-        anthropic = function()
-          return require('codecompanion.adapters').extend('anthropic', {
+        claude = function()
+          return require('codecompanion.adapters').extend('claude', {
             env = {
               api_key = 'cmd:pass show apis/ANTHROPIC_API_KEY',
             },
@@ -89,9 +89,9 @@ return {
       },
 
       strategies = {
-        chat = { adapter = 'gemini' },
+        chat = { adapter = 'openai' },
         inline = { adapter = 'gemini' },
-        cmd = { adapter = 'gemini' },
+        cmd = { adapter = 'claude' },
       },
       extensions = {
         mcphub = {

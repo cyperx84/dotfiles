@@ -1,7 +1,7 @@
-theme = Homebrew
+theme = Monokai Remastered
 font-family = MesloLGS Nerd Font Mono
-font-family-bold = MonaspiceKr Nerd Font Mono 
-font-family-italic = MonaspiceRn Nerd Font Mono 
+font-family-bold= MonaspiceKr Nerd Font Mono 
+font-family-italic= MonaspiceRn Nerd Font Mono 
 font-family-bold-italic = MonaspiceRn Nerd Font Mono 
 font-size = 20
 font-feature = "ss01"
