@@ -2,10 +2,17 @@ unsetopt PROMPT_SP
 ENABLE_CORRECTION="false"
 HIST_STAMPS="dd/mm/yy"
 INSTALLER_NO_MODIFY_PATH=1
-export TERM="xterm-ghostty"
-export TERM="xterm-256color"
+
+export LC_ALL=en_US.UTF-8
+
+if [ -n "$TMUX" ]; then
+ export TERM="tmux-256color"
+else
+ export TERM="xterm-256color" # Or another appropriate setting
+fi
+
 export COLORTERM="truecolor"
-export LANG=en_US.UTF-8
+
 autoload -U compinit; compinit
 
 export GPG_TTY=$(tty)
@@ -82,7 +89,6 @@ function y() {
 # UV Python
 eval "$(uv generate-shell-completion zsh)"
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '^e' autosuggest-execute
 bindkey '^w' autosuggest-accept
 bindkey '^u' autosuggest-toggle
@@ -141,7 +147,6 @@ alias ka="kubectl apply -f"
 alias kg="kubectl get"
 alias kd="kubectl describe"
 alias kdel="kubectl delete"
-alias kl="kubectl logs"
 alias kgpo="kubectl get pod"
 alias kgd="kubectl get deployments"
 alias kc="kubectx"
