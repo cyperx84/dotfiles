@@ -1,3 +1,132 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+format = """
+$os\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$c\
+$cpp\
+$rust\
+$golang\
+$nodejs\
+$php\
+$java\
+$kotlin\
+$haskell\
+$python\
+$docker_context\
+$conda\
+$pixi\
+$time\
+$character
+"""
+
+palette = 'gruvbox_dark_neon'
+
+[palettes.gruvbox_dark_neon]
+color_fg0 = '#fbf1c7'
+color_bg1 = '#3c3836'
+color_bg3 = '#665c54'
+color_blue = '#0400FF'
+color_aqua = '#4cbb17'
+color_green = '#00FF00'
+color_orange = '#FF4501'
+color_purple = '#b16286'
+color_red = '#cc241d'
+color_yellow = '#FF7200'
+
+[os]
+disabled = false
+style ="bold italic color_green" 
+
+[os.symbols]
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰯈"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+Arch = "󰣇"
+Artix = "󰣇"
+EndeavourOS = ""
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+Pop = ""
+
+[username]
+show_always = true
+style_user = "bg:color_orange fg:color_fg0"
+style_root = "bg:color_orange fg:color_fg0"
+format = '[ $user ]($style)'
+
+[directory]
+# home_symbol = "⌂"
+truncation_length = 2
+truncation_symbol = "󰇘 "
+read_only = " ◈"
+use_os_path_sep = false
+style = "italic color_orange"
+format = '[ $path ]($style)[$read_only]($read_only_style)'
+# repo_root_style = 'bold italic blue'
+# repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) [△](bold bright-blue)'
+#
+# [directory]
+# style = "fg:color_orange"
+# format = "[ $path ]($style)"
+
+[directory.substitutions]
+"~" = " 󰠧"
+"notes" = ""
+"Documents" = "󱔗"
+"Downloads" = ""
+"Music" = ""
+"Pictures" = ""
+"Code" = ""
+"agents" = "󱙝"
+"dotfiles" = ""
+".config" = ""
+
+[git_branch]
+# format = " [$branch(:$remote_branch)]($style)"
+# symbol = "[△](bold italic bright-blue)"
+style = "italic bright-green"
+truncation_symbol = "⋯"
+# truncation_length = 11
+# ignore_branches = ["main", "master"]
+only_attached = true
+
+[git_metrics]
+format = '([▴$added]($added_style))([▿$deleted]($deleted_style))'
+added_style = 'italic dimmed green'
+deleted_style = 'italic dimmed red'
+ignore_submodules = true
+disabled = false
+#
+[git_status]
+style = "bold italic bright-blue"
+# format = "([⎪$ahead_behind$staged$modified$untracked$renamed$deleted$conflicted$stashed⎥]($style))"
+# conflicted = "[◪◦](italic bright-magenta)"
+# ahead = "[▴│[${count}](bold white)│](italic green)"
+# behind = "[▿│[${count}](bold white)│](italic red)"
+# diverged = "[◇ ▴┤[${ahead_count}](regular white)│▿┤[${behind_count}](regular white)│](italic bright-magenta)"
+# untracked = "[◌◦](italic bright-yellow)"
+# stashed = "[◃◈](italic white)"
+# modified = "[●◦](italic yellow)"
+# staged = "[▪┤[$count](bold white)│](italic bright-cyan)"
+# renamed = "[◎◦](italic bright-blue)"
+# deleted = "[✕](italic red)"
+
 [bun]
 format = "via [$symbol]($style)"
 
@@ -132,3 +261,21 @@ format = 'via [$symbol]($style)'
 
 [zig]
 format = 'via [$symbol]($style)'
+
+[time]
+disabled = true
+time_format = "%R"
+style = "bg:color_bg1"
+format = '[[ $time ](fg:color_fg0 bg:color_bg1)]($style)'
+
+[line_break]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = '[/>](bold color_orange)'
+error_symbol = '[](bold fg:color_red)'
+vimcmd_symbol = '[](bold fg:color_green)'
+vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
+vimcmd_replace_symbol = '[](bold fg:color_purple)'
+vimcmd_visual_symbol = '[](bold fg:color_yellow)'
