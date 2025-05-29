@@ -43,7 +43,7 @@ return {
       show_help = "<f1>",
     },
     yazi_floating_window_boarder = "none",
-    floating_window_sclaing_factor = 0.2,
+    floating_window_sclaing_factor = 1.2,
     yazi_floating_window_winblend = 0,
   },
   -- 👇 if you use `open_for_directories=true`, this is recommended

@@ -54,7 +54,7 @@ return {
       -- load extensions if available
       pcall(telescope.load_extension, 'fzf')
       pcall(telescope.load_extension, 'ui-select')
-
+      pcall(telescope.load_extension, 'git_worktree')
       -- keymaps
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })

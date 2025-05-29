@@ -14,8 +14,8 @@ return {
     vim.api.nvim_set_hl(0, 'RenderMarkdownH6', { fg = '#FF79C6', bold = true })
 
     -- Define highlight groups for code blocks (darker background)
-    vim.api.nvim_set_hl(0, 'RenderMarkdownCodeBlock', { bg = '#121212', fg = '#C0CAF5', bold = false })
-    vim.api.nvim_set_hl(0, 'RenderMarkdownInlineCode', { bg = '#121212', fg = '#C0CAF5', bold = false })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownCodeBlock', { bg = '#121212', fg = '#C0CAF5', bold = true })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownInlineCode', { bg = '#121212', fg = '#C0CAF5', bold = true })
     -- Setup render-markdown with custom heading styles
     require('render-markdown').setup {
       heading = {
