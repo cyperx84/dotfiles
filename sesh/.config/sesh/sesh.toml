@@ -1,0 +1,28 @@
+blacklist = ["scratch"]
+
+sort_order = [
+    # "tmuxinator", # show first
+    "config",
+    "tmux",
+    "zoxide", # show last
+]
+
+[default_session]
+startup_command = "nvim -c ':Telescope find_files'"
+preview_command = "eza --all --git --icons --color=always {}"
+
+[[session]]
+name = "Downloads 📥"
+path = "~/Downloads"
+startup_command = "ls"
+
+[[session]]
+name = "tmux config"
+path = "~/dotfiles/tmux/.config/tmux"
+startup_command = "nvim tmux.conf"
+preview_command = "bat --color=always ~/c/dotfiles/.config/tmux/tmux.conf"
+windows = [ "git" ]
+
+[[window]]
+name = "git"
+startup_script = "git pull"
