@@ -28,9 +28,9 @@ vim.keymap.set('n', '<C-e>', function()
 end, { desc = 'Toggle mini.files' })
 
 -- Yazi
-vim.keymap.set('n', '-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
+vim.keymap.set('n', '<leader>-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
 -- OIL
-vim.keymap.set('n', '<leader>-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
+vim.keymap.set('n', '-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
 -- Neotree
 vim.keymap.set('n', '<leader>e', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 
@@ -69,14 +69,24 @@ vim.keymap.set("n", "<leader>ow", "<cmd>ObsidianWorkspace<CR>", { desc = "Worksp
 -- Toggle Transparent
 vim.keymap.set("n", "<leader>tt", "<cmd>TransparentToggle<CR>", { desc = "Transparent Toggle" })
 
+-- Paste Image
+vim.keymap.set("n", "<leader>pi", "<cmd>PasteImage<CR>", { desc = "Paste Image" })
+
+-- Create Git Worktree - select or enter name for new
+vim.keymap.set("n", "<leader>gW", "<cmd>:lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>", { desc = "Create Worktree" })
+
+-- Switch Git Worktree - c-f Force c-d Del
+vim.keymap.set("n", "<leader>gt", "<cmd>:lua require('telescope').extensions.git_worktree.git_worktrees()<CR>", { desc = "Switch Worktree" })
+
 -- MCPHub
 vim.keymap.set("n", "<leader>m", "<cmd>MCPHub<CR>", { desc = "MCPHub" })
 
 --Code Companion
-vim.keymap.set('n', "<C-M-l>", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
-vim.keymap.set('n', "<C-M-k>", "<cmd>CodeCompanion<CR>", { desc = "Code Companion" })
-vim.keymap.set('n', "<leader>ca", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
-vim.keymap.set('n', "<leader>cd", "<cmd>CodeCompanionCMD<CR>", { desc = "Code Companion Actions" })
+vim.keymap.set("n", "<leader>c", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
+vim.keymap.set('n', "<leader>Cc", "<cmd>CodeCompanion<CR>", { desc = "Code Companion" })
+vim.keymap.set('n', "<leader>Ca", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
+vim.keymap.set('n', "<leader>Cd", "<cmd>CodeCompanionCMD<CR>", { desc = "Code Companion Actions" })
+
 -- Jump between markdown headers
 vim.keymap.set("n", "gj", [[/^##\+ .*<CR>]], { buffer = true, silent = true })
 vim.keymap.set("n", "gk", [[?^##\+ .*<CR>]], { buffer = true, silent = true })
