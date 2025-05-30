@@ -68,22 +68,18 @@ Pop = ""
 show_always = true
 style_user = "bg:color_orange fg:color_fg0"
 style_root = "bg:color_orange fg:color_fg0"
-format = '[ $user ]($style)'
+format = '[$user]($style)'
 
 [directory]
 # home_symbol = "⌂"
 truncation_length = 3
-truncation_symbol = "󰇘 "
+truncation_symbol = "󰇘/"
 read_only = " ◈"
 use_os_path_sep = false
 style = "bold color_orange"
-format = '[ $path ]($style)[$read_only]($read_only_style)'
-# repo_root_style = 'bold italic blue'
-# repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) [△](bold bright-blue)'
-#
-# [directory]
-# style = "fg:color_orange"
-# format = "[ $path ]($style)"
+format = '[$path]($style)[$read_only]($read_only_style)'
+repo_root_style = 'bold italic blue'
+repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) [△](bold bright-blue)'
 
 [directory.substitutions]
 "~" = " 󰠧"
@@ -99,11 +95,11 @@ format = '[ $path ]($style)[$read_only]($read_only_style)'
 
 [git_branch]
 format = " [$symbol(:$remote_branch)]($style)"
-# symbol = "[△](bold italic bright-blue)"
+symbol = "[󰊢](bold italic bright-blue)"
 style = "italic bright-green"
 truncation_symbol = "⋯"
-# truncation_length = 11
-# ignore_branches = ["main", "master"]
+truncation_length = 3
+ignore_branches = ["main", "master"]
 only_attached = true
 
 [git_metrics]

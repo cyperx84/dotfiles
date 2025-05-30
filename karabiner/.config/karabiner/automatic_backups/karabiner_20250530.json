@@ -47,23 +47,23 @@
                 },
                 {
                     "from": { "key_code": "f8" },
-                    "to": [{ "key_code": "f8" }]
+                    "to": [{ "key_code": "print_screen" }]
                 },
                 {
                     "from": { "key_code": "f9" },
-                    "to": [{ "key_code": "f9" }]
+                    "to": [{ "consumer_key_code": "dictation" }]
                 },
                 {
                     "from": { "key_code": "f10" },
-                    "to": [{ "key_code": "f10" }]
+                    "to": [{ "apple_vendor_keyboard_key_code": "spotlight" }]
                 },
                 {
                     "from": { "key_code": "f11" },
-                    "to": [{ "key_code": "f11" }]
+                    "to": [{ "consumer_key_code": "play_or_pause" }]
                 },
                 {
                     "from": { "key_code": "f12" },
-                    "to": [{ "key_code": "f12" }]
+                    "to": [{ "consumer_key_code": "mute" }]
                 }
             ],
             "name": "Default profile",

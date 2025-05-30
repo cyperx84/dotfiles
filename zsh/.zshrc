@@ -88,6 +88,7 @@ function y() {
 
 # UV Python
 eval "$(uv generate-shell-completion zsh)"
+alias uvsa="$(source .venv/bin/activate)"
 
 bindkey '^e' autosuggest-execute
 bindkey '^w' autosuggest-accept
