@@ -87,11 +87,13 @@ repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($re
 "Documents" = "󱔗"
 "Downloads" = ""
 "Music" = ""
+"Movies" = "󰷝"
 "Pictures" = ""
 "Code" = ""
 "agents" = "󱙝"
-"dotfiles" = ""
+"dotfiles" = "󰒔"
 ".config" = ""
+"github" = ""
 
 [git_branch]
 format = " [$symbol(:$remote_branch)]($style)"
@@ -99,7 +101,7 @@ symbol = "[󰊢](bold italic bright-blue)"
 style = "italic bright-green"
 truncation_symbol = "⋯"
 truncation_length = 3
-ignore_branches = ["main", "master"]
+# ignore_branches = ["main", "master"]
 only_attached = true
 
 [git_metrics]
@@ -116,7 +118,7 @@ conflicted = "[◪◦](italic bright-magenta)"
 ahead = "[[${count}](bold white)](italic green)"
 behind = "[▿│[${count}](bold white)│](italic red)"
 diverged = "[◇ ▴┤[${ahead_count}](regular white)│▿┤[${behind_count}](regular white)│](italic bright-magenta)"
-untracked = "[](italic bright-green)"
+untracked = "[](italic green)"
 stashed = "[◃◈](italic white)"
 modified = "[](italic bright-yellow)"
 staged = "[[$count](bold blue) ](italic bright-cyan)"
