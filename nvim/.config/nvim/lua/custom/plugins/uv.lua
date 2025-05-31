@@ -13,7 +13,7 @@ return {
 
   -- Keymaps to register (set to false to disable)
   keymaps = {
-    prefix = "<leader>x",  -- Main prefix for uv commands
+    prefix = "<leader>u",  -- Main prefix for uv commands
     commands = true,       -- Show uv commands menu (<leader>x)
     run_file = true,       -- Run current file (<leader>xr)
     run_selection = true,  -- Run selected code (<leader>xs)

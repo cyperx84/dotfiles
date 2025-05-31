@@ -17,6 +17,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- [[FILES]]
+
 -- Mini.Files
 vim.keymap.set('n', '<C-e>', function()
   local bufname = vim.api.nvim_buf_get_name(0)
@@ -32,7 +33,7 @@ vim.keymap.set('n', '<leader>-', '<CMD>Yazi<CR>', { desc = 'Open parent director
 -- OIL
 vim.keymap.set('n', '-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
 -- Neotree
-vim.keymap.set('n', '<leader>e', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
+vim.keymap.set('n', '<leader>E', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 
 -- Neogit
 vim.keymap.set("n", "<leader>gg", "<cmd>Neogit kind=floating<CR>", { desc = "Floating" })
@@ -82,10 +83,10 @@ vim.keymap.set("n", "<leader>gt", "<cmd>:lua require('telescope').extensions.git
 vim.keymap.set("n", "<leader>m", "<cmd>MCPHub<CR>", { desc = "MCPHub" })
 
 --Code Companion
-vim.keymap.set("n", "<leader>c", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
-vim.keymap.set('n', "<leader>Cc", "<cmd>CodeCompanion<CR>", { desc = "Code Companion" })
-vim.keymap.set('n', "<leader>Ca", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
-vim.keymap.set('n', "<leader>Cd", "<cmd>CodeCompanionCMD<CR>", { desc = "Code Companion Actions" })
+vim.keymap.set("n", "<c-M-k>", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
+vim.keymap.set("n", "<leader>Cc", "<cmd>CodeCompanion<CR>", { desc = "Code Companion" })
+vim.keymap.set("n", "<leader>Ca", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
+vim.keymap.set("n", "<leader>Cd", "<cmd>CodeCompanionCMD<CR>", { desc = "Code Companion Actions" })
 
 -- Jump between markdown headers
 vim.keymap.set("n", "gj", [[/^##\+ .*<CR>]], { buffer = true, silent = true })
