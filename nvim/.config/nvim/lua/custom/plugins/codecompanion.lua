@@ -28,8 +28,8 @@ return {
               zindex = 50,
             },
           },
-          on_ready = function(hub) end,
-          on_error = function(err) end,
+          -- on_ready = function(hub) end,
+          -- on_error = function(err) end,
           log = {
             level = vim.log.levels.WARN,
             to_file = false,
@@ -40,6 +40,20 @@ return {
       end,
     },
   },
+
+  display = {
+    action_palette = {
+      width = 95,
+      height = 10,
+      prompt = 'Prompt ', -- Prompt used for interactive LLM calls
+      provider = 'default', -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
+      opts = {
+        show_default_actions = true, -- Show the default actions in the action palette?
+        show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+      },
+    },
+  },
+
   config = function()
     require('codecompanion').setup {
       adapters = {
@@ -76,21 +90,21 @@ return {
           })
         end,
 
-        -- deepseek = function()
-        --   return require('codecompanion.adapters').extend('deepseek', {
-        --         api_key = 'cmd:pass show apis/DEEPSEEK_API_KEY',
-        --       api_key = os.getenv 'DEEPSEEK_API_KEY',
-        --     },
-        --     schema = {
-        --       model = { default = 'deepseek-coder' },
-        --     },
-        --   })
-        -- end,
+        deepseek = function()
+          return require('codecompanion.adapters').extend('deepseek', {
+            env = {
+              api_key = 'cmd:pass show apis/DEEPSEEK_API_KEY',
+            },
+            schema = {
+              model = { default = 'deepseek-chat' },
+            },
+          })
+        end,
       },
 
       strategies = {
         chat = { adapter = 'openai' },
-        inline = { adapter = 'gemini' },
+        inline = { adapter = 'copilot' },
         cmd = { adapter = 'claude' },
       },
       extensions = {

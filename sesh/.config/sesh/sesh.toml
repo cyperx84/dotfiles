@@ -1,10 +1,10 @@
 blacklist = ["scratch"]
 
 sort_order = [
-    # "tmuxinator", # show first
+    "tmuxinator", # show first
     "config",
     "tmux",
-    # "zoxide", # show last
+    "zoxide", # show last
 ]
 
 [default_session]
