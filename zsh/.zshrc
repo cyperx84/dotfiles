@@ -136,7 +136,9 @@ alias gre='git reset'
 #Github
 alias ghl="gh repo list"
 
-# Docker
+# Docker add kill all
+alias dock="open -a docker && while ! docker info > /dev/null 2>&1; do sleep 1 ; done"
+alias dkill='killall "Docker Desktop" && sleep 1 && dock'
 alias dco="docker compose"
 alias dps="docker ps"
 alias dpa="docker ps -a"

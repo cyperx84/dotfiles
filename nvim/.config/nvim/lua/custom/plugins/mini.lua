@@ -20,6 +20,8 @@ return {
       require('mini.files').setup()
       require('mini.pick').setup()
       require('mini.colors').setup()
+      require('mini.diff').setup()
+      require('mini.test').setup()
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },

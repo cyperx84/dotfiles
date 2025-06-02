@@ -103,7 +103,52 @@ return {
       },
 
       strategies = {
-        chat = { adapter = 'openai' },
+        chat = {
+          adapter = 'openai',
+          keymaps = {
+            send = {
+              modes = {
+                i = { '<C-CR>', '<C-s>' },
+              },
+            },
+            completion = {
+              modes = {
+                i = '<C-x>',
+              },
+            },
+          },
+          slash_commands = {
+            ['buffer'] = {
+              keymaps = {
+                modes = {
+                  i = '<C-b>',
+                },
+              },
+            },
+            ['fetch'] = {
+              keymaps = {
+                modes = {
+                  i = '<C-f>',
+                },
+              },
+            },
+            ['help'] = {
+              opts = {
+                max_lines = 1000,
+              },
+            },
+            ['image'] = {
+              keymaps = {
+                modes = {
+                  i = '<C-i>',
+                },
+              },
+              opts = {
+                dirs = { '~/Documents/Screenshots' },
+              },
+            },
+          },
+        },
         inline = { adapter = 'copilot' },
         cmd = { adapter = 'claude' },
       },

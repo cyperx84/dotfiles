@@ -67,6 +67,8 @@ vim.keymap.set("n", "<leader>of", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Quic
 vim.keymap.set("n", "<leader>op", "<cmd>ObsidianPasteImg<CR>", { desc = "Paste Img" })
 vim.keymap.set("n", "<leader>ow", "<cmd>ObsidianWorkspace<CR>", { desc = "Workspace" })
 
+-- Toggle Markview
+vim.keymap.set("n", "<leader>tm", "<cmd>Markview<CR>", { desc = "Toggle Markview" })
 -- Toggle Transparent
 vim.keymap.set("n", "<leader>tt", "<cmd>TransparentToggle<CR>", { desc = "Transparent Toggle" })
 
