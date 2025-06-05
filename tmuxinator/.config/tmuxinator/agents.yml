@@ -1,0 +1,29 @@
+name: Agents
+root: ~/Code/agents/
+
+on_project_start: echo "Starting Agents development environment..."
+on_project_first_start: uv venv --python 3.11 && uv sync
+on_project_restart: uv sync
+
+windows:
+  - Development:
+      layout: main-horizontal
+      options:
+        main-pane-height: 80%
+      panes:
+        - uv run nvim
+        - echo "Terminal ready - Use 'uv run <command>' for Python"
+        
+  - Agents:
+      panes:
+        - echo "MCP Server - Start with: uv run python server.py"
+        - echo "Agent Runner - Execute with: uv run python agent.py"
+        
+  - Testing:
+      panes:
+        - echo "Test Runner: uv run pytest"
+        
+  - Monitor:
+      panes:
+        - git status
+        - uv tree

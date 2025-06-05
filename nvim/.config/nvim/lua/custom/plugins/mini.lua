@@ -21,7 +21,9 @@ return {
       require('mini.pick').setup()
       require('mini.colors').setup()
       require('mini.diff').setup()
-      require('mini.test').setup()
+      require('mini.test').setup {
+        source = MiniDiff.gen_source.none(),
+      }
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },

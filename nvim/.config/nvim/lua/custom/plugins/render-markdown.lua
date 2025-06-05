@@ -44,11 +44,13 @@ return {
         left_pad = 2,
         right_pad = 2,
         min_width = 80,
+        icons = { ' ', ' ', ' ', ' ', ' ', ' ' },
       },
       code_block = {
         backgrounds = { 'RenderMarkdownCodeBlock' },
         foregrounds = { 'RenderMarkdownInlineCode' },
       },
+      completions = { blink = { enabled = true } },
     }
   end,
 }

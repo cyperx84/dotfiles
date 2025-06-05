@@ -1,5 +1,5 @@
-name: muxinator
-root: ~/
+name: 📝Notes
+root: ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes
 
 # Optional tmux socket
 # socket_name: foo
@@ -26,7 +26,7 @@ windows:
       panes:
         - editor:
           - vim
-        - scratch
+        - 
   - webserver: python3 -m http.server 8000
   - logs: tail -f ~/.local/share/nvim/log
 

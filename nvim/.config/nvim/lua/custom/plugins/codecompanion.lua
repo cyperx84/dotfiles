@@ -41,21 +41,30 @@ return {
     },
   },
 
-  display = {
-    action_palette = {
-      width = 95,
-      height = 10,
-      prompt = 'Prompt ', -- Prompt used for interactive LLM calls
-      provider = 'default', -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
-      opts = {
-        show_default_actions = true, -- Show the default actions in the action palette?
-        show_default_prompt_library = true, -- Show the default prompt library in the action palette?
-      },
-    },
-  },
-
   config = function()
     require('codecompanion').setup {
+      display = {
+        chat = {
+          window = {
+            layout = 'vertical',
+            border = 'single',
+            height = 0.6, -- 60% of screen height (default is 0.8)
+            width = 0.3, -- 30% of screen width (default is 0.45)
+            relative = 'editor',
+            full_height = false, -- Use full height of the editor
+          },
+        },
+        action_palette = {
+          width = 75,
+          height = 10,
+          prompt = 'Prompt ', -- Prompt used for interactive LLM calls
+          provider = 'snacks', -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
+          opts = {
+            show_default_actions = true, -- Show the default actions in the action palette?
+            show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+          },
+        },
+      },
       adapters = {
         openai = function()
           return require('codecompanion.adapters').extend('openai', {
@@ -68,8 +77,8 @@ return {
           })
         end,
 
-        claude = function()
-          return require('codecompanion.adapters').extend('claude', {
+        anthropic = function()
+          return require('codecompanion.adapters').extend('anthropic', {
             env = {
               api_key = 'cmd:pass show apis/ANTHROPIC_API_KEY',
             },
@@ -100,11 +109,22 @@ return {
             },
           })
         end,
+
+        -- tavily = function()
+        --   return require('codecompanion.adapters').extend('tavily', {
+        --     env = {
+        --       api_key = 'cmd:pass show apis/TAVILY_API_KEY',
+        --     },
+        --     schema = {
+        --       -- model = { default = 'tavily-chat' },
+        --     },
+        --   })
+        -- end,
       },
 
       strategies = {
         chat = {
-          adapter = 'openai',
+          adapter = 'anthropic',
           keymaps = {
             send = {
               modes = {
@@ -149,8 +169,8 @@ return {
             },
           },
         },
-        inline = { adapter = 'copilot' },
-        cmd = { adapter = 'claude' },
+        inline = { adapter = 'deepseek' },
+        cmd = { adapter = 'anthropic' },
       },
       extensions = {
         mcphub = {
