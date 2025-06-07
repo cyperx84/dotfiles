@@ -49,7 +49,7 @@ return {
             layout = 'vertical',
             border = 'single',
             height = 0.6, -- 60% of screen height (default is 0.8)
-            width = 0.3, -- 30% of screen width (default is 0.45)
+            width = 0.35, -- 30% of screen width (default is 0.45)
             relative = 'editor',
             full_height = false, -- Use full height of the editor
           },
@@ -110,21 +110,11 @@ return {
           })
         end,
 
-        -- tavily = function()
-        --   return require('codecompanion.adapters').extend('tavily', {
-        --     env = {
-        --       api_key = 'cmd:pass show apis/TAVILY_API_KEY',
-        --     },
-        --     schema = {
-        --       -- model = { default = 'tavily-chat' },
-        --     },
-        --   })
-        -- end,
       },
 
       strategies = {
         chat = {
-          adapter = 'anthropic',
+          adapter = 'deepseek',
           keymaps = {
             send = {
               modes = {
@@ -142,6 +132,7 @@ return {
               keymaps = {
                 modes = {
                   i = '<C-b>',
+                  v = '<C-b>',
                 },
               },
             },
@@ -149,18 +140,20 @@ return {
               keymaps = {
                 modes = {
                   i = '<C-f>',
+                  v = '<C-f>',
                 },
               },
             },
             ['help'] = {
               opts = {
-                max_lines = 1000,
+                max_lines = 3000,
               },
             },
             ['image'] = {
               keymaps = {
                 modes = {
                   i = '<C-i>',
+                  v = '<C-i>',
                 },
               },
               opts = {
@@ -170,7 +163,7 @@ return {
           },
         },
         inline = { adapter = 'deepseek' },
-        cmd = { adapter = 'anthropic' },
+        cmd = { adapter = 'deepseek' },
       },
       extensions = {
         mcphub = {
