@@ -5,7 +5,7 @@ POPUP_CLICK_SCRIPT='sketchybar --set $NAME popup.drawing=toggle'
 
 apple_logo=(
   icon=$APPLE
-  icon.font="$FONT:Black:16.0"
+  icon.font="MonaspiceKr Nerd Font:Black:20.0"
   # Here you can change the icon color
   icon.color=$GREEN
   padding_right=15
@@ -34,12 +34,14 @@ apple_lock=(
 
 apple_bluetooth=(
   icon=$BLUETOOTH
+  icon.font="$FONT:Bold:16.0"
   label="BT Restart"
   click_script="open btt://execute_assigned_actions_for_trigger/?uuid=A85489BC-14EE-4332-9985-EF0C39F97389; $POPUP_OFF"
 )
 
 apple_restart=(
   icon=$RESTART
+  icon.font="$FONT:Bold:16.0"
   label="Restart"
   click_script="~/github/dotfiles-latest/scripts/macos/mac/misc/220-restartConfirm.sh; $POPUP_OFF"
 )

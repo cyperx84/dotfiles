@@ -80,6 +80,12 @@ source "$ITEM_DIR/apple.sh"
 # Clicking it opens mission control (can be customized)
 source "$ITEM_DIR/front_app.sh"
 
+# Development workflow tools
+source "$ITEM_DIR/git.sh"
+source "$ITEM_DIR/project.sh"
+source "$ITEM_DIR/dev_servers.sh"
+source "$ITEM_DIR/docker.sh"
+
 # Community plugin that I modified, so that it shows you the mic name
 # If you right click it you can change the mic.
 # Shows you the value of the input volume level
@@ -130,10 +136,14 @@ source "$ITEM_DIR/battery.sh"
 
 # left click to change volume
 # right click to switch audio sources, you need switchaudio-osx
-source "$ITEM_DIR/volume.sh"
+# source "$ITEM_DIR/volume.sh"
 
-# CPU usage indicator
+# System monitoring (ordered logically: Processing -> Storage -> Network -> Thermal)
 source "$ITEM_DIR/cpu.sh"
+source "$ITEM_DIR/memory.sh"
+source "$ITEM_DIR/temperature.sh"
+source "$ITEM_DIR/disk.sh"
+source "$ITEM_DIR/network.sh"
 
 source "$ITEM_DIR/timer.sh"
 

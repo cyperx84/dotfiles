@@ -1,6 +1,8 @@
 #!/bin/bash
 brew=(
-  icon=􀐛
+  icon=󰏖
+  icon.font="MonaspiceKr Nerd Font:Bold:20.0"
+  icon.color=$ORANGE
   label=?
   # Set update frequency to 30 min (30*60=1800)
   update_freq=1800

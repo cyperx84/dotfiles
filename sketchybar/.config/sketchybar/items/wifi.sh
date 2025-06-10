@@ -9,6 +9,8 @@ wifi=(
   padding_left=1
   label.width=0
   icon="$WIFI_DISCONNECTED"
+  icon.font="MonaspiceKr Nerd Font:Bold:20.0"
+  icon.color=$BLUE
   script="$PLUGIN_DIR/wifi.sh"
 )
 

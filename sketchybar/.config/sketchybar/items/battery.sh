@@ -2,7 +2,8 @@
 
 battery=(
 	script="$PLUGIN_DIR/battery.sh"
-	icon.font="$FONT:Regular:30.0"
+	icon.font="MonaspiceKr Nerd Font:Regular:24.0"
+	icon.color=$YELLOW
 	padding_right=3
 	padding_left=0
 	label.drawing=on
