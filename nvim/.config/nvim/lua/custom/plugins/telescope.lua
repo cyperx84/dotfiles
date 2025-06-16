@@ -27,7 +27,7 @@ return {
           layout_config = { prompt_position = 'top' },
           sorting_strategy = 'ascending',
           winblend = 0,
-          follow_symlinks = true,
+          follow_symlinks = false,
           vimgrep_arguments = {
             'rg',
             '--color=never',
@@ -43,7 +43,7 @@ return {
           -- make `:Telescope find_files` chase symlinks too
           find_files = {
             follow = true,
-            hidden = true,
+            hidden = false,
           },
         },
         extensions = {

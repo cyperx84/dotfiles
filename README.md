@@ -140,14 +140,90 @@ Comprehensive Neovim configuration based on kickstart.nvim:
 ## 🔧 Installation
 
 ### Prerequisites
-Ensure you have the following installed:
-```bash
-# Install Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Install required tools
-brew install --cask ghostty karabiner-elements
-brew install yabai skhd sketchybar tmux starship zsh
+First, ensure you have Homebrew installed:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+### Essential Dependencies
+
+#### Core Applications (Casks)
+```bash
+# Terminal & Input
+brew install --cask ghostty                 # Modern GPU-accelerated terminal
+brew install --cask karabiner-elements      # Advanced keyboard remapping
+
+# Fonts
+brew install --cask font-monaspace         # MonaspiceNe Nerd Font family
+brew install --cask font-meslo-lg-nerd-font # MesloLGS Nerd Font
+```
+
+#### System & Window Management
+```bash
+brew install yabai                          # Tiling window manager
+brew install skhd                           # Hotkey daemon
+brew install sketchybar                     # Menu bar replacement
+brew install stow                           # Configuration management
+```
+
+#### Shell & Terminal Enhancement
+```bash
+brew install starship                       # Cross-shell prompt
+brew install tmux                           # Terminal multiplexer
+brew install zsh-fast-syntax-highlighting  # Shell syntax highlighting
+brew install zsh-autosuggestions           # Shell autosuggestions
+brew install fzf                           # Fuzzy finder
+brew install fd                            # Modern 'find' replacement
+brew install bat                           # Modern 'cat' with syntax highlighting
+brew install eza                           # Modern 'ls' replacement
+brew install zoxide                        # Smart directory jumper
+brew install ripgrep                       # Fast text search
+```
+
+#### Development Tools
+```bash
+brew install nvim                          # Neovim text editor
+brew install git                           # Version control
+brew install gh                            # GitHub CLI
+brew install yazi                          # Terminal file manager
+brew install sesh                          # Session management
+```
+
+#### System Utilities
+```bash
+brew install jq                            # JSON processor
+brew install wget                          # File downloader
+brew install curl                          # Data transfer tool
+```
+
+#### Optional Tools
+```bash
+# Programming Languages
+brew install uv                            # Python package manager
+brew install node                          # Node.js runtime
+brew install python                        # Python interpreter
+
+# Kubernetes (if needed)
+brew install kubectl                       # Kubernetes CLI
+brew install kubectx                       # Kubernetes context switcher
+brew install kubens                        # Kubernetes namespace switcher
+
+# Additional Utilities
+brew install docker                        # Containerization
+brew install tmuxinator                    # Tmux session manager
+brew install switchaudio-osx              # Audio source switcher
+```
+
+#### Quick Install Script
+For convenience, you can install all essential dependencies at once:
+```bash
+# Essential packages only
+brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd-font
+brew install yabai skhd sketchybar stow starship tmux zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep nvim git gh yazi sesh jq wget curl
+
+# Optional additions
+brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio-osx
 ```
 
 ### Setup Instructions
@@ -158,35 +234,24 @@ brew install yabai skhd sketchybar tmux starship zsh
    cd ~/dotfiles
    ```
 
-2. **Link configuration files:**
+2. **Install configurations using Stow:**
    ```bash
-   # Ghostty
-   ln -sf ~/dotfiles/ghostty/.config/ghostty ~/.config/
+   # Install GNU Stow if not already installed
+   brew install stow
 
-   # Karabiner
-   ln -sf ~/dotfiles/karabiner/.config/karabiner ~/.config/
+   # Install all configurations at once
+   stow */
 
-   # Neovim
-   ln -sf ~/dotfiles/nvim/.config/nvim ~/.config/
-
-   # SketchyBar
-   ln -sf ~/dotfiles/sketchybar/.config/sketchybar ~/.config/
-
-   # SKHD
-   ln -sf ~/dotfiles/skhd/.config/skhd ~/.config/
-
-   # Starship
-   ln -sf ~/dotfiles/starship/.config/starship ~/.config/
-
-   # Yabai
-   ln -sf ~/dotfiles/yabai/.config/yabai ~/.config/
-
-   # Tmux
-   ln -sf ~/dotfiles/tmux/.tmux.conf ~/.tmux.conf
-
-   # Zsh
-   ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
-   ln -sf ~/dotfiles/zsh/.zprofile ~/.zprofile
+   # Or install individual components
+   stow ghostty
+   stow karabiner
+   stow nvim
+   stow sketchybar
+   stow skhd
+   stow starship
+   stow yabai
+   stow tmux
+   stow zsh
    ```
 
 3. **Start services:**

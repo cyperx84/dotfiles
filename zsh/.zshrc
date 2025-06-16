@@ -241,7 +241,7 @@ export BAT_THEME=tokyonight_night
 eval "$(zoxide init zsh)"
 
 export PATH=$PATH:/Users/cyperx/.claude/local
-
+export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
