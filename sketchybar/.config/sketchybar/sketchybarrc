@@ -81,8 +81,10 @@ source "$ITEM_DIR/apple.sh"
 source "$ITEM_DIR/front_app.sh"
 
 # Development workflow tools
-source "$ITEM_DIR/git.sh"
 source "$ITEM_DIR/project.sh"
+source "$ITEM_DIR/git.sh"
+source "$ITEM_DIR/ssh.sh"
+source "$ITEM_DIR/tmux.sh"
 source "$ITEM_DIR/dev_servers.sh"
 source "$ITEM_DIR/docker.sh"
 
