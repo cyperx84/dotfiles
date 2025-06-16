@@ -49,7 +49,7 @@ return {
             layout = 'vertical',
             border = 'single',
             height = 0.6, -- 60% of screen height (default is 0.8)
-            width = 0.35, -- 30% of screen width (default is 0.45)
+            width = 0.2, -- 30% of screen width (default is 0.45)
             relative = 'editor',
             full_height = false, -- Use full height of the editor
           },

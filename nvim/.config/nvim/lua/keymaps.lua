@@ -103,9 +103,9 @@ vim.keymap.set("n", "<leader>m", "<cmd>MCPHub<CR>", { desc = "MCPHub" })
 
 --Code Companion
 vim.keymap.set("n", "<c-M-k>", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
-vim.keymap.set("n", "<leader>cC", "<cmd>CodeCompanion<CR>", { desc = "Code Companion" })
-vim.keymap.set("n", "<leader>cc", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
-vim.keymap.set("n", "<leader>cd", "<cmd>CodeCompanionCMD<CR>", { desc = "Code Companion Actions" })
+vim.keymap.set("n", "<leader>CC", "<cmd>CodeCompanion<CR>", { desc = "Code Companion" })
+vim.keymap.set("n", "<leader>Cc", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
+vim.keymap.set("n", "<leader>Cd", "<cmd>CodeCompanionCMD<CR>", { desc = "Code Companion Actions" })
 
 -- Jump between markdown headers
 vim.keymap.set("n", "gj", [[/^##\+ .*<CR>]], { buffer = true, silent = true })
