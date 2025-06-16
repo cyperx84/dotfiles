@@ -13,7 +13,7 @@ return {
     terminal = {
       split_side = 'right',
       split_width_percentage = 0.2,
-      provider = 'snacks', -- "auto" (default), "snacks", or "native"
+      provider = 'native', -- "auto" (default), "snacks", or "native"
       auto_close = true, -- Auto-close terminal after command completion
     },
 
