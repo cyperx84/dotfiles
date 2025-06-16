@@ -20,7 +20,6 @@
 # Neovim Config
 I adapted this from [nvim-lua/kickstart.nvim: A launch point for your personal nvim configuration](https://github.com/nvim-lua/kickstart.nvim)
 **NeoVIM is Awesome!**
-*changed the way i interface with computers*
 
 
 

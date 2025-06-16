@@ -1,0 +1,42 @@
+blacklist = ["scratch"]
+
+sort_order = [
+    # "tmuxinator", # show first
+    "config",
+    "tmux",
+    # "zoxide", # show last
+]
+
+[default_session]
+startup_command = "nvim -c ':Telescope find_files'"
+preview_command = "eza --all --git --icons --color=always {}"
+[[session]]
+name = "Notes 🗒️"
+path = '/Users/cyperx/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes'
+startup_command = "nvim INDEX.md"
+
+[[session]]
+name = "Downloads 📥"
+path = "~/Downloads"
+startup_command = "yazi"
+
+[[session]]
+name = "tmux config"
+path = "~/dotfiles/tmux/"
+startup_command = "nvim .tmux.conf"
+preview_command = "bat --color=always ~/dotfiles/tmux/.tmux.conf"
+windows = [ "Git", "Neo" ]
+[[window]]
+name = "Git"
+startup_script = "git pull"
+
+[[window]]
+name = "Neo"
+startup_script = "NeoVIM"
+
+
+
+
+[[window]]
+name = "git"
+startup_script = "git pull"
