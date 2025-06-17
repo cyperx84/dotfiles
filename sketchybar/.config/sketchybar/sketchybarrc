@@ -6,12 +6,49 @@ source "$CONFIG_DIR/icons.sh"  # Loads all defined icons
 
 ITEM_DIR="$CONFIG_DIR/items"     # Directory where the items are configured
 PLUGIN_DIR="$CONFIG_DIR/plugins" # Directory where all the plugin scripts are stored
-FONT="MonaspiceRn Nerd Font Mono"
+# Font configuration - standardized across all plugins
+FONT="MonaspiceKr Nerd Font"
+ICON_FONT="$FONT:Bold:20.0"
+LABEL_FONT="$FONT:Medium:12.0"
+LARGE_ICON_FONT="$FONT:Bold:24.0"
+SMALL_LABEL_FONT="$FONT:Medium:10.0"
 PADDINGS=1
 HELPER=git.felix.helper
-killall helper
-(cd $CONFIG_DIR/helper && make)
-$CONFIG_DIR/helper/helper $HELPER >/dev/null 2>&1 &
+
+# Helper binary compilation with error handling
+compile_helper() {
+  local helper_dir="$CONFIG_DIR/helper"
+  local helper_binary="$helper_dir/helper"
+  
+  if [ -d "$helper_dir" ]; then
+    echo "Compiling helper binary..."
+    if (cd "$helper_dir" && make clean && make); then
+      echo "Helper binary compiled successfully"
+      return 0
+    else
+      echo "Warning: Helper binary compilation failed"
+      return 1
+    fi
+  else
+    echo "Warning: Helper directory not found at $helper_dir"
+    return 1
+  fi
+}
+
+# Stop any existing helper process
+killall helper 2>/dev/null
+
+# Try to compile and start helper
+if compile_helper; then
+  if [ -x "$CONFIG_DIR/helper/helper" ]; then
+    $CONFIG_DIR/helper/helper $HELPER >/dev/null 2>&1 &
+    echo "Helper process started"
+  else
+    echo "Warning: Helper binary not executable"
+  fi
+else
+  echo "Continuing without helper binary (some features may be limited)"
+fi
 
 # Unload the macOS on screen indicator overlay for volume change
 launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist >/dev/null 2>&1 &
@@ -37,11 +74,11 @@ sketchybar --bar "${bar[@]}"
 # Setting up default values
 defaults=(
   updates=when_shown
-  icon.font="$FONT:Bold:16.0"
+  icon.font="$ICON_FONT"
   icon.color=$ICON_COLOR
   icon.padding_left=$PADDINGS
   icon.padding_right=$PADDINGS
-  label.font="$FONT:Semibold:10.0"
+  label.font="$SMALL_LABEL_FONT"
   label.color=$LABEL_COLOR
   label.padding_left=$PADDINGS
   label.padding_right=$PADDINGS
@@ -81,12 +118,12 @@ source "$ITEM_DIR/apple.sh"
 source "$ITEM_DIR/front_app.sh"
 
 # Development workflow tools
-source "$ITEM_DIR/project.sh"
-source "$ITEM_DIR/git.sh"
-source "$ITEM_DIR/ssh.sh"
-source "$ITEM_DIR/tmux.sh"
-source "$ITEM_DIR/dev_servers.sh"
-source "$ITEM_DIR/docker.sh"
+# source "$ITEM_DIR/project.sh"
+# source "$ITEM_DIR/git.sh"
+# source "$ITEM_DIR/ssh.sh"
+# source "$ITEM_DIR/tmux.sh"
+# source "$ITEM_DIR/dev_servers.sh"
+# source "$ITEM_DIR/docker.sh"
 
 # Community plugin that I modified, so that it shows you the mic name
 # If you right click it you can change the mic.
@@ -138,7 +175,7 @@ source "$ITEM_DIR/battery.sh"
 
 # left click to change volume
 # right click to switch audio sources, you need switchaudio-osx
-# source "$ITEM_DIR/volume.sh"
+source "$ITEM_DIR/volume.sh"
 
 # System monitoring (ordered logically: Processing -> Storage -> Network -> Thermal)
 source "$ITEM_DIR/cpu.sh"

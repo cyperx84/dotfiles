@@ -3,7 +3,11 @@
 WIDTH=100
 
 volume_change() {
+	CONFIG_DIR="${CONFIG_DIR:-${HOME}/.config/sketchybar}"
 	source "$CONFIG_DIR/icons.sh"
+	source "$CONFIG_DIR/colors.sh"
+	
+	# Determine icon based on volume level
 	case $INFO in
 	[6-9][0-9] | 100)
 		ICON=$VOLUME_100
@@ -23,7 +27,18 @@ volume_change() {
 	*) ICON=$VOLUME_100 ;;
 	esac
 
-	sketchybar --set volume_icon label=$ICON \
+	# Determine color based on volume level
+	if [ "$INFO" -eq 0 ]; then
+		COLOR=$GREY  # Muted
+	elif [ "$INFO" -gt 70 ]; then
+		COLOR=$GREEN  # High volume
+	elif [ "$INFO" -gt 30 ]; then
+		COLOR=$YELLOW  # Medium volume
+	else
+		COLOR=$ORANGE  # Low volume
+	fi
+
+	sketchybar --set volume_icon icon=$ICON icon.color=$COLOR \
 		--set $NAME slider.percentage=$INFO
 
 	INITIAL_WIDTH="$(sketchybar --query $NAME | jq -r ".slider.width")"

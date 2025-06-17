@@ -2,9 +2,9 @@
 
 tmux_status=(
   icon=$TMUX
-  icon.font="MonaspiceKr Nerd Font:Bold:20.0"
+  icon.font="$ICON_FONT"
   icon.color=$GREEN
-  label.font="MonaspiceKr Nerd Font:Medium:12.0"
+  label.font="$LABEL_FONT"
   label.color=$WHITE
   padding_left=2
   padding_right=4

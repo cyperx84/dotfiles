@@ -1,8 +1,20 @@
 #!/bin/bash
 
+# Project plugin with error handling
+
+# Check if NAME variable is set
+if [ -z "$NAME" ]; then
+  echo "Error: NAME variable not set" >&2
+  exit 1
+fi
+
 # Try to get project name from git repository first
 if git rev-parse --is-inside-work-tree &>/dev/null; then
   PROJECT_NAME=$(basename "$(git rev-parse --show-toplevel)" 2>/dev/null)
+  if [ $? -ne 0 ] || [ -z "$PROJECT_NAME" ]; then
+    # Fallback if git command fails
+    PROJECT_NAME=$(basename "$PWD")
+  fi
 else
   # Fallback to current directory name
   PROJECT_NAME=$(basename "$PWD")
@@ -11,6 +23,12 @@ fi
 # Handle empty or root directory
 if [ -z "$PROJECT_NAME" ] || [ "$PROJECT_NAME" = "/" ]; then
   PROJECT_NAME="~"
+fi
+
+# Validate project name
+if [ -z "$PROJECT_NAME" ]; then
+  echo "Error: Could not determine project name" >&2
+  PROJECT_NAME="unknown"
 fi
 
 # Limit project name length
@@ -39,5 +57,8 @@ else
   COLOR="0xff80ff00"  # Default blue
 fi
 
-sketchybar --set $NAME label="$PROJECT_NAME" \
-                    label.color=$COLOR
+# Update sketchybar with error handling
+if ! sketchybar --set $NAME label="$PROJECT_NAME" label.color=$COLOR 2>/dev/null; then
+  echo "Warning: Failed to update sketchybar for project plugin" >&2
+  exit 1
+fi

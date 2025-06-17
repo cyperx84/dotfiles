@@ -2,8 +2,8 @@
 calendar=(
 	icon=cal
 	# Using "JetBrainsMono Nerd Font"
-	icon.font="MonaspiceKr Nerd Font:Medium:8.0"
-	icon.color=$GREY
+	icon.font="MonaspiceKr Nerd Font:Medium:12.0"
+	icon.color=$GREEN
 	# Using default "SF Pro"
 	# icon.font="$FONT:Black:12.0"
 	icon.padding_right=0

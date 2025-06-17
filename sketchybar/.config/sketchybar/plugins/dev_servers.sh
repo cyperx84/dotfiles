@@ -1,5 +1,20 @@
 #!/bin/bash
 
+# Development servers plugin with error handling
+
+# Check if NAME variable is set
+if [ -z "$NAME" ]; then
+  echo "Error: NAME variable not set" >&2
+  exit 1
+fi
+
+# Check if lsof is available
+if ! command -v lsof &> /dev/null; then
+  echo "Error: lsof command not found" >&2
+  sketchybar --set $NAME drawing=off 2>/dev/null
+  exit 1
+fi
+
 # Common development server ports to check
 DEV_PORTS=(3000 3001 4000 5000 8000 8080 8888 9000)
 RUNNING_PORTS=()
@@ -14,7 +29,9 @@ done
 # Update display based on running servers
 if [ ${#RUNNING_PORTS[@]} -eq 0 ]; then
   # No servers running
-  sketchybar --set $NAME drawing=off
+  if ! sketchybar --set $NAME drawing=off 2>/dev/null; then
+    echo "Warning: Failed to set drawing=off for dev_servers plugin" >&2
+  fi
 else
   # Show running servers
   sketchybar --set $NAME drawing=on
@@ -37,6 +54,7 @@ else
     COLOR="0xffa6da95"  # Green for normal load
   fi
   
-  sketchybar --set $NAME label="$LABEL" \
-                      label.color=$COLOR
+  if ! sketchybar --set $NAME label="$LABEL" label.color=$COLOR 2>/dev/null; then
+    echo "Warning: Failed to update sketchybar for dev_servers plugin" >&2
+  fi
 fi

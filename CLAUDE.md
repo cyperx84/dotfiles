@@ -1,3 +1,8 @@
+---
+id: CLAUDE
+tags: []
+---
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -95,6 +100,81 @@ exec zsh
 sketchybar --reload
 yabai --restart-service
 tmux source-file ~/.tmux.conf
+```
+
+### SketchyBar Development Tools & Testing
+
+The SketchyBar setup includes comprehensive testing and monitoring tools for development components:
+
+#### Testing Framework
+```bash
+# Test all development plugins
+~/.config/sketchybar/test_sketchybar.sh
+
+# Test specific components
+~/.config/sketchybar/test_sketchybar.sh github
+```
+
+#### Debug Tools
+```bash
+# Full debugging session
+~/.config/sketchybar/debug_sketchybar.sh
+
+# Debug specific plugin
+~/.config/sketchybar/debug_sketchybar.sh plugin git
+
+# Monitor plugins in real-time
+~/.config/sketchybar/debug_sketchybar.sh monitor
+
+# Debug GitHub-specific issues
+~/.config/sketchybar/debug_sketchybar.sh github
+```
+
+#### Health Monitoring
+```bash
+# Test all development plugins
+~/.config/sketchybar/plugin_health_monitor.sh test
+
+# Continuous monitoring
+~/.config/sketchybar/plugin_health_monitor.sh monitor
+
+# Health report
+~/.config/sketchybar/plugin_health_monitor.sh report
+
+# Check dependencies
+~/.config/sketchybar/plugin_health_monitor.sh deps
+```
+
+#### Troubleshooting Common Issues
+
+**GitHub Plugin Not Working:**
+```bash
+# Check authentication
+gh auth status
+
+# Enable debug logging
+GITHUB_DEBUG=1 ~/.config/sketchybar/debug_sketchybar.sh github
+
+# Test notifications API
+gh api notifications
+```
+
+**Helper Binary Issues:**
+```bash
+# Recompile helper binary
+cd ~/.config/sketchybar/helper && make clean && make
+
+# Check compilation dependencies
+~/.config/sketchybar/debug_sketchybar.sh helper
+```
+
+**Plugin Not Updating:**
+```bash
+# Check plugin execution
+~/.config/sketchybar/plugin_health_monitor.sh test <plugin_name>
+
+# Force update
+sketchybar --trigger <plugin_name>.update
 ```
 
 ## Key Integration Points
