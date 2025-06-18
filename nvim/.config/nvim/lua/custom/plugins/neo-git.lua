@@ -1,10 +1,8 @@
 return {
   "NeogitOrg/neogit",
   dependencies = {
-    "nvim-lua/plenary.nvim",         -- required
-    "sindrets/diffview.nvim",        -- optional - Diff integration
-
-    -- Only one of these is needed.
-    "echasnovski/mini.pick",         -- optional
+    "nvim-lua/plenary.nvim",
+    "sindrets/diffview.nvim",
+    "echasnovski/mini.pick",
   },
 }

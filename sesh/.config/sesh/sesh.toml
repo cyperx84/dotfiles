@@ -18,33 +18,50 @@ startup_command = "nvim INDEX.md"
 preview_command = "bat --color=always /Users/cyperx/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
 
 [[session]]
+name = "🧪 Code"
+path = "~/Code"
+startup_command = "yazi"
+preview_command = "eza --all --git --icons --color=always {}"
+windows = [ "VIM", "👾Claude", "GIT" ]
+[[window]]
+name = "👾Claude"
+startup_script = "claude"
+[[window]]
+name = "VIM"
+startup_script = "vim"
+[[window]]
+name = "GIT"
+startup_script = "git status"
+
+[[session]]
+name = "🤖 Agents"
+path = "~/Code/agents"
+startup = "nvim"
+preview = "eza --all --git --icons --color=always {}"
+
+[[session]]
 name = "⚙️ Dotfiles"
 path = "~/dotfiles"
 startup_command = "nvim"
 preview_command = "eza --all --git --icons --color=always {}"
-windows = [ "Git", "Neo" ]
+windows = [ "👾Claude", "GIT" ]
 [[window]]
-name = "Git"
-startup_script = "git pull"
+name = "👾Claude"
+startup_script = "claude"
 [[window]]
-name = "Neo"
-startup_script = "vim"
+name = "GIT"
+startup_script = "git status"
 
 [[session]]
 name = "📥 Downloads"
 path = "~/Downloads"
 startup_command = "yazi"
 
-[[session]]
-name = "🚀 Code Projects"
-path = "~/Code"
-startup_command = "yazi"
-preview_command = "eza --all --git --icons --color=always {}"
 
 [[session]]
 name = "🔗 GitHub Projects" 
 path = "~/github"
-startup_command = "yazi"
+startup_command = "ls"
 preview_command = "eza --all --git --icons --color=always {}"
 
 [[session]]
@@ -53,10 +70,5 @@ path = "~"
 startup_command = "yazi"
 preview_command = "eza --all --git --icons --color=always {}"
 
-[[session]]
-name = "🤖 Agents"
-path = "~/Code/agents"
-startup = "nvim"
-preview = "eza --all --git --icons --color=always {}"
 
 

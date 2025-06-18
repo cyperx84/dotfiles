@@ -49,7 +49,7 @@ return {
             layout = 'vertical',
             border = 'single',
             height = 0.6, -- 60% of screen height (default is 0.8)
-            width = 0.2, -- 30% of screen width (default is 0.45)
+            width = 0.3, -- 30% of screen width (default is 0.45)
             relative = 'editor',
             full_height = false, -- Use full height of the editor
           },
@@ -57,7 +57,7 @@ return {
         action_palette = {
           width = 75,
           height = 10,
-          prompt = 'Prompt ', -- Prompt used for interactive LLM calls
+          prompt = 'Prompt', -- Prompt used for interactive LLM calls
           provider = 'snacks', -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
           opts = {
             show_default_actions = true, -- Show the default actions in the action palette?
