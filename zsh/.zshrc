@@ -32,7 +32,7 @@ if command -v sketchybar &>/dev/null; then
 
 # When the zshrc file is ran, reload sketchybar, in case the theme was
 # switched
-sketchybar --reload
+# sketchybar --reload
 
 
 # Define a custom 'brew' function to wrap the Homebrew command.
