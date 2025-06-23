@@ -6,7 +6,7 @@ source "$CONFIG_DIR/icons.sh"
 
 wifi=(
   padding_right=6
-  padding_left=1
+  padding_left=0
   label.width=0
   label.max_chars=0
   label.padding_right=4

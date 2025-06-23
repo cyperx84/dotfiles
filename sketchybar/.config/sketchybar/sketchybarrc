@@ -102,18 +102,9 @@ sketchybar --default "${defaults[@]}"
 #                                Left side
 ###############################################################################
 
-# Shows the apple logo, you can change it's color in "items/apple.sh"
-# If you click on it, you can see preferences, activity and lock screen
 source "$ITEM_DIR/apple.sh"
 
 # source "$ITEM_DIR/spaces.sh"
-
-# I use yabai, but not sure what this does, I don't see a difference
-# Not sure if related to "skhd shortcuts should trigger the sketchybar event" in
-# the owner dotfiles
-# source "$ITEM_DIR/yabai.sh"
-
-# Shows the name and icon of the app currently focused
 # Clicking it opens mission control (can be customized)
 source "$ITEM_DIR/front_app.sh"
 
@@ -121,7 +112,7 @@ source "$ITEM_DIR/front_app.sh"
 # source "$ITEM_DIR/project.sh"
 # source "$ITEM_DIR/git.sh"
 # source "$ITEM_DIR/ssh.sh"
-# source "$ITEM_DIR/tmux.sh"
+source "$ITEM_DIR/tmux.sh"
 # source "$ITEM_DIR/dev_servers.sh"
 # source "$ITEM_DIR/docker.sh"
 
@@ -181,8 +172,20 @@ source "$ITEM_DIR/volume.sh"
 source "$ITEM_DIR/cpu.sh"
 source "$ITEM_DIR/memory.sh"
 source "$ITEM_DIR/temperature.sh"
-# source "$ITEM_DIR/disk.sh"
+source "$ITEM_DIR/disk.sh"
 source "$ITEM_DIR/network.sh"
+
+# Group system monitoring items in a pill-shaped container
+system_monitor_bracket=(
+  background.color=$BACKGROUND_1
+  background.border_color=$BACKGROUND_2
+  padding_left=3
+  padding_right=3
+  click_script="$PLUGIN_DIR/system_monitor_details.sh"
+)
+
+sketchybar --add bracket system_monitor cpu.top cpu.percent cpu.sys cpu.user memory temperature disk network \
+  --set system_monitor "${system_monitor_bracket[@]}"
 
 source "$ITEM_DIR/timer.sh"
 

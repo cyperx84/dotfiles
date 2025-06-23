@@ -5,7 +5,9 @@ cpu_top=(
   label=CPU
   icon.drawing=off
   width=0
-  padding_right=1
+  padding_right=4
+  padding_left=2
+  background.drawing=off
   y_offset=6
 )
 
@@ -13,8 +15,10 @@ cpu_percent=(
   label.font="MonaspiceRn Nerd Font:Heavy:10"
   label=CPU
   y_offset=-4
-  padding_right=1
+  padding_right=4
+  padding_left=0
   width=55
+  background.drawing=off
   icon.drawing=off
   update_freq=4
   mach_helper="$HELPER"
@@ -26,18 +30,22 @@ cpu_sys=(
   graph.fill_color=$GREEN
   label.drawing=off
   icon.drawing=off
-  background.height=30
-  background.drawing=on
+  background.height=24
+  background.drawing=off
   background.color=$TRANSPARENT
+  padding_left=0
+  padding_right=2
 )
 
 cpu_user=(
   graph.color=$BLUE
   label.drawing=off
   icon.drawing=off
-  background.height=36
-  background.drawing=on
+  background.height=28
+  background.drawing=off
   background.color=$TRANSPARENT
+  padding_left=0
+  padding_right=2
 )
 
 sketchybar --add item cpu.top right              \

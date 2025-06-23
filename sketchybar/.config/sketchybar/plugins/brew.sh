@@ -17,7 +17,7 @@ case "$COUNT" in
 	;;
 0)
 	COLOR=$GREEN
-	COUNT=􀆅
+	COUNT=✓
 	;;
 esac
 

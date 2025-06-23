@@ -20,11 +20,20 @@ github_bell=(
 
 github_template=(
   drawing=off
-  background.corner_radius=12
-  padding_left=7
-  padding_right=7
-  icon.background.height=2
-  icon.background.y_offset=-12
+  background.corner_radius=8
+  background.color=$BG0O85
+  background.border_width=1
+  background.border_color=$BG2
+  padding_left=10
+  padding_right=10
+  padding_top=4
+  padding_bottom=4
+  icon.background.height=3
+  icon.background.corner_radius=2
+  icon.background.y_offset=-14
+  icon.padding_right=8
+  label.padding_left=4
+  label.max_chars=50
 )
 
 sketchybar --add event github.update \

@@ -14,7 +14,12 @@ zen_on() {
     --set timer drawing=off \
     --set volume drawing=off \
     --set github.bell drawing=off \
-    --set wifi drawing=off
+    --set wifi drawing=off \
+    --set system_monitor drawing=off \
+    --set memory drawing=off \
+    --set temperature drawing=off \
+    --set disk drawing=off \
+    --set network drawing=off
 }
 
 zen_off() {
@@ -30,7 +35,12 @@ zen_off() {
     --set timer drawing=on \
     --set volume drawing=on \
     --set github.bell drawing=on \
-    --set wifi drawing=on
+    --set wifi drawing=on \
+    --set system_monitor drawing=on \
+    --set memory drawing=on \
+    --set temperature drawing=on \
+    --set disk drawing=on \
+    --set network drawing=on
 }
 
 if [ "$1" = "on" ]; then
