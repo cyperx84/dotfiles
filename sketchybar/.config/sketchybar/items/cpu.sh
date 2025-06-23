@@ -1,19 +1,19 @@
 #!/bin/bash
 
 cpu_top=(
-  label.font="MonaspiceRn Nerd Font:Semibold:10"
+  label.font="MonaspiceRn Nerd Font:Semibold:8"
   label=CPU
   icon.drawing=off
   width=0
-  padding_right=4
+  padding_right=1
   y_offset=6
 )
 
 cpu_percent=(
-  label.font="MonaspiceRn Nerd Font:Heavy:16"
+  label.font="MonaspiceRn Nerd Font:Heavy:10"
   label=CPU
   y_offset=-4
-  padding_right=4
+  padding_right=1
   width=55
   icon.drawing=off
   update_freq=4
@@ -23,10 +23,10 @@ cpu_percent=(
 cpu_sys=(
   width=0
   graph.color=$RED
-  graph.fill_color=$RED
+  graph.fill_color=$GREEN
   label.drawing=off
   icon.drawing=off
-  background.height=36
+  background.height=30
   background.drawing=on
   background.color=$TRANSPARENT
 )

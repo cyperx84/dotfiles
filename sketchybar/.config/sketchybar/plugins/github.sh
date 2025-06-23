@@ -61,12 +61,35 @@ update() {
   
   debug_log "Found $count notifications"
   
+  # Enhanced color coding based on notification count
   args=()
+  local icon_color
+  local bell_icon
+  local label_text
+  
   if [ "$count" -eq 0 ]; then
-    args+=(--set $NAME icon=$BELL label="0" icon.color=$GREEN drawing=on)
+    icon_color=$GREEN
+    bell_icon="󰓁"  # GitHub icon for no notifications
+    label_text=""  # Hide number when zero
+  elif [ "$count" -le 3 ]; then
+    icon_color=$BLUE
+    bell_icon="󰅂"  # Bell with notification
+    label_text="$count"
+  elif [ "$count" -le 9 ]; then
+    icon_color=$YELLOW
+    bell_icon="󰅂"
+    label_text="$count"
+  elif [ "$count" -le 19 ]; then
+    icon_color=$ORANGE
+    bell_icon="󰅂"
+    label_text="$count"
   else
-    args+=(--set $NAME icon=$BELL_DOT label="$count" icon.color=$YELLOW drawing=on)
+    icon_color=$RED
+    bell_icon="󰅂"
+    label_text="$count"
   fi
+  
+  args+=(--set $NAME icon=$bell_icon label="$label_text" icon.color=$icon_color drawing=on)
 
   # Get previous count for change detection
   local prev_count
@@ -110,7 +133,7 @@ update() {
       
       case "${type}" in
       "'Issue'" | "Issue")
-        color=$GREEN
+        color=$BLUE
         icon=$GIT_ISSUE
         # Try to get HTML URL, fallback to notifications page
         if [ -n "$url" ]; then
@@ -119,11 +142,11 @@ update() {
         fi
         ;;
       "'Discussion'" | "Discussion")
-        color=$WHITE
+        color=$GREY
         icon=$GIT_DISCUSSION
         ;;
       "'PullRequest'" | "PullRequest")
-        color=$BLUE
+        color=$MAGENTA
         icon=$GIT_PULL_REQUEST
         if [ -n "$url" ]; then
           local clean_url=$(echo "${url}" | sed -e "s/^'//" -e "s/'$//")
@@ -131,7 +154,7 @@ update() {
         fi
         ;;
       "'Commit'" | "Commit")
-        color=$WHITE
+        color=$GREEN
         icon=$GIT_COMMIT
         if [ -n "$url" ]; then
           local clean_url=$(echo "${url}" | sed -e "s/^'//" -e "s/'$//")
@@ -139,6 +162,8 @@ update() {
         fi
         ;;
       *)
+        color=$WHITE
+        icon=$GIT_ISSUE
         debug_log "Unknown notification type: $type"
         ;;
       esac
@@ -157,11 +182,19 @@ update() {
       notification=(
         label="$clean_title"
         icon="$icon $clean_repo:"
-        icon.padding_left="$padding"
-        label.padding_right="$padding"
+        icon.padding_left=8
+        icon.padding_right=6
+        label.padding_left=4
+        label.padding_right=8
         icon.color=$color
+        label.color=$WHITE
         position=popup.github.bell
+        background.color=$BG0O70
+        background.corner_radius=6
+        background.border_width=2
+        background.border_color=$color
         icon.background.color=$color
+        icon.background.corner_radius=3
         drawing=on
         click_script="open \"$notification_url\"; sketchybar --set github.bell popup.drawing=off; sleep 5; sketchybar --trigger github.update"
       )
