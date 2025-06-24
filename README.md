@@ -35,12 +35,15 @@ A curated collection of configuration files for a complete macOS development env
 ```
 dotfiles/
 ├── ghostty/          # Modern terminal emulator configuration
+├── kanata/           # Advanced keyboard remapper (alternative to karabiner)
 ├── karabiner/        # Keyboard remapping and shortcuts
 ├── nvim/            # Neovim editor configuration  
+├── sesh/            # Session management for tmux
 ├── sketchybar/      # macOS menu bar replacement
 ├── skhd/            # Hotkey daemon for window management
 ├── starship/        # Cross-shell prompt themes
 ├── tmux/            # Terminal multiplexer configuration
+├── tmuxinator/      # Complex tmux session layouts
 ├── yabai/           # Tiling window manager
 └── zsh/             # Z shell configuration and plugins
 ```
@@ -66,6 +69,13 @@ Advanced keyboard customization for ergonomic improvements:
 - **Right Command** → Backspace
 - **Right Shift** → Backspace
 - **Function Keys**: Customized F1-F12 mappings
+
+### 🦾 **Kanata** - Advanced Keyboard Remapper (Alternative)
+Sophisticated keyboard remapping with home row modifiers:
+- **Home Row Mods**: Hold a/s/d/f/j/k/l/; for modifiers (Cmd/Alt/Shift/Ctrl)
+- **Layer System**: Function layer accessible via Fn key
+- **Timing**: 150ms tap time, 200ms hold time for optimal response
+- **Status**: Configured but inactive (use instead of Karabiner if preferred)
 
 ### 🎛️ **SKHD** - Hotkey Daemon
 Powerful hotkey system for window management and system control:
@@ -109,6 +119,13 @@ Feature-rich terminal session management:
 - `tmux-floax` - Floating terminal windows
 - `vim-tmux-navigator` - Seamless Vim integration
 - `tmux-resurrect` + `tmux-continuum` - Session persistence
+
+### 🏗️ **Tmuxinator** - Session Layouts
+Complex tmux session management:
+- **Pre-defined Layouts**: Create complex multi-pane, multi-window sessions
+- **Project-specific**: Custom session templates for different projects
+- **YAML Configuration**: Simple YAML files define session structure
+- **Integration**: Works seamlessly with tmux and sesh session managers
 
 ### 🚀 **Starship** - Cross-Shell Prompt
 Highly customizable prompt with multiple themes:
@@ -223,7 +240,7 @@ brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd
 brew install yabai skhd sketchybar stow starship tmux zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep nvim git gh yazi sesh jq wget curl
 
 # Optional additions
-brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio-osx
+brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio-osx kanata
 ```
 
 ### Setup Instructions
@@ -244,13 +261,15 @@ brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio
 
    # Or install individual components
    stow ghostty
-   stow karabiner
+   stow karabiner  # or kanata (not both)
    stow nvim
+   stow sesh
    stow sketchybar
    stow skhd
    stow starship
-   stow yabai
    stow tmux
+   stow tmuxinator
+   stow yabai
    stow zsh
    ```
 
@@ -273,6 +292,24 @@ brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio
    - Configure Ghostty as default terminal
 
 ## ⚙️ Customization
+
+### Keyboard Remapping Choice
+Choose between two keyboard remapping solutions:
+
+**Karabiner-Elements (Default):**
+```bash
+# Already active if you followed installation
+# Simple remappings work out of the box
+```
+
+**Kanata (Advanced Alternative):**
+```bash
+# Disable Karabiner-Elements first
+# Then start kanata with:
+sudo kanata --cfg ~/.config/kanata/kanata.kbd
+
+# For permanent activation, create a launch daemon
+```
 
 ### Starship Themes
 Switch between different prompt themes by modifying `~/.zshrc`:
@@ -332,10 +369,12 @@ set -g @floax-bind 'p'
 
 ### Configuration Files
 - `ghostty/config` - Terminal appearance and behavior
-- `karabiner/karabiner.json` - Keyboard remapping rules
+- `karabiner/karabiner.json` - Simple keyboard remapping rules
+- `kanata/kanata.kbd` - Advanced keyboard remapping with home row mods
 - `skhd/skhdrc` - Hotkey definitions
 - `yabai/yabairc` - Window manager settings
 - `tmux/.tmux.conf` - Terminal multiplexer setup
+- `tmuxinator/` - Complex session layout templates
 - `zsh/.zshrc` - Shell configuration and aliases
 
 ### Special Features

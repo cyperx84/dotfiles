@@ -55,7 +55,7 @@ launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist >/d
 
 # Setting up the general bar appearance of the bar
 bar=(
-  height=36
+  height=40
   color=$BAR_COLOR
   border_width=2
   border_color=$BAR_BORDER_COLOR
@@ -104,7 +104,7 @@ sketchybar --default "${defaults[@]}"
 
 source "$ITEM_DIR/apple.sh"
 
-# source "$ITEM_DIR/spaces.sh"
+source "$ITEM_DIR/spaces.sh"
 # Clicking it opens mission control (can be customized)
 source "$ITEM_DIR/front_app.sh"
 
@@ -112,7 +112,7 @@ source "$ITEM_DIR/front_app.sh"
 # source "$ITEM_DIR/project.sh"
 # source "$ITEM_DIR/git.sh"
 # source "$ITEM_DIR/ssh.sh"
-source "$ITEM_DIR/tmux.sh"
+# source "$ITEM_DIR/tmux.sh"
 # source "$ITEM_DIR/dev_servers.sh"
 # source "$ITEM_DIR/docker.sh"
 
@@ -127,7 +127,7 @@ source "$ITEM_DIR/tmux.sh"
 
 # Shows album art and song name, I prefer this as it give me useful info
 # Disabled this as it always kept it in the middle even if nothing was playing
-source "$ITEM_DIR/media.sh"
+# source "$ITEM_DIR/media.sh"
 
 # Shows floating window when spotify is playing a song
 # source "$ITEM_DIR/spotify.sh"
@@ -187,7 +187,7 @@ system_monitor_bracket=(
 sketchybar --add bracket system_monitor cpu.top cpu.percent cpu.sys cpu.user memory temperature disk network \
   --set system_monitor "${system_monitor_bracket[@]}"
 
-source "$ITEM_DIR/timer.sh"
+# source "$ITEM_DIR/timer.sh"
 
 ###############################################################################
 #                            Community plugins

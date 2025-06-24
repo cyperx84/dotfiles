@@ -9,7 +9,7 @@ memory=(
   padding_left=2
   padding_right=2
   background.drawing=off
-  update_freq=10
+  update_freq=2
   script="$PLUGIN_DIR/memory.sh"
 )
 

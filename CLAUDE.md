@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a comprehensive macOS development environment dotfiles repository featuring a highly integrated window management and terminal-centric workflow. The setup centers around 9 main configuration components that work together to create a tiling window manager environment with advanced terminal productivity tools. All configurations are managed using GNU Stow for automated symlink creation.
+This is a comprehensive macOS development environment dotfiles repository featuring a highly integrated window management and terminal-centric workflow. The setup centers around 10 main configuration components that work together to create a tiling window manager environment with advanced terminal productivity tools. All configurations are managed using GNU Stow for automated symlink creation.
 
 ## Architecture & Component Integration
 
@@ -33,6 +33,11 @@ Key integration: Ghostty optimized for Tmux with specific font ligature and GPU 
 - **Neovim** (`nvim/.config/nvim/`) - 49 Lua configuration files based on kickstart.nvim
 - **Starship** (`starship/.config/starship/`) - 6 interchangeable prompt themes
 - **Sesh** (`sesh/.config/sesh/sesh.toml`) - Session management
+- **Tmuxinator** (`tmuxinator/.config/tmuxinator/`) - Complex tmux session layouts
+
+### Input Management
+- **Karabiner-Elements** - Currently active keyboard remapping (simple mappings)
+- **Kanata** (`kanata/.config/kanata/kanata.kbd`) - Advanced keyboard remapper with home row mods (configured but inactive)
 
 ## Prerequisites & Dependencies
 
@@ -51,6 +56,9 @@ brew install starship tmux zsh-fast-syntax-highlighting zsh-autosuggestions fzf 
 
 # Development tools
 brew install nvim git gh yazi sesh jq wget curl
+
+# Optional advanced tools
+brew install kanata tmuxinator
 ```
 
 ## Common Development Commands
@@ -234,3 +242,29 @@ The setup uses multiple session management approaches:
 - Tmuxinator for complex session layouts
 
 When working with session-related configurations, consider the interaction between these three systems.
+
+### Input Management Systems
+Two keyboard remapping solutions are available:
+
+**Karabiner-Elements (Active):**
+- Simple key remappings: Caps Lock → Control, Right Cmd/Shift → Backspace
+- Function key pass-through
+- Device-specific configurations
+- Recommended for most users
+
+**Kanata (Configured but Inactive):**
+- Advanced home row modifiers (a/s/d/f/j/k/l/; become modifiers on hold)
+- Layer-based key mapping system
+- 150ms tap time, 200ms hold time
+- More complex but powerful - requires manual activation if desired
+
+To switch from Karabiner-Elements to Kanata:
+1. Stop Karabiner-Elements service
+2. Start kanata service: `sudo kanata --cfg ~/.config/kanata/kanata.kbd`
+3. Configure kanata as a launch daemon for automatic startup
+
+## Recent Updates
+- Added kanata keyboard remapper as alternative to Karabiner-Elements
+- Added tmuxinator for complex session layouts  
+- Updated component count from 9 to 10 main components
+- Added input management system documentation
