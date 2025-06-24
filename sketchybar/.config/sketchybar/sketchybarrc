@@ -116,66 +116,33 @@ source "$ITEM_DIR/front_app.sh"
 # source "$ITEM_DIR/dev_servers.sh"
 # source "$ITEM_DIR/docker.sh"
 
-# Community plugin that I modified, so that it shows you the mic name
-# If you right click it you can change the mic.
-# Shows you the value of the input volume level
 # source "$ITEM_DIR/mic.sh"
 
 ###############################################################################
 #                                 Center
 ###############################################################################
 
-# Shows album art and song name, I prefer this as it give me useful info
-# Disabled this as it always kept it in the middle even if nothing was playing
 # source "$ITEM_DIR/media.sh"
 
-# Shows floating window when spotify is playing a song
 # source "$ITEM_DIR/spotify.sh"
 
 ###############################################################################
 #                               Right side
 ###############################################################################
 
-# If calendar is clicked, will run zen.sh which hides everything, but you can
-# customize it to your liking
 source "$ITEM_DIR/calendar.sh"
-
-# Runs "brew outdated" command and shows you amount of outdated packages
-# Will install an old package so you can see the number increase
-# `brew install ~/Downloads/wezterm.rb`
-# `https://github.com/wez/wezterm/releases`
-# `brew update && brew upgrade` updates the package and clears the counter
-# -----> Make sure to add the section to the .zshrc file, so that package count is
-# updated automatically after running brew commands
-# `https://github.com/linkarzu/dotfiles-latest/blob/8fd9af824fc1db73de185b3733dac5d8514f9fb0/zshrc/zshrc-file.sh#L225-L247`
 source "$ITEM_DIR/brew.sh"
-
-# DND not working with sonoma, will figure it out later (hopefully)
-# source "$ITEM_DIR/dnd.sh"
-
-# Shows github notifications via gh cli, mine aren't working properly
-# `gh api notifications` shows nothing but `gh status` does
 source "$ITEM_DIR/github.sh"
-
-# Shows the SSID you're connected to, and the IP address assigned
 source "$ITEM_DIR/wifi.sh"
-
-# By default the icon will only show when on battery and if it's 50% or less,
-# you can change "plugins/battery.sh" if needed to modify the behavior
 source "$ITEM_DIR/battery.sh"
-
-# left click to change volume
-# right click to switch audio sources, you need switchaudio-osx
 source "$ITEM_DIR/volume.sh"
 
-# System monitoring (ordered logically: Processing -> Storage -> Network -> Thermal)
 source "$ITEM_DIR/cpu.sh"
 source "$ITEM_DIR/memory.sh"
 source "$ITEM_DIR/temperature.sh"
 source "$ITEM_DIR/disk.sh"
 source "$ITEM_DIR/network.sh"
 
-# Group system monitoring items in a pill-shaped container
 system_monitor_bracket=(
   background.color=$BACKGROUND_1
   background.border_color=$BACKGROUND_2
@@ -200,7 +167,6 @@ sketchybar --add bracket system_monitor cpu.top cpu.percent cpu.sys cpu.user mem
 
 sketchybar --hotload on
 
-# Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update
 
 echo "sketchybar configuation loaded.."
