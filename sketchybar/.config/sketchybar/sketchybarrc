@@ -6,7 +6,6 @@ source "$CONFIG_DIR/icons.sh"  # Loads all defined icons
 
 ITEM_DIR="$CONFIG_DIR/items"     # Directory where the items are configured
 PLUGIN_DIR="$CONFIG_DIR/plugins" # Directory where all the plugin scripts are stored
-# Font configuration - standardized across all plugins
 FONT="MonaspiceKr Nerd Font"
 ICON_FONT="$FONT:Bold:20.0"
 LABEL_FONT="$FONT:Medium:12.0"
@@ -55,7 +54,7 @@ launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist >/d
 
 # Setting up the general bar appearance of the bar
 bar=(
-  height=40
+  height=46
   color=$BAR_COLOR
   border_width=2
   border_color=$BAR_BORDER_COLOR
@@ -103,16 +102,14 @@ sketchybar --default "${defaults[@]}"
 ###############################################################################
 
 source "$ITEM_DIR/apple.sh"
-
 source "$ITEM_DIR/spaces.sh"
-# Clicking it opens mission control (can be customized)
 source "$ITEM_DIR/front_app.sh"
 
 # Development workflow tools
 # source "$ITEM_DIR/project.sh"
 # source "$ITEM_DIR/git.sh"
 # source "$ITEM_DIR/ssh.sh"
-# source "$ITEM_DIR/tmux.sh"
+source "$ITEM_DIR/tmux.sh"
 # source "$ITEM_DIR/dev_servers.sh"
 # source "$ITEM_DIR/docker.sh"
 
@@ -123,7 +120,6 @@ source "$ITEM_DIR/front_app.sh"
 ###############################################################################
 
 # source "$ITEM_DIR/media.sh"
-
 # source "$ITEM_DIR/spotify.sh"
 
 ###############################################################################
