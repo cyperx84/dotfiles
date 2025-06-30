@@ -247,3 +247,8 @@ export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 alias claude="/Users/cyperx/.claude/local/claude"
 alias cld="/Users/cyperx/.claude/local/claude"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/cyperx/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions

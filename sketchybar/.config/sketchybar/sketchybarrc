@@ -102,7 +102,7 @@ sketchybar --default "${defaults[@]}"
 ###############################################################################
 
 source "$ITEM_DIR/apple.sh"
-source "$ITEM_DIR/spaces.sh"
+# source "$ITEM_DIR/spaces.sh"
 source "$ITEM_DIR/front_app.sh"
 
 # Development workflow tools
