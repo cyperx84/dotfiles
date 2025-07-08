@@ -3,6 +3,7 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim',
     'nvim-treesitter/nvim-treesitter',
+    'olimorris/snacks.nvim',
     {
       'ravitemer/mcphub.nvim',
       dependencies = { 'nvim-lua/plenary.nvim' },
@@ -152,7 +153,6 @@ return {
             ['image'] = {
               keymaps = {
                 modes = {
-                  i = '<C-i>',
                   v = '<C-i>',
                 },
               },

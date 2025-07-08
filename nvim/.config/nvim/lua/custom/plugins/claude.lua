@@ -13,7 +13,7 @@ return {
     terminal = {
       split_side = 'right',
       split_width_percentage = 0.2,
-      provider = 'native', -- "auto" (default), "snacks", or "native"
+      provider = 'snacks', -- "auto" (default), "snacks", or "native"
       auto_close = true, -- Auto-close terminal after command completion
     },
 
@@ -25,17 +25,20 @@ return {
   },
   config = true,
   keys = {
-    { '<leader>c', nil, desc = 'AI/Claude Code' },
-    { '<c-M-j>', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude' },
-    { '<leader>cf', '<cmd>ClaudeCodeFocus<cr>', desc = 'Focus Claude' },
-    { '<leader>cs', '<cmd>ClaudeCodeSend<cr>', mode = 'v', desc = 'Send to Claude' },
+    -- { "<leader>a", nil, desc = "AI/Claude Code" },
+    { "<c-M-j>", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+    { "<leader>cf", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+    { "<leader>cr", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
+    { "<leader>cC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+    { "<leader>cb", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+    { "<leader>cs", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
     {
-      '<leader>cs',
-      '<cmd>ClaudeCodeTreeAdd<cr>',
-      desc = 'Add file',
-      ft = { 'NvimTree', 'neo-tree' },
+      "<leader>as",
+      "<cmd>ClaudeCodeTreeAdd<cr>",
+      desc = "Add file",
+      ft = { "NvimTree", "neo-tree", "oil" },
     },
-    { '<leader>co', '<cmd>ClaudeCodeOpen<cr>', desc = 'Open Claude' },
-    { '<leader>cx', '<cmd>ClaudeCodeClose<cr>', desc = 'Close Claude' },
-  },
+    -- Diff management
+    { "<leader>ca", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+    { "<leader>cd", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },},
 }
