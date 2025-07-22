@@ -29,12 +29,6 @@ gpgconf --launch gpg-agent > /dev/null 2>&1
 # That way sketchybar updates when I run those commands as well
 if command -v sketchybar &>/dev/null; then
 
-
-# When the zshrc file is ran, reload sketchybar, in case the theme was
-# switched
-# sketchybar --reload
-
-
 # Define a custom 'brew' function to wrap the Homebrew command.
 function brew() {
 	# Execute the original Homebrew command with all passed arguments.
