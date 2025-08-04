@@ -16,22 +16,32 @@ name = "🗒️ Notes"
 path = '/Users/cyperx/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes'
 startup_command = "nvim INDEX.md"
 preview_command = "bat --color=always /Users/cyperx/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
-
-[[session]]
-name = "🧪 Code"
-path = "~/Code"
-startup_command = "yazi"
-preview_command = "eza --all --git --icons --color=always {}"
 windows = [ "VIM", "👾Claude", "GIT" ]
 [[window]]
 name = "👾Claude"
 startup_script = "claude"
 [[window]]
-name = "VIM"
+name = "Notes"
 startup_script = "vim"
 [[window]]
 name = "GIT"
 startup_script = "git status"
+
+# [[session]]
+# name = "🧪 Code"
+# path = "~/Code"
+# startup_command = "yazi"
+# preview_command = "eza --all --git --icons --color=always {}"
+# windows = [ "VIM", "👾Claude", "GIT" ]
+# [[window]]
+# name = "👾Claude"
+# startup_script = "claude"
+# [[window]]
+# name = "VIM"
+# startup_script = "vim"
+# [[window]]
+# name = "GIT"
+# startup_script = "git status"
 
 [[session]]
 name = "🤖 Agents"
@@ -44,18 +54,21 @@ name = "⚙️ Dotfiles"
 path = "~/dotfiles"
 startup_command = "nvim"
 preview_command = "eza --all --git --icons --color=always {}"
-windows = [ "👾Claude", "GIT" ]
+windows = [ "VIM", "👾Claude", "GIT" ]
 [[window]]
 name = "👾Claude"
 startup_script = "claude"
 [[window]]
+name = "Notes"
+startup_script = "vim"
+[[window]]
 name = "GIT"
 startup_script = "git status"
 
-[[session]]
-name = "📥 Downloads"
-path = "~/Downloads"
-startup_command = "yazi"
+# [[session]]
+# name = "📥 Downloads"
+# path = "~/Downloads"
+# startup_command = "yazi"
 
 
 [[session]]
