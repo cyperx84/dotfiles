@@ -68,3 +68,4 @@ keybind = "cmd+shift+s=toggle_secure_input"
 # custom-shader = shaders/tft.glsl
 # custom-shader = shaders/underwater.glsl
 # custom-shader = shaders/water.glsl
+keybind = shift+enter=text:\n
