@@ -1,0 +1,62 @@
+[
+  {
+    "content": "Set up calendar-integration backend with multi-calendar provider support (Google, Outlook, Apple, ICS)",
+    "status": "in_progress",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Implement intelligent availability management with recurring schedules and blackout dates",
+    "status": "pending",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Create real-time conflict detection and resolution system",
+    "status": "pending",
+    "priority": "high",
+    "id": "3"
+  },
+  {
+    "content": "Build weather-based automatic rescheduling service",
+    "status": "pending",
+    "priority": "medium",
+    "id": "4"
+  },
+  {
+    "content": "Develop instructor schedule optimization tools",
+    "status": "pending",
+    "priority": "medium",
+    "id": "5"
+  },
+  {
+    "content": "Implement client calendar integration for booking confirmations",
+    "status": "pending",
+    "priority": "medium",
+    "id": "6"
+  },
+  {
+    "content": "Create team scheduling for multi-instructor lessons",
+    "status": "pending",
+    "priority": "medium",
+    "id": "7"
+  },
+  {
+    "content": "Build time zone management for international clients",
+    "status": "pending",
+    "priority": "high",
+    "id": "8"
+  },
+  {
+    "content": "Create calendar-integration frontend components",
+    "status": "pending",
+    "priority": "medium",
+    "id": "9"
+  },
+  {
+    "content": "Set up shared types and utilities for calendar operations",
+    "status": "pending",
+    "priority": "high",
+    "id": "10"
+  }
+]

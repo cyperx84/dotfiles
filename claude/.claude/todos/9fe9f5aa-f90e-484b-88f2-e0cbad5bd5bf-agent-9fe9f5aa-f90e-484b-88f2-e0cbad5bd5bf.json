@@ -1,0 +1,32 @@
+[
+  {
+    "content": "Find and examine existing .claude configuration files",
+    "status": "completed",
+    "id": "1"
+  },
+  {
+    "content": "Determine optimal dotfiles structure for Claude config",
+    "status": "completed",
+    "id": "2"
+  },
+  {
+    "content": "Create claude directory with stow-compatible structure",
+    "status": "completed",
+    "id": "3"
+  },
+  {
+    "content": "Copy existing .claude settings to dotfiles repo",
+    "status": "in_progress",
+    "id": "4"
+  },
+  {
+    "content": "Test stow integration",
+    "status": "pending",
+    "id": "5"
+  },
+  {
+    "content": "Update CLAUDE.md documentation",
+    "status": "pending",
+    "id": "6"
+  }
+]

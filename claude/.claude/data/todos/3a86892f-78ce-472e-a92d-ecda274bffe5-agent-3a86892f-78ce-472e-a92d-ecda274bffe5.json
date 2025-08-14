@@ -1,0 +1,26 @@
+[
+  {
+    "content": "Add missing key groups for AI, Buffer, UV, Debug, LSP operations",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Add custom icons and visual enhancements",
+    "status": "completed",
+    "priority": "medium",
+    "id": "2"
+  },
+  {
+    "content": "Configure advanced which-key options (layout, triggers, filters)",
+    "status": "completed",
+    "priority": "medium",
+    "id": "3"
+  },
+  {
+    "content": "Add key descriptions and cleanup mappings display",
+    "status": "completed",
+    "priority": "low",
+    "id": "4"
+  }
+]

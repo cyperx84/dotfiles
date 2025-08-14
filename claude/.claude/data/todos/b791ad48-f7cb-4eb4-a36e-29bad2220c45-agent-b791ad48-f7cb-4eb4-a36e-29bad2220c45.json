@@ -1,0 +1,26 @@
+[
+  {
+    "content": "Create custom toggle_claude_no_focus() Lua function",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Update <c-M-j> keybind to use custom function",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Add error handling for edge cases",
+    "status": "completed",
+    "priority": "medium",
+    "id": "3"
+  },
+  {
+    "content": "Test the custom toggle behavior",
+    "status": "completed",
+    "priority": "high",
+    "id": "4"
+  }
+]

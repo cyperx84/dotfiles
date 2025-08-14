@@ -1,0 +1,33 @@
+{
+  "name": "code-analysis-agent",
+  "description": "Specialized agent for code review, analysis, and refactoring tasks",
+  "type": "specialized",
+  "domain": "software-development",
+  "capabilities": [
+    "Code quality assessment",
+    "Security vulnerability scanning",
+    "Performance optimization suggestions",
+    "Code pattern recognition",
+    "Refactoring recommendations",
+    "Documentation generation"
+  ],
+  "tools": [
+    "Read", "Grep", "Glob",
+    "Edit", "MultiEdit",
+    "Bash"
+  ],
+  "usage_examples": [
+    "Review code for security vulnerabilities",
+    "Analyze code performance and suggest optimizations",
+    "Generate comprehensive code documentation",
+    "Identify code smells and anti-patterns",
+    "Suggest refactoring opportunities"
+  ],
+  "best_practices": [
+    "Provide specific file paths when possible",
+    "Include context about the codebase architecture",
+    "Specify the programming language and frameworks",
+    "Mention any coding standards or conventions to follow"
+  ],
+  "prompt_template": "Please analyze the code in {file_path} for {analysis_type}. Focus on {specific_areas} and provide actionable recommendations following {coding_standards}."
+}

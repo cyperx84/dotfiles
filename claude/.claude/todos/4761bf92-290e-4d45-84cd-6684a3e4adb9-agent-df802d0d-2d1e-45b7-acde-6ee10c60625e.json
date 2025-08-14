@@ -1,0 +1,38 @@
+[
+  {
+    "content": "Create main directory 'claude-hooks-playground' and navigate to it",
+    "status": "completed",
+    "priority": "high",
+    "id": "create-main-dir"
+  },
+  {
+    "content": "Initialize git repository in the main directory",
+    "status": "completed",
+    "priority": "high",
+    "id": "init-git"
+  },
+  {
+    "content": "Create basic directory structure (docs/, examples/, scripts/, .claude/)",
+    "status": "completed",
+    "priority": "high",
+    "id": "create-basic-structure"
+  },
+  {
+    "content": "Create .gitignore file suitable for the project",
+    "status": "completed",
+    "priority": "medium",
+    "id": "create-gitignore"
+  },
+  {
+    "content": "Set up git worktrees for each hook category",
+    "status": "completed",
+    "priority": "high",
+    "id": "create-worktrees"
+  },
+  {
+    "content": "Create placeholder README files in each worktree directory",
+    "status": "completed",
+    "priority": "medium",
+    "id": "create-readme-files"
+  }
+]

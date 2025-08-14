@@ -1,0 +1,50 @@
+[
+  {
+    "content": "Create shared TypeScript types for booking system entities (Instructor, Client, Booking, etc.)",
+    "status": "completed",
+    "priority": "high",
+    "id": "setup-shared-types"
+  },
+  {
+    "content": "Build AI-powered instructor matching system with skill, style, language, and personality compatibility",
+    "status": "completed",
+    "priority": "high",
+    "id": "ai-matching-engine"
+  },
+  {
+    "content": "Implement advanced booking features (multi-day packages, group bookings, waitlist management, rescheduling)",
+    "status": "in_progress",
+    "priority": "high",
+    "id": "booking-core-features"
+  },
+  {
+    "content": "Create dynamic pricing system with peak time adjustments, group discounts, and demand modeling",
+    "status": "completed",
+    "priority": "high",
+    "id": "dynamic-pricing"
+  },
+  {
+    "content": "Implement booking optimization with conflict detection, overbooking prevention, and real-time updates",
+    "status": "in_progress",
+    "priority": "high",
+    "id": "booking-optimization"
+  },
+  {
+    "content": "Build customer experience features (progress tracking, confirmations, guides, follow-ups)",
+    "status": "pending",
+    "priority": "medium",
+    "id": "customer-experience"
+  },
+  {
+    "content": "Create backend API with Express.js, database models, and business logic",
+    "status": "pending",
+    "priority": "high",
+    "id": "backend-api"
+  },
+  {
+    "content": "Build React frontend for booking interface and management dashboard",
+    "status": "pending",
+    "priority": "medium",
+    "id": "frontend-interface"
+  }
+]

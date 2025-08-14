@@ -1,0 +1,80 @@
+[
+  {
+    "content": "Create directory structure and README.md with comprehensive security hooks overview",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Create file protection configuration (configs/file-protection.json)",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Create permission control configuration (configs/permission-control.json)",
+    "status": "completed",
+    "priority": "high",
+    "id": "3"
+  },
+  {
+    "content": "Create audit logging configuration (configs/audit-logging.json)",
+    "status": "completed",
+    "priority": "high",
+    "id": "4"
+  },
+  {
+    "content": "Create secrets detection configuration (configs/secrets-detection.json)",
+    "status": "completed",
+    "priority": "high",
+    "id": "5"
+  },
+  {
+    "content": "Create permission validation script (scripts/validate-permissions.sh)",
+    "status": "completed",
+    "priority": "medium",
+    "id": "6"
+  },
+  {
+    "content": "Create backup and protection script (scripts/backup-and-protect.sh)",
+    "status": "completed",
+    "priority": "medium",
+    "id": "7"
+  },
+  {
+    "content": "Create audit logging script (scripts/audit-logger.sh)",
+    "status": "completed",
+    "priority": "medium",
+    "id": "8"
+  },
+  {
+    "content": "Create secrets detection script (scripts/scan-for-secrets.sh)",
+    "status": "completed",
+    "priority": "medium",
+    "id": "9"
+  },
+  {
+    "content": "Create dangerous operations blocking script (scripts/block-dangerous-ops.sh)",
+    "status": "completed",
+    "priority": "medium",
+    "id": "10"
+  },
+  {
+    "content": "Create sample production files (examples/production-files/)",
+    "status": "completed",
+    "priority": "low",
+    "id": "11"
+  },
+  {
+    "content": "Create sensitive data examples (examples/sensitive-data/)",
+    "status": "completed",
+    "priority": "low",
+    "id": "12"
+  },
+  {
+    "content": "Create security patterns documentation (docs/security-patterns.md)",
+    "status": "completed",
+    "priority": "medium",
+    "id": "13"
+  }
+]

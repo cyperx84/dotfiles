@@ -1,0 +1,32 @@
+[
+  {
+    "content": "Create comprehensive VAULT_OVERVIEW.md document",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Structure the document with executive summary and directory guide",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Document workflow patterns and navigation systems",
+    "status": "completed",
+    "priority": "high",
+    "id": "3"
+  },
+  {
+    "content": "Add content examples and cross-domain mapping",
+    "status": "completed",
+    "priority": "medium",
+    "id": "4"
+  },
+  {
+    "content": "Include template reference guide and tag taxonomy",
+    "status": "completed",
+    "priority": "medium",
+    "id": "5"
+  }
+]

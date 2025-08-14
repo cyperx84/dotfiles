@@ -1,0 +1,62 @@
+[
+  {
+    "content": "Enhance multi-party payment processing with advanced commission splitting and multi-currency support",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Implement comprehensive client payment features (secure processing, saved methods, split payments, refunds)",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Build advanced payment features (tips, subscriptions, gift cards, corporate billing)",
+    "status": "completed",
+    "priority": "high",
+    "id": "3"
+  },
+  {
+    "content": "Implement security and compliance features (PCI DSS, fraud detection, chargebacks, encryption)",
+    "status": "completed",
+    "priority": "high",
+    "id": "4"
+  },
+  {
+    "content": "Create comprehensive API controllers and routes for all payment functionality",
+    "status": "completed",
+    "priority": "high",
+    "id": "5"
+  },
+  {
+    "content": "Build frontend components for payment processing and instructor financial management",
+    "status": "completed",
+    "priority": "medium",
+    "id": "6"
+  },
+  {
+    "content": "Implement automated payout system with customizable schedules",
+    "status": "completed",
+    "priority": "medium",
+    "id": "7"
+  },
+  {
+    "content": "Add comprehensive payment webhooks handling and event processing",
+    "status": "pending",
+    "priority": "medium",
+    "id": "8"
+  },
+  {
+    "content": "Create payment analytics and reporting dashboards",
+    "status": "pending",
+    "priority": "medium",
+    "id": "9"
+  },
+  {
+    "content": "Add comprehensive testing and documentation",
+    "status": "pending",
+    "priority": "low",
+    "id": "10"
+  }
+]

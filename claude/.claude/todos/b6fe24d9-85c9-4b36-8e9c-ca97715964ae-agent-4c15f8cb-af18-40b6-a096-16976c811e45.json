@@ -1,0 +1,80 @@
+[
+  {
+    "content": "Create backend API structure with Express.js server and authentication middleware",
+    "status": "in_progress",
+    "priority": "high",
+    "id": "admin-1"
+  },
+  {
+    "content": "Build resort management system with multi-location support and configuration",
+    "status": "pending",
+    "priority": "high",
+    "id": "admin-2"
+  },
+  {
+    "content": "Implement instructor onboarding and verification workflows with document management",
+    "status": "pending",
+    "priority": "high",
+    "id": "admin-3"
+  },
+  {
+    "content": "Create platform analytics dashboard with real-time metrics and reporting",
+    "status": "pending",
+    "priority": "high",
+    "id": "admin-4"
+  },
+  {
+    "content": "Build financial reporting and commission management system",
+    "status": "pending",
+    "priority": "high",
+    "id": "admin-5"
+  },
+  {
+    "content": "Develop customer support tools and dispute resolution interface",
+    "status": "pending",
+    "priority": "medium",
+    "id": "admin-6"
+  },
+  {
+    "content": "Create content management system for platform information and policies",
+    "status": "pending",
+    "priority": "medium",
+    "id": "admin-7"
+  },
+  {
+    "content": "Implement seasonal planning and capacity management tools",
+    "status": "pending",
+    "priority": "medium",
+    "id": "admin-8"
+  },
+  {
+    "content": "Build integration management dashboard for third-party services",
+    "status": "pending",
+    "priority": "medium",
+    "id": "admin-9"
+  },
+  {
+    "content": "Create quality assurance and rating moderation system",
+    "status": "pending",
+    "priority": "medium",
+    "id": "admin-10"
+  },
+  {
+    "content": "Implement emergency management and communication tools",
+    "status": "pending",
+    "priority": "low",
+    "id": "admin-11"
+  },
+  {
+    "content": "Create Next.js frontend with modern UI components and responsive design",
+    "status": "pending",
+    "priority": "high",
+    "id": "admin-12"
+  },
+  {
+    "content": "Set up shared types and utilities for admin dashboard",
+    "status": "pending",
+    "priority": "high",
+    "id": "admin-13"
+  }
+]

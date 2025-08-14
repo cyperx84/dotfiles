@@ -1,0 +1,31 @@
+{
+  "name": "general-purpose-agent",
+  "description": "A versatile agent for handling complex, multi-step tasks autonomously",
+  "type": "general-purpose",
+  "capabilities": [
+    "Research and information gathering",
+    "File searching and code analysis",
+    "Multi-step task execution",
+    "Problem solving and debugging",
+    "Documentation and explanation"
+  ],
+  "tools": [
+    "Read", "Write", "Edit", "MultiEdit",
+    "Bash", "Glob", "Grep", 
+    "WebFetch", "WebSearch"
+  ],
+  "usage_examples": [
+    "Research complex technical questions",
+    "Search for specific code patterns across large codebases",
+    "Execute multi-step development workflows",
+    "Debug issues across multiple files and systems",
+    "Generate comprehensive documentation"
+  ],
+  "best_practices": [
+    "Use for tasks requiring multiple tools and iterations",
+    "Ideal for open-ended research and exploration",
+    "Good for when you need autonomous problem-solving",
+    "Use when task scope is unclear initially"
+  ],
+  "prompt_template": "I need help with {task_description}. This is a {complexity_level} task that requires {specific_capabilities}. Please research thoroughly and provide a comprehensive solution."
+}

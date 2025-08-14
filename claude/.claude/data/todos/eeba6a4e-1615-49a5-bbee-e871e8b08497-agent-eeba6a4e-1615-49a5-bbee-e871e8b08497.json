@@ -1,0 +1,32 @@
+[
+  {
+    "content": "Enhance memory plugin with pressure indicators, swap monitoring, and better formatting",
+    "status": "completed",
+    "priority": "high",
+    "id": "memory_plugin"
+  },
+  {
+    "content": "Improve temperature plugin with real sensor data and proper thermal monitoring",
+    "status": "completed",
+    "priority": "high",
+    "id": "temperature_plugin"
+  },
+  {
+    "content": "Refine disk plugin with multi-disk support, I/O activity, and better space reporting",
+    "status": "completed",
+    "priority": "high",
+    "id": "disk_plugin"
+  },
+  {
+    "content": "Optimize network plugin with better interface detection, quality indicators, and VPN support",
+    "status": "completed",
+    "priority": "high",
+    "id": "network_plugin"
+  },
+  {
+    "content": "Enable temperature plugin in main configuration file",
+    "status": "completed",
+    "priority": "medium",
+    "id": "enable_temperature"
+  }
+]

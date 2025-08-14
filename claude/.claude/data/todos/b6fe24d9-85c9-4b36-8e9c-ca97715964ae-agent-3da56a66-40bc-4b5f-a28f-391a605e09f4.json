@@ -1,0 +1,50 @@
+[
+  {
+    "content": "Initialize Next.js project with TypeScript and essential dependencies",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Setup base application structure with navigation and routing",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Create responsive design system and component library foundation",
+    "status": "completed",
+    "priority": "high",
+    "id": "3"
+  },
+  {
+    "content": "Create core pages (landing, instructor dashboard, client booking)",
+    "status": "completed",
+    "priority": "high",
+    "id": "4"
+  },
+  {
+    "content": "Add state management with Context API",
+    "status": "completed",
+    "priority": "medium",
+    "id": "5"
+  },
+  {
+    "content": "Setup API client for backend communication",
+    "status": "completed",
+    "priority": "medium",
+    "id": "6"
+  },
+  {
+    "content": "Implement mobile-first responsive design",
+    "status": "completed",
+    "priority": "high",
+    "id": "7"
+  },
+  {
+    "content": "Add error handling and loading states",
+    "status": "completed",
+    "priority": "medium",
+    "id": "8"
+  }
+]

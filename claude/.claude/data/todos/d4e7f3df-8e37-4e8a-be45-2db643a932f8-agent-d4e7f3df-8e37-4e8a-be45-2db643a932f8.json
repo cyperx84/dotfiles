@@ -1,0 +1,26 @@
+[
+  {
+    "content": "Enhance color coding for notification count thresholds",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Improve notification type color scheme",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Update popup template styling in items/github.sh",
+    "status": "completed",
+    "priority": "medium",
+    "id": "3"
+  },
+  {
+    "content": "Enhance notification item styling in plugins/github.sh",
+    "status": "completed",
+    "priority": "medium",
+    "id": "4"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "content": "Check project structure and package.json for available scripts",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Start backend development server",
+    "status": "in_progress",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Start frontend development server",
+    "status": "pending",
+    "priority": "high",
+    "id": "3"
+  },
+  {
+    "content": "Verify both services are running and accessible",
+    "status": "pending",
+    "priority": "medium",
+    "id": "4"
+  }
+]

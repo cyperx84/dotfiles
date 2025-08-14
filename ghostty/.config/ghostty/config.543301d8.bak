@@ -1,0 +1,70 @@
+theme = Monokai Remastered
+font-family = MesloLGS Nerd Font Mono
+font-family-bold= MonaspiceKr Nerd Font Mono 
+font-family-italic= MonaspiceRn Nerd Font Mono 
+font-family-bold-italic = MonaspiceRn Nerd Font Mono 
+font-size = 16 
+font-feature = "ss01"
+font-feature = "ss02"
+font-feature = "ss03"
+font-feature = "ss04"
+font-feature = "liga"
+
+cursor-color = #00FF00
+cursor-style = block_hollow
+cursor-style-blink = true
+
+background-blur-radius = 20
+keybind = ctrl+l=unbind
+mouse-hide-while-typing = true
+window-decoration = false
+keybind = global:cmd+/=toggle_quick_terminal
+background-opacity = 0.9
+background-blur = false
+
+macos-option-as-alt = true
+
+macos-auto-secure-input = false
+macos-secure-input-indication = false
+keybind = "cmd+shift+s=toggle_secure_input"
+
+
+
+
+# Ghostty Custom shaders
+
+# custom-shader = shaders/animated-gradient-shader.glsl
+# custom-shader = shaders/bettercrt.glsl
+# custom-shader = shaders/bloom.glsl
+# custom-shader = shaders/bloom1.glsl
+# custom-shader = shaders/bloom075.glsl
+# custom-shader = shaders/bloom060.glsl
+# custom-shader = shaders/bloom050.glsl
+# custom-shader = shaders/bloom025.glsl
+# custom-shader = shaders/bloom050.glsl
+# custom-shader = shaders/bloom060.glsl
+# custom-shader = shaders/bloom075.glsl
+# custom-shader = shaders/bloom1.glsl
+# custom-shader = shaders/crt.glsl
+# custom-shader = shaders/cubes.glsl
+# custom-shader = shaders/dither.glsl
+# custom-shader = shaders/drunkard.glsl
+# custom-shader = shaders/fireworks-rockets.glsl
+# custom-shader = shaders/fireworks.glsl
+# custom-shader = shaders/gears-and-belts.glsl
+# custom-shader = shaders/glitchy.glsl
+# custom-shader = shaders/glow-rgbsplit-twitchy.glsl
+# custom-shader = shaders/gradient-background.glsl
+# custom-shader = shaders/inside-the-matrix.glsl
+# custom-shader = shaders/just-snow.glsl
+# custom-shader = shaders/matrix-hallway.glsl
+# custom-shader = shaders/negative.glsl
+# custom-shader = shaders/retro-terminal.glsl
+# custom-shader = shaders/smoke-and-ghost.glsl
+# custom-shader = shaders/sparks-from-fire.glsl
+# custom-shader = shaders/spotlight.glsl
+# custom-shader = shaders/starfield-colors.glsl
+# custom-shader = shaders/starfield.glsl
+# custom-shader = shaders/tft.glsl
+# custom-shader = shaders/underwater.glsl
+# custom-shader = shaders/water.glsl

@@ -1,0 +1,38 @@
+[
+  {
+    "content": "Restore dual CPU graphs with smooth curves and clean overlay design",
+    "status": "completed",
+    "priority": "high",
+    "id": "cpu_graph_refinement"
+  },
+  {
+    "content": "Add framework detection and intelligent project state indicators",
+    "status": "pending",
+    "priority": "medium",
+    "id": "project_context_intelligence"
+  },
+  {
+    "content": "Enhance Docker plugin with performance indicators and quick actions",
+    "status": "pending",
+    "priority": "medium",
+    "id": "docker_integration_enhancement"
+  },
+  {
+    "content": "Improve development server monitoring with health indicators and framework detection",
+    "status": "pending",
+    "priority": "medium",
+    "id": "dev_servers_intelligence"
+  },
+  {
+    "content": "Implement dynamic disk I/O symbols and visual space indicators",
+    "status": "pending",
+    "priority": "medium",
+    "id": "disk_activity_symbols"
+  },
+  {
+    "content": "Add animated temperature states based on thermal conditions",
+    "status": "pending",
+    "priority": "medium",
+    "id": "temperature_animation_states"
+  }
+]

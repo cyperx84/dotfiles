@@ -1,0 +1,38 @@
+[
+  {
+    "content": "Replace plain number icons with stylized SF Symbols or custom icons",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Implement smart window indicators (dots for 1-3 windows, numbers for 4+)",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Enhance active space visual styling with better highlighting",
+    "status": "completed",
+    "priority": "high",
+    "id": "3"
+  },
+  {
+    "content": "Refine color scheme for better visual hierarchy",
+    "status": "completed",
+    "priority": "medium",
+    "id": "4"
+  },
+  {
+    "content": "Improve spacing and layout for better visual grouping",
+    "status": "completed",
+    "priority": "medium",
+    "id": "5"
+  },
+  {
+    "content": "Add visual effects like animations and enhanced backgrounds",
+    "status": "completed",
+    "priority": "low",
+    "id": "6"
+  }
+]

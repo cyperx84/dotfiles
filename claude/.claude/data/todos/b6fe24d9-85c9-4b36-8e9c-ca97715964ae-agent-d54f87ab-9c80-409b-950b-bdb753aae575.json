@@ -1,0 +1,62 @@
+[
+  {
+    "content": "Create backend authentication structure with JWT and refresh token support",
+    "status": "completed",
+    "priority": "high",
+    "id": "auth-1"
+  },
+  {
+    "content": "Implement multi-role user models (instructors, clients, resort admins)",
+    "status": "completed",
+    "priority": "high",
+    "id": "auth-2"
+  },
+  {
+    "content": "Create user registration and email verification system",
+    "status": "completed",
+    "priority": "high",
+    "id": "auth-3"
+  },
+  {
+    "content": "Implement password reset functionality",
+    "status": "completed",
+    "priority": "medium",
+    "id": "auth-4"
+  },
+  {
+    "content": "Add OAuth integration (Google, Facebook)",
+    "status": "completed",
+    "priority": "medium",
+    "id": "auth-5"
+  },
+  {
+    "content": "Create session management and security middleware",
+    "status": "completed",
+    "priority": "high",
+    "id": "auth-6"
+  },
+  {
+    "content": "Implement role-based access control (RBAC)",
+    "status": "completed",
+    "priority": "high",
+    "id": "auth-7"
+  },
+  {
+    "content": "Build API authentication middleware",
+    "status": "completed",
+    "priority": "high",
+    "id": "auth-8"
+  },
+  {
+    "content": "Create frontend authentication hooks and components",
+    "status": "completed",
+    "priority": "high",
+    "id": "auth-9"
+  },
+  {
+    "content": "Add security best practices (rate limiting, CSRF protection)",
+    "status": "completed",
+    "priority": "medium",
+    "id": "auth-10"
+  }
+]

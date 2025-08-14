@@ -1,0 +1,68 @@
+[
+  {
+    "content": "Set up comprehensive admin dashboard structure with frontend and backend components",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Implement resort management and multi-location support system",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Create instructor onboarding and verification workflows",
+    "status": "completed",
+    "priority": "high",
+    "id": "3"
+  },
+  {
+    "content": "Build platform analytics and performance metrics dashboard",
+    "status": "completed",
+    "priority": "high",
+    "id": "4"
+  },
+  {
+    "content": "Develop financial reporting and commission management tools",
+    "status": "in_progress",
+    "priority": "medium",
+    "id": "5"
+  },
+  {
+    "content": "Implement customer support tools and dispute resolution system",
+    "status": "pending",
+    "priority": "medium",
+    "id": "6"
+  },
+  {
+    "content": "Create content management system for platform information",
+    "status": "pending",
+    "priority": "medium",
+    "id": "7"
+  },
+  {
+    "content": "Build seasonal planning and capacity management tools",
+    "status": "pending",
+    "priority": "medium",
+    "id": "8"
+  },
+  {
+    "content": "Develop integration management for third-party services",
+    "status": "pending",
+    "priority": "low",
+    "id": "9"
+  },
+  {
+    "content": "Implement quality assurance and rating moderation system",
+    "status": "pending",
+    "priority": "low",
+    "id": "10"
+  },
+  {
+    "content": "Create emergency management and communication tools",
+    "status": "pending",
+    "priority": "low",
+    "id": "11"
+  }
+]

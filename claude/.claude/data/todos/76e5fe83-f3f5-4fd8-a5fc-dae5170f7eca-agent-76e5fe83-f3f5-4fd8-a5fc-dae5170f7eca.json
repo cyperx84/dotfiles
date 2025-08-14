@@ -1,0 +1,32 @@
+[
+  {
+    "content": "Analyze dotfiles to identify all required brew packages",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Create comprehensive brew dependencies list",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Update README.md with essential brew items",
+    "status": "completed",
+    "priority": "high",
+    "id": "3"
+  },
+  {
+    "content": "Update CLAUDE.md with brew dependency information",
+    "status": "completed",
+    "priority": "medium",
+    "id": "4"
+  },
+  {
+    "content": "Check for any other docs that need brew info updates",
+    "status": "completed",
+    "priority": "low",
+    "id": "5"
+  }
+]

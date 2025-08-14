@@ -1,0 +1,38 @@
+[
+  {
+    "content": "Fix authController.ts TypeScript validation types",
+    "status": "completed",
+    "priority": "high",
+    "id": "p1-1"
+  },
+  {
+    "content": "Add try-catch error handling to all 5 controllers",
+    "status": "completed",
+    "priority": "high",
+    "id": "p1-2"
+  },
+  {
+    "content": "Fix Next.js SWC compiler binding issues",
+    "status": "completed",
+    "priority": "high",
+    "id": "p1-3"
+  },
+  {
+    "content": "Setup PostgreSQL development database",
+    "status": "completed",
+    "priority": "high",
+    "id": "p1-4"
+  },
+  {
+    "content": "Test all API endpoints with working database",
+    "status": "in_progress",
+    "priority": "medium",
+    "id": "p1-5"
+  },
+  {
+    "content": "Validate complete frontend-backend integration",
+    "status": "pending",
+    "priority": "medium",
+    "id": "p1-6"
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "content": "Create enhanced instructor profile system with video portfolios and media galleries",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Implement certification verification system with document upload and validation",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Build instructor onboarding workflow with multi-step verification process",
+    "status": "completed",
+    "priority": "high",
+    "id": "3"
+  },
+  {
+    "content": "Create performance analytics dashboard with revenue tracking and metrics",
+    "status": "completed",
+    "priority": "medium",
+    "id": "4"
+  },
+  {
+    "content": "Implement professional development tools for certification tracking and education",
+    "status": "completed",
+    "priority": "medium",
+    "id": "5"
+  },
+  {
+    "content": "Build instructor community features with peer feedback and forums",
+    "status": "completed",
+    "priority": "medium",
+    "id": "6"
+  },
+  {
+    "content": "Create database migrations for new instructor management tables",
+    "status": "completed",
+    "priority": "high",
+    "id": "7"
+  },
+  {
+    "content": "Develop API endpoints for new instructor features",
+    "status": "completed",
+    "priority": "high",
+    "id": "8"
+  },
+  {
+    "content": "Create React components for instructor management frontend",
+    "status": "completed",
+    "priority": "medium",
+    "id": "9"
+  }
+]

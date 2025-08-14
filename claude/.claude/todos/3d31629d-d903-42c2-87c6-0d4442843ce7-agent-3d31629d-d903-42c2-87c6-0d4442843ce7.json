@@ -1,0 +1,20 @@
+[
+  {
+    "content": "Research Claude Code hooks documentation",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Create comprehensive hooks guide in markdown format",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Save guide to notes directory",
+    "status": "completed",
+    "priority": "medium",
+    "id": "3"
+  }
+]

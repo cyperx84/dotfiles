@@ -1,0 +1,26 @@
+[
+  {
+    "content": "Revert memory item back to single text-based display",
+    "status": "completed",
+    "priority": "high",
+    "id": "1"
+  },
+  {
+    "content": "Restore enhanced memory plugin with btop-style text format",
+    "status": "completed",
+    "priority": "high",
+    "id": "2"
+  },
+  {
+    "content": "Update system monitor bracket to use single memory item",
+    "status": "completed",
+    "priority": "medium",
+    "id": "3"
+  },
+  {
+    "content": "Test the reverted memory display",
+    "status": "completed",
+    "priority": "medium",
+    "id": "4"
+  }
+]
