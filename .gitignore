@@ -1,0 +1,9 @@
+# Compiled binaries
+sketchybar/.config/sketchybar/helper/helper
+
+# macOS
+.DS_Store
+
+# Backup files
+*.bak
+*~

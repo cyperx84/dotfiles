@@ -246,3 +246,5 @@ fpath=(/Users/cyperx/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+alias claude="/Users/cyperx/.claude/local/claude"

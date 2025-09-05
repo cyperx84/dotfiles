@@ -48,9 +48,10 @@ return {
         chat = {
           window = {
             layout = 'vertical',
+            position = 'left',
             border = 'single',
             height = 0.6, -- 60% of screen height (default is 0.8)
-            width = 0.3, -- 30% of screen width (default is 0.45)
+            width = 0.4, -- 30% of screen width (default is 0.45)
             relative = 'editor',
             full_height = false, -- Use full height of the editor
           },
@@ -59,7 +60,7 @@ return {
           width = 75,
           height = 10,
           prompt = 'Prompt', -- Prompt used for interactive LLM calls
-          provider = 'snacks', -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
+          provider = 'default', -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
           opts = {
             show_default_actions = true, -- Show the default actions in the action palette?
             show_default_prompt_library = true, -- Show the default prompt library in the action palette?
