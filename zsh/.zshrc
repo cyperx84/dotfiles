@@ -249,3 +249,5 @@ compinit
 # End of Docker CLI completions
 
 # alias claude="/Users/cyperx/.claude/local/claude"
+
+alias claude="/Users/cyperx/.claude/local/claude"

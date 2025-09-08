@@ -68,49 +68,51 @@ return {
         },
       },
       adapters = {
-        openai = function()
-          return require('codecompanion.adapters').extend('openai', {
-            env = {
-              api_key = 'cmd:pass show apis/OPENAI_API_KEY',
-            },
-            schema = {
-              model = { default = 'gpt-4o' },
-            },
-          })
-        end,
+        http = {
+          openai = function()
+            return require('codecompanion.adapters').extend('openai', {
+              env = {
+                api_key = 'cmd:pass show apis/OPENAI_API_KEY',
+              },
+              schema = {
+                model = { default = 'gpt-4o' },
+              },
+            })
+          end,
 
-        anthropic = function()
-          return require('codecompanion.adapters').extend('anthropic', {
-            env = {
-              api_key = 'cmd:pass show apis/ANTHROPIC_API_KEY',
-            },
-            schema = {
-              model = { default = 'claude-sonnet-4-20250514' },
-            },
-          })
-        end,
+          anthropic = function()
+            return require('codecompanion.adapters').extend('anthropic', {
+              env = {
+                api_key = 'cmd:pass show apis/ANTHROPIC_API_KEY',
+              },
+              schema = {
+                model = { default = 'claude-sonnet-4-20250514' },
+              },
+            })
+          end,
 
-        gemini = function()
-          return require('codecompanion.adapters').extend('gemini', {
-            env = {
-              api_key = 'cmd:pass show apis/GEMINI_API_KEY',
-            },
-            schema = {
-              model = { default = 'gemini-2.5-flash-preview-05-20' },
-            },
-          })
-        end,
+          gemini = function()
+            return require('codecompanion.adapters').extend('gemini', {
+              env = {
+                api_key = 'cmd:pass show apis/GEMINI_API_KEY',
+              },
+              schema = {
+                model = { default = 'gemini-2.5-flash-preview-05-20' },
+              },
+            })
+          end,
 
-        deepseek = function()
-          return require('codecompanion.adapters').extend('deepseek', {
-            env = {
-              api_key = 'cmd:pass show apis/DEEPSEEK_API_KEY',
-            },
-            schema = {
-              model = { default = 'deepseek-chat' },
-            },
-          })
-        end,
+          deepseek = function()
+            return require('codecompanion.adapters').extend('deepseek', {
+              env = {
+                api_key = 'cmd:pass show apis/DEEPSEEK_API_KEY',
+              },
+              schema = {
+                model = { default = 'deepseek-chat' },
+              },
+            })
+          end,
+        },
 
       },
 
