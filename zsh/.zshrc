@@ -234,17 +234,18 @@ export BAT_THEME=tokyonight_night
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
 
-export PATH=$PATH:/Users/cyperx/.claude/local
+# Claude Code - using npm global installation
+# export PATH=$PATH:/Users/cyperx/.claude/local
 export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-alias claude="/Users/cyperx/.claude/local/claude"
-alias cld="/Users/cyperx/.claude/local/claude"
+# alias claude="/Users/cyperx/.claude/local/claude"
+# alias cld="/Users/cyperx/.claude/local/claude"
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/cyperx/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
 
-alias claude="/Users/cyperx/.claude/local/claude"
+# alias claude="/Users/cyperx/.claude/local/claude"
