@@ -3,15 +3,27 @@ ENABLE_CORRECTION="false"
 HIST_STAMPS="dd/mm/yy"
 INSTALLER_NO_MODIFY_PATH=1
 
+# Ensure proper prompt formatting in tmux
+setopt PROMPT_SUBST
+setopt TRANSIENT_RPROMPT
+
 export LC_ALL=en_US.UTF-8
 
+# Enhanced terminal detection for Ghostty + tmux
 if [ -n "$TMUX" ]; then
- export TERM="tmux-256color"
+    export TERM="tmux-256color"
+elif [ "$TERM_PROGRAM" = "ghostty" ]; then
+    export TERM="xterm-ghostty"
 else
- export TERM="xterm-256color" # Or another appropriate setting
+    export TERM="xterm-256color"
 fi
 
 export COLORTERM="truecolor"
+
+# Ensure proper color support in tmux + Ghostty
+if [ -n "$TMUX" ] && [ "$TERM_PROGRAM" = "ghostty" ]; then
+    export TERM_PROGRAM="ghostty"
+fi
 
 autoload -U compinit; compinit
 
@@ -107,8 +119,15 @@ bindkey '^f' vi-forward-word
 bindkey '^u' up-line-or-search
 bindkey '^p' down-line-or-search
 
-eval "$(starship init zsh)"
+# Starship prompt initialization with proper tmux integration
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
+
+# Ensure proper prompt handling in tmux
+if [ -n "$TMUX" ]; then
+    export STARSHIP_SHELL="zsh"
+fi
+
+eval "$(starship init zsh)"
 
 # Git
 alias gc="git commit -m"
@@ -234,20 +253,15 @@ export BAT_THEME=tokyonight_night
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
 
-# Claude Code - using npm global installation
-# export PATH=$PATH:/Users/cyperx/.claude/local
 export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-# alias claude="/Users/cyperx/.claude/local/claude"
-# alias cld="/Users/cyperx/.claude/local/claude"
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/cyperx/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
 
-# alias claude="/Users/cyperx/.claude/local/claude"
-
 alias claude="/Users/cyperx/.claude/local/claude"
+alias cld="/Users/cyperx/.claude/local/claude --dangerously-skip-permissions"

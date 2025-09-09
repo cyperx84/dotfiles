@@ -1,31 +1,48 @@
-name: muxinator
+name: dotfiles
 root: ~/dotfiles/
 
-# Optional tmux socket
-# socket_name: foo
-
-# Project hooks
-# Runs on project start, always
-on_project_start: echo "Initializing project..."
-
-# Run on project start, the first time
-on_project_first_start: echo "First-time setup for dotfiles"
-
-# Run on project start, after the first time
-on_project_restart: echo "Restarting with updated configurations"
-
-# Run on project exit (detaching from tmux session)
-on_project_exit: echo "Cleaning up session..."
-
-# Run on project stop
-on_project_stop: echo "Project stopped."
+# Project hooks for dotfiles management
+on_project_start: echo "🔧 Initializing dotfiles workspace..."
+on_project_first_start: |
+  echo "🚀 First-time dotfiles setup"
+  git status
+on_project_restart: |
+  echo "♻️ Restarting dotfiles session"
+  git pull --rebase origin main
+on_project_exit: echo "👋 Dotfiles session ended"
 
 windows:
-  - editor:
-      layout: main-vertical
+  - Development:
+      layout: main-horizontal
+      options:
+        main-pane-height: 75%
       panes:
         - editor:
-          - vim
-        - python3
-  - git: git status
-  - logs: tail -f ~/.local/share/nvim/log
+          - nvim CLAUDE.md
+        - terminal:
+          - echo "💡 Use 'stow */' to install all configs"
+          - echo "🔍 Use 'git status' to check changes"
+          
+  - Services:
+      layout: even-horizontal
+      panes:
+        - yabai:
+          - echo "🪟 Yabai service status:"
+          - brew services list | grep yabai
+        - skhd:
+          - echo "⌨️ SKHD service status:"
+          - brew services list | grep skhd
+        - sketchybar:
+          - echo "📊 SketchyBar service status:"
+          - brew services list | grep sketchybar
+          
+  - Git:
+      panes:
+        - git status
+        - git log --oneline -10
+        
+  - Monitor:
+      panes:
+        - logs:
+          - echo "📝 Monitoring system logs..."
+          - tail -f /usr/local/var/log/yabai/yabai.out.log

@@ -24,6 +24,10 @@ background-blur = false
 
 macos-option-as-alt = true
 
+# Terminal integration improvements  
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
 macos-auto-secure-input = false
 macos-secure-input-indication = false
 keybind = "cmd+shift+s=toggle_secure_input"

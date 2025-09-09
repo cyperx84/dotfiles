@@ -1,0 +1,83 @@
+gablacklist = ["scratch"]
+
+sort_order = [
+    "tmuxinator", # show first
+    "config", 
+    "tmux",
+    "zoxide", # show last
+]
+
+[default_session]
+startup_command = "nvim"
+preview_command = "eza --all --git --icons --color=always {}"
+
+# Tmuxinator integration settings
+[tmuxinator]
+auto_detect = true
+path = "~/.config/tmuxinator"
+prefer_tmuxinator = true  # Use tmuxinator layout when available
+
+[[session]]
+name = "🗒️ Notes"
+path = '/Users/cyperx/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes'
+startup_command = "tmuxinator start notes"  # Use tmuxinator layout
+preview_command = "bat --color=always --style=header,grid --line-range=:20 '{}/INDEX.md' 2>/dev/null || eza --all --git --icons --color=always '{}'"
+tmuxinator_project = "notes"  # Link to tmuxinator project
+
+# [[session]]
+# name = "🧪 Code"
+# path = "~/Code"
+# startup_command = "yazi"
+# preview_command = "eza --all --git --icons --color=always {}"
+# windows = [ "VIM", "👾Claude", "GIT" ]
+# [[window]]
+# name = "👾Claude"
+# startup_script = "claude"
+# [[window]]
+# name = "VIM"
+# startup_script = "vim"
+# [[window]]
+# name = "GIT"
+# startup_script = "git status"
+
+[[session]]
+name = "🤖 Agents"
+path = "~/Code/agents"
+startup_command = "tmuxinator start agents"  # Use tmuxinator layout
+preview_command = "bat --color=always --style=header,grid --line-range=:20 '{}/README.md' 2>/dev/null || eza --all --git --icons --color=always '{}'"
+tmuxinator_project = "agents"  # Link to tmuxinator project
+
+[[session]]
+name = "⚙️ Dotfiles"
+path = "~/dotfiles"
+startup_command = "tmuxinator start dotfiles"  # Use tmuxinator layout
+preview_command = "bat --color=always --style=header,grid --line-range=:20 '{}/CLAUDE.md' 2>/dev/null || eza --all --git --icons --color=always '{}'"
+tmuxinator_project = "dotfiles"  # Link to tmuxinator project
+
+# [[session]]
+# name = "📥 Downloads"
+# path = "~/Downloads"
+# startup_command = "yazi"
+
+
+[[session]]
+name = "🔗 GitHub Projects" 
+path = "~/github"
+startup_command = "yazi"  # Better file explorer for project discovery
+preview_command = "find '{}' -maxdepth 2 -name 'README.md' -exec bat --color=always --style=header,grid --line-range=:10 {} \\; 2>/dev/null || eza --all --git --icons --color=always '{}'"
+
+[[session]]
+name = "🏠 Home"
+path = "~"
+startup_command = "yazi"
+preview_command = "eza --all --git --icons --color=always --group-directories-first '{}'"
+
+# Quick development session template
+[[session]]
+name = "🚀 Quick Dev"
+path = "~/Code"
+startup_command = "nvim ."
+preview_command = "find '{}' -maxdepth 2 \\( -name '*.md' -o -name '*.py' -o -name '*.js' -o -name '*.ts' \\) -exec head -10 {} \\; 2>/dev/null | head -20 || eza --all --git --icons --color=always '{}'"
+
+
+
