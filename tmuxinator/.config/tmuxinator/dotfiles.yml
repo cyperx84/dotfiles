@@ -12,29 +12,29 @@ on_project_restart: |
 on_project_exit: echo "👋 Dotfiles session ended"
 
 windows:
-  - Development:
+  - 👾NeoVIM:
       layout: main-horizontal
       options:
-        main-pane-height: 75%
+        main-pane-height: 95%
       panes:
         - editor:
-          - nvim CLAUDE.md
+          - nvim
         - terminal:
           - echo "💡 Use 'stow */' to install all configs"
           - echo "🔍 Use 'git status' to check changes"
           
-  - Services:
-      layout: even-horizontal
-      panes:
-        - yabai:
-          - echo "🪟 Yabai service status:"
-          - brew services list | grep yabai
-        - skhd:
-          - echo "⌨️ SKHD service status:"
-          - brew services list | grep skhd
-        - sketchybar:
-          - echo "📊 SketchyBar service status:"
-          - brew services list | grep sketchybar
+  # - Services:
+  #     layout: even-horizontal
+  #     panes:
+  #       - yabai:
+  #         - echo "🪟 Yabai service status:"
+  #         - brew services list | grep yabai
+  #       - skhd:
+  #         - echo "⌨️ SKHD service status:"
+  #         - brew services list | grep skhd
+  #       - sketchybar:
+  #         - echo "📊 SketchyBar service status:"
+  #         - brew services list | grep sketchybar
           
   - Git:
       panes:

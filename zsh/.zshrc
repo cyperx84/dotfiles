@@ -263,5 +263,5 @@ autoload -Uz compinit
 compinit
 # End of Docker CLI completions
 
-alias claude="/Users/cyperx/.claude/local/claude"
 alias cld="/Users/cyperx/.claude/local/claude --dangerously-skip-permissions"
+alias claude="/Users/cyperx/.claude/local/claude"

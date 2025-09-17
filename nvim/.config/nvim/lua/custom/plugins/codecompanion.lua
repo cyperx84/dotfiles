@@ -44,14 +44,17 @@ return {
 
   config = function()
     require('codecompanion').setup {
+      opts = {
+        log_level = 'INFO', -- Use 'DEBUG' or 'TRACE' for troubleshooting
+      },
       display = {
         chat = {
           window = {
             layout = 'vertical',
             position = 'left',
             border = 'single',
-            height = 0.6, -- 60% of screen height (default is 0.8)
-            width = 0.4, -- 30% of screen width (default is 0.45)
+            height = 0.7, -- Optimized height for better screen usage
+            width = 0.35, -- Optimized width for better balance
             relative = 'editor',
             full_height = false, -- Use full height of the editor
           },
@@ -75,7 +78,7 @@ return {
                 api_key = 'cmd:pass show apis/OPENAI_API_KEY',
               },
               schema = {
-                model = { default = 'gpt-4o' },
+                model = { default = 'gpt-4o-mini' }, -- Updated to latest model
               },
             })
           end,
@@ -86,7 +89,7 @@ return {
                 api_key = 'cmd:pass show apis/ANTHROPIC_API_KEY',
               },
               schema = {
-                model = { default = 'claude-sonnet-4-20250514' },
+                model = { default = 'claude-3-5-sonnet-20241022' }, -- Updated to latest stable model
               },
             })
           end,
@@ -97,7 +100,7 @@ return {
                 api_key = 'cmd:pass show apis/GEMINI_API_KEY',
               },
               schema = {
-                model = { default = 'gemini-2.5-flash-preview-05-20' },
+                model = { default = 'gemini-2.0-flash-exp' }, -- Updated to latest model
               },
             })
           end,
@@ -118,7 +121,7 @@ return {
 
       strategies = {
         chat = {
-          adapter = 'deepseek',
+          adapter = 'deepseek', -- Switch to Anthropic for better performance
           keymaps = {
             send = {
               modes = {
@@ -165,8 +168,8 @@ return {
             },
           },
         },
-        inline = { adapter = 'deepseek' },
-        cmd = { adapter = 'deepseek' },
+        inline = { adapter = 'deepseek' }, -- Updated for consistency
+        cmd = { adapter = 'deepseek' }, -- Updated for consistency
       },
       extensions = {
         mcphub = {

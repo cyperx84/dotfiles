@@ -34,20 +34,28 @@ return {
     -- Server options
     port_range = { min = 10000, max = 65535 },
     auto_start = true,
-    log_level = 'info',
+    log_level = 'info', -- Use 'debug' for troubleshooting
 
     -- Terminal options
     terminal = {
       split_side = 'right',
-      split_width_percentage = 0.4,
-      provider = 'auto', -- "auto" (default), "snacks", or "native"
+      split_width_percentage = 0.3, -- Optimized for better screen balance
+      provider = 'snacks', -- "auto" (default), "snacks", or "native"
       auto_close = true, -- Auto-close terminal after command completion
+      cwd_provider = function(ctx)
+        -- Dynamic working directory detection for git repos
+        local git_root = vim.fn.systemlist('git -C ' .. vim.fn.shellescape(ctx.file_dir) .. ' rev-parse --show-toplevel')[1]
+        if vim.v.shell_error == 0 and git_root then
+          return git_root
+        end
+        return ctx.file_dir
+      end,
     },
 
     -- Diff options
     diff_opts = {
       auto_close_on_accept = true,
-      vertical_split = true,
+      vertical_split = true, -- Better for code comparison
     },
   },
   config = true,
@@ -68,7 +76,7 @@ return {
 
     -- Tree/file explorer integration
     {
-      "<leader>as",
+      "<leader>cA",
       "<cmd>ClaudeCodeTreeAdd<cr>",
       desc = "Add file from tree",
       ft = { "NvimTree", "neo-tree", "oil", "minifiles" },
@@ -81,5 +89,6 @@ return {
     -- Quick actions
     { "<leader>cc", "<cmd>ClaudeCode<cr>", desc = "Claude Code" },
     { "<leader>c?", "<cmd>help claudecode<cr>", desc = "Claude Code help" },
+    { "<leader>cq", "<cmd>ClaudeCode --quit<cr>", desc = "Quit Claude Code" },
   },
 }
