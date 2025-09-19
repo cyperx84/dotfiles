@@ -2,43 +2,90 @@ name: notes
 root: ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes
 
 # Project hooks for notes management
-on_project_start: echo "📝 Opening notes workspace..."
+on_project_start: |
+  echo "📝 Opening notes workspace..."
+  echo "🔍 Use Ctrl+A + f to search across all notes"
+  echo "🤖 Switch to Agents window for AI assistance"
 on_project_first_start: |
   echo "📚 Welcome to your notes!"
   echo "💡 INDEX.md is your main entry point"
-on_project_restart: echo "♻️ Refreshing notes session"
-on_project_exit: echo "👋 Notes session ended"
+  ooo 
+  echo "🔄 Git status will be checked automatically"
+  echo "📋 Consider setting up daily notes workflow"
+  # Create today's daily note if it doesn't exist
+  mkdir -p daily_notes
+  touch "daily_notes/$(date +%Y-%m-%d).md"
+on_project_restart: |
+  echo "♻️ Refreshing notes session"
+  echo "🔄 Checking for note changes..."
+on_project_exit: |
+  echo "👋 Notes session ended"
+  echo "💾 Don't forget to commit important changes!"
 
 windows:
-  - 📝 Notes:
+  - notes:
       layout: main-horizontal
       options:
         main-pane-height: 80%
       panes:
-        - primary:
-          - nvim INDEX.md
-        - quick:
-          - echo "📝 Quick notes area"
-          - echo "💭 Use for temporary thoughts"
-          
-  - Research:
+        - nvim INDEX.md
+  - agents:
+      layout: even-horizontal
+      panes:
+        - |
+          # echo "🧠 Claude AI Assistant"
+          claude
+        - |
+          # echo "💎 Gemini AI Assistant"
+          # echo "💡 Use: gemini-cli or curl commands"
+          gemini
+        - |
+          # echo "⚡ Codex AI Assistant"
+          # echo "💡 Use: gh copilot or openai-cli"
+          codex
+
+  # - preview:
+  #     panes:
+  #       - |
+  #         echo "🌐 Starting local server for markdown preview..."
+  #         python3 -m http.server 8080
+
+  - workspace:
       layout: even-vertical
       panes:
-        - claude:
-          - claude  # Launch Claude for AI assistance
-        - browser:
-          - echo "🌐 Research pane"
-          - echo "💡 Open relevant links here"
-          
-  - Preview:
-      panes:
-        - server:
-          - echo "🌐 Starting local server for markdown preview..."
-          - python3 -m http.server 8080
-          
-  - System:
-      panes:
-        - files:
-          - yazi  # File manager for note organization
+        - |
+          echo "🔄 Git operations for notes"
+          echo "💡 Track changes, sync, backup"
+          git status
+        # - |
+        #   echo "🔍 Advanced search across notes"
+        #   echo "💡 Available search commands:"
+        #   echo "  fzf_notes() { fd -e md | fzf --preview 'bat {}' --bind 'enter:become(nvim {})'; }"
+        #   echo "  fzf_content() { rg --line-number . | fzf --bind 'enter:become(nvim {1} +{2})'; }"
+        #   echo "  recent() { find . -name '*.md' -mtime -7 | fzf --preview 'bat {}'; }"
+        #   alias fzf_notes="fd -e md | fzf --preview 'bat {}' --bind 'enter:become(nvim {})'"
+        #   alias fzf_content="rg --line-number . | fzf --delimiter : --preview 'bat {1}' --bind 'enter:become(nvim {1} +{2})'"
+        #   alias recent="find . -name '*.md' -mtime -7 | fzf --preview 'bat {}'"
 
+  # - tasks:
+  #     panes:
+  #       - |
+  #         echo "✅ Task management"
+  #         echo "💡 Quick task commands:"
+  #         echo "  todo_add() { echo \"- [ ] \$*\" >> tasks.md; }"
+  #         echo "  todo_done() { rg -n '- \[ \]' tasks.md | fzf | cut -d: -f1 | xargs -I {} sed -i '{}s/\[ \]/[x]/' tasks.md; }"
+  #         echo "  todo_list() { rg '- \[([ x])\]' tasks.md --color=always; }"
+  #         touch tasks.md
+  #         alias todo_add='f(){ echo "- [ ] $*" >> tasks.md; }; f'
+  #         alias todo_list='rg "- \[([ x])\]" tasks.md --color=always'
+  #         echo "📝 Tasks file created/updated"
 
+  - system:
+      layout: main-vertical
+      options:
+        main-pane-width: 70%
+      panes:
+        - yazi
+        - |
+          echo "🖥️ General terminal"
+          echo "💡 For misc commands and scripts"

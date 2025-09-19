@@ -30,6 +30,9 @@ return {
       --   return (title:gsub(" ", "%%20"))
       -- end,
       note_id_func = function(title)
+        if title == nil or title == "" then
+          return tostring(os.time()) -- fallback to timestamp
+        end
         local slug = title
           :gsub('^%s*(.-)%s*$', '%1') -- trim
           :gsub('%s+', '-') -- spaces → dashes

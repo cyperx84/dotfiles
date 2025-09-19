@@ -41,12 +41,17 @@ return {
 
       spec = {
         { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
-        { '<leader>d', group = '[D]ocument' },
+        { '<leader>d', group = '[D]iagnostic' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
         { '<leader>w', group = '[W]orkspace' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>g', group = '[G]it' },
+        { '<leader>o', group = '[O]bsidian' },
+        { '<leader>b', group = '[B]uffer' },
+        { '<leader>q', group = '[Q]uickfix' },
+        { '<leader>l', group = '[L]ocation List' },
       },
     },
   },

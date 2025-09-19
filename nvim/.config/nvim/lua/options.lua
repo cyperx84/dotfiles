@@ -27,4 +27,15 @@ vim.opt.laststatus = 3
 vim.g.python3_host_prog = '/usr/local/bin/python3'
 vim.opt.isfname:append("@-@") -- already present in most setups
 vim.opt.isfname:append("32")  -- allow spaces in filenames
+
+-- [[ Autocmds ]]
+-- Highlight when yanking (copying) text
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
+
 -- vim: ts=2 sts=2 sw=2 et

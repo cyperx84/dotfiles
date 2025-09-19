@@ -8,7 +8,7 @@ This file defines custom keybindings for Neovim, including:
 ]]
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Window navigation
@@ -18,13 +18,7 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
+-- NOTE: TextYankPost autocmd moved to options.lua or autocmds.lua for better organization
 
 -- [[FILES]]
 
@@ -67,7 +61,7 @@ vim.keymap.set("n", "<leader>oc", "<cmd>lua require('obsidian').util.toggle_chec
 vim.keymap.set("n", "<leader>ot", "<cmd>ObsidianTags<CR>", { desc = "Obsidian Tags" })
 vim.keymap.set("n", "<leader>oO", "<cmd>ObsidianOpen<CR>", { desc = "Open in Obsidian App" })
 vim.keymap.set("n", "<leader>ob", "<cmd>ObsidianBacklinks<CR>", { desc = "Show ObsidianBacklinks" })
-vim.keymap.set("n", "<leader>oe", "<cmd>ObsidianExtractNote<CR>", { desc = "Extract - New" })
+vim.keymap.set("v", "<leader>oe", "<Esc><cmd>ObsidianExtractNote<CR>", { desc = "Extract - New" })
 vim.keymap.set("n", "<leader>oF", "<cmd>ObsidianFollowLink<CR>", { desc = "Follow Link" })
 vim.keymap.set("n", "<leader>ol", "<cmd>ObsidianLinks<CR>", { desc = "Show ObsidianLinks" })
 vim.keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "Create New Note" })
@@ -107,9 +101,10 @@ vim.keymap.set("n", "<leader>CC", "<cmd>CodeCompanion<CR>", { desc = "Code Compa
 vim.keymap.set("n", "<leader>Cc", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
 vim.keymap.set("n", "<leader>Cd", "<cmd>CodeCompanionCMD<CR>", { desc = "Code Companion Actions" })
 
--- Jump between markdown headers
-vim.keymap.set("n", "gj", [[/^##\+ .*<CR>]], { buffer = true, silent = true })
-vim.keymap.set("n", "gk", [[?^##\+ .*<CR>]], { buffer = true, silent = true })
+-- Jump between markdown headers (should be in FileType autocmd)
+-- vim.keymap.set("n", "gj", [[/^##\+ .*<CR>]], { buffer = true, silent = true })
+-- vim.keymap.set("n", "gk", [[?^##\+ .*<CR>]], { buffer = true, silent = true })
+-- TODO: Move to autocmd for markdown filetypes
 
 -- Exit insert mode without hitting Esc
 vim.keymap.set("i", "jk", "<Esc><Esc>", { desc = "Esc" })
@@ -130,30 +125,30 @@ vim.keymap.set("n", "N", "Nzzzv")
 -- Paste without overwriting register
 vim.keymap.set("v", "p", '"_dP')
 
--- Copy text to " register
-vim.keymap.set("n", "<leader>y", "\"+y", { desc = "Yank into \" register" })
-vim.keymap.set("v", "<leader>y", "\"+y", { desc = "Yank into \" register" })
-vim.keymap.set("n", "<leader>Y", "\"+Y", { desc = "Yank into \" register" })
+-- Copy text to system clipboard
+vim.keymap.set("n", "<leader>y", "\"+y", { desc = "Yank to system clipboard" })
+vim.keymap.set("v", "<leader>y", "\"+y", { desc = "Yank to system clipboard" })
+vim.keymap.set("n", "<leader>Y", "\"+Y", { desc = "Yank line to system clipboard" })
 
--- Delete text to " register
-vim.keymap.set("n", "<leader>d", "\"_d", { desc = "Delete into \" register" })
-vim.keymap.set("v", "<leader>d", "\"_d", { desc = "Delete into \" register" })
+-- Delete text to void register (preserves clipboard)
+vim.keymap.set("n", "<leader>D", "\"_d", { desc = "Delete to void register" })
+vim.keymap.set("v", "<leader>D", "\"_d", { desc = "Delete to void register" })
 
 -- Get out Q
 vim.keymap.set("n", "Q", "<nop>")
 
 -- close buffer
-vim.keymap.set("n", "<leader>q", "<cmd>bd<CR>", { desc = "Close Buffer" })
+vim.keymap.set("n", "<leader>bq", "<cmd>bd<CR>", { desc = "Close Buffer" })
 
 -- Close buffer without closing split
-vim.keymap.set("n", "<leader>w", "<cmd>bp|bd #<CR>", { desc = "Close Buffer; Retain Split" })
+vim.keymap.set("n", "<leader>bw", "<cmd>bp|bd #<CR>", { desc = "Close Buffer; Retain Split" })
 
--- Navigate between quickfix items
-vim.keymap.set("n", "<leader>h", "<cmd>cnext<CR>zz", { desc = "Forward qfixlist" })
-vim.keymap.set("n", "<leader>;", "<cmd>cprev<CR>zz", { desc = "Backward qfixlist" })
+-- Navigate between quickfix items (moved to avoid conflicts with which-key groups)
+vim.keymap.set("n", "<leader>qn", "<cmd>cnext<CR>zz", { desc = "Next quickfix item" })
+vim.keymap.set("n", "<leader>qp", "<cmd>cprev<CR>zz", { desc = "Previous quickfix item" })
 
 -- Navigate between location list items
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz", { desc = "Forward location list" })
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz", { desc = "Backward location list" })
+vim.keymap.set("n", "<leader>ln", "<cmd>lnext<CR>zz", { desc = "Next location item" })
+vim.keymap.set("n", "<leader>lp", "<cmd>lprev<CR>zz", { desc = "Previous location item" })
 
 -- vim: ts=2 sts=2 sw=2 et
