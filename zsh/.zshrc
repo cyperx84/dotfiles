@@ -69,6 +69,9 @@ zle     -N             sesh-sessions
 bindkey '^[s' sesh-sessions
 bindkey -M viins '\es' sesh-sessions
 
+# Source enhanced sesh aliases if available
+[[ -f ~/.config/sesh/scripts/sesh_aliases.sh ]] && source ~/.config/sesh/scripts/sesh_aliases.sh
+
 # Navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
 f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }

@@ -243,6 +243,65 @@ The setup uses multiple session management approaches:
 
 When working with session-related configurations, consider the interaction between these three systems.
 
+#### Enhanced Sesh Workflow
+The sesh configuration includes enhanced aliases and validation tools for streamlined session management:
+
+**Quick Session Commands:**
+```bash
+# List sessions (compact)
+sl
+
+# Fuzzy connect to session
+sd
+
+# Connect to specific session
+sc <session_name>
+
+# Show current session info
+sesh-current
+
+# Comprehensive dashboard
+sesh-dashboard
+```
+
+**Session Management:**
+```bash
+# List tmuxinator layouts
+sesh-tmux
+
+# Start tmuxinator session
+sesh-start <layout>
+
+# Kill specific session
+sesh-kill <session>
+
+# Kill all sessions
+sesh-kill-all
+```
+
+**Integration Tools:**
+```bash
+# Open file manager in session
+sesh-files
+
+# Show directory tree
+sesh-tree
+
+# Get session information
+sesh-info [session_name]
+```
+
+**Validation and Testing:**
+```bash
+# Validate entire sesh configuration
+~/bin/validate_sesh.sh
+
+# Test aliases and integration
+source ~/.config/sesh/scripts/sesh_aliases.sh
+```
+
+The enhanced workflow integrates with FZF for fuzzy selection, uses eza for enhanced directory listings, and provides comprehensive session status information through the dashboard interface.
+
 ### Input Management Systems
 Two keyboard remapping solutions are available:
 
