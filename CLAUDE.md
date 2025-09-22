@@ -7,6 +7,37 @@ tags: []
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 📚 Documentation Structure
+
+This repository has comprehensive documentation designed for both human users and AI agents:
+
+| Document | Purpose | AI Agent Use Case |
+|----------|---------|-------------------|
+| **[README.md](README.md)** | Repository overview and quick start | Understanding repository purpose and basic setup |
+| **[docs/COMPONENTS.md](docs/COMPONENTS.md)** | Detailed component documentation | Understanding individual tools and their configurations |
+| **[docs/KEYBINDS.md](docs/KEYBINDS.md)** | Complete keybindings reference | Finding specific keybinds and aliases across all tools |
+| **[docs/NEOVIM_KEYBINDS.md](docs/NEOVIM_KEYBINDS.md)** | Neovim-specific mappings | Understanding Neovim configuration and keybinds |
+| **[docs/WORKFLOW_GUIDES.md](docs/WORKFLOW_GUIDES.md)** | Cross-tool integration workflows | Learning how tools work together for common tasks |
+| **[docs/MAINTENANCE.md](docs/MAINTENANCE.md)** | Validation and troubleshooting | System maintenance and problem resolution |
+| **[AGENTS.md](AGENTS.md)** | Agent development guidelines | Development practices and testing procedures |
+
+## 🤖 AI Agent Guidelines
+
+### Quick File Location Reference
+- **Zsh config**: `zsh/.zshrc` (aliases, functions, keybinds)
+- **Tmux config**: `tmux/.tmux.conf` (session management, keybinds)
+- **Neovim config**: `nvim/.config/nvim/lua/keymaps.lua` (main keybinds)
+- **Window management**: `skhd/.config/skhd/skhdrc` (hotkeys), `yabai/.config/yabai/yabairc` (window manager)
+- **Validation scripts**: `~/bin/validate_sesh.sh`, `~/.config/sketchybar/test_sketchybar.sh`
+
+### Understanding User Intent
+When users ask about:
+- **"Keybinds"** → Reference [docs/KEYBINDS.md](docs/KEYBINDS.md) and [docs/NEOVIM_KEYBINDS.md](docs/NEOVIM_KEYBINDS.md)
+- **"How tools work together"** → Reference [docs/WORKFLOW_GUIDES.md](docs/WORKFLOW_GUIDES.md)
+- **"Component details"** → Reference [docs/COMPONENTS.md](docs/COMPONENTS.md)
+- **"Something not working"** → Reference [docs/MAINTENANCE.md](docs/MAINTENANCE.md)
+- **"File locations"** → Use the structure information below
+
 ## Repository Overview
 
 This is a comprehensive macOS development environment dotfiles repository featuring a highly integrated window management and terminal-centric workflow. The setup centers around 10 main configuration components that work together to create a tiling window manager environment with advanced terminal productivity tools. All configurations are managed using GNU Stow for automated symlink creation.

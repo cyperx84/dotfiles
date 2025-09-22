@@ -70,8 +70,17 @@ fi
 # Check tmuxinator integration
 if command -v tmuxinator >/dev/null 2>&1; then
     echo "✅ Tmuxinator integration: Available"
-    tmux_configs=$(find ~/.config/tmuxinator -name "*.yml" 2>/dev/null | wc -l)
+    tmux_configs=$(find ~/.config/tmuxinator -name "*.yml" 2>/dev/null | wc -l || echo "0")
     echo "  📁 Tmuxinator configs: $tmux_configs"
+
+    # Test a few tmuxinator configs
+    for config in development agents; do
+        if tmuxinator debug "$config" >/dev/null 2>&1; then
+            echo "  ✅ $config config valid"
+        else
+            echo "  ❌ $config config has issues"
+        fi
+    done
 else
     echo "⚠️  Tmuxinator integration: Not installed"
 fi
@@ -107,6 +116,27 @@ echo "  • Dotfiles integrated: Yes"
 echo "  • Aliases available: $(test -f "$aliases_script" && echo "Yes" || echo "No")"
 echo "  • Tmuxinator: $(command -v tmuxinator >/dev/null 2>&1 && echo "Available" || echo "Not installed")"
 
+# Test new sesh scripts
+echo ""
+echo "🧪 Testing new sesh scripts:"
+for script in session_status.sh claude_dev.sh test_env.sh scratch.sh; do
+    script_path="$HOME/dotfiles/sesh/.config/sesh/scripts/$script"
+    if [[ -f "$script_path" ]] && [[ -x "$script_path" ]]; then
+        echo "✅ $script exists and is executable"
+    else
+        echo "❌ $script missing or not executable"
+    fi
+done
+
+# Test session_status.sh specifically
+echo ""
+echo "🔧 Testing session_status.sh functionality:"
+if ~/dotfiles/sesh/.config/sesh/scripts/session_status.sh list >/dev/null 2>&1; then
+    echo "✅ session_status.sh working correctly"
+else
+    echo "❌ session_status.sh has issues"
+fi
+
 echo ""
 echo "🚀 Quick start guide:"
 echo "==================="
@@ -115,6 +145,7 @@ echo "  2. List sessions:  sl"
 echo "  3. Fuzzy connect:  sd"
 echo "  4. Dashboard:      sesh-dashboard"
 echo "  5. Current info:   sesh-current"
+echo "  6. Session status: ~/dotfiles/sesh/.config/sesh/scripts/session_status.sh list"
 
 echo ""
 echo "🎯 Test completed successfully! $(date '+%H:%M:%S')"

@@ -1,14 +1,11 @@
-name: dotfiles
+name: ⚙️ DOTFILES
 root: ~/dotfiles/
 
 # Project hooks for dotfiles management
 on_project_start: echo "🔧 Initializing dotfiles workspace..."
 on_project_first_start: |
-  echo "🚀 First-time dotfiles setup"
-  git status
 on_project_restart: |
   echo "♻️ Restarting dotfiles session"
-  git pull --rebase origin main
 on_project_exit: echo "👋 Dotfiles session ended"
 
 windows:
@@ -19,23 +16,6 @@ windows:
       panes:
         - editor:
           - nvim
-        - terminal:
-          - echo "💡 Use 'stow */' to install all configs"
-          - echo "🔍 Use 'git status' to check changes"
-          
-  # - Services:
-  #     layout: even-horizontal
-  #     panes:
-  #       - yabai:
-  #         - echo "🪟 Yabai service status:"
-  #         - brew services list | grep yabai
-  #       - skhd:
-  #         - echo "⌨️ SKHD service status:"
-  #         - brew services list | grep skhd
-  #       - sketchybar:
-  #         - echo "📊 SketchyBar service status:"
-  #         - brew services list | grep sketchybar
-          
   - Git:
       panes:
         - git status
@@ -45,4 +25,3 @@ windows:
       panes:
         - logs:
           - echo "📝 Monitoring system logs..."
-          - tail -f /usr/local/var/log/yabai/yabai.out.log

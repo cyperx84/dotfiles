@@ -64,6 +64,7 @@ return {
         ['g.'] = { 'actions.toggle_hidden', mode = 'n' },
         ['g\\'] = { 'actions.toggle_trash', mode = 'n' },
         ['<c-e>'] = 'actions.close',
+        ['q'] = 'actions.close',
       },
       -- Set to false to disable all of the above keymaps
       use_default_keymaps = true,
@@ -76,7 +77,7 @@ return {
       },
       float = {
         padding = 1,
-        max_width = 60,
+        max_width = 100,
         max_height = 20,
       },
 

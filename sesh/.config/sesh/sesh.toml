@@ -22,42 +22,42 @@ prefer_tmuxinator = true
 name = "🗒️ Notes"
 path = '/Users/cyperx/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes'
 startup_command = "nvim INDEX.md"
-preview_command = "~/.config/sesh/scripts/session_status.sh status 'notes' && echo '' && echo '📚 Obsidian Notes Vault' && ls -la | head -5"
+preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status 'notes' && echo '' && echo '📚 Obsidian Notes Vault' && ls -la | head -5"
 
 [[session]]
 name = "📥 Downloads"
 path = "~/Downloads"
 startup_command = "yazi"
-preview_command = "~/.config/sesh/scripts/session_status.sh status '📥 Downloads' && echo '' && echo '📁 Recent Downloads:' && ls -lt | head -5"
+preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status '📥 Downloads' && echo '' && echo '📁 Recent Downloads:' && ls -lt | head -5"
 
 [[session]]
 name = "⚙️ Dotfiles"
 path = "~/dotfiles"
 startup_command = "nvim"
-preview_command = "~/.config/sesh/scripts/session_status.sh status '⚙️ Dotfiles' && echo '' && echo '🔧 Dotfiles Repository' && cat CLAUDE.md | head -10 2>/dev/null || eza --all --git --icons --color=always {}"
+preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status '⚙️ Dotfiles' && echo '' && echo '🔧 Dotfiles Repository' && cat CLAUDE.md | head -10 2>/dev/null || eza --all --git --icons --color=always {}"
 
 [[session]]
 name = "🤖 Agents"
 path = "~/Code/agents"
 startup_command = "nvim ."
-preview_command = "~/.config/sesh/scripts/session_status.sh status '🤖 Agents' && echo '' && echo '🐍 Python Agents Project' && uv tree 2>/dev/null || eza --all --git --icons --color=always {}"
+preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status '🤖 Agents' && echo '' && echo '🐍 Python Agents Project' && uv tree 2>/dev/null || eza --all --git --icons --color=always {}"
 
 # === CLAUDE CODE FOCUSED SESSIONS ===
 
 [[session]]
 name = "💻 Claude Dev"
 path = "~/.local/share/nvim/lazy/claudecode.nvim"
-startup_script = "~/.config/sesh/scripts/claude_dev.sh"
-preview_command = "~/.config/sesh/scripts/session_status.sh status '💻 Claude Dev' && echo '' && echo '🤖 Claude Code Plugin Development' && echo 'Multi-pane dev environment for Claude Code'"
+startup_script = "~/dotfiles/sesh/.config/sesh/scripts/claude_dev.sh"
+preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status '💻 Claude Dev' && echo '' && echo '🤖 Claude Code Plugin Development' && echo 'Multi-pane dev environment for Claude Code'"
 
 [[session]]
 name = "🔬 Test Env"
 path = "~/Code/test-workspace"
-startup_script = "~/.config/sesh/scripts/test_env.sh"
-preview_command = "~/.config/sesh/scripts/session_status.sh status '🔬 Test Env' && echo '' && echo '🧪 Claude Code Testing Environment' && echo 'Isolated workspace for testing code snippets'"
+startup_script = "~/dotfiles/sesh/.config/sesh/scripts/test_env.sh"
+preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status '🔬 Test Env' && echo '' && echo '🧪 Claude Code Testing Environment' && echo 'Isolated workspace for testing code snippets'"
 
 [[session]]
 name = "📝 Scratch"
 path = "/tmp/claude-scratch"
-startup_script = "~/.config/sesh/scripts/scratch.sh"
-preview_command = "~/.config/sesh/scripts/session_status.sh status '📝 Scratch' && echo '' && echo '📄 Claude Scratch Workspace' && echo 'Temporary files for experiments'"
+startup_script = "~/dotfiles/sesh/.config/sesh/scripts/scratch.sh"
+preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status '📝 Scratch' && echo '' && echo '📄 Claude Scratch Workspace' && echo 'Temporary files for experiments'"

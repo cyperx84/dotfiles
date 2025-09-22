@@ -20,6 +20,20 @@ tags: []
 
 A curated collection of configuration files for a complete macOS development environment. This setup creates a beautiful, efficient, and highly customized workflow centered around tiling window management, terminal productivity, and modern development tools.
 
+## 📚 Documentation Hub
+
+> **🚀 Quick Start**: [Installation](#-installation) • **🔧 Components**: [Detailed Guide](docs/COMPONENTS.md) • **⌨️ Keybinds**: [Reference](docs/KEYBINDS.md) • **🔄 Workflows**: [Integration Guide](docs/WORKFLOW_GUIDES.md)
+
+| Document | Purpose | For |
+|----------|---------|-----|
+| **[📋 Components Guide](docs/COMPONENTS.md)** | Detailed documentation for all 15+ tools | Understanding each component |
+| **[⌨️ Keybinds Reference](docs/KEYBINDS.md)** | Complete keybindings across all tools | Quick reference and lookup |
+| **[📝 Neovim Keybinds](docs/NEOVIM_KEYBINDS.md)** | Comprehensive Neovim mappings | Editor workflow mastery |
+| **[🔄 Workflow Guides](docs/WORKFLOW_GUIDES.md)** | Cross-tool integration patterns | Learning tool combinations |
+| **[🔧 Maintenance Guide](docs/MAINTENANCE.md)** | Validation, troubleshooting, updates | System reliability |
+| **[🤖 Claude Documentation](CLAUDE.md)** | Claude Code specific guidance | AI-assisted development |
+| **[👨‍💻 Agent Guidelines](AGENTS.md)** | Development and testing procedures | Contributing and maintenance |
+
 ## 🌟 Features
 
 - **🪟 Tiling Window Management**: Yabai + SKHD for seamless window control
@@ -337,33 +351,68 @@ set -g @floax-height '80%'
 set -g @floax-bind 'p'
 ```
 
-## 🎯 Key Bindings Reference
+## 🎯 Quick Reference
 
-### Window Management (SKHD + Yabai)
-| Binding | Action |
-|---------|--------|
-| `ctrl+cmd+w` | Toggle fullscreen |
-| `ctrl+cmd+q` | Float/unfloat window |
-| `ctrl+cmd+r` | Balance windows |
-| `ctrl+cmd+e` | Toggle split type |
-| `shift+ctrl+alt+hjkl` | Move windows |
-| `ctrl+alt+cmd+hjkl` | Resize windows |
+### Most Used Commands
+```bash
+# Session Management
+sd                    # Fuzzy connect to session (sesh + fzf)
+Alt+s                 # Quick session selector (zsh keybind)
+sesh-dashboard        # Comprehensive session overview
+ta                    # Attach to tmux
 
-### Workspace Navigation
-| Binding | Action |
-|---------|--------|
-| `ctrl+1-5` | Switch to desktop |
-| `shift+alt+1-7` | Move window to desktop |
-| `shift+alt+p/n` | Move to prev/next space |
+# File Operations
+fcd                   # Fuzzy directory navigation
+fv                    # Fuzzy file selection + edit
+f                     # Yazi file manager with cd
+ls                    # Enhanced listing (eza)
 
-### Tmux (Prefix: `Ctrl+A`)
-| Binding | Action |
-|---------|--------|
-| `prefix+s` | Split horizontal |
-| `prefix+v` | Split vertical |
-| `prefix+hjkl` | Navigate panes |
-| `prefix+o` | Session manager |
-| `prefix+p` | Float terminal |
+# Git Workflow
+gs                    # Git status
+gc "message"          # Quick commit
+gp                    # Push current branch
+glog                  # Enhanced git log
+
+# Development
+n                     # Open Neovim
+conf                  # Edit dotfiles
+no                    # Open notes (Obsidian)
+```
+
+### Essential Keybinds
+```bash
+# Window Management (Yabai/SKHD)
+ctrl+1-5             # Switch spaces
+shift+ctrl+hjkl      # Focus windows
+ctrl+cmd+w           # Toggle fullscreen
+
+# Tmux (Prefix: Ctrl+A)
+C-a T                # Session switcher
+C-a hjkl             # Navigate panes
+C-a sv               # Split panes
+
+# Neovim
+<leader>sf           # Find files (telescope)
+<leader>gg           # Git interface (neogit)
+<leader>e            # File manager (mini.files)
+jk                   # Exit insert mode
+```
+
+**📖 Complete Reference**: See [Keybinds Documentation](docs/KEYBINDS.md) for full listings
+
+### Validation & Maintenance
+```bash
+# System Health Checks
+~/bin/validate_sesh.sh                    # Validate sesh configuration
+~/.config/sketchybar/test_sketchybar.sh   # Test SketchyBar plugins
+
+# Service Management
+brew services restart yabai               # Restart window manager
+sketchybar --reload                       # Reload menu bar
+exec zsh                                  # Reload shell config
+```
+
+**🔧 Troubleshooting**: See [Maintenance Guide](docs/MAINTENANCE.md) for detailed procedures
 
 ## 🔍 File Highlights
 

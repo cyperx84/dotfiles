@@ -43,7 +43,7 @@ windows:
           - claude  # AI assistance
         - monitor:
           - echo "📊 System monitor"
-          - echo "💾 Memory: $(free -h | awk 'NR==2{printf "%.1f%%", $3*100/$2 }')" 2>/dev/null || echo "💾 Memory: $(memory_pressure | grep 'System-wide memory free percentage')"
+          - echo "💾 Memory info - check Activity Monitor for details"
           
   - Services:
       panes:
