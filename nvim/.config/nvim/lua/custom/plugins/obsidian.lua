@@ -9,16 +9,21 @@ return {
   config = function()
     require('obsidian').setup {
       workspaces = {
-        {
-          name = 'buf-parent',
-          path = function()
-            return assert(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
-          end,
-        },
+        -- {
+        --   name = 'buf-parent',
+        --   path = function()
+        --     return assert(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
+        --   end,
+        -- },
         {
           name = 'ObsidianVault',
           path = '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes',
         },
+                {
+          name = 'ai',
+          path = '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/ai/',
+        },
+
       },
       completion = {
         nvim_cmp = true,

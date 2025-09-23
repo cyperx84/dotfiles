@@ -246,6 +246,7 @@ alias conf="cd $HOME/dotfiles && nvim"
 
 # notes 
 alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
+alias noai="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/ai && nvim INDEX.md"
 
 # Code Workspaces
 alias C="cd ~/Code/"
