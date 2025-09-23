@@ -81,7 +81,7 @@ vim.keymap.set("n", "<leader>tm", "<cmd>Markview<CR>", { desc = "Toggle Markview
 vim.keymap.set("n", "<leader>tt", "<cmd>TransparentToggle<CR>", { desc = "Transparent Toggle" })
 
 -- toggle MiniDiff
-vim.keymap.set("n", "<leader>td", function() require('mini.diff').toggle() end, { desc = "Toggle MiniDiff" })
+vim.keymap.set("n", "<leader>td", function() require('mini.diff').toggle_overlay() end, { desc = "Toggle MiniDiff" })
 
 -- Paste Image
 vim.keymap.set("n", "<leader>pi", "<cmd>PasteImage<CR>", { desc = "Paste Image" })

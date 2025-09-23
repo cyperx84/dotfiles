@@ -54,7 +54,36 @@ return {
     -- Now configure lualine with the custom component
     require('lualine').setup {
       options = {
-        theme = 'tokyonight',
+        theme = {
+          normal = {
+            a = { fg = '#ffffff', bg = '#1e3a8a', gui = 'bold' },
+            b = { fg = '#1e3a8a', bg = '#292e42' },
+            c = { fg = '#a9b1d6', bg = '#1a1b26' },
+          },
+          insert = {
+            a = { fg = '#ffffff', bg = '#8b5cf6', gui = 'bold' },
+            b = { fg = '#8b5cf6', bg = '#292e42' },
+          },
+          visual = {
+            a = { fg = '#1a1b26', bg = '#bb9af7', gui = 'bold' },
+            b = { fg = '#bb9af7', bg = '#292e42' },
+          },
+          replace = {
+            a = { fg = '#1a1b26', bg = '#f7768e', gui = 'bold' },
+            b = { fg = '#f7768e', bg = '#292e42' },
+          },
+          command = {
+            a = { fg = '#1a1b26', bg = '#f7768e', gui = 'bold' },
+            b = { fg = '#f7768e', bg = '#292e42' },
+          },
+          terminal = {
+            a = { fg = '#1a1b26', bg = '#ff9500', gui = 'bold' },
+            b = { fg = '#ff9500', bg = '#292e42' },
+            c = { fg = '#a9b1d6', bg = '#1a1b26' },
+          },
+        },
+        component_separators = { left = '', right = '' },
+        section_separators = { left = '', right = '' },
       },
       sections = {
         lualine_a = { 'mode' },

@@ -21,7 +21,7 @@ return {
         },
                 {
           name = 'ai',
-          path = '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/ai/',
+          path = '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/ai',
         },
 
       },
