@@ -111,7 +111,7 @@ return {
                 api_key = 'cmd:pass show apis/DEEPSEEK_API_KEY',
               },
               schema = {
-                model = { default = 'deepseek-chat' },
+                model = { default = 'deepseek-reasoner' },
               },
             })
           end,

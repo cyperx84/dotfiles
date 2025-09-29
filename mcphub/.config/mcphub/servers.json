@@ -1,9 +1,15 @@
 {
   "mcpServers": {
     "CopilotKit": {
-      "disabled": false,
+      "disabled": true,
       "type": "sse",
       "url": "https://mcp.copilotkit.ai/sse"
+    },
+    "chrome-devtools": {
+      "args": [
+        "chrome-devtools-mcp@latest"
+      ],
+      "command": "npx"
     },
     "context7": {
       "args": [
@@ -14,7 +20,8 @@
         "resolve-library-id",
         "get-library-docs"
       ],
-      "command": "npx"
+      "command": "npx",
+      "disabled": true
     },
     "fetch": {
       "args": [
@@ -36,8 +43,7 @@
         "markitdown-mcp"
       ],
       "autoApprove": [
-        "markitdown_convert",
-        "markitdown_batch_convert"
+        "convert_to_markdown"
       ],
       "command": "uv",
       "disabled": false
@@ -65,6 +71,10 @@
       ],
       "command": "uv",
       "disabled": false
+    },
+    "mcp-ui Docs": {
+      "disabled": true,
+      "url": "https://gitmcp.io/idosal/mcp-ui"
     },
     "mcphub": {
       "args": [
@@ -120,14 +130,16 @@
         "browser_tabs",
         "browser_wait_for"
       ],
-      "command": "npx"
+      "command": "npx",
+      "disabled": true
     },
     "puppeteer": {
       "args": [
         "-y",
         "@modelcontextprotocol/server-puppeteer"
       ],
-      "command": "npx"
+      "command": "npx",
+      "disabled": true
     },
     "sequential-thinking": {
       "args": [
@@ -137,7 +149,8 @@
       "autoApprove": [
         "sequentialthinking"
       ],
-      "command": "npx"
+      "command": "npx",
+      "disabled": true
     },
     "shadcn": {
       "args": [
@@ -149,7 +162,7 @@
   },
   "nativeMCPServers": {
     "mcphub": {
-      "disabled": false
+      "disabled": true
     }
   }
 }

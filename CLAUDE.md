@@ -18,6 +18,7 @@ This repository has comprehensive documentation designed for both human users an
 | **[docs/KEYBINDS.md](docs/KEYBINDS.md)** | Complete keybindings reference | Finding specific keybinds and aliases across all tools |
 | **[docs/NEOVIM_KEYBINDS.md](docs/NEOVIM_KEYBINDS.md)** | Neovim-specific mappings | Understanding Neovim configuration and keybinds |
 | **[docs/WORKFLOW_GUIDES.md](docs/WORKFLOW_GUIDES.md)** | Cross-tool integration workflows | Learning how tools work together for common tasks |
+| **[docs/CLAUDE_STATUSLINE.md](docs/CLAUDE_STATUSLINE.md)** | Enhanced statusline interpretation | Understanding context usage, cost tracking, and session monitoring |
 | **[docs/MAINTENANCE.md](docs/MAINTENANCE.md)** | Validation and troubleshooting | System maintenance and problem resolution |
 | **[AGENTS.md](AGENTS.md)** | Agent development guidelines | Development practices and testing procedures |
 
@@ -36,7 +37,17 @@ When users ask about:
 - **"How tools work together"** → Reference [docs/WORKFLOW_GUIDES.md](docs/WORKFLOW_GUIDES.md)
 - **"Component details"** → Reference [docs/COMPONENTS.md](docs/COMPONENTS.md)
 - **"Something not working"** → Reference [docs/MAINTENANCE.md](docs/MAINTENANCE.md)
+- **"Statusline" or "Context usage"** → Reference [docs/CLAUDE_STATUSLINE.md](docs/CLAUDE_STATUSLINE.md)
 - **"File locations"** → Use the structure information below
+
+### Claude Code Statusline
+The enhanced Claude Code statusline provides comprehensive session information. Key components to understand:
+- **Context Usage**: Real-time token tracking with color-coded warnings (Green < 60%, Yellow 60-79%, Red 80%+)
+- **Cost Tracking**: Accurate session cost based on actual token usage
+- **Tool Breakdown**: Detailed view of system tools, MCP integrations, agents, and memory usage
+- **Session Info**: Current directory, git status, model selection, and session duration
+
+For complete interpretation guide, see [docs/CLAUDE_STATUSLINE.md](docs/CLAUDE_STATUSLINE.md).
 
 ## Repository Overview
 

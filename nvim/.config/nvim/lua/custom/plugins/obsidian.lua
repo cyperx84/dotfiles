@@ -64,13 +64,6 @@ return {
           end,
           opts = { noremap = false, expr = true, buffer = true },
         },
-        -- Toggle check-boxes.
-        ['<leader>ch'] = {
-          action = function()
-            return require('obsidian').util.toggle_checkbox()
-          end,
-          opts = { buffer = true },
-        },
       },
       picker = {
         -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.

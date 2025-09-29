@@ -30,6 +30,7 @@ A curated collection of configuration files for a complete macOS development env
 | **[⌨️ Keybinds Reference](docs/KEYBINDS.md)** | Complete keybindings across all tools | Quick reference and lookup |
 | **[📝 Neovim Keybinds](docs/NEOVIM_KEYBINDS.md)** | Comprehensive Neovim mappings | Editor workflow mastery |
 | **[🔄 Workflow Guides](docs/WORKFLOW_GUIDES.md)** | Cross-tool integration patterns | Learning tool combinations |
+| **[📊 Claude Statusline Guide](docs/CLAUDE_STATUSLINE.md)** | Enhanced statusline interpretation | Reading context, cost, and session info |
 | **[🔧 Maintenance Guide](docs/MAINTENANCE.md)** | Validation, troubleshooting, updates | System reliability |
 | **[🤖 Claude Documentation](CLAUDE.md)** | Claude Code specific guidance | AI-assisted development |
 | **[👨‍💻 Agent Guidelines](AGENTS.md)** | Development and testing procedures | Contributing and maintenance |

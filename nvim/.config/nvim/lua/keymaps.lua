@@ -58,6 +58,25 @@ vim.keymap.set("n", "<leader>z", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noic
 -- Obsidian
 vim.keymap.set("n", "<leader>oc", "<cmd>lua require('obsidian').util.toggle_checkbox()<CR>",
   { desc = "Obsidian Check Checkbox" })
+vim.keymap.set("v", "<leader>oc", function()
+  -- Get current visual selection (works while in visual mode)
+  local start_line = vim.fn.line("v")
+  local end_line = vim.fn.line(".")
+
+  -- Ensure start is before end
+  if start_line > end_line then
+    start_line, end_line = end_line, start_line
+  end
+
+  -- Exit visual mode
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), 'x', false)
+
+  -- Process each line
+  for line = start_line, end_line do
+    vim.api.nvim_win_set_cursor(0, {line, 0})
+    require('obsidian').util.toggle_checkbox()
+  end
+end, { desc = "Obsidian Check Checkbox (Visual)" })
 vim.keymap.set("n", "<leader>ot", "<cmd>ObsidianTags<CR>", { desc = "Obsidian Tags" })
 vim.keymap.set("n", "<leader>oO", "<cmd>ObsidianOpen<CR>", { desc = "Open in Obsidian App" })
 vim.keymap.set("n", "<leader>ob", "<cmd>ObsidianBacklinks<CR>", { desc = "Show ObsidianBacklinks" })
@@ -70,6 +89,16 @@ vim.keymap.set("n", "<leader>os", "<cmd>ObsidianSearch<CR>", { desc = "Search Ob
 vim.keymap.set("n", "<leader>of", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Quick Switch" })
 vim.keymap.set("n", "<leader>op", "<cmd>ObsidianPasteImg<CR>", { desc = "Paste Img" })
 vim.keymap.set("n", "<leader>ow", "<cmd>ObsidianWorkspace<CR>", { desc = "Workspace" })
+-- Daily notes
+vim.keymap.set("n", "<leader>od", "<cmd>ObsidianToday<CR>", { desc = "Today's Note" })
+vim.keymap.set("n", "<leader>oy", "<cmd>ObsidianYesterday<CR>", { desc = "Yesterday's Note" })
+vim.keymap.set("n", "<leader>oM", "<cmd>ObsidianTomorrow<CR>", { desc = "Tomorrow's Note" })
+-- Link creation (visual mode)
+vim.keymap.set("v", "<leader>oL", "<cmd>ObsidianLink<CR>", { desc = "Link Selection" })
+vim.keymap.set("v", "<leader>oN", "<cmd>ObsidianLinkNew<CR>", { desc = "Link - New Note" })
+-- Utility
+vim.keymap.set("n", "<leader>oi", "<cmd>ObsidianTemplate<CR>", { desc = "Insert Template" })
+vim.keymap.set("n", "<leader>ox", "<cmd>ObsidianTOC<CR>", { desc = "Table of Contents" })
 
 -- toggle notify log
 vim.keymap.set("n", "<leader>sl", "<cmd>Telescope notify<CR>", { desc = "[S]earch Notify [L]og" })
