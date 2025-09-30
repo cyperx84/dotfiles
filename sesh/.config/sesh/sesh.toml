@@ -40,5 +40,5 @@ preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status
 name = "🤖 Agents"
 path = "~/Code/agents"
 startup_command = "nvim ."
-preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status '🤖 Agents' && echo '' && echo '🐍 Python Agents Project' && uv tree 2>/dev/null || eza --all --git --icons --color=always {}"
+preview_command = ""
 
