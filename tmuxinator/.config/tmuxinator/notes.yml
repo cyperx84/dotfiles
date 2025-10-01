@@ -14,18 +14,16 @@ windows:
       options:
         main-pane-height: 80%
       panes:
-        - n INDEX.md
+        - no
   - 👾 agents:
       layout: even-horizontal
       panes:
         - |
-          cld
+          cc
         - |
-          gemini
+          cc
         - |
-          codex
-        - |
-          opencode
+          oc
   - 💻 system:
       layout: main-horizontal
       options:
@@ -36,3 +34,9 @@ windows:
           echo "🖥️ General terminal"
           echo "💡 For misc commands and scripts"
         - git status
+  - 📝 AI:
+      layout: main-horizontal
+      options:
+        main-pane-height: 80%
+      panes:
+        - noai

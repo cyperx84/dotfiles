@@ -266,6 +266,6 @@ fpath=(/Users/cyperx/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
-
-alias cld="/Users/cyperx/.claude/local/claude --dangerously-skip-permissions"
+alias oc="opencode"
+alias cc="/Users/cyperx/.claude/local/claude --dangerously-skip-permissions"
 alias claude="/Users/cyperx/.claude/local/claude"

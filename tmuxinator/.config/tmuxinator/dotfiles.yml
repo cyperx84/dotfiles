@@ -9,19 +9,30 @@ on_project_restart: |
 on_project_exit: echo "👋 Dotfiles session ended"
 
 windows:
-  - 👾NeoVIM:
+  - 🅅 NeoVIM:
       layout: main-horizontal
       options:
         main-pane-height: 95%
       panes:
         - editor:
           - nvim
-  - Git:
+  - 👾 agents:
+      layout: even-horizontal
       panes:
+        - |
+          cc
+        - |
+          cc
+        - |
+          oc
+  - 💻 system:
+      layout: main-horizontal
+      options:
+        main-pane-width: 70%
+      panes:
+        - yazi
+        - |
+          echo "🖥️ General terminal"
+          echo "💡 For misc commands and scripts"
         - git status
-        - git log --oneline -10
         
-  - Monitor:
-      panes:
-        - logs:
-          - echo "📝 Monitoring system logs..."

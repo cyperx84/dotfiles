@@ -1,5 +1,9 @@
+# Sesh Configuration - Tmuxinator-Only Mode
+# All session layouts are managed through tmuxinator YAML files in ~/.config/tmuxinator/
+
 blacklist = ["scratch"]
 
+# Prioritize tmuxinator sessions first
 sort_order = [
     "tmuxinator", # show first for complex layouts
     # "config",
@@ -10,35 +14,3 @@ sort_order = [
 [default_session]
 startup_command = "nvim"
 preview_command = "eza --all --git --icons --color=always {}"
-
-[tmuxinator]
-auto_detect = true
-path = "~/.config/tmuxinator"
-prefer_tmuxinator = true
-
-# === EXISTING SESSIONS (Enhanced) ===
-
-[[session]]
-name = "🗒️ Notes"
-path = '/Users/cyperx/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes'
-startup_command = "nvim INDEX.md"
-preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status 'notes' && echo '' && echo '📚 Obsidian Notes Vault' && ls -la | head -5"
-
-[[session]]
-name = "📥 Downloads"
-path = "~/Downloads"
-startup_command = "yazi"
-preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status '📥 Downloads' && echo '' && echo '📁 Recent Downloads:' && ls -lt | head -5"
-
-[[session]]
-name = "⚙️ Dotfiles"
-path = "~/dotfiles"
-startup_command = "nvim"
-preview_command = "~/dotfiles/sesh/.config/sesh/scripts/session_status.sh status '⚙️ Dotfiles' && echo '' && echo '🔧 Dotfiles Repository' && cat CLAUDE.md | head -10 2>/dev/null || eza --all --git --icons --color=always {}"
-
-[[session]]
-name = "🤖 Agents"
-path = "~/Code/agents"
-startup_command = "nvim ."
-preview_command = ""
-

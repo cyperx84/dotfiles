@@ -54,7 +54,7 @@ return {
             position = 'left',
             border = 'single',
             height = 0.7, -- Optimized height for better screen usage
-            width = 0.35, -- Optimized width for better balance
+            width = 0.3, -- Optimized width for better balance
             relative = 'editor',
             full_height = false, -- Use full height of the editor
           },

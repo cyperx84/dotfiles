@@ -1,371 +1,310 @@
 ---
 id: CLAUDE
-tags: []
+tags:
+  - claude-md
 ---
 
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with this macOS dotfiles repository.
 
-## 📚 Documentation Structure
-
-This repository has comprehensive documentation designed for both human users and AI agents:
-
-| Document | Purpose | AI Agent Use Case |
-|----------|---------|-------------------|
-| **[README.md](README.md)** | Repository overview and quick start | Understanding repository purpose and basic setup |
-| **[docs/COMPONENTS.md](docs/COMPONENTS.md)** | Detailed component documentation | Understanding individual tools and their configurations |
-| **[docs/KEYBINDS.md](docs/KEYBINDS.md)** | Complete keybindings reference | Finding specific keybinds and aliases across all tools |
-| **[docs/NEOVIM_KEYBINDS.md](docs/NEOVIM_KEYBINDS.md)** | Neovim-specific mappings | Understanding Neovim configuration and keybinds |
-| **[docs/WORKFLOW_GUIDES.md](docs/WORKFLOW_GUIDES.md)** | Cross-tool integration workflows | Learning how tools work together for common tasks |
-| **[docs/CLAUDE_STATUSLINE.md](docs/CLAUDE_STATUSLINE.md)** | Enhanced statusline interpretation | Understanding context usage, cost tracking, and session monitoring |
-| **[docs/MAINTENANCE.md](docs/MAINTENANCE.md)** | Validation and troubleshooting | System maintenance and problem resolution |
-| **[AGENTS.md](AGENTS.md)** | Agent development guidelines | Development practices and testing procedures |
-
-## 🤖 AI Agent Guidelines
-
-### Quick File Location Reference
-- **Zsh config**: `zsh/.zshrc` (aliases, functions, keybinds)
-- **Tmux config**: `tmux/.tmux.conf` (session management, keybinds)
-- **Neovim config**: `nvim/.config/nvim/lua/keymaps.lua` (main keybinds)
-- **Window management**: `skhd/.config/skhd/skhdrc` (hotkeys), `yabai/.config/yabai/yabairc` (window manager)
-- **Validation scripts**: `~/bin/validate_sesh.sh`, `~/.config/sketchybar/test_sketchybar.sh`
-
-### Understanding User Intent
-When users ask about:
-- **"Keybinds"** → Reference [docs/KEYBINDS.md](docs/KEYBINDS.md) and [docs/NEOVIM_KEYBINDS.md](docs/NEOVIM_KEYBINDS.md)
-- **"How tools work together"** → Reference [docs/WORKFLOW_GUIDES.md](docs/WORKFLOW_GUIDES.md)
-- **"Component details"** → Reference [docs/COMPONENTS.md](docs/COMPONENTS.md)
-- **"Something not working"** → Reference [docs/MAINTENANCE.md](docs/MAINTENANCE.md)
-- **"Statusline" or "Context usage"** → Reference [docs/CLAUDE_STATUSLINE.md](docs/CLAUDE_STATUSLINE.md)
-- **"File locations"** → Use the structure information below
-
-### Claude Code Statusline
-The enhanced Claude Code statusline provides comprehensive session information. Key components to understand:
-- **Context Usage**: Real-time token tracking with color-coded warnings (Green < 60%, Yellow 60-79%, Red 80%+)
-- **Cost Tracking**: Accurate session cost based on actual token usage
-- **Tool Breakdown**: Detailed view of system tools, MCP integrations, agents, and memory usage
-- **Session Info**: Current directory, git status, model selection, and session duration
-
-For complete interpretation guide, see [docs/CLAUDE_STATUSLINE.md](docs/CLAUDE_STATUSLINE.md).
-
-## Repository Overview
-
-This is a comprehensive macOS development environment dotfiles repository featuring a highly integrated window management and terminal-centric workflow. The setup centers around 10 main configuration components that work together to create a tiling window manager environment with advanced terminal productivity tools. All configurations are managed using GNU Stow for automated symlink creation.
-
-## Architecture & Component Integration
-
-### Window Management Stack
-The core of this setup is a three-part window management system:
-- **Yabai** (`yabai/.config/yabai/yabairc`) - BSP tiling window manager with 1px gaps
-- **SKHD** (`skhd/.config/skhd/skhdrc`) - Hotkey daemon for window control
-- **SketchyBar** (`sketchybar/.config/sketchybar/sketchybarrc`) - Menu bar replacement with 30+ plugins
-
-These components are tightly integrated: Yabai reserves 32px for SketchyBar's external bar, and SKHD provides unified hotkeys for both window management and SketchyBar interactions.
-
-### Terminal Environment
-Three-layer terminal setup optimized for development:
-- **Ghostty** (`ghostty/.config/ghostty/config`) - GPU-accelerated terminal with shader support
-- **Tmux** (`tmux/.tmux.conf`) - Multiplexer with Ctrl+A prefix and Catppuccin theme
-- **Zsh** (`zsh/.zshrc`) - Enhanced shell with FZF integration and extensive aliases
-
-Key integration: Ghostty optimized for Tmux with specific font ligature and GPU settings.
-
-### Development Tools
-- **Neovim** (`nvim/.config/nvim/`) - 49 Lua configuration files based on kickstart.nvim
-- **Starship** (`starship/.config/starship/`) - 6 interchangeable prompt themes
-- **Sesh** (`sesh/.config/sesh/sesh.toml`) - Session management
-- **Tmuxinator** (`tmuxinator/.config/tmuxinator/`) - Complex tmux session layouts
-
-### Input Management
-- **Karabiner-Elements** - Currently active keyboard remapping (simple mappings)
-- **Kanata** (`kanata/.config/kanata/kanata.kbd`) - Advanced keyboard remapper with home row mods (configured but inactive)
-
-## Prerequisites & Dependencies
-
-### Essential Homebrew Packages
-The dotfiles setup requires specific Homebrew packages to function properly:
+## 🚀 Quick Start - Most Used Commands
 
 ```bash
-# Core applications (casks)
-brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd-font
+# Install all dotfiles
+stow */
 
-# System & window management
-brew install yabai skhd sketchybar stow
+# Service management (after config changes)
+brew services restart yabai && brew services restart sketchybar
+sketchybar --reload
+tmux source-file ~/.tmux.conf
 
-# Shell & terminal enhancement  
-brew install starship tmux zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep
+# Validation & testing
+~/bin/validate_sesh.sh                                    # Validate sesh config
+~/.config/sketchybar/test_sketchybar.sh                  # Test all plugins
+yabai --check-config                                      # Validate yabai config
 
-# Development tools
-brew install nvim git gh yazi sesh jq wget curl
+# Session management (sesh aliases)
+sl                                                        # List sessions
+sd                                                        # Fuzzy connect
+sesh-dashboard                                           # Full dashboard
 
-# Optional advanced tools
-brew install kanata tmuxinator
+# Configuration reload
+exec zsh                                                  # Reload shell
 ```
 
-## Common Development Commands
+## 📍 Critical File Locations
+
+```
+Core Configs:
+├── zsh/.zshrc                                           # Shell: aliases, functions, keybinds
+├── tmux/.tmux.conf                                      # Multiplexer: Ctrl+A prefix
+├── nvim/.config/nvim/lua/keymaps.lua                   # Neovim keybinds
+├── yabai/.config/yabai/yabairc                         # Window manager
+├── skhd/.config/skhd/skhdrc                            # Hotkey daemon
+├── ghostty/.config/ghostty/config                      # Terminal
+└── sketchybar/.config/sketchybar/sketchybarrc          # Menu bar
+
+Validation Scripts:
+├── ~/bin/validate_sesh.sh
+├── ~/.config/sketchybar/test_sketchybar.sh
+├── ~/.config/sketchybar/debug_sketchybar.sh
+└── ~/.config/sketchybar/plugin_health_monitor.sh
+```
+
+## 🎯 User Intent Mapping
+
+| User Query | Action | Reference |
+|------------|--------|-----------|
+| "Keybinds" / "Shortcuts" | Check keybindings | @docs/KEYBINDS.md, @docs/NEOVIM_KEYBINDS.md |
+| "How tools work together" | Check workflows | @docs/WORKFLOW_GUIDES.md |
+| "Component details" | Check components | @docs/COMPONENTS.md |
+| "Not working" / "Broken" | Troubleshoot | @docs/MAINTENANCE.md |
+| "Statusline" / "Context" | Check statusline | @docs/CLAUDE_STATUSLINE.md |
+| "Agent development" | Check guidelines | @AGENTS.md |
+| "Repository overview" | Check README | @README.md |
+
+## ⚠️ IMPORTANT - Things You MUST NOT Do
+
+1. **DO NOT** modify the following without explicit user request:
+   - `zsh/.zshrc` brew() function (SketchyBar integration dependency)
+   - Service restart sequences (order matters: yabai → skhd → sketchybar)
+   - Stow directory structure (breaking symlinks will break the entire setup)
+
+2. **DO NOT** create new documentation files unless explicitly requested
+
+3. **DO NOT** suggest changes to:
+   - Karabiner-Elements vs Kanata setup (user has chosen Karabiner)
+   - Tmux prefix (Ctrl+A is intentional, not Ctrl+B)
+   - Yabai gap sizes (1px is intentional)
+
+4. **ALWAYS** validate before suggesting changes:
+   - Run validation scripts before declaring changes complete
+   - Test service restarts after config modifications
+   - Verify stow symlinks after structural changes
+
+## 🏗️ Repository Architecture
+
+**Overview:** Comprehensive macOS development environment with 10 integrated components managed via GNU Stow.
+
+### Window Management Stack (Tightly Coupled)
+- **Yabai** - BSP tiling window manager (1px gaps, 32px top padding for SketchyBar)
+- **SKHD** - Hotkey daemon (unified hotkeys for Yabai + SketchyBar)
+- **SketchyBar** - Menu bar replacement (30+ plugins, external bar mode)
+
+### Terminal Environment (3-Layer)
+- **Ghostty** - GPU-accelerated terminal with shader support
+- **Tmux** - Multiplexer (Ctrl+A prefix, Catppuccin theme, 10+ plugins)
+- **Zsh** - Enhanced shell (FZF integration, extensive aliases)
+
+### Development Tools
+- **Neovim** - 49 Lua config files (kickstart.nvim based)
+- **Starship** - 6 interchangeable prompt themes
+- **Sesh** - Session management with enhanced aliases
+- **Tmuxinator** - Complex tmux session layouts
+
+### Input Management
+- **Karabiner-Elements** - Active (Caps→Ctrl, Right Cmd/Shift→Backspace)
+- **Kanata** - Configured but inactive (home row mods available)
+
+## 🛠️ Common Tasks
+
+### Installation & Setup
+
+```bash
+# Prerequisites
+brew install yabai skhd sketchybar stow starship tmux \
+  zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep \
+  nvim git gh yazi sesh jq wget curl
+
+brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd-font
+
+# Install all configs
+stow */
+
+# Or install specific components
+stow zsh tmux nvim ghostty
+
+# Unstow (remove symlinks)
+stow -D ghostty
+```
 
 ### Service Management
-```bash
-# Start/stop core services
-brew services start yabai
-brew services start skhd
-brew services start sketchybar
 
-# Restart services after config changes
+```bash
+# Start services (first time)
+brew services start yabai skhd sketchybar
+
+# Restart after config changes (REQUIRED)
 brew services restart yabai
 brew services restart sketchybar
 ```
 
-### Installation Workflow
-The repository uses GNU Stow for automated symlink management:
+### Configuration Validation
+
 ```bash
-# Install all configurations
-stow */
+# Yabai
+yabai --check-config
+tail -f /usr/local/var/log/skhd/skhd.out.log
 
-# Install specific components
-stow ghostty
-stow nvim
-stow tmux
-stow zsh
+# SketchyBar
+~/.config/sketchybar/test_sketchybar.sh              # Test all
+~/.config/sketchybar/test_sketchybar.sh github      # Test specific
 
-# Remove/unstow configurations
-stow -D ghostty
+# Debug tools
+~/.config/sketchybar/debug_sketchybar.sh             # Full debug
+~/.config/sketchybar/plugin_health_monitor.sh test  # Health check
+
+# Sesh
+~/bin/validate_sesh.sh
 ```
 
 ### Theme Switching
+
 ```bash
-# Starship prompt themes (modify in ~/.zshrc)
+# Edit ~/.zshrc and change STARSHIP_CONFIG line to one of:
 export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-dark-neon.toml
 export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-rainbow.toml
 export STARSHIP_CONFIG=~/.config/starship/starship-jetpack.toml
 
-# Apply changes
+# Apply
 exec zsh
 ```
 
-### Configuration Reloading
+### Session Management (Sesh)
+
 ```bash
-# Reload configurations without restarting
-sketchybar --reload
-yabai --restart-service
-tmux source-file ~/.tmux.conf
+# Quick commands (aliases in ~/.zshrc)
+sl                      # List sessions
+sd                      # Fuzzy connect
+sc <name>              # Connect to specific session
+sesh-dashboard         # Comprehensive dashboard
+sesh-kill <name>       # Kill session
+sesh-kill-all          # Kill all sessions
+
+# Tmuxinator integration
+sesh-tmux              # List layouts
+sesh-start <layout>    # Start layout
+
+# Validation
+~/bin/validate_sesh.sh
 ```
 
-### SketchyBar Development Tools & Testing
+## 🔗 Key Integration Points
 
-The SketchyBar setup includes comprehensive testing and monitoring tools for development components:
+### SketchyBar-Brew Integration
+**CRITICAL:** `.zshrc` contains custom `brew()` function that triggers SketchyBar updates. DO NOT modify without understanding dependencies.
 
-#### Testing Framework
+### FZF Shell Functions
+Custom navigation functions in `.zshrc`:
+- `fcd` - Fuzzy directory navigation
+- `fv` - Fuzzy file open with editor
+- `f` - General fuzzy file operations
+
+### Custom Aliases
+Extensive alias system (50+ git aliases, Docker/K8s workflows, navigation shortcuts).
+See complete list: `alias | grep` or check `.zshrc` lines 100-300.
+
+### Session Management Triple-System
+Three concurrent session management systems:
+1. **Tmux resurrect/continuum** - Session persistence
+2. **Sesh** - Project-based templates with FZF integration
+3. **Tmuxinator** - Complex multi-window layouts
+
+When modifying session configs, consider interactions between all three.
+
+## 🐛 Troubleshooting Quick Reference
+
+### SketchyBar Issues
+
 ```bash
-# Test all development plugins
-~/.config/sketchybar/test_sketchybar.sh
-
-# Test specific components
-~/.config/sketchybar/test_sketchybar.sh github
-```
-
-#### Debug Tools
-```bash
-# Full debugging session
-~/.config/sketchybar/debug_sketchybar.sh
-
-# Debug specific plugin
-~/.config/sketchybar/debug_sketchybar.sh plugin git
-
-# Monitor plugins in real-time
-~/.config/sketchybar/debug_sketchybar.sh monitor
-
-# Debug GitHub-specific issues
-~/.config/sketchybar/debug_sketchybar.sh github
-```
-
-#### Health Monitoring
-```bash
-# Test all development plugins
-~/.config/sketchybar/plugin_health_monitor.sh test
-
-# Continuous monitoring
-~/.config/sketchybar/plugin_health_monitor.sh monitor
-
-# Health report
-~/.config/sketchybar/plugin_health_monitor.sh report
-
-# Check dependencies
-~/.config/sketchybar/plugin_health_monitor.sh deps
-```
-
-#### Troubleshooting Common Issues
-
-**GitHub Plugin Not Working:**
-```bash
-# Check authentication
+# GitHub plugin not working
 gh auth status
-
-# Enable debug logging
 GITHUB_DEBUG=1 ~/.config/sketchybar/debug_sketchybar.sh github
 
-# Test notifications API
-gh api notifications
-```
-
-**Helper Binary Issues:**
-```bash
-# Recompile helper binary
+# Helper binary issues
 cd ~/.config/sketchybar/helper && make clean && make
 
-# Check compilation dependencies
-~/.config/sketchybar/debug_sketchybar.sh helper
-```
-
-**Plugin Not Updating:**
-```bash
-# Check plugin execution
+# Plugin not updating
 ~/.config/sketchybar/plugin_health_monitor.sh test <plugin_name>
-
-# Force update
 sketchybar --trigger <plugin_name>.update
 ```
 
-## Key Integration Points
+### Service Issues
 
-### SketchyBar-Brew Integration
-The `.zshrc` contains a custom `brew()` function that triggers SketchyBar updates after package operations. When modifying brew-related functionality, ensure this integration remains intact.
+```bash
+# Services won't start
+brew services list                                   # Check status
+tail -f /usr/local/var/log/yabai/yabai.out.log      # Yabai logs
+tail -f /usr/local/var/log/skhd/skhd.out.log        # SKHD logs
 
-### FZF Shell Functions
-Three custom navigation functions in `.zshrc`:
-- `fcd` - Fuzzy directory navigation
-- `fv` - Fuzzy file opening with editor
-- `f` - General fuzzy file operations
+# Config syntax errors
+yabai --check-config
+```
 
-### Custom Aliases System
-Extensive alias system covering:
-- Git operations (50+ aliases)
-- Docker and Kubernetes workflows
-- Directory navigation shortcuts
-- Development tool shortcuts
+### Stow Issues
 
-## Important File Locations
+```bash
+# Conflicts during stow
+stow -D <component>  # Unstow first
+stow <component>     # Re-stow
 
-### Core Configuration Files
-- `ghostty/.config/ghostty/config` - Terminal appearance and GPU settings
-- `yabai/.config/yabai/yabairc` - Window manager rules and behavior
-- `skhd/.config/skhd/skhdrc` - All hotkey definitions
-- `tmux/.tmux.conf` - Terminal multiplexer with 10+ plugins
-- `zsh/.zshrc` - Shell configuration with custom functions
+# Check current symlinks
+ls -la ~/.<config_file>
+```
 
-### Plugin Ecosystems
-- `sketchybar/.config/sketchybar/plugins/` - 30+ system monitoring and integration plugins
-- `nvim/.config/nvim/lua/custom/plugins/` - Neovim plugin configurations
-- `ghostty/.config/ghostty/shaders/` - GLSL visual effect shaders
+## 📚 Documentation Reference
 
-### Theme Configurations
-- `starship/.config/starship/` - 6 different prompt theme files
-- Naming pattern: `starship-{theme-name}.toml`
+This repository has comprehensive documentation for detailed information:
 
-## Development Considerations
+| Document | Purpose |
+|----------|---------|
+| @README.md | Repository overview and quick start |
+| @docs/COMPONENTS.md | Detailed component documentation |
+| @docs/KEYBINDS.md | Complete keybindings reference |
+| @docs/NEOVIM_KEYBINDS.md | Neovim-specific mappings |
+| @docs/WORKFLOW_GUIDES.md | Cross-tool integration workflows |
+| @docs/CLAUDE_STATUSLINE.md | Statusline interpretation guide |
+| @docs/MAINTENANCE.md | Validation and troubleshooting |
+| @AGENTS.md | Agent development guidelines |
+
+## 🔧 Development Considerations
 
 ### Service Dependencies
-Changes to yabai or skhd configurations require service restarts. SketchyBar plugins may need individual reloading via `sketchybar --reload`.
+- Yabai/SKHD config changes → `brew services restart`
+- SketchyBar config changes → `sketchybar --reload`
+- Plugin changes → Test individual plugin before full reload
 
-### Configuration Validation
-When modifying configurations:
-- Yabai: Check syntax with `yabai --check-config`
-- SKHD: Monitor logs with `tail -f /usr/local/var/log/skhd/skhd.out.log`
-- SketchyBar: Test individual plugins before full reload
+### Configuration Validation Workflow
+1. Make changes to config files
+2. Run validation script (`yabai --check-config`, `~/bin/validate_sesh.sh`, etc.)
+3. Restart affected service
+4. Verify functionality
+5. Check logs if issues occur
 
-### Plugin Development
-SketchyBar plugins follow a standard pattern with event-driven updates. New plugins should integrate with the existing event system defined in the main sketchybarrc file.
+### Plugin Development (SketchyBar)
+- Follow event-driven pattern (see existing plugins in `sketchybar/.config/sketchybar/plugins/`)
+- Integrate with event system in main sketchybarrc
+- Test with `~/.config/sketchybar/test_sketchybar.sh`
 
-### Session Management
-The setup uses multiple session management approaches:
-- Tmux with resurrect/continuum for session persistence
-- Sesh for project-based session templates
-- Tmuxinator for complex session layouts
+### Input Management Switch (Karabiner ↔ Kanata)
+Currently using Karabiner-Elements. To switch to Kanata:
+1. Stop Karabiner service
+2. `sudo kanata --cfg ~/.config/kanata/kanata.kbd`
+3. Configure launch daemon for auto-start
 
-When working with session-related configurations, consider the interaction between these three systems.
+**Kanata features:** Home row mods (a/s/d/f/j/k/l/; as modifiers), 150ms tap/200ms hold, layer-based mapping.
 
-#### Enhanced Sesh Workflow
-The sesh configuration includes enhanced aliases and validation tools for streamlined session management:
+## 📋 Code Style & Conventions
 
-**Quick Session Commands:**
-```bash
-# List sessions (compact)
-sl
+- **Bash scripts:** Use `#!/usr/bin/env bash`, include error handling
+- **Lua configs:** Follow kickstart.nvim patterns, modular plugin structure
+- **Stow structure:** Keep directory structure matching target locations
+- **Comments:** Inline for complex logic, header blocks for files
 
-# Fuzzy connect to session
-sd
+## 🏷️ Recent Updates
 
-# Connect to specific session
-sc <session_name>
-
-# Show current session info
-sesh-current
-
-# Comprehensive dashboard
-sesh-dashboard
-```
-
-**Session Management:**
-```bash
-# List tmuxinator layouts
-sesh-tmux
-
-# Start tmuxinator session
-sesh-start <layout>
-
-# Kill specific session
-sesh-kill <session>
-
-# Kill all sessions
-sesh-kill-all
-```
-
-**Integration Tools:**
-```bash
-# Open file manager in session
-sesh-files
-
-# Show directory tree
-sesh-tree
-
-# Get session information
-sesh-info [session_name]
-```
-
-**Validation and Testing:**
-```bash
-# Validate entire sesh configuration
-~/bin/validate_sesh.sh
-
-# Test aliases and integration
-source ~/.config/sesh/scripts/sesh_aliases.sh
-```
-
-The enhanced workflow integrates with FZF for fuzzy selection, uses eza for enhanced directory listings, and provides comprehensive session status information through the dashboard interface.
-
-### Input Management Systems
-Two keyboard remapping solutions are available:
-
-**Karabiner-Elements (Active):**
-- Simple key remappings: Caps Lock → Control, Right Cmd/Shift → Backspace
-- Function key pass-through
-- Device-specific configurations
-- Recommended for most users
-
-**Kanata (Configured but Inactive):**
-- Advanced home row modifiers (a/s/d/f/j/k/l/; become modifiers on hold)
-- Layer-based key mapping system
-- 150ms tap time, 200ms hold time
-- More complex but powerful - requires manual activation if desired
-
-To switch from Karabiner-Elements to Kanata:
-1. Stop Karabiner-Elements service
-2. Start kanata service: `sudo kanata --cfg ~/.config/kanata/kanata.kbd`
-3. Configure kanata as a launch daemon for automatic startup
-
-## Recent Updates
-- Added kanata keyboard remapper as alternative to Karabiner-Elements
-- Added tmuxinator for complex session layouts  
-- Updated component count from 9 to 10 main components
-- Added input management system documentation
+- Added Kanata keyboard remapper as alternative to Karabiner-Elements
+- Added Tmuxinator for complex session layouts
+- Enhanced Sesh workflow with FZF integration and validation tools
+- Expanded SketchyBar to 30+ plugins with comprehensive testing framework
