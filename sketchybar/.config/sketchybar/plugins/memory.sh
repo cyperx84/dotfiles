@@ -34,12 +34,14 @@ get_memory_stats() {
   local memory_pressure=$(memory_pressure 2>/dev/null | grep "System-wide memory free percentage" | awk '{print $5}' | tr -d '%')
   [[ "$memory_pressure" =~ ^[0-9]+$ ]] || memory_pressure=50
   
-  # Calculate memory usage in bytes and GB
+  # Calculate memory usage in bytes and GB (matching btop/bpytop accuracy)
   local used_pages=$((pages_active + pages_inactive + pages_speculative + pages_wired + pages_compressed))
   local used_bytes=$((used_pages * page_size))
   local total_gb=$(echo "scale=0; $total_memory_bytes / 1024 / 1024 / 1024" | bc -l)
   local used_gb=$(echo "scale=1; $used_bytes / 1024 / 1024 / 1024" | bc -l)
-  local memory_percent=$(echo "scale=0; ($used_bytes * 100) / $total_memory_bytes" | bc -l)
+  # Use scale=1 for more precision, then round to nearest integer
+  local memory_percent=$(echo "scale=1; ($used_bytes * 100) / $total_memory_bytes" | bc -l)
+  memory_percent=$(printf "%.0f" "$memory_percent")
   
   # Calculate individual memory type percentages for detailed view
   local active_gb=$(echo "scale=1; ($pages_active * $page_size) / 1024 / 1024 / 1024" | bc -l)

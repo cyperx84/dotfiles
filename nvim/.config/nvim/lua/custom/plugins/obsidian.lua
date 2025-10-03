@@ -56,6 +56,11 @@ return {
 
         return out
       end,
+      -- Open URLs in browser
+      follow_url_func = function(url)
+        vim.fn.jobstart({ 'open', url }, { detach = true })
+      end,
+
       mappings = {
         -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
         ['gf'] = {
@@ -82,6 +87,8 @@ return {
           -- Insert a tag at the current location.
           insert_tag = '<C-l>',
         },
+        sort_by = "modified",
+        sort_reversed = true,
       },
 
       -- templates = {

@@ -9,7 +9,8 @@
       "args": [
         "chrome-devtools-mcp@latest"
       ],
-      "command": "npx"
+      "command": "npx",
+      "disabled": true
     },
     "context7": {
       "args": [
@@ -27,7 +28,8 @@
       "args": [
         "mcp-server-fetch"
       ],
-      "command": "uvx"
+      "command": "uvx",
+      "disabled": true
     },
     "filesystem": {
       "args": [
@@ -35,7 +37,8 @@
         "@modelcontextprotocol/server-filesystem",
         "/Users/cyperx"
       ],
-      "command": "npx"
+      "command": "npx",
+      "disabled": true
     },
     "markitdown-mcp": {
       "args": [
@@ -46,7 +49,7 @@
         "convert_to_markdown"
       ],
       "command": "uv",
-      "disabled": false
+      "disabled": true
     },
     "mcp-obsidian": {
       "args": [
@@ -70,7 +73,7 @@
         "obsidian_get_recent_changes"
       ],
       "command": "uv",
-      "disabled": false
+      "disabled": true
     },
     "mcp-ui Docs": {
       "disabled": true,
@@ -97,7 +100,8 @@
         "-y",
         "@modelcontextprotocol/server-memory"
       ],
-      "command": "npx"
+      "command": "npx",
+      "disabled": true
     },
     "playwright": {
       "args": [
@@ -157,12 +161,13 @@
         "shadcn@latest",
         "mcp"
       ],
-      "command": "npx"
+      "command": "npx",
+      "disabled": true
     }
   },
   "nativeMCPServers": {
     "mcphub": {
-      "disabled": true
+      "disabled": false
     }
   }
 }

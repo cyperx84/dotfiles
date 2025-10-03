@@ -294,7 +294,6 @@ Currently using Karabiner-Elements. To switch to Kanata:
 3. Configure launch daemon for auto-start
 
 **Kanata features:** Home row mods (a/s/d/f/j/k/l/; as modifiers), 150ms tap/200ms hold, layer-based mapping.
-
 ## 📋 Code Style & Conventions
 
 - **Bash scripts:** Use `#!/usr/bin/env bash`, include error handling

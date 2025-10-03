@@ -56,7 +56,7 @@ return {
             height = 0.7, -- Optimized height for better screen usage
             width = 0.3, -- Optimized width for better balance
             relative = 'editor',
-            full_height = false, -- Use full height of the editor
+            full_height = false, -- Use vsplit instead of botright/topleft vsplit
           },
         },
         action_palette = {
@@ -78,7 +78,7 @@ return {
                 api_key = 'cmd:pass show apis/OPENAI_API_KEY',
               },
               schema = {
-                model = { default = 'gpt-4o-mini' }, -- Updated to latest model
+                model = { default = 'gpt-4o-mini' },
               },
             })
           end,
@@ -89,7 +89,7 @@ return {
                 api_key = 'cmd:pass show apis/ANTHROPIC_API_KEY',
               },
               schema = {
-                model = { default = 'claude-3-5-sonnet-20241022' }, -- Updated to latest stable model
+                model = { default = 'claude-sonnet-4-20250514' },
               },
             })
           end,
@@ -100,7 +100,7 @@ return {
                 api_key = 'cmd:pass show apis/GEMINI_API_KEY',
               },
               schema = {
-                model = { default = 'gemini-2.0-flash-exp' }, -- Updated to latest model
+                model = { default = 'gemini-2.0-flash-exp' },
               },
             })
           end,
@@ -121,7 +121,7 @@ return {
 
       strategies = {
         chat = {
-          adapter = 'deepseek', -- Switch to Anthropic for better performance
+          adapter = 'deepseek',
           keymaps = {
             send = {
               modes = {
@@ -168,8 +168,8 @@ return {
             },
           },
         },
-        inline = { adapter = 'deepseek' }, -- Updated for consistency
-        cmd = { adapter = 'deepseek' }, -- Updated for consistency
+        inline = { adapter = 'deepseek' },
+        cmd = { adapter = 'deepseek' },
       },
       extensions = {
         mcphub = {
