@@ -130,9 +130,12 @@ vim.keymap.set("n", "<leader>CC", "<cmd>CodeCompanion<CR>", { desc = "Code Compa
 vim.keymap.set("n", "<leader>Cc", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
 vim.keymap.set("n", "<leader>Cd", "<cmd>CodeCompanionCMD<CR>", { desc = "Code Companion Actions" })
 
+--Claude-code History
+vim.keymap.set("n", "<leader>ch", "<cmd>ClaudeHistory<CR>", { desc = "Claude-code History" })
+
 -- Jump between markdown headers (should be in FileType autocmd)
--- vim.keymap.set("n", "gj", [[/^##\+ .*<CR>]], { buffer = true, silent = true })
--- vim.keymap.set("n", "gk", [[?^##\+ .*<CR>]], { buffer = true, silent = true })
+vim.keymap.set("n", "gj", [[/^##\+ .*<CR>]], { buffer = true, silent = true })
+vim.keymap.set("n", "gk", [[?^##\+ .*<CR>]], { buffer = true, silent = true })
 -- TODO: Move to autocmd for markdown filetypes
 
 -- Exit insert mode without hitting Esc

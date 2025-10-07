@@ -6,9 +6,9 @@ blacklist = ["scratch"]
 # Prioritize tmuxinator sessions first
 sort_order = [
     "tmuxinator", # show first for complex layouts
-    # "config",
-    # "tmux",
-    # "zoxide", # show last
+    "config",
+    "tmux",
+    "zoxide", # show last
 ]
 
 [default_session]

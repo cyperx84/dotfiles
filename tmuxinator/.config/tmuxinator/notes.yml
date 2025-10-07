@@ -14,7 +14,7 @@ windows:
       options:
         main-pane-height: 80%
       panes:
-        - no
+        - noai
   - 👾 agents:
       layout: even-horizontal
       panes:
@@ -34,9 +34,3 @@ windows:
           echo "🖥️ General terminal"
           echo "💡 For misc commands and scripts"
         - git status
-  - 📝 AI:
-      layout: main-horizontal
-      options:
-        main-pane-height: 80%
-      panes:
-        - noai

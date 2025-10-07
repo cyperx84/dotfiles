@@ -167,7 +167,10 @@
   },
   "nativeMCPServers": {
     "mcphub": {
-      "disabled": false
+      "disabled": true
+    },
+    "neovim": {
+      "disabled": true
     }
   }
 }

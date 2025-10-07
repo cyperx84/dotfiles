@@ -87,7 +87,7 @@
 
 
 # create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
-# shift + alt - n : yabai -m space --create && \
+shift + cmd - n : yabai -m space --create && \
 #                   index="$(yabai -m query --spaces --display | jq 'map(select(."is-native-fullscreen" == false))[-1].index')" && \
 #                   yabai -m window --space "${index}" && \
 #                   yabai -m space --focus "${index}"
@@ -133,7 +133,7 @@ shift + alt - left   : yabai -m window --grid 1:2:0:0:1:1
 ctrl + cmd - e : yabai -m window --toggle split
 
 # float / unfloat window and center on screen
-alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
+ctrl + alt + cmd - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
 
 # toggle sticky(+float), picture-in-picture
 alt - p : yabai -m window --toggle sticky --toggle pip
@@ -146,7 +146,6 @@ shift + ctrl + alt - l : yabai -m window --warp east
 
 # change window focus within space
 shift + ctrl - j : yabai -m window --focus south
-shift + ctrl - k : yabai -m window --focus north
 shift + ctrl - h : zabai -m window --focus west
 shift + ctrl - l : yabai -m window --focus east
 
@@ -180,10 +179,10 @@ ctrl + alt + cmd - l : \
     yabai -m window --resize left:100:0
 
 # move window and split
-# ctrl + alt - j : yabai -m window --warp south
-# ctrl + alt - k : yabai -m window --warp north
-# ctrl + alt - h : yabai -m window --warp west
-# ctrl + alt - l : yabai -m window --warp east
+ctrl + alt - j : yabai -m window --warp south
+ctrl + alt - k : yabai -m window --warp north
+ctrl + alt - h : yabai -m window --warp west
+ctrl + alt - l : yabai -m window --warp east
 
 # Float and center window
 ctrl + cmd - q : yabai -m window --toggle float;\
