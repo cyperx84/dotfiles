@@ -246,7 +246,7 @@ alias conf="cd $HOME/dotfiles && nvim"
 
 # notes 
 alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
-alias noai="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/ai && nvim INDEX.md"
+alias tno="tmuxinator start notes"
 
 # Code Workspaces
 alias C="cd ~/Code/"
@@ -256,7 +256,6 @@ export BAT_THEME=tokyonight_night
 
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
-
 export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
@@ -267,5 +266,28 @@ autoload -Uz compinit
 compinit
 # End of Docker CLI completions
 alias oc="opencode"
-alias cc="/Users/cyperx/.claude/local/claude --dangerously-skip-permissions"
+
+# Claude Code - unset DeepSeek env vars before running
+cc() {
+    unset ANTHROPIC_BASE_URL
+    unset ANTHROPIC_AUTH_TOKEN
+    unset API_TIMEOUT_MS
+    unset ANTHROPIC_MODEL
+    unset ANTHROPIC_SMALL_FAST_MODEL
+    unset CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
+    /Users/cyperx/.claude/local/claude --dangerously-skip-permissions "$@"
+}
+
 alias claude="/Users/cyperx/.claude/local/claude"
+
+# DeepSeek with Claude Code
+ccds() {
+    export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
+    export ANTHROPIC_AUTH_TOKEN=$(pass apis/DEEPSEEK_API_KEY)
+    export API_TIMEOUT_MS=600000
+    export ANTHROPIC_MODEL=deepseek-chat
+    export ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat
+    export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+    claude "$@"
+}
+

@@ -19,6 +19,8 @@ return {
       -- Window-local options to use for oil buffers
       delete_to_trash = true,
       skip_confirm_for_simple_edits = true,
+      skip_confirm_for_actions = true,
+      confirm_on_delete = false,  
       -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
       -- (:help prompt_save_on_select_new_entry)
       prompt_save_on_select_new_entry = false,
@@ -76,14 +78,15 @@ return {
         end,
       },
       float = {
-        padding = 1,
+        -- padding = 1,
         max_width = 100,
         max_height = 20,
+        border = 'rounded',
       },
 
       win_options = {
         wrap = true,
-        -- winblend = 20,
+        -- winblend = 10,
         signcolumn = 'no',
         cursorcolumn = false,
         foldcolumn = '0',
@@ -94,5 +97,11 @@ return {
 
       },
     }
+
+    -- Orange border with transparent background
+    vim.api.nvim_set_hl(0, 'FloatBorder', {
+      fg = '#ff9e64',  -- Orange border color
+      bg = 'NONE'      -- Transparent background
+    })
   end,
 }

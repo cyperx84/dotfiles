@@ -61,8 +61,8 @@ return {
   config = true,
   keys = {
     -- Core Claude Code commands
-    { "<c-M-j>", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude (with focus)" },
-    { "<c-M-j>", toggle_claude_no_focus, desc = "Toggle Claude (close)", mode = "t" },
+    { "<M-;>", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude (with focus)" },
+    { "<M-;>", toggle_claude_no_focus, desc = "Toggle Claude (close)", mode = "t" },
     { "<leader>cf", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
     { "<leader>cm", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
 

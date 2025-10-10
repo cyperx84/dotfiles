@@ -3,10 +3,8 @@
 echo "🔍 Validating Sesh Dotfiles Configuration - $(date '+%Y-%m-%d %H:%M')"
 echo "=============================================================="
 
-# Determine which config to test
-DEFAULT_CONFIG="$HOME/.config/sesh/sesh.toml"
-TEST_CONFIG="$HOME/.config/sesh/test_enhanced_sesh.toml"
-CONFIG_FILE="${SESH_CONFIG:-$DEFAULT_CONFIG}"
+# Test main config file
+CONFIG_FILE="$HOME/.config/sesh/sesh.toml"
 
 echo "📋 Testing configuration: $CONFIG_FILE"
 
@@ -39,14 +37,28 @@ done
 echo ""
 echo "🔧 Validating dotfiles integration:"
 
-# Check essential sessions from the main config
-essential_sessions=("⚙️ Dotfiles" "🗒️ Notes" "📥 Downloads")
+# Check essential sessions from the config
+# Tmuxinator projects (appear in sesh list)
+essential_tmuxinator=("notes" "dotfiles")
+# Configured sesh sessions
+essential_sessions=("📥 Downloads" "🏠 Home" "💻 Code")
 
-for session in "${essential_sessions[@]}"; do
-    if sesh list | grep -q "$session"; then
-        echo "✅ Found essential session: $session"
+echo "🎛️  Tmuxinator projects:"
+for project in "${essential_tmuxinator[@]}"; do
+    if tmuxinator list 2>/dev/null | grep -q "$project"; then
+        echo "✅ Found tmuxinator project: $project"
     else
-        echo "⚠️  Missing session: $session"
+        echo "⚠️  Missing tmuxinator project: $project"
+    fi
+done
+
+echo ""
+echo "📋 Configured sesh sessions:"
+for session in "${essential_sessions[@]}"; do
+    if sesh list -c 2>/dev/null | grep -q "$session"; then
+        echo "✅ Found configured session: $session"
+    else
+        echo "⚠️  Missing configured session: $session"
     fi
 done
 
@@ -73,12 +85,12 @@ if command -v tmuxinator >/dev/null 2>&1; then
     tmux_configs=$(find ~/.config/tmuxinator -name "*.yml" 2>/dev/null | wc -l || echo "0")
     echo "  📁 Tmuxinator configs: $tmux_configs"
 
-    # Test a few tmuxinator configs
-    for config in development agents; do
-        if tmuxinator debug "$config" >/dev/null 2>&1; then
-            echo "  ✅ $config config valid"
+    # Test tmuxinator configs
+    for config in notes dotfiles docker-minimal; do
+        if [[ -f "$HOME/.config/tmuxinator/$config.yml" ]]; then
+            echo "  ✅ $config.yml exists"
         else
-            echo "  ❌ $config config has issues"
+            echo "  ⚠️  $config.yml not found"
         fi
     done
 else
@@ -111,30 +123,32 @@ done
 echo ""
 echo "📊 Configuration Summary:"
 echo "=========================="
-echo "  • Total sessions: $(sesh list | wc -l)"
-echo "  • Dotfiles integrated: Yes"
+echo "  • Total available sessions: $(sesh list 2>/dev/null | wc -l | xargs)"
+echo "  • Configured sessions: $(sesh list -c 2>/dev/null | wc -l | xargs)"
+echo "  • Tmuxinator projects: $(tmuxinator list 2>/dev/null | grep -v "tmuxinator projects:" | wc -l | xargs)"
+echo "  • Active tmux sessions: $(tmux list-sessions 2>/dev/null | wc -l || echo "0")"
 echo "  • Aliases available: $(test -f "$aliases_script" && echo "Yes" || echo "No")"
-echo "  • Tmuxinator: $(command -v tmuxinator >/dev/null 2>&1 && echo "Available" || echo "Not installed")"
+echo "  • Enhanced preview: $(test -f "$HOME/.config/sesh/scripts/enhanced_preview.sh" && echo "Yes" || echo "No")"
 
-# Test new sesh scripts
+# Test sesh scripts
 echo ""
-echo "🧪 Testing new sesh scripts:"
-for script in session_status.sh claude_dev.sh test_env.sh scratch.sh; do
-    script_path="$HOME/dotfiles/sesh/.config/sesh/scripts/$script"
+echo "🧪 Testing sesh scripts:"
+for script in enhanced_preview.sh sesh_aliases.sh session_status.sh; do
+    script_path="$HOME/.config/sesh/scripts/$script"
     if [[ -f "$script_path" ]] && [[ -x "$script_path" ]]; then
         echo "✅ $script exists and is executable"
     else
-        echo "❌ $script missing or not executable"
+        echo "⚠️  $script missing or not executable"
     fi
 done
 
-# Test session_status.sh specifically
+# Test enhanced preview specifically
 echo ""
-echo "🔧 Testing session_status.sh functionality:"
-if ~/dotfiles/sesh/.config/sesh/scripts/session_status.sh list >/dev/null 2>&1; then
-    echo "✅ session_status.sh working correctly"
+echo "🔍 Testing enhanced_preview.sh functionality:"
+if ~/.config/sesh/scripts/enhanced_preview.sh "notes" >/dev/null 2>&1; then
+    echo "✅ enhanced_preview.sh working correctly"
 else
-    echo "❌ session_status.sh has issues"
+    echo "❌ enhanced_preview.sh has issues"
 fi
 
 echo ""

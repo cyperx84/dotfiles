@@ -1,0 +1,36 @@
+name: 💻 CODING
+root: ~/Code
+
+# Project hooks for coding workspace
+on_project_start: echo "🚀 Launching coding workspace..."
+on_project_first_start: |
+on_project_restart: |
+  echo "♻️ Restarting coding session"
+on_project_exit: echo "👋 Coding session ended"
+
+windows:
+  - 🖥️ editor:
+      layout: main-horizontal
+      options:
+        main-pane-height: 85%
+      panes:
+        - nvim
+  - 👾 agents:
+      layout: even-horizontal
+      panes:
+        - |
+          cc
+        - |
+          cc
+        - |
+          oc
+  - 💻 terminal:
+      layout: main-horizontal
+      options:
+        main-pane-width: 70%
+      panes:
+        - yazi
+        - |
+          echo "🖥️ General terminal"
+          echo "💡 Run tests, builds, and commands here"
+        - git status

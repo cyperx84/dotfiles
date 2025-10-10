@@ -1,39 +1,37 @@
 #!/bin/bash
 
-# Advanced thermal monitoring with actual temperature data
+# CPU temperature monitoring using osx-cpu-temp
 source "$CONFIG_DIR/colors.sh"
 source "$CONFIG_DIR/icons.sh"
 
-# Get thermal data using powermetrics (requires elevated privileges for some data)
-get_thermal_data() {
-  # Try to get CPU temperature using powermetrics with minimal sampling
-  local temp_output=$(timeout 3 powermetrics --sample-rate 250 --sample-count 1 -f plist 2>/dev/null | grep -A1 "CPU die temperature" | tail -1 | sed 's/.*<real>\([0-9.]*\)<\/real>.*/\1/')
-  
-  # If powermetrics fails or requires sudo, fall back to thermal pressure via sysctl
-  if [ -z "$temp_output" ] || ! [[ "$temp_output" =~ ^[0-9.]+$ ]]; then
-    # Use thermal state as fallback - this works without sudo
+# Get CPU temperature using osx-cpu-temp (fast and accurate)
+get_cpu_temp() {
+  # osx-cpu-temp returns format like "61.1°C"
+  local temp_output=$(osx-cpu-temp -C 2>/dev/null)
+
+  if [ -n "$temp_output" ]; then
+    # Extract numeric value (e.g., "61.1" from "61.1°C")
+    echo "$temp_output" | sed 's/°C//' | tr -d ' '
+  else
+    # Fallback to thermal state if osx-cpu-temp fails
     local thermal_state=$(sysctl -n machdep.xcpm.cpu_thermal_level 2>/dev/null)
     if [ -n "$thermal_state" ] && [[ "$thermal_state" =~ ^[0-9]+$ ]]; then
-      # Convert thermal level to approximate temperature (0=cool, higher=warmer)
+      # Convert thermal level to approximate temperature
       case "$thermal_state" in
-        0) temp_output="45" ;;
-        1) temp_output="55" ;;
-        2) temp_output="65" ;;
-        3) temp_output="75" ;;
-        *) temp_output="80" ;;
+        0) echo "45" ;;
+        1) echo "55" ;;
+        2) echo "65" ;;
+        3) echo "75" ;;
+        *) echo "80" ;;
       esac
     else
-      # Final fallback using CPU usage as thermal proxy
-      local cpu_usage=$(iostat -c 1 | tail -n 1 | awk '{print $6}' | awk '{print int(100-$1)}')
-      temp_output=$((40 + cpu_usage / 2))  # Estimate temp based on CPU load
+      echo "50"  # Safe default
     fi
   fi
-  
-  echo "$temp_output"
 }
 
 # Get temperature with error handling
-TEMP=$(get_thermal_data)
+TEMP=$(get_cpu_temp)
 
 # Ensure we have a valid temperature
 if [ -z "$TEMP" ] || ! [[ "$TEMP" =~ ^[0-9.]+$ ]]; then

@@ -55,51 +55,6 @@ vim.keymap.set("n", "<leader>gp", "<cmd>Neogit push<CR>", { desc = "Push" })
 -- Dismiss Noice Message
 vim.keymap.set("n", "<leader>z", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })
 
--- Obsidian
-vim.keymap.set("n", "<leader>oc", "<cmd>lua require('obsidian').util.toggle_checkbox()<CR>",
-  { desc = "Obsidian Check Checkbox" })
-vim.keymap.set("v", "<leader>oc", function()
-  -- Get current visual selection (works while in visual mode)
-  local start_line = vim.fn.line("v")
-  local end_line = vim.fn.line(".")
-
-  -- Ensure start is before end
-  if start_line > end_line then
-    start_line, end_line = end_line, start_line
-  end
-
-  -- Exit visual mode
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), 'x', false)
-
-  -- Process each line
-  for line = start_line, end_line do
-    vim.api.nvim_win_set_cursor(0, {line, 0})
-    require('obsidian').util.toggle_checkbox()
-  end
-end, { desc = "Obsidian Check Checkbox (Visual)" })
-vim.keymap.set("n", "<leader>ot", "<cmd>ObsidianTags<CR>", { desc = "Obsidian Tags" })
-vim.keymap.set("n", "<leader>oO", "<cmd>ObsidianOpen<CR>", { desc = "Open in Obsidian App" })
-vim.keymap.set("n", "<leader>ob", "<cmd>ObsidianBacklinks<CR>", { desc = "Show ObsidianBacklinks" })
-vim.keymap.set("v", "<leader>oe", "<Esc><cmd>ObsidianExtractNote<CR>", { desc = "Extract - New" })
-vim.keymap.set("n", "<leader>oF", "<cmd>ObsidianFollowLink<CR>", { desc = "Follow Link" })
-vim.keymap.set("n", "<leader>ol", "<cmd>ObsidianLinks<CR>", { desc = "Show ObsidianLinks" })
-vim.keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "Create New Note" })
-vim.keymap.set("n", "<leader>or", "<cmd>ObsidianRename<CR>", { desc = "Rename" })
-vim.keymap.set("n", "<leader>og", "<cmd>ObsidianSearch<CR>", { desc = "Search Obsidian" })
-vim.keymap.set("n", "<leader>of", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Quick Switch" })
-vim.keymap.set("n", "<leader>op", "<cmd>ObsidianPasteImg<CR>", { desc = "Paste Img" })
-vim.keymap.set("n", "<leader>ow", "<cmd>ObsidianWorkspace<CR>", { desc = "Workspace" })
--- Daily notes
-vim.keymap.set("n", "<leader>od", "<cmd>ObsidianToday<CR>", { desc = "Today's Note" })
-vim.keymap.set("n", "<leader>oy", "<cmd>ObsidianYesterday<CR>", { desc = "Yesterday's Note" })
-vim.keymap.set("n", "<leader>oM", "<cmd>ObsidianTomorrow<CR>", { desc = "Tomorrow's Note" })
--- Link creation (visual mode)
-vim.keymap.set("v", "<leader>oL", "<cmd>ObsidianLink<CR>", { desc = "Link Selection" })
-vim.keymap.set("v", "<leader>oN", "<cmd>ObsidianLinkNew<CR>", { desc = "Link - New Note" })
--- Utility
-vim.keymap.set("n", "<leader>oi", "<cmd>ObsidianTemplate<CR>", { desc = "Insert Template" })
-vim.keymap.set("n", "<leader>ox", "<cmd>ObsidianTOC<CR>", { desc = "Table of Contents" })
-
 -- toggle notify log
 vim.keymap.set("n", "<leader>sl", "<cmd>Telescope notify<CR>", { desc = "[S]earch Notify [L]og" })
 
@@ -125,18 +80,14 @@ vim.keymap.set("n", "<leader>gt", "<cmd>:lua require('telescope').extensions.git
 vim.keymap.set("n", "<leader>m", "<cmd>MCPHub<CR>", { desc = "MCPHub" })
 
 --Code Companion
-vim.keymap.set("n", "<c-M-k>", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
+vim.keymap.set("n", "<M-c>", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
 vim.keymap.set("n", "<leader>CC", "<cmd>CodeCompanion<CR>", { desc = "Code Companion" })
 vim.keymap.set("n", "<leader>Cc", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
-vim.keymap.set("n", "<leader>Cd", "<cmd>CodeCompanionCMD<CR>", { desc = "Code Companion Actions" })
 
 --Claude-code History
 vim.keymap.set("n", "<leader>ch", "<cmd>ClaudeHistory<CR>", { desc = "Claude-code History" })
 
--- Jump between markdown headers (should be in FileType autocmd)
-vim.keymap.set("n", "gj", [[/^##\+ .*<CR>]], { buffer = true, silent = true })
-vim.keymap.set("n", "gk", [[?^##\+ .*<CR>]], { buffer = true, silent = true })
--- TODO: Move to autocmd for markdown filetypes
+-- NOTE: Markdown header navigation (gj/gk) is defined in autocmds.lua for markdown files
 
 -- Exit insert mode without hitting Esc
 vim.keymap.set("i", "jk", "<Esc><Esc>", { desc = "Esc" })

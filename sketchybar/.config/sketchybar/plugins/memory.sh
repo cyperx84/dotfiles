@@ -34,9 +34,14 @@ get_memory_stats() {
   local memory_pressure=$(memory_pressure 2>/dev/null | grep "System-wide memory free percentage" | awk '{print $5}' | tr -d '%')
   [[ "$memory_pressure" =~ ^[0-9]+$ ]] || memory_pressure=50
   
-  # Calculate memory usage in bytes and GB (matching btop/bpytop accuracy)
-  local used_pages=$((pages_active + pages_inactive + pages_speculative + pages_wired + pages_compressed))
-  local used_bytes=$((used_pages * page_size))
+  # Calculate memory usage matching Activity Monitor (App Memory + Compressed)
+  # App Memory = Active + Wired (not including inactive/speculative as they can be freed)
+  # Memory Used = App Memory + Compressed
+  local app_memory_pages=$((pages_active + pages_wired))
+  local app_memory_bytes=$((app_memory_pages * page_size))
+  local compressed_bytes=$((pages_compressed * page_size))
+  local used_bytes=$((app_memory_bytes + compressed_bytes))
+
   local total_gb=$(echo "scale=0; $total_memory_bytes / 1024 / 1024 / 1024" | bc -l)
   local used_gb=$(echo "scale=1; $used_bytes / 1024 / 1024 / 1024" | bc -l)
   # Use scale=1 for more precision, then round to nearest integer

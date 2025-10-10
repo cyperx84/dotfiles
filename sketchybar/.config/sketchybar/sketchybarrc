@@ -54,7 +54,7 @@ fi
 
 # Setting up the general bar appearance of the bar
 bar=(
-  height=46
+  height=35
   color=$BAR_COLOR
   border_width=2
   border_color=$BAR_BORDER_COLOR

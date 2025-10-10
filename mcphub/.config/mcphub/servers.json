@@ -73,27 +73,11 @@
         "obsidian_get_recent_changes"
       ],
       "command": "uv",
-      "disabled": true
+      "disabled": false
     },
     "mcp-ui Docs": {
       "disabled": true,
       "url": "https://gitmcp.io/idosal/mcp-ui"
-    },
-    "mcphub": {
-      "args": [
-        "mcphub"
-      ],
-      "autoApprove": [
-        "search_repos",
-        "get_repo",
-        "list_servers",
-        "install_server",
-        "uninstall_server",
-        "update_server",
-        "get_server_info",
-        "list_installed"
-      ],
-      "command": "npx"
     },
     "memory": {
       "args": [

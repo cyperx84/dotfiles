@@ -1,16 +1,70 @@
-# Sesh Configuration - Tmuxinator-Only Mode
-# All session layouts are managed through tmuxinator YAML files in ~/.config/tmuxinator/
+# Sesh Configuration - Clean Hybrid Approach
+# Complex layouts in tmuxinator, simple quick-access sessions here
+# Optimized for Tmux+E keybinding with enhanced preview
 
 blacklist = ["scratch"]
 
-# Prioritize tmuxinator sessions first
+# Prioritize tmuxinator projects first, then sesh configs, then active tmux, then zoxide
 sort_order = [
-    "tmuxinator", # show first for complex layouts
-    "config",
-    "tmux",
-    "zoxide", # show last
+    "tmux",       # Active tmux sessions
+    "tmuxinator", # Complex multi-window layouts (notes, dotfiles, docker)
+    # "config",     # Simple quick-access sessions (defined below)
+    "zoxide",     # Frequently visited directories
 ]
 
 [default_session]
-startup_command = "nvim"
-preview_command = "eza --all --git --icons --color=always {}"
+# NO startup_command here - let tmuxinator handle complex layouts
+# Use enhanced preview script for all session types
+preview_command = "~/.config/sesh/scripts/enhanced_preview.sh {}"
+
+# === QUICK ACCESS SESSIONS ===
+# Simple sessions for frequently accessed directories
+# Complex layouts should use tmuxinator (notes.yml, dotfiles.yml, etc.)
+
+# [[session]]
+# name = "📥 Downloads"
+# path = "~/Downloads"
+# startup_command = "yazi"
+#
+# [[session]]
+# name = "🏠 Home"
+# path = "~"
+# startup_command = "yazi"
+#
+# [[session]]
+# name = "🔗 GitHub"
+# path = "~/github"
+# startup_command = "yazi"
+#
+# [[session]]
+# name = "📝 Scratch"
+# path = "/tmp/claude-scratch"
+# startup_command = "nvim notes.md"
+#
+# [[session]]
+# name = "🧪 Test Workspace"
+# path = "~/Code/test-workspace"
+# startup_command = "nvim ."
+#
+# [[session]]
+# name = "💻 Code"
+# path = "~/Code"
+# startup_command = "yazi"
+
+# === NOTES ===
+# Complex multi-window sessions are handled by tmuxinator YAML files in ~/.config/tmuxinator/
+# To create a new complex session:
+#   1. Create a YAML file in ~/.config/tmuxinator/
+#   2. Run: tmuxinator start <project_name>
+#   3. It will appear automatically in sesh list (tmuxinator section)
+#
+# Existing tmuxinator projects:
+#   - notes.yml       → 🗒️ Notes workspace (3 windows: notes, agents, system)
+#   - dotfiles.yml    → ⚙️ Dotfiles workspace (3 windows: NeoVIM, agents, system)
+#   - docker-minimal.yml → Docker development environment
+#
+# Preview command automatically detects session type:
+#   - Tmuxinator projects: Shows config details, windows, git status
+#   - Sesh sessions: Shows directory contents, project files, git info
+#   - Active tmux: Shows windows, current path, git status
+#   - Zoxide paths: Shows directory tree and contents
