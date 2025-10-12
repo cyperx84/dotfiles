@@ -39,9 +39,9 @@ return {
     -- Terminal options
     terminal = {
       split_side = 'right',
-      split_width_percentage = 0.3, -- Optimized for better screen balance
       provider = 'snacks', -- "auto" (default), "snacks", or "native"
       auto_close = true, -- Auto-close terminal after command completion
+      split_width_percentage = 0.35, -- 35% of window width (adjust as needed)
       cwd_provider = function(ctx)
         -- Dynamic working directory detection for git repos
         local git_root = vim.fn.systemlist('git -C ' .. vim.fn.shellescape(ctx.file_dir) .. ' rev-parse --show-toplevel')[1]
@@ -58,7 +58,37 @@ return {
       vertical_split = true, -- Better for code comparison
     },
   },
-  config = true,
+  config = function(_, opts)
+    require('claudecode').setup(opts)
+
+    -- Auto-reload buffers when Claude Code modifies files
+    -- Triggers on focus gain, buffer enter, and cursor hold
+    vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+      callback = function()
+        if vim.fn.mode() ~= 'c' then -- Don't reload in command mode
+          vim.cmd('checktime')
+        end
+      end,
+      desc = 'Auto-reload buffers when changed externally by Claude Code',
+    })
+
+    -- Fix Claude Code terminal window size (prevent resizing)
+    vim.api.nvim_create_autocmd({ 'TermOpen', 'BufWinEnter' }, {
+      pattern = { 'term://*claude*', '*ClaudeCode*' },
+      callback = function()
+        local win = vim.api.nvim_get_current_win()
+        -- Set fixed width of 100 columns
+        vim.api.nvim_win_set_width(win, 60)
+        -- Prevent resizing
+        vim.wo.winfixwidth = true
+        vim.wo.winfixheight = true
+      end,
+      desc = 'Fix Claude Code terminal window size at 100 columns',
+    })
+
+    -- Enable autoread globally for better file watching
+    vim.opt.autoread = true
+  end,
   keys = {
     -- Core Claude Code commands
     { "<M-;>", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude (with focus)" },

@@ -73,3 +73,19 @@ keybind = "cmd+shift+s=toggle_secure_input"
 # custom-shader = shaders/underwater.glsl
 # custom-shader = shaders/water.glsl
 keybind = shift+enter=text:\n
+
+# Scrolling
+keybind = super+alt+u=scroll_page_up
+keybind = super+alt+d=scroll_page_down
+
+# Split navigation (vim-like)
+keybind = super+alt+h=goto_split:left
+keybind = super+alt+j=goto_split:down
+keybind = super+alt+k=goto_split:up
+keybind = super+alt+l=goto_split:right
+
+# Split resizing (vim-like)
+keybind = super+alt+shift+h=resize_split:left,10
+keybind = super+alt+shift+j=resize_split:down,10
+keybind = super+alt+shift+k=resize_split:up,10
+keybind = super+alt+shift+l=resize_split:right,10

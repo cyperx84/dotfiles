@@ -98,6 +98,18 @@
 |---------|---------|-------------|
 | `Alt+s` / `\es` | Sesh sessions | FZF session selector with immediate connect |
 
+### Ghostty Terminal Operations
+*Source: `ghostty/.config/ghostty/config`*
+
+| Keybind | Action | Description |
+|---------|---------|-------------|
+| `Cmd+Alt+U` | Scroll page up | Scroll terminal output up by one page |
+| `Cmd+Alt+D` | Scroll page down | Scroll terminal output down by one page |
+| `Cmd+Alt+h/j/k/l` | Navigate splits | Move focus to left/down/up/right split |
+| `Cmd+Alt+Shift+h/j/k/l` | Resize splits | Resize split in direction by 10 |
+| `Cmd+/` | Quick terminal | Toggle global quick terminal |
+| `Cmd+Shift+S` | Secure input | Toggle secure input mode |
+
 ---
 
 ## File Operations

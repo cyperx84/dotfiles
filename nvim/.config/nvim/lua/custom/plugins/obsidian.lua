@@ -210,6 +210,9 @@ return {
     vim.api.nvim_create_autocmd('FileType', {
       pattern = 'markdown',
       callback = function()
+        -- Auto-reload settings for external changes (e.g., from Obsidian app)
+        vim.opt_local.autoread = true
+
         -- Conceal settings
         vim.opt_local.conceallevel = 2
         vim.opt_local.concealcursor = 'nc'
@@ -287,6 +290,18 @@ return {
           vim.keymap.set(mode, lhs, rhs, vim.tbl_extend('force', opts, { desc = desc }))
         end
       end,
+    })
+
+    -- Auto-reload markdown files when changed externally
+    -- Triggers on focus gain, buffer enter, and cursor hold
+    vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold' }, {
+      pattern = '*.md',
+      callback = function()
+        if vim.fn.mode() ~= 'c' then -- Don't reload in command mode
+          vim.cmd('checktime')
+        end
+      end,
+      desc = 'Auto-reload markdown files when changed externally',
     })
   end,
 }

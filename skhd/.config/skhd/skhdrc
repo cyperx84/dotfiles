@@ -144,10 +144,23 @@ shift + ctrl + alt - j : yabai -m window --warp south
 shift + ctrl + alt - k : yabai -m window --warp north
 shift + ctrl + alt - l : yabai -m window --warp east
 
-# change window focus within space
+# change window focus within space (shift + ctrl)
 shift + ctrl - j : yabai -m window --focus south
-shift + ctrl - h : zabai -m window --focus west
+shift + ctrl - k : yabai -m window --focus north
+shift + ctrl - h : yabai -m window --focus west
 shift + ctrl - l : yabai -m window --focus east
+
+# change window focus with cmd + ctrl (vim keys)
+ctrl + cmd - j : yabai -m window --focus south
+ctrl + cmd - k : yabai -m window --focus north
+ctrl + cmd - h : yabai -m window --focus west
+ctrl + cmd - l : yabai -m window --focus east
+
+# change window focus with cmd + ctrl (arrow keys)
+ctrl + cmd - down : yabai -m window --focus south
+ctrl + cmd - up : yabai -m window --focus north
+ctrl + cmd - left : yabai -m window --focus west
+ctrl + cmd - right : yabai -m window --focus east
 
 # swap windows
 # shift + alt - j : yabai -m window --swap south
