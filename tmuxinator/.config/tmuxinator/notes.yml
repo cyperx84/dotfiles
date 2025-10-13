@@ -9,28 +9,28 @@ on_project_restart: |
 on_project_exit: |
 
 windows:
-  - 🗒️ notes:
+  - 🅅 NeoVIM:
       layout: main-horizontal
       options:
         main-pane-height: 80%
       panes:
-        - noai
+        - no
   - 👾 agents:
       layout: even-horizontal
       panes:
         - |
           cc
         - |
-          cc
+          gemini
         - |
           oc
-  - 💻 system:
-      layout: main-horizontal
-      options:
-        main-pane-width: 70%
-      panes:
-        - yazi
-        - |
-          echo "🖥️ General terminal"
-          echo "💡 For misc commands and scripts"
-        - git status
+  # - 💻 system:
+  #     layout: main-horizontal
+  #     options:
+  #       main-pane-width: 70%
+  #     panes:
+  #       - yazi
+  #       - |
+  #         echo "🖥️ General terminal"
+  #         echo "💡 For misc commands and scripts"
+  #       - git status

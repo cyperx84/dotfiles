@@ -49,14 +49,50 @@ return {
       },
       display = {
         chat = {
+          -- Display options
+          intro_message = 'Welcome to CodeCompanion ✨! Press ? for options',
+          show_settings = false, -- Show LLM settings at top of chat buffer (YAML block)
+          show_token_count = true, -- Show token count for each response
+          show_context = true, -- Show context from slash commands and variables
+          show_header_separator = true, -- Useful if using external markdown plugin
+          start_in_insert_mode = false, -- Open chat buffer in insert mode
+
+          -- Chat window configuration
           window = {
             layout = 'vertical',
             position = 'left',
             border = 'single',
-            height = 0.7, -- Optimized height for better screen usage
-            width = 0.3, -- Optimized width for better balance
+            -- Fixed dimensions (plain numbers in columns/lines)
+            height = 50, -- Fixed: 50 lines
+            width = 60, -- Fixed: 80 columns
             relative = 'editor',
             full_height = false, -- Use vsplit instead of botright/topleft vsplit
+            sticky = false, -- Keep chat open when switching tabs
+          },
+
+          -- Debug window (opened with 'gd' in chat buffer)
+          debug_window = {
+            width = vim.o.columns - 5,
+            height = vim.o.lines - 2,
+          },
+
+          -- Floating child windows (for diffs, messages, permissions)
+          child_window = {
+            width = vim.o.columns - 5,
+            height = vim.o.lines - 2,
+            row = 'center',
+            col = 'center',
+            relative = 'editor',
+          },
+
+          -- Diff window (takes precedence over child_window)
+          diff_window = {
+            width = function()
+              return math.min(120, vim.o.columns - 10)
+            end,
+            height = function()
+              return vim.o.lines - 4
+            end,
           },
         },
         action_palette = {

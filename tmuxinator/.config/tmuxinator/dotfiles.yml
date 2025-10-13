@@ -22,17 +22,16 @@ windows:
         - |
           cc
         - |
-          cc
+          gemini
         - |
           oc
-  - 💻 system:
-      layout: main-horizontal
-      options:
-        main-pane-width: 70%
-      panes:
-        - yazi
-        - |
-          echo "🖥️ General terminal"
-          echo "💡 For misc commands and scripts"
-        - git status
-        
+  # - 💻 system:
+  #     layout: main-horizontal
+  #     options:
+  #       main-pane-width: 70%
+  #     panes:
+  #       - yazi
+  #         echo "🖥️ General terminal"
+  #         echo "💡 For misc commands and scripts"
+  #       - git status
+  #

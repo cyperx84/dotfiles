@@ -23,7 +23,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- [[FILES]]
 
 -- Mini.Files
-vim.keymap.set('n', '<leader>e', function()
+vim.keymap.set('n', '<c-e>', function()
   local bufname = vim.api.nvim_buf_get_name(0)
   if vim.bo.filetype == 'minifiles' or bufname:match('^MiniFiles') then
     require('mini.files').close()
@@ -34,10 +34,10 @@ end, { desc = 'Toggle mini.files' })
 
 -- Yazi
 vim.keymap.set('n', '-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
--- OIL
-vim.keymap.set('n', '<c-e>', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
+-- -- OIL
+-- vim.keymap.set('n', '<c-e>', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
 -- Neotree
-vim.keymap.set('n', '<leader>E', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
+-- vim.keymap.set('n', '<leader>E', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 
 -- Neogit
 vim.keymap.set("n", "<leader>gg", "<cmd>Neogit kind=floating<CR>", { desc = "Floating" })

@@ -112,28 +112,18 @@ return {
         return out
       end,
 
-      -- Disable frontmatter for certain files (optional)
-      -- disable_frontmatter = function(filename)
-      --   return filename:match('_inbox/') ~= nil or filename:match('_settings/') ~= nil
-      -- end,
+      -- Disable frontmatter for files outside the vault
+      disable_frontmatter = function(filename)
+        local vault_path = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes')
+        local absolute_filename = vim.fn.fnamemodify(filename, ':p')
 
-      -- Templates configuration (aligned with vault constitution)
-      templates = {
-        subdir = '_settings', -- Constitution folder structure
-        date_format = '%Y-%m-%d',
-        time_format = '%H:%M',
-        substitutions = {
-          yesterday = function()
-            return os.date('%Y-%m-%d', os.time() - 86400)
-          end,
-          tomorrow = function()
-            return os.date('%Y-%m-%d', os.time() + 86400)
-          end,
-          week = function()
-            return os.date '%Y-W%V'
-          end,
-        },
-      },
+        -- Only apply frontmatter to files within the vault
+        if not absolute_filename:match('^' .. vim.pesc(vault_path)) then
+          return true -- disable frontmatter
+        end
+
+        return false -- enable frontmatter
+      end,
 
       -- Attachments (images, files) - Constitution doesn't specify, keeping sensible default
       attachments = {
@@ -247,7 +237,7 @@ return {
         -- Table-driven keymap definitions
         local keymaps = {
           -- Note operations
-          { 'n', '<leader>on', ':ObsidianNew', '[O]bsidian [N]ew note' },
+          { 'n', '<leader>on', ':ObsidianNew<CR>', '[O]bsidian [N]ew note' },
           { 'n', '<leader>oo', ':ObsidianOpen<CR>', '[O]bsidian [O]pen in app' },
           { 'n', '<leader>of', ':ObsidianQuickSwitch<CR>', '[O]bsidian [Q]uick switch' },
 

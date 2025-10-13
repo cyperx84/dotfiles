@@ -20,7 +20,7 @@ return {
       delete_to_trash = true,
       skip_confirm_for_simple_edits = true,
       skip_confirm_for_actions = true,
-      confirm_on_delete = false,  
+      confirm_on_delete = false,
       -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
       -- (:help prompt_save_on_select_new_entry)
       prompt_save_on_select_new_entry = false,
@@ -79,8 +79,8 @@ return {
       },
       float = {
         -- padding = 1,
-        max_width = 100,
-        max_height = 20,
+        max_width = 120,
+        max_height = 30,
         border = 'rounded',
       },
 
@@ -103,5 +103,13 @@ return {
       fg = '#ff9e64',  -- Orange border color
       bg = 'NONE'      -- Transparent background
     })
+
+    -- Global keybinds for toggling oil float
+    vim.keymap.set('n', '<C-e>', function()
+      require('oil').toggle_float(vim.fn.getcwd())
+    end, { desc = 'Toggle Oil float at current working directory' })
+    vim.keymap.set('n', '<C-M-e>', function()
+      require('oil').toggle_float(vim.fn.expand('%:p:h'))
+    end, { desc = 'Toggle Oil float at current file location' })
   end,
 }

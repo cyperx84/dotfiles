@@ -1,0 +1,32 @@
+name: 🐳 DOCKER
+root: ~/
+
+# Project hooks for Docker management
+on_project_start: |
+  echo "🐳 Starting Docker environment..."
+on_project_first_start: |
+on_project_restart: |
+on_project_exit: |
+
+windows:
+  - 🐳 lazydocker:
+      layout: main-horizontal
+      options:
+        main-pane-height: 80%
+      panes:
+        - lazydocker
+        # - |
+        #   echo "⚡ Quick Docker commands:"
+        #   echo "  docker ps -a     # List all containers"
+        #   echo "  docker images    # List images"
+        #   echo "  docker system df # Disk usage"
+  - ⛓️ n8n:
+      layout: even-vertical
+      panes:
+        - |
+          echo "🚀 Starting n8n..."
+          docker run -it --rm \
+            --name n8n \
+            -p 5678:5678 \
+            -v n8n_data:/home/node/.n8n \
+            docker.n8n.io/n8nio/n8n

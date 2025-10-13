@@ -9,7 +9,7 @@ on_project_restart: |
 on_project_exit: echo "👋 Coding session ended"
 
 windows:
-  - 🖥️ editor:
+  - 🅅 NeoVIM:
       layout: main-horizontal
       options:
         main-pane-height: 85%
@@ -21,16 +21,16 @@ windows:
         - |
           cc
         - |
-          cc
+          gemini
         - |
           oc
-  - 💻 terminal:
-      layout: main-horizontal
-      options:
-        main-pane-width: 70%
-      panes:
-        - yazi
-        - |
-          echo "🖥️ General terminal"
-          echo "💡 Run tests, builds, and commands here"
-        - git status
+  # - 💻 terminal:
+  #     layout: main-horizontal
+  #     options:
+  #       main-pane-width: 70%
+  #     panes:
+  #       - yazi
+  #       - |
+  #         echo "🖥️ General terminal"
+  #         echo "💡 Run tests, builds, and commands here"
+  #       - git status

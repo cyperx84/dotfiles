@@ -134,7 +134,25 @@ return {
             vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
               buffer = event.buf,
               group = highlight_augroup,
-              callback = vim.lsp.buf.clear_references,
+              callback = function()
+                -- Safety check: only clear references if buffer is valid and not a special buffer
+                local buftype = vim.bo[event.buf].buftype
+                local filetype = vim.bo[event.buf].filetype
+
+                -- Skip special buffers (dashboard, codecompanion, terminals, etc.)
+                if filetype == 'snacks_dashboard' or
+                   filetype == 'codecompanion' or
+                   filetype == 'codecompanion-chat' or
+                   (buftype ~= '' and buftype ~= 'acwrite') then
+                  return
+                end
+
+                local ok = pcall(vim.lsp.buf.clear_references)
+                if not ok then
+                  -- If clearing fails, silently ignore (buffer may be in transition)
+                  return
+                end
+              end,
             })
 
             vim.api.nvim_create_autocmd('LspDetach', {
