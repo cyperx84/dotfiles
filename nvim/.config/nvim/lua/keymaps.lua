@@ -83,6 +83,8 @@ vim.keymap.set("n", "<leader>m", "<cmd>MCPHub<CR>", { desc = "MCPHub" })
 vim.keymap.set("n", "<M-c>", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
 vim.keymap.set("n", "<leader>CC", "<cmd>CodeCompanion<CR>", { desc = "Code Companion" })
 vim.keymap.set("n", "<leader>Cc", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
+vim.keymap.set("n", "<leader>Ca", "<cmd>CodeCompanionChat Add<CR>", { desc = "Add Buffer to Chat" })
+vim.keymap.set("v", "<leader>Ca", "<cmd>CodeCompanionChat Add<CR>", { desc = "Add Selection to Chat" })
 
 --Claude-code History
 vim.keymap.set("n", "<leader>ch", "<cmd>ClaudeHistory<CR>", { desc = "Claude-code History" })

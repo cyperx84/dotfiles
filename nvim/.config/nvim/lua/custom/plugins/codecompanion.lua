@@ -45,7 +45,7 @@ return {
   config = function()
     require('codecompanion').setup {
       opts = {
-        log_level = 'INFO', -- Use 'DEBUG' or 'TRACE' for troubleshooting
+        log_level = 'DEBUG', -- Use 'DEBUG' or 'TRACE' for troubleshooting
       },
       display = {
         chat = {
@@ -147,12 +147,30 @@ return {
                 api_key = 'cmd:pass show apis/DEEPSEEK_API_KEY',
               },
               schema = {
-                model = { default = 'deepseek-reasoner' },
+                model = { default = 'deepseek-chat' },
               },
             })
           end,
         },
 
+        -- acp = {
+        --   claude_code = function()
+        --     return require('codecompanion.adapters').extend('claude_code', {
+        --       env = {
+        --         -- Using OAuth token from `claude setup-token`
+        --         CLAUDE_CODE_OAUTH_TOKEN = 'cmd:pass show apis/CLAUDE_CODE_OAUTH_TOKEN',
+        --       },
+        --     })
+        --   end,
+        --
+        --   gemini_cli = function()
+        --     return require('codecompanion.adapters').extend('gemini_cli', {
+        --       defaults = {
+        --         auth_method = 'oauth-personal', -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
+        --       },
+        --     })
+        --   end,
+        -- },
       },
 
       strategies = {
@@ -168,6 +186,22 @@ return {
               modes = {
                 i = '<C-x>',
               },
+            },
+            watch = {
+              modes = {
+                n = 'gw',
+              },
+              index = 10,
+              callback = 'keymaps.toggle_watch',
+              description = 'Watch buffer',
+            },
+            pin = {
+              modes = {
+                n = 'gp',
+              },
+              index = 9,
+              callback = 'keymaps.pin_context',
+              description = 'Pin context',
             },
           },
           slash_commands = {
@@ -200,6 +234,13 @@ return {
               },
               opts = {
                 dirs = { '~/Documents/Screenshots' },
+              },
+            },
+          },
+          variables = {
+            ["buffer"] = {
+              opts = {
+                default_params = 'watch', -- Automatically watch buffers by default (more token-efficient)
               },
             },
           },

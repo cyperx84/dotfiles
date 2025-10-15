@@ -79,8 +79,8 @@ return {
       },
       float = {
         -- padding = 1,
-        max_width = 120,
-        max_height = 30,
+        max_width = 100,
+        max_height = 25,
         border = 'rounded',
       },
 
@@ -106,10 +106,10 @@ return {
 
     -- Global keybinds for toggling oil float
     vim.keymap.set('n', '<C-e>', function()
+      require('oil').toggle_float()
+    end, { desc = 'Toggle Oil float with cursor on current file' })
+    vim.keymap.set('n', '<C-M-e>', function()
       require('oil').toggle_float(vim.fn.getcwd())
     end, { desc = 'Toggle Oil float at current working directory' })
-    vim.keymap.set('n', '<C-M-e>', function()
-      require('oil').toggle_float(vim.fn.expand('%:p:h'))
-    end, { desc = 'Toggle Oil float at current file location' })
   end,
 }
