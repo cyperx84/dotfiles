@@ -237,6 +237,10 @@ vv() {
 # VI Mode!!!
 bindkey jk vi-cmd-mode
 
+# Override j/k in Vi command mode to use normal history navigation (not search)
+# bindkey -M vicmd 'j' down-history
+# bindkey -M vicmd 'k' up-history
+
 # Quality of life keymaps
 alias cl='clear'
 alias ta='tmux attach -d'

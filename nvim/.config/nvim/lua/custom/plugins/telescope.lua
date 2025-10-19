@@ -23,7 +23,8 @@ return {
       telescope.setup {
         defaults = {
           -- follow symlinks in both file and grep pickers
-          layout_strategy = 'horizontal',
+          file_ignore_patterns = { '.git', 'node_modules', '.cache', '.obsidian', '.smart-connections' },
+          layout_strategy = 'vertical',
           layout_config = { prompt_position = 'top' },
           sorting_strategy = 'ascending',
           winblend = 0,

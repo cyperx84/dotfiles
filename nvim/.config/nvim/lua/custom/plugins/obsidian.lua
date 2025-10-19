@@ -21,12 +21,6 @@ return {
           name = 'personal',
           path = '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes',
         },
-        {
-          name = 'buf-parent',
-          path = function()
-            return assert(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
-          end,
-        },
       },
 
       -- Daily notes configuration (aligned with vault constitution)

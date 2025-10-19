@@ -22,6 +22,50 @@ local function toggle_claude_no_focus()
   end, 50) -- 50ms delay
 end
 
+-- Custom function to launch Claude Code with DeepSeek configuration
+local function launch_claude_deepseek()
+  local current_win = vim.api.nvim_get_current_win()
+
+  -- Get DeepSeek API key from pass
+  local handle = io.popen('pass apis/DEEPSEEK_API_KEY 2>/dev/null')
+  if not handle then
+    vim.notify('Error: Could not retrieve DeepSeek API key from pass', vim.log.levels.ERROR)
+    return
+  end
+  local api_key = handle:read('*a'):gsub('\n', '')
+  handle:close()
+
+  if api_key == '' then
+    vim.notify('Error: DeepSeek API key is empty', vim.log.levels.ERROR)
+    return
+  end
+
+  -- Set environment variables for DeepSeek
+  vim.fn.setenv('ANTHROPIC_BASE_URL', 'https://api.deepseek.com/anthropic')
+  vim.fn.setenv('ANTHROPIC_AUTH_TOKEN', api_key)
+  vim.fn.setenv('API_TIMEOUT_MS', '600000')
+  vim.fn.setenv('ANTHROPIC_MODEL', 'deepseek-chat')
+  vim.fn.setenv('ANTHROPIC_SMALL_FAST_MODEL', 'deepseek-chat')
+  vim.fn.setenv('CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC', '1')
+
+  -- Launch Claude Code
+  local success, err = pcall(vim.cmd, 'ClaudeCode')
+  if not success then
+    vim.notify('Error launching Claude Code (DeepSeek): ' .. (err or 'Unknown error'), vim.log.levels.ERROR)
+    return
+  end
+
+  -- Restore focus
+  vim.defer_fn(function()
+    if vim.api.nvim_win_is_valid(current_win) then
+      local current_focus = vim.api.nvim_get_current_win()
+      if current_focus ~= current_win then
+        vim.api.nvim_set_current_win(current_win)
+      end
+    end
+  end, 50)
+end
+
 return {
   'coder/claudecode.nvim',
   dependencies = {
@@ -93,6 +137,7 @@ return {
     -- Core Claude Code commands
     { "<M-;>", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude (with focus)" },
     { "<M-;>", toggle_claude_no_focus, desc = "Toggle Claude (close)", mode = "t" },
+    { "<M-'>", launch_claude_deepseek, desc = "Toggle Claude (DeepSeek)" },
     { "<leader>cf", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
     { "<leader>cm", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
 
@@ -107,15 +152,15 @@ return {
 
     -- Tree/file explorer integration
     {
-      "<leader>cA",
+      "<leader>ca",
       "<cmd>ClaudeCodeTreeAdd<cr>",
       desc = "Add file from tree",
       ft = { "NvimTree", "neo-tree", "oil", "minifiles" },
     },
 
     -- Diff management
-    { "<leader>ca", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-    { "<leader>cd", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+    -- { "<leader>ca", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+    -- { "<leader>cd", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
 
     -- Quick actions
     { "<leader>cc", "<cmd>ClaudeCode<cr>", desc = "Claude Code" },

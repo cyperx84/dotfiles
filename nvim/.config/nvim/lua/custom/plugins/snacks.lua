@@ -16,7 +16,8 @@ return {
     { "<leader>bd", function() Snacks.bufdelete() end,       desc = "Buffer delete",       mode = "n" },
     { "<leader>ba", function() Snacks.bufdelete.all() end,   desc = "Buffer delete all",   mode = "n" },
     { "<leader>bo", function() Snacks.bufdelete.other() end, desc = "Buffer delete other", mode = "n" },
-    { "<leader>bz", function() Snacks.zen() end,             desc = "Toggle Zen Mode",     mode = "n" },
+    { "<leader>tz", function() Snacks.zen() end,             desc = "Toggle Zen Mode",     mode = "n" },
+    { "<leader>tT", function() Snacks.terminal.toggle() end, desc = "Toggle Terminal",     mode = "n" },
   },
   opts = {
     bigfile = { enabled = true },
@@ -78,6 +79,14 @@ return {
         signcolumn      = "no",
         indent          = false
       }
+    },
+    terminal = {
+      win = {
+        style = "terminal",
+        wo = {
+          winhighlight = "Normal:Normal,NormalNC:Normal",
+        },
+      },
     },
   },
   config = function(_, opts)

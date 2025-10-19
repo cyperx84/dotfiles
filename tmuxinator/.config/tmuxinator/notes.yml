@@ -11,19 +11,17 @@ on_project_exit: |
 windows:
   - 📑 notes:
       layout: main-horizontal
-      options:
-        main-pane-height: 80%
       panes:
         - no
-  - 👾 agents:
-      layout: even-horizontal
-      panes:
-        - |
-          cc
-        - |
-          gemini
-        - |
-          oc
+  # - 👾 agents:
+  #     layout: even-horizontal
+  #     panes:
+  #       - |
+  #         cc
+  #       - |
+  #         gemini
+  #       - |
+  #         oc
   # - 💻 system:
   #     layout: main-horizontal
   #     options:
