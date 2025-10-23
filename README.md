@@ -163,11 +163,25 @@ Modern shell with extensive enhancements:
 - Extensive Git, Docker, and Kubernetes aliases
 
 ### 👾 **Neovim** - Text Editor
-Comprehensive Neovim configuration based on kickstart.nvim:
-- **Base**: Adapted from nvim-lua/kickstart.nvim
-- **Plugins**: 30+ custom plugins for development
-- **Features**: LSP, completion, debugging, AI assistance
-- **Themes**: Multiple colorscheme options
+A powerful, modern Neovim setup based on kickstart.nvim with extensive customization.
+**Included via Git subtree** - works seamlessly on any system (macOS, Linux, Windows).
+
+**Quick Facts:**
+- **68 Plugins** across 45 configuration files
+- **100+ Keybindings** organized by function
+- **4 LSP Servers** configured (C/C++, Python, Rust, Lua)
+- **4 AI Integrations** (Claude, CodeCompanion, Copilot, SuperMaven)
+- **18 Treesitter Languages** for syntax highlighting
+
+**Key Features:**
+- AI-assisted development with Claude Code and CodeCompanion
+- Obsidian integration for knowledge management
+- Advanced git workflow (Neogit, Gitsigns, Fugitive)
+- DAP debugging with UI
+- Multiple file explorers (Mini.files, Oil, Neo-tree, Yazi)
+- Tokyo Night theme with transparency
+
+**Complete Documentation:** See [nvim/README.md](nvim/README.md) for full details, keybindings, and setup instructions.
 
 ## 🔧 Installation
 
@@ -262,7 +276,7 @@ brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/cyperx/dotfiles.git ~/dotfiles
+   git clone https://github.com/cyperx84/dotfiles.git ~/dotfiles
    cd ~/dotfiles
    ```
 
@@ -275,17 +289,7 @@ brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio
    stow */
 
    # Or install individual components
-   stow ghostty
-   stow karabiner  # or kanata (not both)
-   stow nvim
-   stow sesh
-   stow sketchybar
-   stow skhd
-   stow starship
-   stow tmux
-   stow tmuxinator
-   stow yabai
-   stow zsh
+   stow ghostty karabiner sesh sketchybar skhd starship tmux tmuxinator yabai zsh nvim
    ```
 
 3. **Start services:**
@@ -299,12 +303,85 @@ brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio
 
    # Restart shell to load Zsh config
    exec zsh
+
+   # Install Neovim plugins (on first launch)
+   nvim  # Wait for plugins to download (~30-60 seconds)
    ```
 
 4. **Configure permissions:**
    - Grant accessibility permissions to SKHD and Yabai in System Preferences
    - Allow Karabiner-Elements to modify keyboard input
    - Configure Ghostty as default terminal
+
+## 📦 Git Subtree Management
+
+### About Nvim as a Git Subtree
+
+The Neovim configuration is included via **Git subtree**, which allows:
+- ✅ Seamless cloning with `git clone` (no special flags needed)
+- ✅ Complete nvim independence (can be used separately on Linux/Mac)
+- ✅ Simple unified git history
+- ✅ Works perfectly with `stow` for configuration management
+
+### Updating Nvim
+
+To update nvim to the latest version:
+
+```bash
+# Update nvim subtree to latest
+cd ~/dotfiles
+git subtree pull --prefix nvim https://github.com/cyperx84/nvim.git main
+
+# Or if you prefer to be explicit:
+git subtree pull --prefix nvim https://github.com/cyperx84/nvim.git main --squash
+```
+
+### Using Nvim Independently
+
+If you want just the Neovim configuration without other dotfiles:
+
+```bash
+# Clone the nvim-specific repository
+git clone https://github.com/cyperx84/nvim.git ~/.config/nvim
+
+# Launch Neovim (plugins auto-install on first run)
+nvim
+```
+
+### Modifying and Pushing Nvim Changes
+
+If you make changes to nvim and want to sync them back:
+
+```bash
+cd ~/dotfiles
+
+# Make your changes to nvim configs
+# ...
+
+# Push changes back to nvim repository
+git subtree push --prefix nvim https://github.com/cyperx84/nvim.git main
+
+# Or create a branch first (safer):
+git subtree split --prefix nvim -b nvim-update
+git push https://github.com/cyperx84/nvim.git nvim-update:main
+```
+
+### Troubleshooting Subtree Issues
+
+**Pull subtree updates without merging:**
+```bash
+git subtree pull --prefix nvim https://github.com/cyperx84/nvim.git main --squash
+```
+
+**Check subtree history:**
+```bash
+git log --all -- nvim/
+```
+
+**Merge nvim updates from main branch:**
+```bash
+git subtree merge --prefix nvim https://github.com/cyperx84/nvim.git main --squash
+```
 
 ## ⚙️ Customization
 
