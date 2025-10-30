@@ -231,3 +231,11 @@ shift + alt - 7 : yabai -m window --space 7;
 # ctrl + alt - s : skhd --start-service && yabai --start-service
 shift + alt + cmd - r : skhd --restart-service && yabai --restart-service
 #+ alt ctrl + alt - s : skhd --stop-service && yabai --stop-service
+
+# ======================
+# SESSION MANAGEMENT
+# ======================
+
+# Sesh quick session switcher (system-wide: cmd + shift + j)
+# Works both inside and outside tmux
+cmd + shift - j : ~/.tmux/scripts/sesh_switcher.sh

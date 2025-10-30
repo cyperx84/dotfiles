@@ -44,7 +44,7 @@ return {
       open_and_pick_window = "<c-o>",
     },
     yazi_floating_window_border = "none",
-    floating_window_scaling_factor = 0.55,
+    floating_window_scaling_factor = 0.9,
     yazi_floating_window_winblend = 1.0,
   },
   -- 👇 if you use `open_for_directories=true`, this is recommended

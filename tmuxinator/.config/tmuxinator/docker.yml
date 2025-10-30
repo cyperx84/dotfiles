@@ -1,4 +1,4 @@
-name: 🐳 DOCKER
+name: docker
 root: ~/
 
 # Project hooks for Docker management

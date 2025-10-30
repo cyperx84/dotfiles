@@ -13,7 +13,7 @@ return {
       -- Session management with auto-load and auto-save
       require('mini.sessions').setup {
         -- Automatically read default session when opening Neovim without files
-        autoread = false,
+        autoread = false,  -- Keep false to always show dashboard on startup
         -- Automatically save current session before switching or quitting
         autowrite = true,
         -- Global sessions stored in standard location

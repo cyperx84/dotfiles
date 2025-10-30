@@ -23,14 +23,14 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- [[FILES]]
 
 -- Mini.Files
-vim.keymap.set('n', '<c-e>', function()
-  local bufname = vim.api.nvim_buf_get_name(0)
-  if vim.bo.filetype == 'minifiles' or bufname:match('^MiniFiles') then
-    require('mini.files').close()
-  else
-    require('mini.files').open()
-  end
-end, { desc = 'Toggle mini.files' })
+-- vim.keymap.set('n', '<c-e>', function()
+--   local bufname = vim.api.nvim_buf_get_name(0)
+--   if vim.bo.filetype == 'minifiles' or bufname:match('^MiniFiles') then
+--     require('mini.files').close()
+--   else
+--     require('mini.files').open()
+--   end
+-- end, { desc = 'Toggle mini.files' })
 
 -- Yazi
 vim.keymap.set('n', '-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
@@ -135,5 +135,60 @@ vim.keymap.set("n", "<leader>qp", "<cmd>cprev<CR>zz", { desc = "Previous quickfi
 -- Navigate between location list items
 vim.keymap.set("n", "<leader>ln", "<cmd>lnext<CR>zz", { desc = "Next location item" })
 vim.keymap.set("n", "<leader>lp", "<cmd>lprev<CR>zz", { desc = "Previous location item" })
+
+-- Session Management (mini.sessions)
+-- Save current session with name
+vim.keymap.set('n', '<leader>Ss', function()
+  vim.ui.input({ prompt = 'Session name: ' }, function(input)
+    if input then
+      require('mini.sessions').write(input)
+      vim.notify('Session saved: ' .. input, vim.log.levels.INFO)
+    end
+  end)
+end, { desc = '[S]ession [S]ave' })
+
+-- Quick open/restore sessions for specific contexts
+vim.keymap.set('n', '<leader>Sh', function()
+  vim.cmd('%bdelete')  -- Close all buffers
+  if vim.fn.exists(':Snacks') == 2 then
+    Snacks.dashboard()
+  end
+end, { desc = '[S]ession [H]ome (Dashboard)' })
+
+vim.keymap.set('n', '<leader>Sn', function()
+  require('mini.sessions').read('notes')
+end, { desc = '[S]ession open [N]otes' })
+
+vim.keymap.set('n', '<leader>Sd', function()
+  require('mini.sessions').read('dotfiles')
+end, { desc = '[S]ession open [D]otfiles' })
+
+vim.keymap.set('n', '<leader>Sc', function()
+  require('mini.sessions').read('code')
+end, { desc = '[S]ession open [C]ode' })
+
+-- Load/Restore sessions
+vim.keymap.set('n', '<leader>Sl', function()
+  require('mini.sessions').select('read')
+end, { desc = '[S]ession [L]oad (select)' })
+
+vim.keymap.set('n', '<leader>Sr', function()
+  vim.ui.input({ prompt = 'Session name to restore: ', default = 'notes' }, function(input)
+    if input then
+      require('mini.sessions').read(input)
+    end
+  end)
+end, { desc = '[S]ession [R]estore by name' })
+
+-- Delete session
+vim.keymap.set('n', '<leader>Sx', function()
+  require('mini.sessions').select('delete')
+end, { desc = '[S]ession delete (select)' })
+
+-- Write current session (updates last loaded)
+vim.keymap.set('n', '<leader>Sw', function()
+  require('mini.sessions').write()
+  vim.notify('Current session saved', vim.log.levels.INFO)
+end, { desc = '[S]ession [W]rite current' })
 
 -- vim: ts=2 sts=2 sw=2 et

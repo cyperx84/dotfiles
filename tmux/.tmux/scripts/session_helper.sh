@@ -26,17 +26,6 @@ session_preview() {
             echo -e "${CYAN}Windows:${NC} $(tmux list-windows -t "$session_name" 2>/dev/null | wc -l)"
             echo -e "${CYAN}Path:${NC} $(tmux display-message -p -t "$session_name" '#{pane_current_path}' 2>/dev/null || echo "Unknown")"
             ;;
-        "sesh:")
-            # Sesh session preview
-            local sesh_info="$(sesh info "$session_name" 2>/dev/null)"
-            if [ $? -eq 0 ]; then
-                echo -e "${GREEN}🧩 Sesh Session: ${session_name}${NC}"
-                echo "$sesh_info" | head -10
-            else
-                echo -e "${YELLOW}📁 Directory Session${NC}"
-                echo -e "${CYAN}Name:${NC} ${session_name}"
-            fi
-            ;;
         "tmuxinator:")
             # Tmuxinator project preview
             local project_name="${session_name#tmuxinator:}"

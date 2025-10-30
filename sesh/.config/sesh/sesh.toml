@@ -1,16 +1,60 @@
-# Sesh Configuration - Tmuxinator-Only Mode
-# All session layouts are managed through tmuxinator YAML files in ~/.config/tmuxinator/
+# Sesh Configuration
+# Managed via GNU Stow - symlinked to ~/.config/sesh/sesh.toml
 
-blacklist = ["scratch"]
-
-# Prioritize tmuxinator sessions first
-sort_order = [
-    "tmuxinator", # show first for complex layouts
-    "config",
-    "tmux",
-    "zoxide", # show last
+# Blacklist sessions from appearing in sesh list
+# Filter out system directories, cache, and junk paths
+blacklist = [
+    "scratch",
+    "/Users",
+    "/",
+    "/dev",
+    "/usr/bin",
+    "/Library/Preferences",
+    "/Library/LaunchDaemons",
+    ".Trash",
+    ".cache",
+    "node_modules",
+    ".DS_Store",
+    ".git/",
 ]
 
+# Prioritize session sources
+# Active tmux sessions first for quick access, then tmuxinator projects, then frequently used dirs
+sort_order = [
+    "tmux",
+    "tmuxinator",
+    "config",
+    "zoxide",
+]
+
+# Default session configuration
 [default_session]
+# Startup command when creating new sessions
 startup_command = "nvim"
-preview_command = "eza --all --git --icons --color=always {}"
+
+# Preview command - uses integrated tmux script for session previews
+# The {} placeholder is replaced with the session path/name
+preview_command = "~/.tmux/scripts/sesh_preview.sh {}"
+
+# Custom session configurations
+# Quick-access sessions for frequently used workspaces
+
+[[session]]
+name = "code"
+path = "~/Code"
+startup_command = "nvim ."
+
+[[session]]
+name = "notes"
+path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+startup_command = "nvim index.md"
+
+[[session]]
+name = "dotfiles"
+path = "~/dotfiles"
+startup_command = "nvim CLAUDE.md"
+
+[[session]]
+name = "config"
+path = "~/.config"
+startup_command = "nvim ."

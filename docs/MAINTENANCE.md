@@ -16,39 +16,36 @@ This guide provides comprehensive maintenance procedures for the dotfiles system
 **Complete System Check**:
 ```bash
 # Run all validation scripts
-~/bin/validate_sesh.sh                              # Sesh configuration
 ~/.config/sketchybar/test_sketchybar.sh            # SketchyBar plugins
 ~/.config/sketchybar/plugin_health_monitor.sh test # Plugin health
+sesh list                                           # Sesh sessions (manual check)
 
 # Quick service status check
 brew services list | grep -E "(yabai|skhd|sketchybar)"
 ```
 
 ### 📋 Sesh Validation
-**Script**: `~/bin/validate_sesh.sh`
-**Purpose**: Comprehensive sesh configuration and integration testing
 
-**What it validates**:
-- Configuration syntax (`sesh.toml`)
-- Session definitions and availability
-- Essential tool dependencies (tmux, fzf, eza, yazi, nvim)
-- Aliases script functionality
-- Tmuxinator integration
-- Cross-tool compatibility
+**⚠️ NOTE**: The `~/bin/validate_sesh.sh` script was **REMOVED** in Oct 2025 migration.
 
-**Sample Output**:
+**Manual Validation**:
 ```bash
-$ ~/bin/validate_sesh.sh
-🔍 Validating Sesh Dotfiles Configuration - 2025-09-21 14:20
-==============================================================
-📋 Testing configuration: /Users/user/.config/sesh/sesh.toml
-✅ Configuration syntax is valid
-✅ Found essential session: ⚙️ Dotfiles
-✅ tmux available
-✅ Aliases available: Yes
-✅ Tmuxinator: Available
-🎯 Test completed successfully!
+# Check sesh configuration and sessions
+sesh list  # Should show sessions without errors
+
+# Verify sesh.toml syntax
+cat ~/.config/sesh/sesh.toml  # Check for syntax errors
+
+# Test session switching
+sesh connect <session-name>
 ```
+
+**What to check manually**:
+- Configuration syntax (`~/.config/sesh/sesh.toml`)
+- Session definitions load correctly
+- Essential tool dependencies (tmux, fzf, eza, yazi, nvim) are installed
+- Tmuxinator integration works
+- Session previews display correctly (FZF integration)
 
 ### 🎨 SketchyBar Validation
 **Scripts**: Multiple testing utilities in `~/.config/sketchybar/`

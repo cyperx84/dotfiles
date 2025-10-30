@@ -52,8 +52,7 @@ dotfiles/
 ├── ghostty/          # Modern terminal emulator configuration
 ├── kanata/           # Advanced keyboard remapper (alternative to karabiner)
 ├── karabiner/        # Keyboard remapping and shortcuts
-├── nvim/            # Neovim editor configuration  
-├── sesh/            # Session management for tmux
+├── nvim/            # Neovim editor configuration
 ├── sketchybar/      # macOS menu bar replacement
 ├── skhd/            # Hotkey daemon for window management
 ├── starship/        # Cross-shell prompt themes
@@ -481,8 +480,9 @@ jk                   # Exit insert mode
 ### Validation & Maintenance
 ```bash
 # System Health Checks
-~/bin/validate_sesh.sh                    # Validate sesh configuration
+sesh list                                 # Check sesh sessions (manual)
 ~/.config/sketchybar/test_sketchybar.sh   # Test SketchyBar plugins
+yabai --check-config                      # Validate yabai config
 
 # Service Management
 brew services restart yabai               # Restart window manager

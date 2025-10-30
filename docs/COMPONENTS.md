@@ -319,8 +319,9 @@ nvim/
 
 **Key Files**:
 - `sesh/.config/sesh/sesh.toml` - Session definitions
-- `sesh/.config/sesh/scripts/sesh_aliases.sh` - Enhanced aliases ([reference](KEYBINDS.md#sesh-aliases))
-- `sesh/bin/validate_sesh.sh` - Validation script
+- `tmux/.tmux/scripts/sesh_*.sh` - Session management scripts (migrated Oct 2025)
+
+**⚠️ NOTE**: Sesh-specific scripts were migrated from `sesh/.config/sesh/scripts/` to `tmux/.tmux/scripts/` in Oct 2025
 
 **Session Templates**:
 ```toml
@@ -340,7 +341,7 @@ startup_script = "~/.config/sesh/scripts/claude_dev.sh"
 - **Status Monitoring**: `sesh-dashboard`, `sesh-current`, `sesh-info`
 - **Integration**: Works with tmux and tmuxinator for complete session management
 
-**Validation**: `~/bin/validate_sesh.sh` provides comprehensive testing
+**Validation**: Manual validation via `sesh list` (validation script removed Oct 2025)
 
 ---
 
@@ -411,9 +412,10 @@ sudo kanata --cfg ~/.config/kanata/kanata.kbd
 ### 🔧 Development Workflow Integration
 
 **File Validation Scripts**:
-- `~/bin/validate_sesh.sh` - Sesh configuration validation
+- `sesh list` - Sesh session validation (manual, validate_sesh.sh removed Oct 2025)
 - `~/.config/sketchybar/test_sketchybar.sh` - SketchyBar plugin testing
 - `~/.config/sketchybar/debug_sketchybar.sh` - SketchyBar debugging
+- `yabai --check-config` - Yabai configuration validation
 
 **BrewIntegration** (in `zsh/.zshrc:45-53`):
 ```bash

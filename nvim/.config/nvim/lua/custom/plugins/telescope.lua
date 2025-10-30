@@ -24,8 +24,27 @@ return {
         defaults = {
           -- follow symlinks in both file and grep pickers
           file_ignore_patterns = { '.git', 'node_modules', '.cache', '.obsidian', '.smart-connections' },
-          layout_strategy = 'vertical',
-          layout_config = { prompt_position = 'top' },
+          layout_strategy = 'flex',
+          layout_config = {
+            flex = {
+              flip_columns = 100, -- Switch to horizontal when window >= 100 columns
+            },
+            horizontal = {
+              prompt_position = 'top',
+              preview_width = 0.6, -- Preview takes 60% of horizontal space
+              preview_cutoff = 1, -- Always show preview
+              width = { padding = 0 }, -- Full width responsiveness
+              height = { padding = 0 }, -- Full height responsiveness
+            },
+            vertical = {
+              prompt_position = 'top',
+              mirror = false, -- Preview on top, results on bottom
+              preview_cutoff = 1, -- Always show preview
+              preview_height = 0.5, -- Preview takes 50% of vertical space
+              width = { padding = 0 }, -- Full width responsiveness
+              height = { padding = 0 }, -- Full height responsiveness
+            },
+          },
           sorting_strategy = 'ascending',
           winblend = 0,
           follow_symlinks = true,

@@ -57,6 +57,8 @@ return {
         ['<C-p>'] = 'actions.preview',
         ['<C-c>'] = { 'actions.close', mode = 'n' },
         ['<C-l>'] = 'actions.refresh',
+        ['H'] = { 'actions.parent', mode = 'n' },
+        ['L'] = 'actions.select',
         ['-'] = { 'actions.parent', mode = 'n' },
         ['_'] = { 'actions.open_cwd', mode = 'n' },
         ['`'] = { 'actions.cd', mode = 'n' },
@@ -83,6 +85,19 @@ return {
         max_height = 25,
         border = 'rounded',
       },
+      preview = {
+        max_width = 0.5,
+        min_width = { 40, 0.4 },
+        width = nil,
+        max_height = 0.9,
+        min_height = { 5, 0.1 },
+        height = nil,
+        border = 'rounded',
+        win_options = {
+          winblend = 0,
+        },
+        update_on_cursor_moved = true,
+      },
 
       win_options = {
         wrap = true,
@@ -103,6 +118,7 @@ return {
       fg = '#ff9e64',  -- Orange border color
       bg = 'NONE'      -- Transparent background
     })
+
 
     -- Global keybinds for toggling oil float
     vim.keymap.set('n', '<C-e>', function()

@@ -53,25 +53,6 @@ function brew() {
 }
 fi
 
-function sesh-sessions() {
-  {
-    exec </dev/tty
-    exec <&1
-    local session
-    session=$(sesh list -t -c | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
-    zle reset-prompt > /dev/null 2>&1 || true
-  [[ -z "$session" ]] && return
-    sesh connect $session
-  }
-}
-
-zle     -N             sesh-sessions
-bindkey '^[s' sesh-sessions
-bindkey -M viins '\es' sesh-sessions
-
-# Source enhanced sesh aliases if available
-[[ -f ~/.config/sesh/scripts/sesh_aliases.sh ]] && source ~/.config/sesh/scripts/sesh_aliases.sh
-
 # Navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
 f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
@@ -248,9 +229,59 @@ alias ta='tmux attach -d'
 # Config
 alias conf="cd $HOME/dotfiles && nvim"
 
-# notes 
+# notes
 alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
 alias tno="tmuxinator start notes"
+alias ts='tmuxinator start'
+
+# ======================
+# SESH SESSION MANAGEMENT
+# ======================
+
+# Core aliases
+alias sl='sesh list -t -c -d'                      # List sessions (compact, deduplicated)
+alias sc='sesh connect'                             # Connect to session
+alias sd='sesh connect $(sesh list -d | fzf)'      # Fuzzy connect (deduplicated)
+
+# Management aliases
+alias sesh-kill='tmux kill-session -t'              # Kill specific session
+alias sesh-kill-all='tmux kill-server'              # Kill all sessions
+
+# Info/utility functions
+sesh-info() {
+    # Get detailed info about a session
+    local session="${1:-$(tmux display-message -p '#S' 2>/dev/null)}"
+
+    if [ -z "$session" ]; then
+        echo "Usage: sesh-info <session-name>"
+        echo "Or run from within a tmux session"
+        return 1
+    fi
+
+    if ! tmux has-session -t "$session" 2>/dev/null; then
+        echo "Session '$session' not found"
+        return 1
+    fi
+
+    echo "Session: $session"
+    echo "Windows: $(tmux list-windows -t "$session" 2>/dev/null | wc -l)"
+    echo "Panes: $(tmux list-panes -s -t "$session" 2>/dev/null | wc -l)"
+    echo "Created: $(tmux list-sessions -F '#{session_created}' -f '#{==:#{session_name},'"$session"'}' 2>/dev/null | xargs -I {} date -r {} '+%Y-%m-%d %H:%M:%S')"
+    echo ""
+    echo "Windows:"
+    tmux list-windows -t "$session" -F "  #{?window_active,►,  } #{window_index}: #{window_name} (#{window_panes} panes)" 2>/dev/null
+}
+
+sesh-current() {
+    # Show current session details
+    if [ -z "$TMUX" ]; then
+        echo "Not in a tmux session"
+        return 1
+    fi
+
+    local session=$(tmux display-message -p '#S')
+    sesh-info "$session"
+}
 
 # Code Workspaces
 alias C="cd ~/Code/"
@@ -295,3 +326,6 @@ ccds() {
     claude "$@"
 }
 
+
+# direnv hook
+eval "$(direnv hook zsh)"

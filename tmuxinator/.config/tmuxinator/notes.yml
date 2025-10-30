@@ -1,4 +1,4 @@
-name: 📝 NOTES
+name: notes
 root: ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes
 
 # Project hooks for notes management
@@ -12,7 +12,7 @@ windows:
   - 📑 notes:
       layout: main-horizontal
       panes:
-        - no
+        - nvim INDEX.md
   # - 👾 agents:
   #     layout: even-horizontal
   #     panes:

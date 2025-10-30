@@ -1,4 +1,4 @@
-name: ⚙️ DOTFILES
+name: dotfiles
 root: ~/dotfiles/
 
 # Project hooks for dotfiles management
