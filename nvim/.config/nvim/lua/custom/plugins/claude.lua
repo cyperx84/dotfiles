@@ -24,8 +24,6 @@ end
 
 -- Custom function to launch Claude Code with DeepSeek configuration
 local function launch_claude_deepseek()
-  local current_win = vim.api.nvim_get_current_win()
-
   -- Get DeepSeek API key from pass
   local handle = io.popen('pass apis/DEEPSEEK_API_KEY 2>/dev/null')
   if not handle then
@@ -55,21 +53,11 @@ local function launch_claude_deepseek()
     return
   end
 
-  -- Restore focus
-  vim.defer_fn(function()
-    if vim.api.nvim_win_is_valid(current_win) then
-      local current_focus = vim.api.nvim_get_current_win()
-      if current_focus ~= current_win then
-        vim.api.nvim_set_current_win(current_win)
-      end
-    end
-  end, 50)
+  -- Focus moves to Claude panel automatically
 end
 
 -- Custom function to launch Claude Code with normal Anthropic configuration
 local function launch_claude_normal()
-  local current_win = vim.api.nvim_get_current_win()
-
   -- Clear any DeepSeek environment variables to ensure normal operation
   vim.fn.setenv('ANTHROPIC_BASE_URL', '')
   vim.fn.setenv('ANTHROPIC_AUTH_TOKEN', '')
@@ -85,19 +73,13 @@ local function launch_claude_normal()
     return
   end
 
-  -- Restore focus
-  vim.defer_fn(function()
-    if vim.api.nvim_win_is_valid(current_win) then
-      local current_focus = vim.api.nvim_get_current_win()
-      if current_focus ~= current_win then
-        vim.api.nvim_set_current_win(current_win)
-      end
-    end
-  end, 50)
+  -- Focus moves to Claude panel automatically
 end
 
 return {
   'coder/claudecode.nvim',
+  lazy = false, -- Load immediately on startup
+  priority = 1000, -- High priority for early loading
   dependencies = {
     'folke/snacks.nvim', -- Optional for enhanced terminal
   },

@@ -30,24 +30,11 @@ autoload -U compinit; compinit
 export GPG_TTY=$(tty)
 gpgconf --launch gpg-agent > /dev/null 2>&1
 
-# NOTE gopass workaround not working
-# source /dev/stdin <<<"$(gopass completion bash)"
 
-# sketchybar
-# This will update the brew package count after running a brew upgrade, brew
-# update or brew outdated command
-# Personally I added "list" and "install", and everything that is after but
-# that's just a personal preference.
-# That way sketchybar updates when I run those commands as well
 if command -v sketchybar &>/dev/null; then
-
-# Define a custom 'brew' function to wrap the Homebrew command.
 function brew() {
-	# Execute the original Homebrew command with all passed arguments.
 	command brew "$@"
-	# Check if the command includes "upgrade", "update", or "outdated".
 	if [[ $* =~ "upgrade" ]] || [[ $* =~ "update" ]] || [[ $* =~ "outdated" ]] || [[ $* =~ "list" ]] || [[ $* =~ "install" ]] || [[ $* =~ "uninstall" ]] || [[ $* =~ "bundle" ]] || [[ $* =~ "doctor" ]] || [[ $* =~ "info" ]] || [[ $* =~ "cleanup" ]]; then
-		# If so, notify SketchyBar to trigger a custom action.
 		sketchybar --trigger brew_update
 	fi
 }
@@ -218,10 +205,6 @@ vv() {
 # VI Mode!!!
 bindkey jk vi-cmd-mode
 
-# Override j/k in Vi command mode to use normal history navigation (not search)
-# bindkey -M vicmd 'j' down-history
-# bindkey -M vicmd 'k' up-history
-
 # Quality of life keymaps
 alias cl='clear'
 alias ta='tmux attach -d'
@@ -244,8 +227,8 @@ alias sc='sesh connect'                             # Connect to session
 alias sd='sesh connect $(sesh list -d | fzf)'      # Fuzzy connect (deduplicated)
 
 # Management aliases
-alias sesh-kill='tmux kill-session -t'              # Kill specific session
-alias sesh-kill-all='tmux kill-server'              # Kill all sessions
+alias tk='tmux kill-session -t'              # Kill specific session
+alias tkas='tmux kill-server'              # Kill all sessions
 
 # Info/utility functions
 sesh-info() {
@@ -322,6 +305,20 @@ ccds() {
     export API_TIMEOUT_MS=600000
     export ANTHROPIC_MODEL=deepseek-chat
     export ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat
+    export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+    claude "$@"
+}
+
+# MiniMax with Claude Code
+ccmm() {
+    export ANTHROPIC_BASE_URL=https://api.minimax.io/anthropic
+    export ANTHROPIC_AUTH_TOKEN=$(pass apis/MINIMAX_API_KEY)
+    export API_TIMEOUT_MS=3000000
+    export ANTHROPIC_MODEL=MiniMax-M2
+    export ANTHROPIC_SMALL_FAST_MODEL=MiniMax-M2
+    export ANTHROPIC_DEFAULT_SONNET_MODEL=MiniMax-M2
+    export ANTHROPIC_DEFAULT_OPUS_MODEL=MiniMax-M2
+    export ANTHROPIC_DEFAULT_HAIKU_MODEL=MiniMax-M2
     export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
     claude "$@"
 }

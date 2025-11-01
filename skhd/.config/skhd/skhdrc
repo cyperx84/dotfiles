@@ -218,7 +218,7 @@ ctrl - 5 : yabai -m space --focus 5
 
 
 # move window to space #
-shift + alt - 1 : yabai -m window --space 1;
+ctrl + cmd - 1 : yabai -m window --space 1;
 shift + alt - 2 : yabai -m window --space 2;
 shift + alt - 3 : yabai -m window --space 3;
 shift + alt - 4 : yabai -m window --space 4;
@@ -236,6 +236,6 @@ shift + alt + cmd - r : skhd --restart-service && yabai --restart-service
 # SESSION MANAGEMENT
 # ======================
 
-# Sesh quick session switcher (system-wide: cmd + shift + j)
+# Sesh quick session switcher (system-wide: cmd + ctrl + j)
 # Works both inside and outside tmux
-cmd + shift - j : ~/.tmux/scripts/sesh_switcher.sh
+cmd + ctrl - j : bash /Users/cyperx/.tmux/scripts/sesh_switcher.sh > /tmp/sesh_test.log 2>&1 &

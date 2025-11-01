@@ -2,8 +2,9 @@
 # Managed via GNU Stow - symlinked to ~/.config/sesh/sesh.toml
 
 # Blacklist sessions from appearing in sesh list
-# Filter out system directories, cache, and junk paths
+# Filter out system directories, cache, junk paths, and development artifacts
 blacklist = [
+    # System directories
     "scratch",
     "/Users",
     "/",
@@ -11,11 +12,38 @@ blacklist = [
     "/usr/bin",
     "/Library/Preferences",
     "/Library/LaunchDaemons",
+    "Library/Containers",
+    "Library/Application Support",
+
+    # Trash and cache
     ".Trash",
     ".cache",
-    "node_modules",
-    ".DS_Store",
+
+    # Version control internals
     ".git/",
+    ".github",
+
+    # Python artifacts
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".*\\.pyc",
+
+    # Node.js artifacts
+    "node_modules",
+    ".next",
+    ".turbo",
+
+    # Build artifacts
+    "dist",
+    "build",
+    "target",
+
+    # macOS
+    ".DS_Store",
+
+    # Logs
+    ".*\\.log",
 ]
 
 # Prioritize session sources
@@ -38,6 +66,7 @@ preview_command = "~/.tmux/scripts/sesh_preview.sh {}"
 
 # Custom session configurations
 # Quick-access sessions for frequently used workspaces
+# These sessions will always appear in sesh list, even when not running
 
 [[session]]
 name = "code"
@@ -55,6 +84,16 @@ path = "~/dotfiles"
 startup_command = "nvim CLAUDE.md"
 
 [[session]]
-name = "config"
-path = "~/.config"
+name = ".claude"
+path = "~/.claude"
+startup_command = "nvim ."
+
+[[session]]
+name = "github"
+path = "~/github"
+startup_command = "nvim ."
+
+[[session]]
+name = "temp"
+path = "~/Code/temp"
 startup_command = "nvim ."

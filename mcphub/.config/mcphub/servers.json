@@ -82,7 +82,7 @@
         "obsidian_get_recent_changes"
       ],
       "command": "uv",
-      "disabled": true
+      "disabled": false
     },
     "mcp-ui Docs": {
       "disabled": true,

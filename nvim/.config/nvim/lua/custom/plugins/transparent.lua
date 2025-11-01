@@ -14,6 +14,6 @@ return {
       exclude_groups = {},
     })
 
-    vim.cmd("TransparentEnable")
+    vim.cmd("TransparentDisable")
   end,
 }
