@@ -153,24 +153,38 @@ return {
           end,
         },
 
-        -- acp = {
-        --   claude_code = function()
-        --     return require('codecompanion.adapters').extend('claude_code', {
-        --       env = {
-        --         -- Using OAuth token from `claude setup-token`
-        --         CLAUDE_CODE_OAUTH_TOKEN = 'cmd:pass show apis/CLAUDE_CODE_OAUTH_TOKEN',
-        --       },
-        --     })
-        --   end,
-        --
-        --   gemini_cli = function()
-        --     return require('codecompanion.adapters').extend('gemini_cli', {
-        --       defaults = {
-        --         auth_method = 'oauth-personal', -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
-        --       },
-        --     })
-        --   end,
-        -- },
+        acp = {
+          claude_code = function()
+            return require('codecompanion.adapters').extend('claude_code', {
+              env = {
+                -- Using OAuth token from `claude setup-token`
+                CLAUDE_CODE_OAUTH_TOKEN = 'cmd:pass show apis/CLAUDE_CODE_OAUTH_TOKEN',
+              },
+            })
+          end,
+
+          gemini_cli = function()
+            return require('codecompanion.adapters').extend('gemini_cli', {
+              defaults = {
+                auth_method = 'gemini-api-key', -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
+              },
+              env = {
+                GEMINI_API_KEY = 'cmd:pass show apis/GEMINI_API_KEY',
+              },
+            })
+          end,
+
+          codex = function()
+            return require('codecompanion.adapters').extend('codex', {
+              defaults = {
+                auth_method = 'openai-api-key', -- "openai-api-key"|"codex-api-key"|"chatgpt"
+              },
+              env = {
+                OPENAI_API_KEY = 'cmd:pass show apis/OPENAI_API_KEY',
+              },
+            })
+          end,
+        },
       },
 
       strategies = {

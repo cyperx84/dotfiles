@@ -19,7 +19,7 @@ return {
       workspaces = {
         {
           name = 'personal',
-          path = '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes',
+          path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes',
         },
       },
 
@@ -69,19 +69,12 @@ return {
         -- Preserve existing created date or use current time for new notes
         local created_date = (note.metadata and note.metadata.created) or now
 
-        -- Process tags to ensure they have hashtag prefix
-        local tags = note.tags or {}
-        local processed_tags = {}
-        for _, tag in ipairs(tags) do
-          if type(tag) == 'string' then
-            -- Add hashtag if not present
-            if not tag:match('^#') then
-              table.insert(processed_tags, '#' .. tag)
-            else
-              table.insert(processed_tags, tag)
-            end
-          end
-        end
+        -- NOTE: Tags should NOT have hashtag prefix in frontmatter
+        -- The obsidian.nvim plugin expects tags in YAML format without '#'
+        -- YAML format (correct for tag search):
+        --   tags: [type/fleeting-note, status/active]
+        -- NOT hashtag format (breaks tag filtering):
+        --   tags: [#type/fleeting-note, #status/active]
 
         local out = {
           id = note.id,
@@ -89,7 +82,7 @@ return {
           created = created_date,        -- Preserve original or set once
           modified = now,                 -- Always update to current time
           reviewed = nil,                 -- Last review date (weekly gardening ritual)
-          tags = processed_tags,
+          tags = note.tags or {},         -- Tags without hashtag prefix
           aliases = note.aliases or {},
           base = nil,                     -- Which Obsidian Base context this belongs to
         }
@@ -108,7 +101,7 @@ return {
 
       -- Disable frontmatter for files outside the vault
       disable_frontmatter = function(filename)
-        local vault_path = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes')
+        local vault_path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes'
         local absolute_filename = vim.fn.fnamemodify(filename, ':p')
 
         -- Only apply frontmatter to files within the vault

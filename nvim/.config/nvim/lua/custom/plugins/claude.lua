@@ -22,7 +22,44 @@ local function toggle_claude_no_focus()
   end, 50) -- 50ms delay
 end
 
--- Custom function to launch Claude Code with DeepSeek configuration
+-- Custom function to launch Claude Code with MiniMax configuration
+local function launch_claude_minimax()
+  -- Get MiniMax API key from pass
+  local handle = io.popen('pass apis/MINIMAX_API_KEY 2>/dev/null')
+  if not handle then
+    vim.notify('Error: Could not retrieve MiniMax API key from pass', vim.log.levels.ERROR)
+    return
+  end
+  local api_key = handle:read('*a'):gsub('\n', '')
+  handle:close()
+
+  if api_key == '' then
+    vim.notify('Error: MiniMax API key is empty', vim.log.levels.ERROR)
+    return
+  end
+
+  -- Set environment variables for MiniMax
+  vim.fn.setenv('ANTHROPIC_BASE_URL', 'https://api.minimax.io/anthropic')
+  vim.fn.setenv('ANTHROPIC_AUTH_TOKEN', api_key)
+  vim.fn.setenv('API_TIMEOUT_MS', '3000000')
+  vim.fn.setenv('ANTHROPIC_MODEL', 'MiniMax-M2')
+  vim.fn.setenv('ANTHROPIC_SMALL_FAST_MODEL', 'MiniMax-M2')
+  vim.fn.setenv('ANTHROPIC_DEFAULT_SONNET_MODEL', 'MiniMax-M2')
+  vim.fn.setenv('ANTHROPIC_DEFAULT_OPUS_MODEL', 'MiniMax-M2')
+  vim.fn.setenv('ANTHROPIC_DEFAULT_HAIKU_MODEL', 'MiniMax-M2')
+  vim.fn.setenv('CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC', '1')
+
+  -- Launch Claude Code with MiniMax
+  local success, err = pcall(vim.cmd, 'ClaudeCode')
+  if not success then
+    vim.notify('Error launching Claude Code (MiniMax): ' .. (err or 'Unknown error'), vim.log.levels.ERROR)
+    return
+  end
+
+  -- Focus moves to Claude panel automatically
+end
+
+-- Custom function to launch Claude Code with DeepSeek configuration (DEPRECATED - use MiniMax instead)
 local function launch_claude_deepseek()
   -- Get DeepSeek API key from pass
   local handle = io.popen('pass apis/DEEPSEEK_API_KEY 2>/dev/null')
@@ -149,7 +186,7 @@ return {
     -- Core Claude Code commands
     { "<M-;>", launch_claude_normal, desc = "Toggle Claude (normal)" },
     { "<M-;>", toggle_claude_no_focus, desc = "Toggle Claude (close)", mode = "t" },
-    { "<M-'>", launch_claude_deepseek, desc = "Toggle Claude (DeepSeek)" },
+    { "<M-'>", launch_claude_minimax, desc = "Toggle Claude (MiniMax)" },
     { "<leader>cf", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
     { "<leader>cm", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
 
@@ -178,5 +215,10 @@ return {
     { "<leader>cc", "<cmd>ClaudeCode<cr>", desc = "Claude Code" },
     { "<leader>c?", "<cmd>help claudecode<cr>", desc = "Claude Code help" },
     { "<leader>cq", "<cmd>ClaudeCode --quit<cr>", desc = "Quit Claude Code" },
+
+    -- Claude Code with different models (leader key variants)
+    { "<leader>ccc", launch_claude_normal, desc = "Claude Code (original)" },
+    { "<leader>ccd", launch_claude_deepseek, desc = "Claude Code (DeepSeek)" },
+    { "<leader>ccm", launch_claude_minimax, desc = "Claude Code (MiniMax)" },
   },
 }

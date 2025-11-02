@@ -69,31 +69,31 @@ preview_command = "~/.tmux/scripts/sesh_preview.sh {}"
 # These sessions will always appear in sesh list, even when not running
 
 [[session]]
-name = "code"
+name = "💻 code"
 path = "~/Code"
 startup_command = "nvim ."
 
 [[session]]
-name = "notes"
+name = "📝 notes"
 path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
-startup_command = "nvim index.md"
+startup_command = "nvim INDEX.md"
 
 [[session]]
-name = "dotfiles"
+name = "⚙️ dotfiles"
 path = "~/dotfiles"
 startup_command = "nvim CLAUDE.md"
 
 [[session]]
-name = ".claude"
+name = "🤖 claude-config"
 path = "~/.claude"
 startup_command = "nvim ."
 
 [[session]]
-name = "github"
+name = "🐙 github"
 path = "~/github"
 startup_command = "nvim ."
 
 [[session]]
-name = "temp"
+name = "🧪 temp"
 path = "~/Code/temp"
 startup_command = "nvim ."

@@ -35,19 +35,27 @@ human_time() {
 }
 
 # Clean session input - remove ANSI color codes
-SESSION_INPUT=$(echo "$SESSION_INPUT" | sed 's/\x1b\[[0-9;]*m//g; s/\[0m//g')
+# Remove literal ANSI escape sequences like [38;2;128;255;0m and [0m
+SESSION_INPUT=$(echo "$SESSION_INPUT" | sed -E 's/\[38;2;[0-9;]+m//g' | sed -E 's/\[[0-9]+m//g' | sed 's/\[0m//g')
 
 # Remove leading/trailing whitespace and extract session name
 SESSION_CLEAN=$(echo "$SESSION_INPUT" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
 # Remove icon prefixes (handle emoji and special characters)
+# Remove specific status icons added by sesh_list_enhanced.sh
 SESSION_CLEAN=$(echo "$SESSION_CLEAN" | sed -e 's/^◆[[:space:]]*//' \
     -e 's/^●[[:space:]]*//' \
     -e 's/^◉[[:space:]]*//' \
-    -e 's/^◉[[:space:]]*//' \
     -e 's/^📁[[:space:]]*//' \
-    -e 's/^▣[[:space:]]*//' \
-    | awk '{print $1}')
+    -e 's/^▣[[:space:]]*//')
+
+# Remove ANY leading emoji characters (multi-byte UTF-8) followed by optional space
+# This handles custom session names like "⚙️ dotfiles", "💻 code", etc.
+SESSION_CLEAN=$(echo "$SESSION_CLEAN" | sed -E 's/^[^[:alnum:]~\/\._-]+[[:space:]]*//')
+
+# Extract the session name/path (everything before metadata like (2w 3p) or git info)
+# Match everything until we hit metadata markers like parentheses, git icons, or resource info
+SESSION_CLEAN=$(echo "$SESSION_CLEAN" | sed -E 's/[[:space:]]*\([0-9]+w[[:space:]]+[0-9]+p\).*//' | sed -E 's/[[:space:]]+[🔥✓⏰💤📦].*//' | xargs)
 SESSION_CLEAN="${SESSION_CLEAN/#\~/$HOME}"
 
 # ======================
@@ -161,6 +169,13 @@ show_tmux_session_preview() {
         echo -e "${CYAN}Path:${NC} $current_path"
     fi
 
+    # Directory preview if current path exists
+    if [ -n "$current_path" ] && [ -d "$current_path" ]; then
+        echo ""
+        echo -e "${CYAN}━━ Directory Preview ━━${NC}"
+        eza --icons --color=always --group-directories-first -a -l "$current_path" 2>/dev/null | head -15 || ls -la "$current_path" | head -15
+    fi
+
     # Live pane content preview
     echo ""
     echo -e "${CYAN}━━ Current Pane ━━${NC}"
@@ -201,6 +216,13 @@ show_tmuxinator_preview() {
     fi
 
     echo -e "${CYAN}Config:${NC} $config_file"
+
+    # Show directory preview with eza
+    if [ -n "$root_dir" ] && [ -d "$root_dir" ]; then
+        echo ""
+        echo -e "${CYAN}━━ Directory Preview ━━${NC}"
+        eza --icons --color=always --group-directories-first -a -l "$root_dir" 2>/dev/null | head -20 || ls -la "$root_dir" | head -20
+    fi
 }
 
 show_sesh_custom_preview() {
@@ -235,6 +257,11 @@ show_sesh_custom_preview() {
     if [ -n "$project_type" ]; then
         echo -e "${CYAN}Type:${NC} $project_type"
     fi
+
+    # Show directory preview with eza
+    echo ""
+    echo -e "${CYAN}━━ Directory Preview ━━${NC}"
+    eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -20 || ls -la "$dir_path" | head -20
 }
 
 show_directory_preview() {
@@ -261,6 +288,11 @@ show_directory_preview() {
     if [ -n "$project_type" ]; then
         echo -e "${CYAN}Type:${NC} $project_type"
     fi
+
+    # Show directory preview with eza
+    echo ""
+    echo -e "${CYAN}━━ Directory Preview ━━${NC}"
+    eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -20 || ls -la "$dir_path" | head -20
 }
 
 # ======================

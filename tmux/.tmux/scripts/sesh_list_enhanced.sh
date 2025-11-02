@@ -692,13 +692,23 @@ sesh list "$@" | while IFS= read -r session; do
 
     # Strip ANSI codes
     clean_session=$(echo "$session" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/\[[0-9;]*m//g')
-    clean_session=$(echo "$clean_session" | sed -E 's/^.{1}[[:space:]]*//')
+    # Remove only specific icon prefixes (single-byte characters), not emojis (multi-byte)
+    clean_session=$(echo "$clean_session" | sed -E 's/^[◆●◉◯📁▪▣][[:space:]]*//')
     clean_session=$(echo "$clean_session" | xargs)
 
     [ -z "$clean_session" ] && continue
 
+    # Create deduplication key by stripping emojis and common prefixes
+    # This ensures "⚙️ dotfiles" and "dotfiles" are treated as duplicates
+    # Remove emoji characters (UTF-8 multi-byte sequences) from the start
+    dedup_key=$(echo "$clean_session" | sed -E 's/^[[:space:]]*[^[:alnum:]~\/\._-]+[[:space:]]*//' | xargs)
+
+    # Also normalize paths for deduplication (strip ~/ prefix for comparison)
+    dedup_normalized=$(echo "$dedup_key" | sed 's|^~/||')
+
     # Global deduplication - skip if we've already seen this session name
-    if [[ -n "${seen_sessions[$clean_session]}" ]]; then
+    # Check both the dedup_key and normalized version
+    if [[ -n "${seen_sessions[$dedup_key]}" ]] || [[ -n "${seen_sessions[$dedup_normalized]}" ]]; then
         continue
     fi
 
@@ -710,10 +720,24 @@ sesh list "$@" | while IFS= read -r session; do
     esac
 
     # Helper function to check if session is in sesh.toml
+    # Checks both exact name and name without emoji prefix
     is_sesh_toml_session() {
         local name="$1"
         local sesh_config="${HOME}/.config/sesh/sesh.toml"
-        [ -f "$sesh_config" ] && grep -q "^name = \"${name}\"" "$sesh_config" 2>/dev/null
+
+        if [ ! -f "$sesh_config" ]; then
+            return 1
+        fi
+
+        # Check exact name first
+        if grep -q "^name = \"${name}\"" "$sesh_config" 2>/dev/null; then
+            return 0
+        fi
+
+        # Check if there's a toml entry that matches this name (with emoji prefix)
+        # Extract the base name without emoji and check for matches
+        local base_name=$(echo "$name" | sed -E 's/^[[:space:]]*[^[:alnum:]~\/\._-]+[[:space:]]*//')
+        grep -E "^name = \"[^\"]*${base_name}\"" "$sesh_config" 2>/dev/null | grep -q "$base_name"
     }
 
     # SMART DEDUPLICATION: Prioritize tmux > tmuxinator > custom > zoxide
@@ -723,18 +747,24 @@ sesh list "$@" | while IFS= read -r session; do
     is_directory=false
     is_custom=false
 
-    if [[ "$sesh_type" == "tmux" ]] || [[ -n "${tmux_sessions[$clean_session]}" ]]; then
+    if [[ "$sesh_type" == "tmux" ]] || [[ -n "${tmux_sessions[$clean_session]}" ]] || [[ -n "${tmux_sessions[$dedup_key]}" ]]; then
         is_tmux_session=true
     elif [[ "$sesh_type" == "tmuxinator" ]] || [ -f "$HOME/.config/tmuxinator/${clean_session}.yml" ]; then
         is_tmuxinator=true
         # Skip if tmux session exists with same name
         [[ -n "${tmux_sessions[$clean_session]}" ]] && continue
+        [[ -n "${tmux_sessions[$dedup_key]}" ]] && continue
     elif [[ "$sesh_type" == "config" ]] || is_sesh_toml_session "$clean_session"; then
         is_custom=true
-        # Skip if tmux session exists with same name
+        # Skip if tmux session exists with same name (check both with and without emoji)
         [[ -n "${tmux_sessions[$clean_session]}" ]] && continue
+        [[ -n "${tmux_sessions[$dedup_key]}" ]] && continue
     elif [[ "$sesh_type" == "directory" ]] || [ -d "${clean_session/#\~/$HOME}" ]; then
         is_directory=true
+        # Skip if this directory has a sesh.toml custom session
+        is_sesh_toml_session "$dedup_normalized" && continue
+        # Skip if there's a tmuxinator config for this
+        [ -f "$HOME/.config/tmuxinator/${dedup_key}.yml" ] && continue
     fi
 
     # FILTER MODE: Apply filtering based on selected session types
@@ -767,7 +797,8 @@ sesh list "$@" | while IFS= read -r session; do
     esac
 
     # Mark as seen BEFORE output to prevent duplicates
-    seen_sessions["$clean_session"]=1
+    seen_sessions["$dedup_key"]=1
+    seen_sessions["$dedup_normalized"]=1
 
     # Build output with all enhancements
     if [[ "$is_tmux_session" == true ]]; then

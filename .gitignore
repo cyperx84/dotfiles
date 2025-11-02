@@ -7,3 +7,4 @@ sketchybar/.config/sketchybar/helper/helper
 # Backup files
 *.bak
 *~
+.aider*

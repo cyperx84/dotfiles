@@ -74,6 +74,7 @@ return {
       -- load extensions if available
       pcall(telescope.load_extension, 'fzf')
       pcall(telescope.load_extension, 'ui-select')
+      pcall(telescope.load_extension, 'obsidian')
       pcall(telescope.load_extension, 'git_worktree')
       -- keymaps
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
@@ -105,7 +106,13 @@ return {
 
       -- search Neovim config
       vim.keymap.set('n', '<leader>sn', function()
-        builtin.find_files { cwd = vim.fn.stdpath 'config' }
+        builtin.find_files {
+          cwd = vim.fn.resolve(vim.fn.stdpath 'config'),
+          follow = true,
+          hidden = true,
+          file_ignore_patterns = {},
+          use_git_root = false,
+        }
       end, { desc = '[S]earch [N]eovim files' })
     end,
   },
