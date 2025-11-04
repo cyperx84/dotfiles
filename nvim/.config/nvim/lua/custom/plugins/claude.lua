@@ -93,6 +93,43 @@ local function launch_claude_deepseek()
   -- Focus moves to Claude panel automatically
 end
 
+-- Custom function to launch Claude Code with GLM configuration
+local function launch_claude_glm()
+  -- Get GLM API key from pass
+  local handle = io.popen('pass apis/GLM_API_KEY 2>/dev/null')
+  if not handle then
+    vim.notify('Error: Could not retrieve GLM API key from pass', vim.log.levels.ERROR)
+    return
+  end
+  local api_key = handle:read('*a'):gsub('\n', '')
+  handle:close()
+
+  if api_key == '' then
+    vim.notify('Error: GLM API key is empty', vim.log.levels.ERROR)
+    return
+  end
+
+  -- Set environment variables for GLM
+  vim.fn.setenv('ANTHROPIC_BASE_URL', 'https://api.z.ai/api/anthropic')
+  vim.fn.setenv('ANTHROPIC_AUTH_TOKEN', api_key)
+  vim.fn.setenv('API_TIMEOUT_MS', '3000000')
+  vim.fn.setenv('ANTHROPIC_MODEL', 'GLM-4.6')
+  vim.fn.setenv('ANTHROPIC_SMALL_FAST_MODEL', 'GLM-4.5-Air')
+  vim.fn.setenv('ANTHROPIC_DEFAULT_SONNET_MODEL', 'GLM-4.6')
+  vim.fn.setenv('ANTHROPIC_DEFAULT_OPUS_MODEL', 'GLM-4.6')
+  vim.fn.setenv('ANTHROPIC_DEFAULT_HAIKU_MODEL', 'GLM-4.5-Air')
+  vim.fn.setenv('CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC', '1')
+
+  -- Launch Claude Code with GLM
+  local success, err = pcall(vim.cmd, 'ClaudeCode')
+  if not success then
+    vim.notify('Error launching Claude Code (GLM): ' .. (err or 'Unknown error'), vim.log.levels.ERROR)
+    return
+  end
+
+  -- Focus moves to Claude panel automatically
+end
+
 -- Custom function to launch Claude Code with normal Anthropic configuration
 local function launch_claude_normal()
   -- Clear any DeepSeek environment variables to ensure normal operation
@@ -220,5 +257,6 @@ return {
     { "<leader>ccc", launch_claude_normal, desc = "Claude Code (original)" },
     { "<leader>ccd", launch_claude_deepseek, desc = "Claude Code (DeepSeek)" },
     { "<leader>ccm", launch_claude_minimax, desc = "Claude Code (MiniMax)" },
+    { "<leader>ccg", launch_claude_glm, desc = "Claude Code (GLM)" },
   },
 }

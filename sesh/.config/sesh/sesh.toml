@@ -58,7 +58,7 @@ sort_order = [
 # Default session configuration
 [default_session]
 # Startup command when creating new sessions
-startup_command = "nvim"
+startup_command = ""
 
 # Preview command - uses integrated tmux script for session previews
 # The {} placeholder is replaced with the session path/name
@@ -71,7 +71,7 @@ preview_command = "~/.tmux/scripts/sesh_preview.sh {}"
 [[session]]
 name = "💻 code"
 path = "~/Code"
-startup_command = "nvim ."
+startup_command = "" 
 
 [[session]]
 name = "📝 notes"
@@ -81,7 +81,7 @@ startup_command = "nvim INDEX.md"
 [[session]]
 name = "⚙️ dotfiles"
 path = "~/dotfiles"
-startup_command = "nvim CLAUDE.md"
+startup_command = "nvim"
 
 [[session]]
 name = "🤖 claude-config"
@@ -91,9 +91,9 @@ startup_command = "nvim ."
 [[session]]
 name = "🐙 github"
 path = "~/github"
-startup_command = "nvim ."
+startup_command = "" 
 
 [[session]]
 name = "🧪 temp"
 path = "~/Code/temp"
-startup_command = "nvim ."
+startup_command = "" 
