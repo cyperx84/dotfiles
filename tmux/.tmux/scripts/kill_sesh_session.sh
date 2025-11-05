@@ -6,8 +6,8 @@
 # Usage: kill_sesh_session.sh "formatted_session_line"
 
 # Extract session name from formatted output
-# Removes ANSI color codes and icon prefix
-SESSION=$(echo "$1" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/^[◆▣📁📂🔷🔶⬢●◉○] *//' | awk '{print $1}')
+# Removes ANSI color codes (including actual ESC byte) and icon prefix
+SESSION=$(echo "$1" | sed 's/\x1b\[[0-9;]*m//g' | sed -E 's/^[^[:alnum:]~\/\._-]+[[:space:]]*//' | xargs)
 
 if [ -n "$SESSION" ]; then
     # Kill the session

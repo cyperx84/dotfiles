@@ -68,12 +68,12 @@ dotfiles/
 Modern GPU-accelerated terminal with extensive customization:
 - **Font**: MonaspiceNe Nerd Font family with ligatures
 - **Theme**: Monokai Remastered with transparency and blur effects
-- **Features**: Extensive shader collection for visual effects
+- **Features**: GPU-accelerated rendering with blur effects
 - **Shortcuts**: Global quick terminal toggle (`cmd+/`)
 
 **Key Features:**
-- 30+ custom GLSL shaders (Matrix, CRT, Galaxy, etc.)
-- Font ligatures and stylistic sets
+- Font ligatures and stylistic sets (ss01-ss04, liga)
+- Background blur and transparency effects
 - macOS-specific optimizations
 - Secure input handling
 
@@ -410,15 +410,6 @@ export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-dark-neon.toml
 # export STARSHIP_CONFIG=~/.config/starship/starship-jetpack.toml
 ```
 
-### Ghostty Shaders
-Enable visual effects by uncommenting shader lines in `ghostty/config`:
-```bash
-# Uncomment any of these for visual effects:
-# custom-shader = shaders/matrix-hallway.glsl
-# custom-shader = shaders/starfield.glsl
-# custom-shader = shaders/crt.glsl
-```
-
 ### Tmux Customization
 Modify plugin settings in `.tmux.conf`:
 ```bash
@@ -505,10 +496,10 @@ exec zsh                                  # Reload shell config
 - `zsh/.zshrc` - Shell configuration and aliases
 
 ### Special Features
-- **Ghostty Shaders**: 30+ visual effect shaders in `ghostty/shaders/`
 - **SketchyBar Plugins**: Custom status bar modules in `sketchybar/plugins/`
 - **Starship Themes**: 6 different prompt configurations
 - **Tmux Plugins**: Auto-installing plugin manager with 10+ plugins
+- **Neovim**: 68 plugins across 45 configuration files
 
 ## 🤝 Contributing
 

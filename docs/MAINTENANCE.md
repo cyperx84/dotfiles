@@ -223,8 +223,8 @@ mv ~/.local/share/nvim ~/.local/share/nvim.backup
 
 **Sesh Problems**:
 ```bash
-# 1. Validate configuration
-~/bin/validate_sesh.sh
+# 1. Validate configuration (manual)
+sesh list
 
 # 2. Check sesh availability
 which sesh
@@ -233,9 +233,8 @@ sesh --version
 # 3. Test basic functionality
 sesh list
 
-# 4. Check aliases
-source ~/.config/sesh/scripts/sesh_aliases.sh
-sl  # Should list sessions
+# 4. Check session switching
+sesh connect <session-name>
 ```
 
 **Tmux/Session Issues**:
@@ -307,7 +306,7 @@ brew services restart sketchybar
 exec zsh
 
 # 5. Validate
-~/bin/validate_sesh.sh
+sesh list  # Manual check (validate_sesh.sh removed Oct 2025)
 ~/.config/sketchybar/test_sketchybar.sh
 ```
 
@@ -408,7 +407,7 @@ stow --adopt component_name  # Adopt existing files
 **Solutions**:
 1. **Validate Sesh**:
    ```bash
-   ~/bin/validate_sesh.sh
+   sesh list  # Manual validation (script removed Oct 2025)
    ```
 
 2. **Check Dependencies**:
@@ -473,7 +472,7 @@ brew services start sketchybar
 exec zsh
 
 # 6. Validate everything
-~/bin/validate_sesh.sh
+sesh list  # Manual check (validate_sesh.sh removed Oct 2025)
 ~/.config/sketchybar/test_sketchybar.sh
 ```
 

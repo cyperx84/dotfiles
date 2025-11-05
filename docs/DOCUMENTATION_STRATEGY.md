@@ -20,16 +20,8 @@ docs/
 ├── NEOVIM_KEYBINDS.md           # Neovim-specific mappings (✅ done)
 ├── WORKFLOW_GUIDES.md           # Cross-tool workflows (✅ done)
 ├── MAINTENANCE.md               # Validation and troubleshooting
-├── ARCHITECTURE.md              # System design and integration
-└── components/                  # Per-component detailed docs
-    ├── ghostty.md
-    ├── yabai.md
-    ├── skhd.md
-    ├── sketchybar.md
-    ├── tmux.md
-    ├── neovim.md
-    ├── zsh.md
-    └── ...
+├── CLAUDE_STATUSLINE.md         # Statusline interpretation guide
+└── README.md                    # Documentation index and navigation
 ```
 
 ## Target Audiences

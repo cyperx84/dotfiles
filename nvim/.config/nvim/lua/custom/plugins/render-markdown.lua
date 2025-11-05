@@ -15,8 +15,9 @@ return {
     vim.api.nvim_set_hl(0, 'RenderMarkdownH5', { fg = '#8BE9FD', bold = true })
     vim.api.nvim_set_hl(0, 'RenderMarkdownH6', { fg = '#FF79C6', bold = true })
 
-    vim.api.nvim_set_hl(0, 'RenderMarkdownCodeBlock', { bg = '#121212', fg = '#C0CAF5', bold = true })
-    vim.api.nvim_set_hl(0, 'RenderMarkdownInlineCode', { bg = '#121212', fg = '#C0CAF5', bold = true })
+    -- Code block background only (let treesitter handle syntax colors)
+    vim.api.nvim_set_hl(0, 'RenderMarkdownCode', { bg = '#121212' })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownCodeInline', { bg = '#1a1a1a' })
     require('render-markdown').setup {
       heading = {
         border = false,
@@ -49,7 +50,7 @@ return {
       code = {
         enabled = true,
         sign = true,
-        style = 'full',
+        style = 'full', -- 'full' = background on whole block, 'normal' = treesitter highlighting
         position = 'left',
         language_pad = 0,
         disable_background = { 'diff' },
@@ -58,8 +59,8 @@ return {
         right_pad = 1,
         min_width = 0,
         border = 'thin',
-        highlight = 'RenderMarkdownCodeBlock',
-        highlight_inline = 'RenderMarkdownInlineCode',
+        highlight = 'RenderMarkdownCode', -- Background color only
+        highlight_inline = 'RenderMarkdownCodeInline',
       },
       latex = { enabled = false },
       completions = { blink = { enabled = true } },

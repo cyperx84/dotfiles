@@ -6,25 +6,67 @@ return {
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = {
-        'javascript',
-        'typescript',
+        -- Core languages
         'c',
+        'cpp',
         'lua',
         'vim',
         'vimdoc',
         'query',
-        'jq',
-        'dockerfile',
-        'json',
-        'html',
-        'go',
+
+        -- Web development
+        'javascript',
+        'typescript',
         'tsx',
-        'bash',
+        'html',
+        'css',
+        'scss',
+        'astro',
+        'vue',
+        'svelte',
+
+        -- Backend & Systems
+        'python',
+        'rust',
+        'go',
+        'java',
+        'kotlin',
+        'swift',
         'ruby',
+        'php',
+        'elixir',
+        'erlang',
+        'zig',
+        'c_sharp',
+
+        -- Shell & DevOps
+        'bash',
+        'fish',
+        'dockerfile',
+        'terraform',
+
+        -- Data & Config
+        'json',
+        'jsonc',
+        'yaml',
+        'toml',
+        'xml',
+        'sql',
+        'graphql',
+        'jq',
+
+        -- Markup & Documentation
         'markdown',
         'markdown_inline',
-        'astro',
-        'yaml',
+        'latex',
+        'regex',
+
+        -- Other useful
+        'git_config',
+        'git_rebase',
+        'gitcommit',
+        'gitignore',
+        'diff',
       },
       auto_install = true,
       highlight = {

@@ -103,11 +103,10 @@ plugins/
 ### 👻 Ghostty - Terminal Emulator
 **Purpose**: Modern GPU-accelerated terminal with extensive customization
 **Status**: ✅ Active (Primary Terminal)
-**Dependencies**: MonaspiceNe Nerd Font, optional shaders
+**Dependencies**: MonaspiceNe Nerd Font
 
 **Key Files**:
 - `ghostty/.config/ghostty/config` - Main configuration
-- `ghostty/.config/ghostty/shaders/` - 30+ GLSL visual effects
 
 **Core Configuration**:
 ```toml

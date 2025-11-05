@@ -98,17 +98,16 @@ sketchybar/.config/sketchybar/sketchybarrc  # Menu bar config
 
 ### Scripts & Utilities
 ```
-~/bin/validate_sesh.sh                   # Sesh validation script
-sesh/.config/sesh/scripts/sesh_aliases.sh   # Enhanced sesh aliases
+sesh list                                # Sesh session validation (manual)
 ~/.config/sketchybar/test_sketchybar.sh  # SketchyBar testing
 ~/.config/sketchybar/debug_sketchybar.sh # SketchyBar debugging
+tmux/.tmux/scripts/                      # Session management scripts (11 files)
 ```
 
 ### Plugin Directories
 ```
-nvim/.config/nvim/lua/custom/plugins/    # Neovim plugin configs (30+ files)
-sketchybar/.config/sketchybar/plugins/   # SketchyBar plugins (30+ scripts)
-ghostty/.config/ghostty/shaders/         # Visual effect shaders (30+ files)
+nvim/.config/nvim/lua/custom/plugins/    # Neovim plugin configs (45 files)
+sketchybar/.config/sketchybar/plugins/   # SketchyBar plugins (69 scripts)
 ```
 
 ---
@@ -117,7 +116,7 @@ ghostty/.config/ghostty/shaders/         # Visual effect shaders (30+ files)
 
 ### Validation & Health Checks
 ```bash
-~/bin/validate_sesh.sh                    # Validate sesh configuration
+sesh list                                # Sesh session validation (manual check)
 ~/.config/sketchybar/test_sketchybar.sh   # Test SketchyBar plugins
 ~/.config/sketchybar/plugin_health_monitor.sh test  # Plugin health check
 ```
