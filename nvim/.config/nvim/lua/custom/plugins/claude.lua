@@ -132,12 +132,15 @@ end
 
 -- Custom function to launch Claude Code with normal Anthropic configuration
 local function launch_claude_normal()
-  -- Clear any DeepSeek environment variables to ensure normal operation
+  -- Clear all provider environment variables to ensure normal operation
   vim.fn.setenv('ANTHROPIC_BASE_URL', '')
   vim.fn.setenv('ANTHROPIC_AUTH_TOKEN', '')
   vim.fn.setenv('API_TIMEOUT_MS', '')
   vim.fn.setenv('ANTHROPIC_MODEL', '')
   vim.fn.setenv('ANTHROPIC_SMALL_FAST_MODEL', '')
+  vim.fn.setenv('ANTHROPIC_DEFAULT_SONNET_MODEL', '')
+  vim.fn.setenv('ANTHROPIC_DEFAULT_OPUS_MODEL', '')
+  vim.fn.setenv('ANTHROPIC_DEFAULT_HAIKU_MODEL', '')
   vim.fn.setenv('CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC', '')
 
   -- Launch Claude Code normally
