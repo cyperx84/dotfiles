@@ -70,8 +70,7 @@ conf                       # Quick jump to dotfiles
 
 # Level 2: File managers (from terminal)
 f                          # Yazi with cd integration
-sesh-files                 # Yazi in session context
-sesh-tree                  # Quick eza tree view
+lt                         # Tree view with details
 
 # Level 3: Neovim file management
 <leader>e                  # Mini.files (toggle, context-aware)
@@ -334,7 +333,6 @@ sd                         # Select new session/project
 # or Alt+s                 # Quick session selector
 
 # 3. Orient in new context
-sesh-current               # Check current session info
 <leader><leader>           # See open buffers
 ls                         # Check directory contents
 ```
@@ -346,7 +344,7 @@ When you need to thoroughly explore unfamiliar code:
 ```bash
 # 1. Get oriented
 <leader>sf                 # Browse file structure
-sesh-tree                  # See directory tree
+lt                         # See directory tree
 <leader>gg                 # Check git status
 
 # 2. Explore codebase

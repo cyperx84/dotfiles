@@ -38,6 +38,7 @@ This document covers all Neovim keybinds across the configuration, organized by 
 | Keybind | Mode | Action | Description |
 |---------|------|--------|-------------|
 | `<Esc>` | Normal | `:nohlsearch<CR>` | Clear search highlighting |
+| `<C-s>` | Normal | `:w<CR>` | Save file (quick save) |
 | `jk` | Insert | `<Esc><Esc>` | Exit insert mode |
 
 ---

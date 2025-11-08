@@ -66,30 +66,12 @@
 | `C-a M` | Tmuxinator | Launch tmuxinator project with FZF |
 
 ### Sesh Aliases
-*Source: `sesh/.config/sesh/scripts/sesh_aliases.sh`*
+*Source: `tmux/.tmux/scripts/` (scripts migrated Oct 2025)*
 
 | Alias | Command | Description |
 |-------|---------|-------------|
-| `sl` | `sesh list -t -c` | List sessions (compact) |
-| `slj` | `sesh list -t -c -J` | List sessions as JSON |
-| `sc` | `sesh connect` | Connect to session |
-| `sd` | `sesh connect $(sesh list \| fzf)` | Fuzzy connect to session |
-| `sesh-active` | `tmux list-sessions` | Show active sessions |
-| `sesh-windows` | `tmux list-windows` | Show windows in current session |
-| `sesh-panes` | `tmux list-panes -a` | Show all panes |
-| `sesh-tmux` | `tmuxinator list` | List tmuxinator sessions |
-| `sesh-start` | `tmuxinator start` | Start tmuxinator session |
-| `sesh-kill` | `tmux kill-session -t` | Kill specific session |
-| `sesh-kill-all` | `tmux kill-server` | Kill all sessions |
-
-### Sesh Functions
-*Source: `sesh/.config/sesh/scripts/sesh_aliases.sh`*
-
-| Function | Description |
-|----------|-------------|
-| `sesh-info [session]` | Get detailed session information |
-| `sesh-current` | Show current session details and path |
-| `sesh-dashboard` | Comprehensive session status dashboard |
+| `sl` | `sesh list -t -c -d` | List sessions (compact, deduplicated) |
+| `sc` | `sesh connect $(sesh list -d | fzf)` | Fuzzy connect (deduplicated) |
 
 ### Zsh Session Integration
 *Source: `zsh/.zshrc`*
@@ -147,14 +129,6 @@
 | `fcd()` | Fuzzy directory navigation with eza preview |
 | `f()` | Yazi file manager with cd integration |
 | `fv()` | Fuzzy file selection for nvim editing |
-
-### Sesh File Integration
-*Source: `sesh/.config/sesh/scripts/sesh_aliases.sh`*
-
-| Alias | Description |
-|-------|-------------|
-| `sesh-files` | Open yazi file manager |
-| `sesh-tree` | Enhanced directory tree with eza |
 
 ---
 

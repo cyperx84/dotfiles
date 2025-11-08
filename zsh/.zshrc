@@ -223,48 +223,11 @@ alias ts='tmuxinator start'
 
 # Core aliases
 alias sl='sesh list -t -c -d'                      # List sessions (compact, deduplicated)
-alias sc='sesh connect'                             # Connect to session
-alias sd='sesh connect $(sesh list -d | fzf)'      # Fuzzy connect (deduplicated)
+alias sc='sesh connect $(sesh list -d | fzf)'      # Fuzzy connect (deduplicated)
 
 # Management aliases
 alias tk='tmux kill-session -t'              # Kill specific session
 alias tkas='tmux kill-server'              # Kill all sessions
-
-# Info/utility functions
-sesh-info() {
-    # Get detailed info about a session
-    local session="${1:-$(tmux display-message -p '#S' 2>/dev/null)}"
-
-    if [ -z "$session" ]; then
-        echo "Usage: sesh-info <session-name>"
-        echo "Or run from within a tmux session"
-        return 1
-    fi
-
-    if ! tmux has-session -t "$session" 2>/dev/null; then
-        echo "Session '$session' not found"
-        return 1
-    fi
-
-    echo "Session: $session"
-    echo "Windows: $(tmux list-windows -t "$session" 2>/dev/null | wc -l)"
-    echo "Panes: $(tmux list-panes -s -t "$session" 2>/dev/null | wc -l)"
-    echo "Created: $(tmux list-sessions -F '#{session_created}' -f '#{==:#{session_name},'"$session"'}' 2>/dev/null | xargs -I {} date -r {} '+%Y-%m-%d %H:%M:%S')"
-    echo ""
-    echo "Windows:"
-    tmux list-windows -t "$session" -F "  #{?window_active,►,  } #{window_index}: #{window_name} (#{window_panes} panes)" 2>/dev/null
-}
-
-sesh-current() {
-    # Show current session details
-    if [ -z "$TMUX" ]; then
-        echo "Not in a tmux session"
-        return 1
-    fi
-
-    local session=$(tmux display-message -p '#S')
-    sesh-info "$session"
-}
 
 # Code Workspaces
 alias C="cd ~/Code/"
@@ -279,7 +242,7 @@ export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/cyperx/.docker/completions $fpath)
+fpath=(/Users/cyperx/.docker/completions ~/.zfunctions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions

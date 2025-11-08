@@ -86,7 +86,7 @@ startup_command = "nvim"
 [[session]]
 name = "🤖 claude-config"
 path = "~/.claude"
-startup_command = "nvim ."
+startup_command = "nvim"
 
 [[session]]
 name = "🐙 github"

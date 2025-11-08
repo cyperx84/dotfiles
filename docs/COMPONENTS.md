@@ -180,6 +180,28 @@ bind-key l select-pane -R
 - **FZF**: Fuzzy finding for sessions and files
 - **Ghostty**: Color and terminal capability passthrough
 
+**Custom Scripts**:
+**Location**: `tmux/.tmux/scripts/` (migrated from `sesh/.config/sesh/scripts/` Oct 2025)
+
+**Scripts** (11 files):
+- `sesh_list_enhanced.sh` - Enhanced session listing with icons, git integration, and resource monitoring (7.3KB)
+- `sesh_list_icons.sh` - Icon mapping for different session types
+- `sesh_preview.sh` - FZF preview window content with detailed session information (18KB)
+- `sesh_switcher.sh` - Smart session switching logic with fallback
+- `sesh_smart_start.sh` - Intelligent session creation with context detection
+- `sesh_clean_selection.sh` - Enhanced FZF selection with cleanup
+- `sesh_edit.sh` - Edit session configurations interactively
+- `session_helper.sh` - General session utilities and helpers
+- `kill_sesh_session.sh` - Kill specific session with confirmation
+- `sesh_create_new.sh` - Create new named sessions
+- `sesh_preview_with_keybinds.sh` - Preview with embedded keybind reference
+
+**Integration**:
+- Called from tmux keybindings: `C-a e` (session switcher), `C-a L` (session list)
+- Used by FZF session switcher for previews
+- Referenced in `sesh.toml` for preview_command
+- Provide enhanced display with icons and contextual information
+
 ### 🐚 Zsh - Z Shell
 **Purpose**: Modern shell with extensive enhancements and aliases
 **Status**: ✅ Active (Default Shell)
