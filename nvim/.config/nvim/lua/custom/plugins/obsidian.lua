@@ -25,7 +25,7 @@ return {
 
       -- Daily notes configuration (aligned with vault constitution)
       daily_notes = {
-        folder = '_inbox', -- Constitution: Single entry point for new information
+        folder = '📥-inbox', -- Constitution: Single entry point for new information
         date_format = '%Y-%m-%d',
         alias_format = '%B %-d, %Y',
         -- Constitution tag system: #type/ #status/ #project/ #area/

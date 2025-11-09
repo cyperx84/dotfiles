@@ -10,9 +10,11 @@
 SESSION=$(echo "$1" | sed 's/\x1b\[[0-9;]*m//g' | sed -E 's/^[^[:alnum:]~\/\._-]+[[:space:]]*//' | xargs)
 
 if [ -n "$SESSION" ]; then
-    # Kill the session
-    tmux kill-session -t "$SESSION" 2>/dev/null
-    exit $?
-else
-    exit 1
+    # Only kill if it's an actual tmux session
+    if tmux has-session -t "$SESSION" 2>/dev/null; then
+        tmux kill-session -t "$SESSION" 2>/dev/null
+        exit $?
+    fi
 fi
+
+exit 0

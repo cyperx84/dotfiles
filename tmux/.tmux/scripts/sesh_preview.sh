@@ -35,8 +35,8 @@ human_time() {
 }
 
 # Clean session input - remove ANSI color codes
-# Remove literal ANSI escape sequences like [38;2;128;255;0m and [0m
-SESSION_INPUT=$(echo "$SESSION_INPUT" | sed -E 's/\[38;2;[0-9;]+m//g' | sed -E 's/\[[0-9]+m//g' | sed 's/\[0m//g')
+# Remove ANSI escape sequences properly using hex escape code
+SESSION_INPUT=$(echo "$SESSION_INPUT" | sed -E 's/\x1b\[[0-9;]*m//g')
 
 # Remove leading/trailing whitespace and extract session name
 SESSION_CLEAN=$(echo "$SESSION_INPUT" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
@@ -173,7 +173,7 @@ show_tmux_session_preview() {
     if [ -n "$current_path" ] && [ -d "$current_path" ]; then
         echo ""
         echo -e "${CYAN}━━ Directory Preview ━━${NC}"
-        eza --icons --color=always --group-directories-first -a -l "$current_path" 2>/dev/null | head -15 || ls -la "$current_path" | head -15
+        eza --icons --color=always --group-directories-first -a -l "$current_path" 2>/dev/null | head -10 || ls -la "$current_path" | head -10
     fi
 
     # Live pane content preview
@@ -221,7 +221,7 @@ show_tmuxinator_preview() {
     if [ -n "$root_dir" ] && [ -d "$root_dir" ]; then
         echo ""
         echo -e "${CYAN}━━ Directory Preview ━━${NC}"
-        eza --icons --color=always --group-directories-first -a -l "$root_dir" 2>/dev/null | head -20 || ls -la "$root_dir" | head -20
+        eza --icons --color=always --group-directories-first -a -l "$root_dir" 2>/dev/null | head -10 || ls -la "$root_dir" | head -10
     fi
 }
 
@@ -261,7 +261,7 @@ show_sesh_custom_preview() {
     # Show directory preview with eza
     echo ""
     echo -e "${CYAN}━━ Directory Preview ━━${NC}"
-    eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -20 || ls -la "$dir_path" | head -20
+    eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -10 || ls -la "$dir_path" | head -10
 }
 
 show_directory_preview() {
@@ -292,7 +292,7 @@ show_directory_preview() {
     # Show directory preview with eza
     echo ""
     echo -e "${CYAN}━━ Directory Preview ━━${NC}"
-    eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -20 || ls -la "$dir_path" | head -20
+    eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -10 || ls -la "$dir_path" | head -10
 }
 
 # ======================

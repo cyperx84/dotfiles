@@ -19,20 +19,28 @@ if [ -n "$TMUX" ]; then
             --bind 'ctrl-g:change-prompt(⚙️  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -idc)' \
             --bind 'ctrl-x:change-prompt(📁  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -idz)' \
             --bind 'ctrl-/:execute(~/.tmux/scripts/sesh_create_new.sh)+abort' \
-            --bind 'ctrl-k:execute(~/.tmux/scripts/kill_sesh_session.sh {})+reload(~/.tmux/scripts/sesh_list_enhanced.sh -id)'
+            --bind 'ctrl-k:execute-silent(~/.tmux/scripts/kill_sesh_session.sh {})+reload(~/.tmux/scripts/sesh_list_enhanced.sh -id)'
     )
 
     # Clean the selected session name before connecting
-    # Remove ANSI color codes
-    selected=$(echo "$selected" | sed -E 's/\[38;2;[0-9;]+m//g' | sed -E 's/\[[0-9]+m//g' | sed 's/\[0m//g')
+    # IMPORTANT: Session names can contain emojis (e.g., "⚙️dotfiles", "💻 code")
+    # Remove ANSI color codes (handle both with and without ESC character)
+    selected=$(echo "$selected" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/\[[0-9;]*m//g')
+    # Remove status icon prefixes - try each icon separately
+    selected=$(echo "$selected" | sed 's/^◆//' | sed 's/^●//' | sed 's/^◉//' | sed 's/^📁//' | sed 's/^▣//')
+    # Remove control characters (backspace, etc.)
+    selected=$(echo "$selected" | tr -d '[:cntrl:]')
     # Remove leading/trailing whitespace
     selected=$(echo "$selected" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-    # Remove status icon prefixes (◆, ●, ◉, 📁, ▣)
-    selected=$(echo "$selected" | sed -e 's/^◆[[:space:]]*//' -e 's/^●[[:space:]]*//' -e 's/^◉[[:space:]]*//' -e 's/^📁[[:space:]]*//' -e 's/^▣[[:space:]]*//')
-    # Remove ANY leading emoji characters (multi-byte UTF-8) followed by optional space
-    selected=$(echo "$selected" | sed -E 's/^[^[:alnum:]~\/\._-]+[[:space:]]*//')
-    # Extract first word (session name) - everything else is metadata (git branch, icons, etc.)
-    selected=$(echo "$selected" | awk '{print $1}')
+    # Extract everything BEFORE metadata pattern "(Xw Yp)" - preserves emojis in session names
+    selected=$(echo "$selected" | sed -E 's/[[:space:]]+\([0-9].*//')
+    # Remove trailing activity indicators (🔥 ⚡ 💤 📊 🗄️ ⏱) and time strings
+    selected=$(echo "$selected" | sed -E 's/[[:space:]]+(🔥|⚡|💤|📊|🗄️|⏱)[[:space:]].*//' | sed -E 's/[[:space:]]+(🔥|⚡|💤|📊|🗄️|⏱)$//')
+    selected=$(echo "$selected" | sed -E 's/[[:space:]]+[0-9]+(m|h|d|w|mo)[[:space:]]+ago$//')
+    # Remove git branch info and status indicators
+    selected=$(echo "$selected" | sed -E 's/[[:space:]]+\[.*\]$//' | sed -E 's/[[:space:]]+(↑|↓|✗|✓|●|±)[0-9].*$//')
+    # Final trim
+    selected=$(echo "$selected" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
     [ -n "$selected" ] && sesh connect "$selected"
 else
@@ -57,19 +65,27 @@ else
                     --bind 'ctrl-g:change-prompt(⚙️  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -idc)' \
                     --bind 'ctrl-x:change-prompt(📁  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -idz)' \
                     --bind 'ctrl-/:execute(~/.tmux/scripts/sesh_create_new.sh)+abort' \
-                    --bind 'ctrl-k:execute(~/.tmux/scripts/kill_sesh_session.sh {})+reload(~/.tmux/scripts/sesh_list_enhanced.sh -id)')
+                    --bind 'ctrl-k:execute-silent(~/.tmux/scripts/kill_sesh_session.sh {})+reload(~/.tmux/scripts/sesh_list_enhanced.sh -id)')
                 if [ -n \"\$selected\" ]; then
                     # Clean the selected session name before connecting
-                    # Remove ANSI color codes
-                    selected=\$(echo \"\$selected\" | sed -E 's/\[38;2;[0-9;]+m//g' | sed -E 's/\[[0-9]+m//g' | sed 's/\[0m//g')
+                    # IMPORTANT: Session names can contain emojis (e.g., \"⚙️dotfiles\", \"💻 code\")
+                    # Remove ANSI color codes (handle both with and without ESC character)
+                    selected=\$(echo \"\$selected\" | sed 's/\\x1b\[[0-9;]*m//g' | sed 's/\[[0-9;]*m//g')
+                    # Remove status icon prefixes - try each icon separately
+                    selected=\$(echo \"\$selected\" | sed 's/^◆//' | sed 's/^●//' | sed 's/^◉//' | sed 's/^📁//' | sed 's/^▣//')
+                    # Remove control characters (backspace, etc.)
+                    selected=\$(echo \"\$selected\" | tr -d '[:cntrl:]')
                     # Remove leading/trailing whitespace
                     selected=\$(echo \"\$selected\" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-                    # Remove status icon prefixes (◆, ●, ◉, 📁, ▣)
-                    selected=\$(echo \"\$selected\" | sed -e 's/^◆[[:space:]]*//' -e 's/^●[[:space:]]*//' -e 's/^◉[[:space:]]*//' -e 's/^📁[[:space:]]*//' -e 's/^▣[[:space:]]*//')
-                    # Remove ANY leading emoji characters (multi-byte UTF-8) followed by optional space
-                    selected=\$(echo \"\$selected\" | sed -E 's/^[^[:alnum:]~\/\._-]+[[:space:]]*//')
-                    # Extract first word (session name) - everything else is metadata (git branch, icons, etc.)
-                    selected=\$(echo \"\$selected\" | awk '{print \$1}')
+                    # Extract everything BEFORE metadata pattern \"(Xw Yp)\" - preserves emojis in session names
+                    selected=\$(echo \"\$selected\" | sed -E 's/[[:space:]]+\([0-9].*//')
+                    # Remove trailing activity indicators (🔥 ⚡ 💤 📊 🗄️ ⏱) and time strings
+                    selected=\$(echo \"\$selected\" | sed -E 's/[[:space:]]+(🔥|⚡|💤|📊|🗄️|⏱)[[:space:]].*//' | sed -E 's/[[:space:]]+(🔥|⚡|💤|📊|🗄️|⏱)$//')
+                    selected=\$(echo \"\$selected\" | sed -E 's/[[:space:]]+[0-9]+(m|h|d|w|mo)[[:space:]]+ago$//')
+                    # Remove git branch info and status indicators
+                    selected=\$(echo \"\$selected\" | sed -E 's/[[:space:]]+\[.*\]$//' | sed -E 's/[[:space:]]+(↑|↓|✗|✓|●|±)[0-9].*$//')
+                    # Final trim
+                    selected=\$(echo \"\$selected\" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
                     sesh connect \"\$selected\"
                 fi
