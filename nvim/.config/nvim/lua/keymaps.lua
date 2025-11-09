@@ -91,6 +91,27 @@ vim.keymap.set("v", "<leader>Ca", "<cmd>CodeCompanionChat Add<CR>", { desc = "Ad
 --Claude-code History
 vim.keymap.set("n", "<leader>ch", "<cmd>ClaudeHistory<CR>", { desc = "Claude-code History" })
 
+-- Python Documentation Lookup
+vim.keymap.set("n", "<leader>hp", function()
+  vim.ui.input({ prompt = "Python module: " }, function(module)
+    if module and module ~= "" then
+      -- Create a new buffer for the documentation
+      vim.cmd("enew")
+      vim.cmd("file pydoc-" .. module)
+      vim.bo.swapfile = false
+      vim.bo.bufhidden = "wipe"
+      vim.bo.filetype = "help"  -- Set filetype to help for better highlighting
+
+      -- Run pydoc in the new buffer
+      local cmd = "read !python3 -m pydoc " .. vim.fn.shellescape(module)
+      vim.cmd(cmd)
+      vim.cmd("normal! gg")
+      vim.cmd("setlocal nomodifiable")
+      vim.notify("Python docs for: " .. module, vim.log.levels.INFO)
+    end
+  end)
+end, { desc = "[H]elp [P]ython module" })
+
 -- NOTE: Markdown header navigation (gj/gk) is defined in autocmds.lua for markdown files
 
 -- Exit insert mode without hitting Esc

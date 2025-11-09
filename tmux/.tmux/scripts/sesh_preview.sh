@@ -3,6 +3,18 @@
 # Minimal Sesh Preview Script - Fast Edition
 # Only shows essential session info, no expensive operations
 # Version: 3.0 (Performance optimized)
+#
+# Display mode determined by:
+#   1. SESH_DISPLAY_MODE environment variable (if set)
+#   2. ~/.sesh_display_mode file (for toggle state)
+#   3. Default to compact
+
+# Determine display mode - check state file first (for toggle state)
+if [ -f "$HOME/.sesh_display_mode" ]; then
+    DISPLAY_MODE=$(cat "$HOME/.sesh_display_mode")
+else
+    DISPLAY_MODE="${SESH_DISPLAY_MODE:-compact}"
+fi
 
 # Color definitions
 BLUE='\033[0;34m'
@@ -169,24 +181,24 @@ show_tmux_session_preview() {
         echo -e "${CYAN}Path:${NC} $current_path"
     fi
 
-    # Directory preview if current path exists
-    if [ -n "$current_path" ] && [ -d "$current_path" ]; then
-        echo ""
-        echo -e "${CYAN}━━ Directory Preview ━━${NC}"
-        eza --icons --color=always --group-directories-first -a -l "$current_path" 2>/dev/null | head -10 || ls -la "$current_path" | head -10
-    fi
-
-    # Live pane content preview
+    # Show pane content preview in both modes
     echo ""
     echo -e "${CYAN}━━ Current Pane ━━${NC}"
     local active_pane=$(tmux display-message -p -t "$session_name" '#{pane_id}' 2>/dev/null)
     if [ -n "$active_pane" ]; then
         local content=$(tmux capture-pane -t "$active_pane" -p -e -J -S -30 2>/dev/null)
         if [ -n "$content" ]; then
-            echo "$content" | tail -20
+            echo "$content" | tail -15
         else
             echo -e "${GRAY}(empty pane)${NC}"
         fi
+    fi
+
+    # Show directory preview in both modes
+    if [ -n "$current_path" ] && [ -d "$current_path" ]; then
+        echo ""
+        echo -e "${CYAN}━━ Directory Preview ━━${NC}"
+        eza --icons --color=always --group-directories-first -a -l "$current_path" 2>/dev/null | head -8 || ls -la "$current_path" | head -8
     fi
 }
 
@@ -215,13 +227,26 @@ show_tmuxinator_preview() {
         echo -e "${CYAN}Path:${NC} $root_dir"
     fi
 
-    echo -e "${CYAN}Config:${NC} $config_file"
+    # Show pane content if session is running
+    if tmux has-session -t "$session_name" 2>/dev/null; then
+        echo ""
+        echo -e "${CYAN}━━ Current Pane ━━${NC}"
+        local active_pane=$(tmux display-message -p -t "$session_name" '#{pane_id}' 2>/dev/null)
+        if [ -n "$active_pane" ]; then
+            local content=$(tmux capture-pane -t "$active_pane" -p -e -J -S -30 2>/dev/null)
+            if [ -n "$content" ]; then
+                echo "$content" | tail -15
+            else
+                echo -e "${GRAY}(empty pane)${NC}"
+            fi
+        fi
+    fi
 
-    # Show directory preview with eza
+    # Show directory preview in both modes
     if [ -n "$root_dir" ] && [ -d "$root_dir" ]; then
         echo ""
         echo -e "${CYAN}━━ Directory Preview ━━${NC}"
-        eza --icons --color=always --group-directories-first -a -l "$root_dir" 2>/dev/null | head -10 || ls -la "$root_dir" | head -10
+        eza --icons --color=always --group-directories-first -a -l "$root_dir" 2>/dev/null | head -8 || ls -la "$root_dir" | head -8
     fi
 }
 
@@ -247,21 +272,25 @@ show_sesh_custom_preview() {
         echo -e "${CYAN}Status:${NC} ${YELLOW}○ Not running${NC}"
     fi
 
-    # Quick project type detection (just file existence checks, no deep scanning)
-    local project_type=""
-    [ -f "$dir_path/package.json" ] && project_type="Node.js"
-    [ -f "$dir_path/Cargo.toml" ] && project_type="Rust"
-    [ -f "$dir_path/go.mod" ] && project_type="Go"
-    [ -f "$dir_path/Dockerfile" ] && project_type="Docker"
-
-    if [ -n "$project_type" ]; then
-        echo -e "${CYAN}Type:${NC} $project_type"
+    # Show pane content if session is running
+    if tmux has-session -t "$session_name" 2>/dev/null; then
+        echo ""
+        echo -e "${CYAN}━━ Current Pane ━━${NC}"
+        local active_pane=$(tmux display-message -p -t "$session_name" '#{pane_id}' 2>/dev/null)
+        if [ -n "$active_pane" ]; then
+            local content=$(tmux capture-pane -t "$active_pane" -p -e -J -S -30 2>/dev/null)
+            if [ -n "$content" ]; then
+                echo "$content" | tail -15
+            else
+                echo -e "${GRAY}(empty pane)${NC}"
+            fi
+        fi
     fi
 
-    # Show directory preview with eza
+    # Show directory preview in both modes
     echo ""
     echo -e "${CYAN}━━ Directory Preview ━━${NC}"
-    eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -10 || ls -la "$dir_path" | head -10
+    eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -8 || ls -la "$dir_path" | head -8
 }
 
 show_directory_preview() {
@@ -278,21 +307,10 @@ show_directory_preview() {
     # Show path
     echo -e "${CYAN}Path:${NC} $dir_path"
 
-    # Quick project type detection (just file existence checks, no deep scanning)
-    local project_type=""
-    [ -f "$dir_path/package.json" ] && project_type="Node.js"
-    [ -f "$dir_path/Cargo.toml" ] && project_type="Rust"
-    [ -f "$dir_path/go.mod" ] && project_type="Go"
-    [ -f "$dir_path/Dockerfile" ] && project_type="Docker"
-
-    if [ -n "$project_type" ]; then
-        echo -e "${CYAN}Type:${NC} $project_type"
-    fi
-
-    # Show directory preview with eza
+    # Show directory preview in both modes
     echo ""
     echo -e "${CYAN}━━ Directory Preview ━━${NC}"
-    eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -10 || ls -la "$dir_path" | head -10
+    eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -8 || ls -la "$dir_path" | head -8
 }
 
 # ======================

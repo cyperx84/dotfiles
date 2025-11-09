@@ -235,7 +235,3 @@ shift + alt + cmd - r : skhd --restart-service && yabai --restart-service
 # ======================
 # SESSION MANAGEMENT
 # ======================
-
-# Sesh quick session switcher (system-wide: cmd + ctrl + j)
-# Works both inside and outside tmux
-cmd + ctrl - j : bash /Users/cyperx/.tmux/scripts/sesh_switcher.sh > /tmp/sesh_test.log 2>&1 &

@@ -2,9 +2,15 @@
 
 # Sesh preview with keybinds at top
 # Shows available keybinds above the regular session preview
+# Display mode is determined by ~/.sesh_display_mode file (read by preview script)
 
-echo "  Keybinds: ^a all+dirs | ^t tmux-only | ^x zoxide | ^/ new | ^r detailed | ^s sort | ^k kill"
+# Display keybinds and current mode
+CURRENT_MODE="$(cat ~/.sesh_display_mode 2>/dev/null || echo 'compact')"
+MODE_LABEL=$([ "$CURRENT_MODE" = "detailed" ] && echo "📂 detailed" || echo "📋 compact")
+
+echo "  Keybinds: ⌥n new | ⌥k kill | ^b all | ^t tmux-only | ^/ zoxide | ^r $MODE_LABEL | ^s sort | ^d/u preview"
 echo ""
 
 # Call the regular preview script
-SESH_DISPLAY_MODE=detailed ~/.tmux/scripts/sesh_preview.sh "$1"
+# Preview script reads ~/.sesh_display_mode file to determine what to show
+~/.tmux/scripts/sesh_preview.sh "$1"

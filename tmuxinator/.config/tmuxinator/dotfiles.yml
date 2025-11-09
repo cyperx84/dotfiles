@@ -9,22 +9,22 @@ on_project_restart: |
 on_project_exit: echo "👋 Dotfiles session ended"
 
 windows:
-  - 🅅 NeoVIM:
+  - ⚙️ NeoVIM:
       layout: main-horizontal
       options:
         main-pane-height: 95%
       panes:
         - editor:
           - nvim
-  # - 👾 agents:
-  #     layout: even-horizontal
-  #     panes:
-  #       - |
-  #         cc
-  #       - |
-  #         gemini
-  #       - |
-  #         oc
+  - 👾 agents:
+      layout: even-horizontal
+      panes:
+        - |
+          cc
+        - |
+          gemini
+        - |
+          oc
   # - 💻 system:
   #     layout: main-horizontal
   #     options:

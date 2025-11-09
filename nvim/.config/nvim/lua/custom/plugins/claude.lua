@@ -167,12 +167,12 @@ return {
     -- Server options
     port_range = { min = 10000, max = 65535 },
     auto_start = true,
-    log_level = 'info', -- Use 'debug' for troubleshooting
+    log_level = 'warn', -- Reduced from 'info' to minimize scrolling output
 
     -- Terminal options
     terminal = {
       split_side = 'right',
-      provider = 'snacks', -- "auto" (default), "snacks", or "native"
+      provider = 'native', -- Changed from 'snacks' to fix scrolling issues
       auto_close = true, -- Auto-close terminal after command completion
       split_width_percentage = 0.35, -- 35% of window width (adjust as needed)
       cwd_provider = function(ctx)

@@ -13,8 +13,8 @@ windows:
       layout: main-horizontal
       panes:
         - nvim
-  - 📁 shell:
-      layout: even-horizontal
-      panes:
-        - echo "Shell for Claude config management"
-        - echo "💡 Use :VimuxRunCommand in nvim to run commands in split"
+  # - 📁 shell:
+  #     layout: even-horizontal
+  #     panes:
+  #       - echo "Shell for Claude config management"
+  #       - echo "💡 Use :VimuxRunCommand in nvim to run commands in split"
