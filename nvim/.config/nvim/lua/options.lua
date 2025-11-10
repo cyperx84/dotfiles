@@ -24,7 +24,8 @@ vim.schedule(function()
 end)
 vim.opt.conceallevel = 2
 vim.opt.laststatus = 3
-vim.g.python3_host_prog = '/usr/local/bin/python3'
+vim.g.python3_host_prog = os.getenv("HOME") .. "/.nvim-venv/bin/python"
+vim.g.loaded_perl_provider = 0
 vim.opt.isfname:append("@-@") -- already present in most setups
 vim.opt.isfname:append("32")  -- allow spaces in filenames
 
