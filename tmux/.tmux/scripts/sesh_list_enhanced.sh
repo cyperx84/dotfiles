@@ -54,6 +54,18 @@ while [[ $# -gt 0 ]]; do
             FILTER_MODE="zoxide"
             shift
             ;;
+        -idtm)
+            # Interactive display, tmux + tmuxinator sessions (exclude zoxide)
+            DISPLAY_MODE="compact"
+            FILTER_MODE="tmuxinator_and_tmux"
+            shift
+            ;;
+        -idnz)
+            # Interactive display, all sessions except zoxide
+            DISPLAY_MODE="compact"
+            FILTER_MODE="no_zoxide"
+            shift
+            ;;
         *)
             break
             ;;
@@ -780,6 +792,14 @@ sesh list "$@" | while IFS= read -r session; do
             ;;
         zoxide)
             [[ "$is_directory" == true ]] || continue
+            ;;
+        tmuxinator_and_tmux)
+            # Show tmux sessions and tmuxinator configs, exclude zoxide/directories
+            [[ "$is_tmux_session" == true ]] || [[ "$is_tmuxinator" == true ]] || continue
+            ;;
+        no_zoxide)
+            # Show all sessions except zoxide directories
+            [[ "$is_directory" == true ]] && continue
             ;;
         git)
             # Only show sessions in git repositories

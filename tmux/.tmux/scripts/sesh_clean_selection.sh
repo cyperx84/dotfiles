@@ -9,10 +9,10 @@ selection=$(cat)
 # Strip ANSI escape codes (both formats)
 selection=$(echo "$selection" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/\[[0-9;]*m//g')
 
-# Remove the leading status icons (◆, ●, ◉, 📁, ▣)
-# These are added by sesh_list_enhanced.sh and can have various amounts of whitespace after them
+# Remove the leading status icons (◆, ●, ○, ◉, 📁, ▣)
+# These are added by sesh_list scripts and can have various amounts of whitespace after them
 # We remove the icon but leave any emoji that follows
-for icon in '◆' '●' '◉' '📁' '▣'; do
+for icon in '◆' '●' '○' '◉' '📁' '▣'; do
     if [[ "$selection" == "$icon"* ]]; then
         # Remove the icon by taking substring starting after it
         selection="${selection#$icon}"

@@ -11,6 +11,5 @@ MODE_LABEL=$([ "$CURRENT_MODE" = "detailed" ] && echo "📂 detailed" || echo "�
 echo "  Keybinds: ⌥n new | ⌥k kill | ^b all | ^t tmux-only | ^/ zoxide | ^r $MODE_LABEL | ^s sort | ^d/u preview"
 echo ""
 
-# Call the regular preview script
-# Preview script reads ~/.sesh_display_mode file to determine what to show
-~/.tmux/scripts/sesh_preview.sh "$1"
+# Call the fast preview script (optimized for performance)
+~/.tmux/scripts/sesh_preview_fast.sh "$1"

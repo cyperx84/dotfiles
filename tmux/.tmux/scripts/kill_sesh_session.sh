@@ -13,6 +13,8 @@ if [ -n "$SESSION" ]; then
     # Only kill if it's an actual tmux session
     if tmux has-session -t "$SESSION" 2>/dev/null; then
         tmux kill-session -t "$SESSION" 2>/dev/null
+        # Invalidate session list cache
+        touch "$HOME/.sesh_cache_invalidate"
         exit $?
     fi
 fi

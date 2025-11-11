@@ -183,8 +183,9 @@ bind-key l select-pane -R
 **Custom Scripts**:
 **Location**: `tmux/.tmux/scripts/` (migrated from `sesh/.config/sesh/scripts/` Oct 2025)
 
-**Scripts** (11 files):
+**Scripts** (12 files):
 - `sesh_list_enhanced.sh` - Enhanced session listing with icons, git integration, and resource monitoring (7.3KB)
+- `sesh_list_wrapper.sh` - Toggles session list display mode (compact/detailed)
 - `sesh_list_icons.sh` - Icon mapping for different session types
 - `sesh_preview.sh` - FZF preview window content with detailed session information (18KB)
 - `sesh_switcher.sh` - Smart session switching logic with fallback

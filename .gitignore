@@ -1,6 +1,7 @@
 # Compiled binaries
 sketchybar/.config/sketchybar/helper/helper
 
+.genkit/
 # macOS
 .DS_Store
 

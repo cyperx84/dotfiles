@@ -7,6 +7,10 @@ return {
         filter = { event = 'notify', find = 'No information available' },
         opts = { skip = true },
       },
+      {
+        filter = { event = 'notify', find = 'Native terminal opened' },
+        opts = { skip = true },
+      },
     },
     presets = {
       lsp_doc_border = true,

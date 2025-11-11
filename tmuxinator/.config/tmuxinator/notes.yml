@@ -13,15 +13,15 @@ windows:
       layout: main-horizontal
       panes:
         - nvim INDEX.md
-  # - 👾 agents:
-  #     layout: even-horizontal
-  #     panes:
-  #       - |
-  #         cc
-  #       - |
-  #         gemini
-  #       - |
-  #         oc
+  - 👾 agents:
+      layout: even-horizontal
+      panes:
+        - |
+          cc
+        - |
+          gemini
+        - |
+          oc
   # - 💻 system:
   #     layout: main-horizontal
   #     options:

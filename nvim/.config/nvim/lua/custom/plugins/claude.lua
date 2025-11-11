@@ -215,6 +215,17 @@ return {
         -- Prevent resizing
         vim.wo.winfixwidth = true
         vim.wo.winfixheight = true
+
+        -- Dismiss the "Native terminal opened" notification
+        -- Use Noice if available, otherwise use notify
+        if vim.fn.exists(':NoiceDismiss') == 2 then
+          vim.cmd('NoiceDismiss')
+        elseif vim.fn.exists(':lua') == 2 and pcall(require, 'notify') then
+          -- Silently dismiss by sending a clear command
+          vim.schedule(function()
+            vim.cmd('echo ""')
+          end)
+        end
       end,
       desc = 'Fix Claude Code terminal window size at 100 columns',
     })
