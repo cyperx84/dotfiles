@@ -47,8 +47,13 @@ human_time() {
 }
 
 # Clean session input - remove ANSI color codes
-# Remove ANSI escape sequences properly using hex escape code
-SESSION_INPUT=$(echo "$SESSION_INPUT" | sed -E 's/\x1b\[[0-9;]*m//g')
+# Use perl for robust ANSI escape sequence removal (works better than sed on macOS)
+if command -v perl &> /dev/null; then
+    SESSION_INPUT=$(echo "$SESSION_INPUT" | perl -pe 's/\e\[[0-9;]*m//g')
+else
+    # Fallback to sed with literal ESC
+    SESSION_INPUT=$(echo "$SESSION_INPUT" | LC_ALL=C sed 's/'$(printf '\033')'\[[0-9;]*m//g')
+fi
 
 # Remove leading/trailing whitespace and extract session name
 SESSION_CLEAN=$(echo "$SESSION_INPUT" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
@@ -59,7 +64,8 @@ SESSION_CLEAN=$(echo "$SESSION_CLEAN" | sed -e 's/^◆[[:space:]]*//' \
     -e 's/^●[[:space:]]*//' \
     -e 's/^◉[[:space:]]*//' \
     -e 's/^📁[[:space:]]*//' \
-    -e 's/^▣[[:space:]]*//')
+    -e 's/^▣[[:space:]]*//' \
+    -e 's/^▪[[:space:]]*//')
 
 # Remove ANY leading emoji characters (multi-byte UTF-8) followed by optional space
 # This handles custom session names like "⚙️ dotfiles", "💻 code", etc.
@@ -207,18 +213,29 @@ show_tmuxinator_preview() {
     local config_file="$HOME/.config/tmuxinator/${session_name}.yml"
 
     if [ ! -f "$config_file" ]; then
-        echo -e "${MAGENTA}◆ Tmuxinator: ${session_name}${NC}"
+        echo -e "${MAGENTA}▣ Tmuxinator: ${session_name}${NC}"
         echo -e "${YELLOW}⚠ Config file not found${NC}"
         return
     fi
 
-    echo -e "${MAGENTA}${BOLD}◆ Tmuxinator Project: ${session_name}${NC}"
+    echo -e "${MAGENTA}${BOLD}▣ Tmuxinator Project: ${session_name}${NC}"
 
     # Check if session is running
+    local is_running=false
     if tmux has-session -t "$session_name" 2>/dev/null; then
+        is_running=true
         echo -e "${CYAN}Status:${NC} ${GREEN}✓ Currently running${NC}"
+
+        # Show live window and pane counts
+        local window_count=$(tmux list-windows -t "$session_name" 2>/dev/null | wc -l | tr -d ' ')
+        local pane_count=$(tmux list-panes -s -t "$session_name" 2>/dev/null | wc -l | tr -d ' ')
+        echo -e "${CYAN}Windows:${NC} $window_count  ${CYAN}Panes:${NC} $pane_count"
     else
         echo -e "${CYAN}Status:${NC} ${YELLOW}○ Not running${NC}"
+
+        # Count configured windows from tmuxinator config
+        local window_count=$(grep -c "^  - " "$config_file" 2>/dev/null || echo "1")
+        echo -e "${CYAN}Configured:${NC} $window_count window(s)"
     fi
 
     # Get root directory
@@ -228,7 +245,7 @@ show_tmuxinator_preview() {
     fi
 
     # Show pane content if session is running
-    if tmux has-session -t "$session_name" 2>/dev/null; then
+    if [ "$is_running" = true ]; then
         echo ""
         echo -e "${CYAN}━━ Current Pane ━━${NC}"
         local active_pane=$(tmux display-message -p -t "$session_name" '#{pane_id}' 2>/dev/null)
@@ -242,7 +259,7 @@ show_tmuxinator_preview() {
         fi
     fi
 
-    # Show directory preview in both modes
+    # Always show directory preview
     if [ -n "$root_dir" ] && [ -d "$root_dir" ]; then
         echo ""
         echo -e "${CYAN}━━ Directory Preview ━━${NC}"
@@ -262,18 +279,26 @@ show_sesh_custom_preview() {
 
     echo -e "${BLUE}${BOLD}◆ Sesh Config: ${session_name}${NC}"
 
+    # Check if session is running as tmux
+    local is_running=false
+    if tmux has-session -t "$session_name" 2>/dev/null; then
+        is_running=true
+        echo -e "${CYAN}Status:${NC} ${GREEN}✓ Running${NC}"
+
+        # Show live window and pane counts
+        local window_count=$(tmux list-windows -t "$session_name" 2>/dev/null | wc -l | tr -d ' ')
+        local pane_count=$(tmux list-panes -s -t "$session_name" 2>/dev/null | wc -l | tr -d ' ')
+        echo -e "${CYAN}Windows:${NC} $window_count  ${CYAN}Panes:${NC} $pane_count"
+    else
+        echo -e "${CYAN}Status:${NC} ${YELLOW}○ Not running${NC}"
+        echo -e "${CYAN}Will create:${NC} 1 window, 1 pane"
+    fi
+
     # Show path
     echo -e "${CYAN}Path:${NC} $dir_path"
 
-    # Check if session is running as tmux
-    if tmux has-session -t "$session_name" 2>/dev/null; then
-        echo -e "${CYAN}Status:${NC} ${GREEN}✓ Running${NC}"
-    else
-        echo -e "${CYAN}Status:${NC} ${YELLOW}○ Not running${NC}"
-    fi
-
     # Show pane content if session is running
-    if tmux has-session -t "$session_name" 2>/dev/null; then
+    if [ "$is_running" = true ]; then
         echo ""
         echo -e "${CYAN}━━ Current Pane ━━${NC}"
         local active_pane=$(tmux display-message -p -t "$session_name" '#{pane_id}' 2>/dev/null)
@@ -287,7 +312,7 @@ show_sesh_custom_preview() {
         fi
     fi
 
-    # Show directory preview in both modes
+    # Always show directory preview
     echo ""
     echo -e "${CYAN}━━ Directory Preview ━━${NC}"
     eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -8 || ls -la "$dir_path" | head -8
@@ -304,10 +329,11 @@ show_directory_preview() {
 
     echo -e "${YELLOW}${BOLD}📁 Directory: ${dir_path}${NC}"
 
-    # Show path
+    echo -e "${CYAN}Status:${NC} ${YELLOW}○ Not a session${NC}"
+    echo -e "${CYAN}Will create:${NC} 1 window, 1 pane"
     echo -e "${CYAN}Path:${NC} $dir_path"
 
-    # Show directory preview in both modes
+    # Always show directory preview
     echo ""
     echo -e "${CYAN}━━ Directory Preview ━━${NC}"
     eza --icons --color=always --group-directories-first -a -l "$dir_path" 2>/dev/null | head -8 || ls -la "$dir_path" | head -8

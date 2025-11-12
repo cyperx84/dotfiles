@@ -1,9 +1,9 @@
 theme = Monokai Remastered
-font-family = MesloLGS Nerd Font Mono
-font-family-bold= MonaspiceKr Nerd Font Mono 
-font-family-italic= MonaspiceRn Nerd Font Mono 
-font-family-bold-italic = MonaspiceXr Nerd Font Mono 
-font-size = 16 
+font-family = Myna
+font-family-bold = MonaspiceRn Nerd Font Mono
+font-family-italic = MonaspiceRn Nerd Font Mono
+font-family-bold-italic = MonaspiceKr Nerd Font Mono
+font-size = 18
 font-feature = "ss01"
 font-feature = "ss02"
 font-feature = "ss03"
@@ -14,7 +14,6 @@ cursor-color = #00FF00
 cursor-style = block_hollow
 cursor-style-blink = true
 
-background-blur-radius = 20
 mouse-hide-while-typing = true
 window-decoration = false
 background-opacity = 0.9
@@ -34,6 +33,7 @@ keybind = ctrl+l=unbind
 keybind = global:cmd+/=toggle_quick_terminal
 keybind = "cmd+shift+s=toggle_secure_input"
 keybind = shift+enter=text:\n
+keybind = cmd+e=text:\x01e
 
 # Scrolling
 keybind = super+alt+u=scroll_page_up
@@ -52,4 +52,4 @@ keybind = super+alt+shift+k=resize_split:up,10
 keybind = super+alt+shift+l=resize_split:right,10
 
 # Ghostty Custom shaders
-
+custom-shader = shaders/cursor_smear_rainbow.glsl

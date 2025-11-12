@@ -172,7 +172,7 @@ return {
     -- Terminal options
     terminal = {
       split_side = 'right',
-      provider = 'native', -- Changed from 'snacks' to fix scrolling issues
+      provider = 'snacks',
       auto_close = true, -- Auto-close terminal after command completion
       split_width_percentage = 0.35, -- 35% of window width (adjust as needed)
       cwd_provider = function(ctx)

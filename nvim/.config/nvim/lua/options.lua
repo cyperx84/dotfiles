@@ -28,7 +28,7 @@ vim.g.python3_host_prog = os.getenv("HOME") .. "/.nvim-venv/bin/python"
 vim.g.loaded_perl_provider = 0
 vim.opt.isfname:append("@-@") -- already present in most setups
 vim.opt.isfname:append("32")  -- allow spaces in filenames
-
+vim.opt.swapfile = false
 -- [[ Autocmds ]]
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {

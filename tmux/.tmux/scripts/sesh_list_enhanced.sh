@@ -114,7 +114,8 @@ COLOR_RESOURCE_CRIT="$COLOR_NEON_RED"     # >90% usage
 # Session type icons
 ICON_ATTACHED='●'       # Currently attached session
 ICON_ACTIVE='◉'         # Active tmux session (not attached)
-ICON_TMUXINATOR='◆'     # Tmuxinator project
+ICON_TMUXINATOR='▣'     # Tmuxinator project (square)
+ICON_SESH_CUSTOM='◆'    # Sesh.toml custom session (diamond)
 ICON_DIRECTORY='📁'     # Directory/zoxide entry
 
 # Activity timeline icons
@@ -869,8 +870,8 @@ sesh list "$@" | while IFS= read -r session; do
         echo -e "${COLOR_TMUXINATOR}${ICON_TMUXINATOR} ${clean_session}${COLOR_RESET}${project_icons}"
 
     elif [[ "$is_custom" == true ]]; then
-        # CUSTOM SESH SESSIONS (from sesh.toml): Show with special icon
-        echo -e "${COLOR_NEON_BLUE}${ICON_TMUXINATOR} ${clean_session}${COLOR_RESET}"
+        # CUSTOM SESH SESSIONS (from sesh.toml): Show with diamond icon
+        echo -e "${COLOR_NEON_BLUE}${ICON_SESH_CUSTOM} ${clean_session}${COLOR_RESET}"
 
     elif [[ "$is_directory" == true ]]; then
         # ZOXIDE DIRECTORIES: Minimal - just project type icons (fast file checks only)

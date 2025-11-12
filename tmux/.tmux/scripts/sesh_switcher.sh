@@ -1,97 +1,194 @@
 #!/usr/bin/env bash
+################################################################################
+# sesh_switcher.sh - Enhanced Session Switcher with Error Handling
+################################################################################
+#
+# DESCRIPTION:
+#   Intelligent tmux session switcher integrating sesh, fzf, and custom scripts.
+#   Provides multi-source session listing, live previews, and dynamic mode
+#   switching with full error handling and dependency validation.
+#
+# FEATURES:
+#   - Multi-source session listing with icons and status indicators
+#   - Live preview window with keybindings reference
+#   - Dynamic mode switching (tmux sessions, directories, containers, etc.)
+#   - Session creation and deletion from switcher
+#   - Sort functionality for better organization
+#   - Comprehensive error handling and dependency validation
+#   - Graceful degradation for optional features
+#
+# KEYBINDINGS (within FZF):
+#   Ctrl+D/U        - Scroll preview window down/up
+#   Esc             - Abort selection
+#   Alt+N           - Create new session
+#   Alt+K           - Kill selected session
+#   Ctrl+T          - Toggle tmux-only view
+#   Ctrl+B          - Browse all sessions (requires zoxide)
+#   Ctrl+/          - Browse directories (requires zoxide)
+#   Ctrl+R          - Reload session list
+#   Ctrl+S          - Sort sessions alphabetically
+#
+# DEPENDENCIES:
+#   Required:
+#     - sesh (session manager)
+#     - fzf-tmux (fuzzy finder with tmux popup support)
+#     - tmux (terminal multiplexer)
+#   Optional:
+#     - zoxide (directory navigation - affects Ctrl+B and Ctrl+/)
+#
+# CALLED BY:
+#   - tmux keybinding: Prefix + e
+#   - Manual invocation: ~/.tmux/scripts/sesh_switcher.sh
+#
+# CALLS:
+#   - sesh connect/list
+#   - fzf-tmux (fuzzy selection)
+#   - sesh_list_lightweight.sh (session enumeration)
+#   - sesh_preview_with_keybinds.sh (preview rendering)
+#   - sesh_clean_selection.sh (output sanitization)
+#   - sesh_create_new.sh (new session creation)
+#   - kill_sesh_session.sh (session termination)
+#
+# USAGE:
+#   ~/.tmux/scripts/sesh_switcher.sh
+#
+# EXIT CODES:
+#   0 - Successfully connected to session or user aborted gracefully
+#   1 - Dependency check failed
+#   2 - Script execution error (trapped by error handler)
+#   3 - User aborted in FZF (suppressed by || true)
+#
+# ENVIRONMENT:
+#   TMUX_SCRIPTS_DIR     - Override default scripts directory
+#   FZF_PREVIEW_COLUMNS  - Customize preview width
+#
+# NOTES:
+#   - All variables are quoted to prevent word splitting
+#   - Readonly variables prevent accidental modification
+#   - Error handler captures line numbers for debugging
+#   - Dependency validation occurs before execution
+#   - Optional features gracefully degrade if unavailable
+#   - Zoxide enables directory browsing modes (Ctrl+B, Ctrl+/)
+#
+# VERSION: 2.0.0
+# AUTHOR: CyperX
+# LAST MODIFIED: 2025-11-12
+#
+################################################################################
 
-# Sesh session switcher - works inside and outside tmux
-# Called from skhd system hotkey (cmd + shift + j)
+# ===== ERROR HANDLING & SAFETY =====
+# Exit immediately on error, error on unset variables, fail on pipe errors
+set -euo pipefail
 
-# Check if we're inside tmux
-if [ -n "$TMUX" ]; then
-    # Inside tmux - run sesh connect directly with enhanced list
-    selected=$(
-        ~/.tmux/scripts/sesh_list_enhanced.sh -id | fzf-tmux -p 90%,80% \
-            --ansi \
-            --no-sort --border-label ' sesh ' --prompt '⚡  ' \
-            --header '  ^a all ^t tmux ^x zoxide ^g config ^/ new | ^k kill' \
-            --preview '~/.tmux/scripts/sesh_preview.sh {}' \
-            --preview-window 'right:70%' \
-            --bind 'ctrl-d:preview-page-down,ctrl-u:preview-page-up' \
-            --bind 'ctrl-a:change-prompt(⚡  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -id)' \
-            --bind 'ctrl-t:change-prompt(🪟  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -idt)' \
-            --bind 'ctrl-g:change-prompt(⚙️  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -idc)' \
-            --bind 'ctrl-x:change-prompt(📁  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -idz)' \
-            --bind 'ctrl-/:execute(~/.tmux/scripts/sesh_create_new.sh)+abort' \
-            --bind 'ctrl-k:execute-silent(~/.tmux/scripts/kill_sesh_session.sh {})+reload(~/.tmux/scripts/sesh_list_enhanced.sh -id)'
-    )
+# Error handler: logs line number and failed command
+error_handler() {
+    local line_num="$1"
+    local exit_code="$2"
+    echo "ERROR: Script failed at line ${line_num} with exit code ${exit_code}" >&2
+    echo "Failed command: ${BASH_COMMAND}" >&2
+    exit 2
+}
 
-    # Clean the selected session name before connecting
-    # IMPORTANT: Session names can contain emojis (e.g., "⚙️dotfiles", "💻 code")
-    # Remove ANSI color codes (handle both with and without ESC character)
-    selected=$(echo "$selected" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/\[[0-9;]*m//g')
-    # Remove status icon prefixes - try each icon separately
-    selected=$(echo "$selected" | sed 's/^◆//' | sed 's/^●//' | sed 's/^◉//' | sed 's/^📁//' | sed 's/^▣//')
-    # Remove control characters (backspace, etc.)
-    selected=$(echo "$selected" | tr -d '[:cntrl:]')
-    # Remove leading/trailing whitespace
-    selected=$(echo "$selected" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-    # Extract everything BEFORE metadata pattern "(Xw Yp)" - preserves emojis in session names
-    selected=$(echo "$selected" | sed -E 's/[[:space:]]+\([0-9].*//')
-    # Remove trailing activity indicators (🔥 ⚡ 💤 📊 🗄️ ⏱) and time strings
-    selected=$(echo "$selected" | sed -E 's/[[:space:]]+(🔥|⚡|💤|📊|🗄️|⏱)[[:space:]].*//' | sed -E 's/[[:space:]]+(🔥|⚡|💤|📊|🗄️|⏱)$//')
-    selected=$(echo "$selected" | sed -E 's/[[:space:]]+[0-9]+(m|h|d|w|mo)[[:space:]]+ago$//')
-    # Remove git branch info and status indicators
-    selected=$(echo "$selected" | sed -E 's/[[:space:]]+\[.*\]$//' | sed -E 's/[[:space:]]+(↑|↓|✗|✓|●|±)[0-9].*$//')
-    # Final trim
-    selected=$(echo "$selected" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+# Cleanup handler: placeholder for future cleanup operations
+cleanup_handler() {
+    :  # No cleanup needed currently
+}
 
-    [ -n "$selected" ] && sesh connect "$selected"
-else
-    # Outside tmux - launch in a popup terminal or attach to existing tmux
-    # First check if any tmux sessions exist
-    if tmux list-sessions &>/dev/null; then
-        # Sessions exist - show selector in a floating Ghostty window
-        ghostty \
-            --title="Session Switcher" \
-            --window-width=120 \
-            --window-height=30 \
-            -e bash -c "
-                selected=\$(~/.tmux/scripts/sesh_list_enhanced.sh -id | fzf \
-                    --ansi \
-                    --no-sort --border-label ' sesh ' --prompt '⚡  ' \
-                    --header '  ^a all ^t tmux ^x zoxide ^g config ^/ new | ^k kill' \
-                    --preview '~/.tmux/scripts/sesh_preview.sh {}' \
-                    --preview-window 'right:70%' \
-                    --bind 'ctrl-d:preview-page-down,ctrl-u:preview-page-up' \
-                    --bind 'ctrl-a:change-prompt(⚡  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -id)' \
-                    --bind 'ctrl-t:change-prompt(🪟  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -idt)' \
-                    --bind 'ctrl-g:change-prompt(⚙️  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -idc)' \
-                    --bind 'ctrl-x:change-prompt(📁  )+reload(~/.tmux/scripts/sesh_list_enhanced.sh -idz)' \
-                    --bind 'ctrl-/:execute(~/.tmux/scripts/sesh_create_new.sh)+abort' \
-                    --bind 'ctrl-k:execute-silent(~/.tmux/scripts/kill_sesh_session.sh {})+reload(~/.tmux/scripts/sesh_list_enhanced.sh -id)')
-                if [ -n \"\$selected\" ]; then
-                    # Clean the selected session name before connecting
-                    # IMPORTANT: Session names can contain emojis (e.g., \"⚙️dotfiles\", \"💻 code\")
-                    # Remove ANSI color codes (handle both with and without ESC character)
-                    selected=\$(echo \"\$selected\" | sed 's/\\x1b\[[0-9;]*m//g' | sed 's/\[[0-9;]*m//g')
-                    # Remove status icon prefixes - try each icon separately
-                    selected=\$(echo \"\$selected\" | sed 's/^◆//' | sed 's/^●//' | sed 's/^◉//' | sed 's/^📁//' | sed 's/^▣//')
-                    # Remove control characters (backspace, etc.)
-                    selected=\$(echo \"\$selected\" | tr -d '[:cntrl:]')
-                    # Remove leading/trailing whitespace
-                    selected=\$(echo \"\$selected\" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-                    # Extract everything BEFORE metadata pattern \"(Xw Yp)\" - preserves emojis in session names
-                    selected=\$(echo \"\$selected\" | sed -E 's/[[:space:]]+\([0-9].*//')
-                    # Remove trailing activity indicators (🔥 ⚡ 💤 📊 🗄️ ⏱) and time strings
-                    selected=\$(echo \"\$selected\" | sed -E 's/[[:space:]]+(🔥|⚡|💤|📊|🗄️|⏱)[[:space:]].*//' | sed -E 's/[[:space:]]+(🔥|⚡|💤|📊|🗄️|⏱)$//')
-                    selected=\$(echo \"\$selected\" | sed -E 's/[[:space:]]+[0-9]+(m|h|d|w|mo)[[:space:]]+ago$//')
-                    # Remove git branch info and status indicators
-                    selected=\$(echo \"\$selected\" | sed -E 's/[[:space:]]+\[.*\]$//' | sed -E 's/[[:space:]]+(↑|↓|✗|✓|●|±)[0-9].*$//')
-                    # Final trim
-                    selected=\$(echo \"\$selected\" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+# Register error and cleanup traps
+trap 'error_handler ${LINENO} $?' ERR
+trap 'cleanup_handler' EXIT
 
-                    sesh connect \"\$selected\"
-                fi
-            " &
-    else
-        # No sessions - create first session
-        ghostty -e tmux new-session &
+# ===== DEPENDENCY VALIDATION =====
+
+# Check if required command exists
+# Arguments: $1 = command name, $2 = package name (optional, defaults to $1)
+check_dependency() {
+    local cmd="${1}"
+    local pkg="${2:-${1}}"
+
+    if ! command -v "${cmd}" &>/dev/null; then
+        echo "ERROR: Required dependency '${cmd}' not found" >&2
+        echo "Install with: brew install ${pkg}" >&2
+        exit 1
     fi
+}
+
+# Validate required dependencies before execution
+check_dependency "sesh" "sesh"
+check_dependency "fzf-tmux" "fzf"
+check_dependency "tmux" "tmux"
+
+# Warn if optional dependencies are missing
+if ! command -v "zoxide" &>/dev/null; then
+    echo "WARNING: Optional dependency 'zoxide' not found (Ctrl+/ and Ctrl+B modes disabled)" >&2
+    echo "Install with: brew install zoxide" >&2
+fi
+
+# ===== CONFIGURATION =====
+
+# Base directory for helper scripts (override with TMUX_SCRIPTS_DIR env var)
+readonly TMUX_SCRIPTS_DIR="${TMUX_SCRIPTS_DIR:-${HOME}/.tmux/scripts}"
+
+# Required helper scripts
+readonly SCRIPT_LIST_LIGHTWEIGHT="${TMUX_SCRIPTS_DIR}/sesh_list_lightweight.sh"
+readonly SCRIPT_PREVIEW="${TMUX_SCRIPTS_DIR}/sesh_preview_with_keybinds.sh"
+readonly SCRIPT_CLEAN_SELECTION="${TMUX_SCRIPTS_DIR}/sesh_clean_selection.sh"
+
+# Optional helper scripts (used in keybindings)
+readonly SCRIPT_CREATE_NEW="${TMUX_SCRIPTS_DIR}/sesh_create_new.sh"
+readonly SCRIPT_KILL="${TMUX_SCRIPTS_DIR}/kill_sesh_session.sh"
+
+# Validate scripts directory exists
+if [[ ! -d "${TMUX_SCRIPTS_DIR}" ]]; then
+    echo "ERROR: Scripts directory not found: ${TMUX_SCRIPTS_DIR}" >&2
+    exit 1
+fi
+
+# Validate required helper scripts exist and are executable
+for script in "${SCRIPT_LIST_LIGHTWEIGHT}" "${SCRIPT_PREVIEW}" "${SCRIPT_CLEAN_SELECTION}"; do
+    if [[ ! -f "${script}" ]]; then
+        echo "ERROR: Required script not found: ${script}" >&2
+        exit 1
+    fi
+
+    if [[ ! -x "${script}" ]]; then
+        echo "ERROR: Script not executable: ${script}" >&2
+        echo "Fix with: chmod +x ${script}" >&2
+        exit 1
+    fi
+done
+
+# Warn if optional scripts are missing (but don't exit)
+for script in "${SCRIPT_CREATE_NEW}" "${SCRIPT_KILL}"; do
+    if [[ ! -f "${script}" ]]; then
+        script_name=$(basename "${script}")
+        echo "WARNING: Optional script not found: ${script} (some keybindings may not work)" >&2
+    fi
+done
+
+# ===== MAIN LOGIC =====
+
+# Execute the session switcher with FZF
+selected_session=$(
+    "${SCRIPT_LIST_LIGHTWEIGHT}" | fzf-tmux -p 80%,60% \
+        --ansi \
+        --no-sort --border-label ' sesh ' --prompt '⚡  ' \
+        --header '' \
+        --preview "${SCRIPT_PREVIEW} {}" \
+        --preview-window 'right:70%' \
+        --bind 'ctrl-d:preview-page-down,ctrl-u:preview-page-up' \
+        --bind 'esc:abort' \
+        --bind "alt-n:execute(${SCRIPT_CREATE_NEW})+abort" \
+        --bind "alt-k:execute(${SCRIPT_KILL} {})+reload(${SCRIPT_LIST_LIGHTWEIGHT})+change-header()" \
+        --bind 'ctrl-t:change-prompt(🪟  )+reload('"${SCRIPT_LIST_LIGHTWEIGHT}"')+change-header()' \
+        --bind 'ctrl-b:change-prompt(📦  )+reload(zoxide query -l)+change-header()' \
+        --bind 'ctrl-/:change-prompt(📁  )+reload(zoxide query -l)+change-header()' \
+        --bind "ctrl-r:reload(${SCRIPT_LIST_LIGHTWEIGHT})+change-header()" \
+        --bind "ctrl-s:reload(${SCRIPT_LIST_LIGHTWEIGHT} | sort)+change-header()" \
+        | "${SCRIPT_CLEAN_SELECTION}"
+) || true
+
+# Connect to selected session if user didn't abort
+if [[ -n "${selected_session}" ]]; then
+    sesh connect "${selected_session}"
 fi

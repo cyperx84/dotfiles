@@ -1,11 +1,3 @@
--- Obsidian.nvim configuration
--- Aligned with VAULT-CONSTITUTION.md principles:
---   • Universal frontmatter: id, title, created, modified, reviewed, tags, aliases, base
---   • Minimal structure: _inbox, _ai, _projects, _knowledge, _bases, _archive, _settings
---   • Links are primary, wiki-style for bi-directional connections
---   • Tag system: #type/, #status/, #project/, #area/
---   • Neovim as primary interface with comprehensive keymaps
-
 return {
   'epwalsh/obsidian.nvim',
   version = '*',
