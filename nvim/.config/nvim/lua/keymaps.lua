@@ -21,6 +21,9 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Quick Save
 vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Save file' })
 
+-- Quick quit
+vim.keymap.set('n', '<C-q>', ':q<CR>', { desc = 'Quit current buffer' })
+
 -- NOTE: TextYankPost autocmd moved to options.lua or autocmds.lua for better organization
 
 -- [[FILES]]

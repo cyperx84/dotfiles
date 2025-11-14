@@ -223,7 +223,15 @@ alias ts='tmuxinator start'
 
 # Core aliases
 alias sl='sesh list -t -c -d'                      # List sessions (compact, deduplicated)
-alias sc='sesh connect $(sesh list -d | fzf)'      # Fuzzy connect (deduplicated)
+
+# Fuzzy connect with FZF cancellation handling
+sc() {
+    local selected_session
+    selected_session=$(sesh list -d | fzf)
+    if [[ -n "${selected_session}" ]]; then
+        sesh connect "${selected_session}"
+    fi
+}
 
 # Management aliases
 alias tk='tmux kill-session -t'              # Kill specific session
