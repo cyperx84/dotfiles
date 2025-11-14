@@ -16,12 +16,7 @@ windows:
   - 👾 agents:
       layout: even-horizontal
       panes:
-        - |
-          cc
-        - |
-          gemini
-        - |
-          oc
+        -
   # - 💻 system:
   #     layout: main-horizontal
   #     options:

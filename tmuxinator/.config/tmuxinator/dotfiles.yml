@@ -16,15 +16,15 @@ windows:
       panes:
         - editor:
           - nvim
-  - 👾 agents:
-      layout: even-horizontal
-      panes:
-        - |
-          cc
-        - |
-          gemini
-        - |
-          oc
+  # - 👾 agents:
+  #     layout: even-horizontal
+  #     panes:
+  #       - |
+  #         cc
+  #       - |
+  #         gemini
+  #       - |
+  #         oc
   # - 💻 system:
   #     layout: main-horizontal
   #     options:

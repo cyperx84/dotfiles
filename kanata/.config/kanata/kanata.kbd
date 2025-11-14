@@ -1,6 +1,11 @@
 ;; defsrc is still necessary
 (defcfg
   process-unmapped-keys yes
+  ;; Explicitly include both Mac and Logitech keyboards
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+    "MX MCHNCL M"
+  )
 )
 
 (defsrc
