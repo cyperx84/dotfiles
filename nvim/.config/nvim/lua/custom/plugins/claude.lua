@@ -130,6 +130,39 @@ local function launch_claude_glm()
   -- Focus moves to Claude panel automatically
 end
 
+-- Custom function to send all open buffers to Claude Code
+local function send_all_buffers()
+  local buffers = vim.api.nvim_list_bufs()
+  local valid_buffers = {}
+
+  -- Filter for valid, listed buffers with files
+  for _, buf in ipairs(buffers) do
+    if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_get_option(buf, 'buflisted') then
+      local bufname = vim.api.nvim_buf_get_name(buf)
+      -- Only include buffers with actual files (not empty or special buffers)
+      if bufname ~= '' and not bufname:match('^term://') then
+        table.insert(valid_buffers, buf)
+      end
+    end
+  end
+
+  if #valid_buffers == 0 then
+    vim.notify('No valid buffers to send to Claude Code', vim.log.levels.WARN)
+    return
+  end
+
+  -- Send each buffer
+  for _, buf in ipairs(valid_buffers) do
+    local bufname = vim.api.nvim_buf_get_name(buf)
+    local success, err = pcall(vim.cmd, 'ClaudeCodeAdd ' .. vim.fn.fnameescape(bufname))
+    if not success then
+      vim.notify('Error adding buffer ' .. bufname .. ': ' .. (err or 'Unknown error'), vim.log.levels.ERROR)
+    end
+  end
+
+  vim.notify('Added ' .. #valid_buffers .. ' buffer(s) to Claude Code', vim.log.levels.INFO)
+end
+
 -- Custom function to launch Claude Code with normal Anthropic configuration
 local function launch_claude_normal()
   -- Clear all provider environment variables to ensure normal operation
@@ -172,7 +205,7 @@ return {
     -- Terminal options
     terminal = {
       split_side = 'right',
-      provider = 'snacks',
+      provider = 'native', -- Changed from 'snacks' to fix scrolling issues
       auto_close = true, -- Auto-close terminal after command completion
       split_width_percentage = 0.35, -- 35% of window width (adjust as needed)
       cwd_provider = function(ctx)
@@ -247,8 +280,9 @@ return {
 
     -- File/content management
     { "<leader>cb", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+    { "<leader>cB", send_all_buffers, desc = "Add all buffers to Claude" },
     { "<leader>cs", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send selection to Claude" },
-    { "<leader>cS", "<cmd>ClaudeCodeSend<cr>", mode = "n", desc = "Send line to Claude" },
+    { "<leader>cS", "<cmd>.ClaudeCodeSend<cr>", mode = "n", desc = "Send current line to Claude" },
 
     -- Tree/file explorer integration
     {
