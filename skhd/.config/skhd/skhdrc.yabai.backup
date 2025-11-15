@@ -1,0 +1,159 @@
+
+# create space, move window and follow focus - uses jq for parsing json (brew install jq)
+shift + alt - c : yabai -m space --create && \
+                   index="$(yabai -m query --spaces --display | jq 'map(select(."is-native-fullscreen" == false))[-1].index')" && \
+                   yabai -m window --space "${index}" && \
+                   yabai -m space --focus "${index}" && \
+                   yabai -m window --focus first
+
+# Delete current space (moves focus to previous space first)
+shift + alt - x : yabai -m space --focus prev; yabai -m space recent --destroy
+
+# balance size of windows
+shift + ctrl - r : yabai -m space --balance
+
+# make floating window fill screen
+shift + alt - up     : yabai -m window --grid 1:1:0:0:1:1
+
+# make floating window fill left-half of screen
+shift + alt - left   : yabai -m window --grid 1:2:0:0:1:1
+
+# toggle window split type
+shift + ctrl - e : yabai -m window --toggle split
+
+# float / unfloat window and center on screen
+shift + alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
+
+# toggle sticky(+float), picture-in-picture
+shift + ctrl - p : yabai -m window --toggle sticky --toggle pip
+# Float and center window
+shift + ctrl - q : yabai -m window --toggle float;\
+                   yabai -m window --grid 4:4:1:1:2:2
+
+# Moving windows
+shift + ctrl + alt - h : yabai -m window --warp west
+shift + ctrl + alt - j : yabai -m window --warp south
+shift + ctrl + alt - k : yabai -m window --warp north
+shift + ctrl + alt - l : yabai -m window --warp east
+
+# change window focus within space (shift + ctrl)
+shift + ctrl - j : yabai -m window --focus south
+shift + ctrl - k : yabai -m window --focus north
+shift + ctrl - h : yabai -m window --focus west
+shift + ctrl - l : yabai -m window --focus east
+
+# swap windows
+# shift + alt - j : yabai -m window --swap south
+# shift + alt - k : yabai -m window --swap north
+# shift + alt - h : yabai -m window --swap west
+# shift + alt - l : yabai -m window --swap east
+
+# maximize a window
+shift + ctrl - w : yabai -m window --toggle zoom-fullscreen
+
+# (duplicate removed - see line 124 for correct balance command)
+
+# Resize windows
+ctrl + alt + cmd - h : \
+    yabai -m window --resize left:-50:0 ; \
+    yabai -m window --resize right:-50:0
+
+ctrl + alt + cmd - j : \
+    yabai -m window --resize bottom:0:50 ; \
+    yabai -m window --resize top:0:50
+
+ctrl + alt + cmd - k : \
+    yabai -m window --resize top:0:-50 ; \
+    yabai -m window --resize bottom:0:-50
+
+ctrl + alt + cmd - l : \
+    yabai -m window --resize right:50:0 ; \
+    yabai -m window --resize left:50:0
+
+
+# move to window
+ctrl + alt - j : yabai -m window --warp south
+ctrl + alt - k : yabai -m window --warp north
+ctrl + alt - h : yabai -m window --warp west
+ctrl + alt - l : yabai -m window --warp east
+
+
+# move window to display left and right
+shift + alt - s : yabai -m window --display west; yabai -m display --focus west;
+shift + alt - g : yabai -m window --display east; yabai -m display --focus east;
+
+
+#move window to prev and next space
+shift + alt - p : yabai -m window --space prev && yabai -m space --focus prev && yabai -m window --focus first
+shift + alt - n : yabai -m window --space next && yabai -m space --focus next && yabai -m window --focus first
+
+# Navigate to next/previous space
+cmd + ctrl - n : yabai -m space --focus next || yabai -m space --focus first
+cmd + ctrl - p : yabai -m space --focus prev || yabai -m space --focus last
+
+# Change desktop (with Finder focus fix - uses script to handle empty spaces)
+cmd + ctrl - j : ~/.config/skhd/scripts/focus-space.sh 1
+cmd + ctrl - k : ~/.config/skhd/scripts/focus-space.sh 2
+cmd + ctrl - l : ~/.config/skhd/scripts/focus-space.sh 3
+ctrl + shift - 4 : ~/.config/skhd/scripts/focus-space.sh 4
+ctrl + shift - 5 : ~/.config/skhd/scripts/focus-space.sh 5
+ctrl + shift - 6 : ~/.config/skhd/scripts/focus-space.sh 6
+ctrl + shift - 7 : ~/.config/skhd/scripts/focus-space.sh 7
+ctrl + shift - 8 : ~/.config/skhd/scripts/focus-space.sh 8
+ctrl + shift - 9 : ~/.config/skhd/scripts/focus-space.sh 9
+
+# move window to space (auto-creates space if it doesn't exist)
+shift + alt - j : ~/.config/skhd/scripts/move-to-space.sh 1
+shift + alt - k : ~/.config/skhd/scripts/move-to-space.sh 2
+shift + alt - l : ~/.config/skhd/scripts/move-to-space.sh 3
+shift + alt - 4 : ~/.config/skhd/scripts/move-to-space.sh 4
+shift + alt - 5 : ~/.config/skhd/scripts/move-to-space.sh 5
+shift + alt - 6 : ~/.config/skhd/scripts/move-to-space.sh 6
+shift + alt - 7 : ~/.config/skhd/scripts/move-to-space.sh 7
+shift + alt - 8 : ~/.config/skhd/scripts/move-to-space.sh 8
+shift + alt - 9 : ~/.config/skhd/scripts/move-to-space.sh 9
+
+
+# stop/start/restart yabai
+# ctrl + alt - q : brew services stop yabai
+# ctrl + alt - s : skhd --start-service && yabai --start-service
+shift + alt + cmd - r : launchctl kickstart -k gui/$(id -u)/com.koekeishiya.skhd && launchctl kickstart -k gui/$(id -u)/com.koekeishiya.yabai
+# ctrl + alt - s : skhd --stop-service && yabai --stop-service
+
+
+# focus window
+# alt - h : yabai -m window --focus west
+
+# swap managed window
+# shift + alt - h : yabai -m window --swap north
+
+# move managed window
+# cmd + shift - h : yabai -m window --warp east
+
+
+
+
+# send window to desktop and follow focus
+# shift + cmd - z : yabai -m window --space next; yabai -m space --focus next
+# shift + cmd - 2 : yabai -m window --space  2; yabai -m space --focus 2
+
+# focus monitor
+# ctrl + alt - z  : yabai -m display --focus prev
+# ctrl + alt - 3  : yabai -m display --focus 3
+
+# send window to monitor and follow focus
+# ctrl + cmd - c  : yabai -m window --display next; yabai -m display --focus next
+# ctrl + cmd - 1  : yabai -m window --display 1; yabai -m display --focus 1
+
+# move floating window
+# shift + ctrl - a : yabai -m window --move rel:-20:0
+# shift + ctrl - s : yabai -m window --move rel:0:20
+
+
+# set insertion point in focused container
+# ctrl + alt - h : yabai -m window --insert west
+
+# toggle window zoom
+# alt - d : yabai -m window --toggle zoom-parent
+# alt - f : yabai -m window --toggle zoom-fullscreen
+

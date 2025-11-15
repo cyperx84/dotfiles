@@ -40,12 +40,18 @@ Core Configs:
 ├── yabai/.config/yabai/yabairc                         # Window manager
 ├── skhd/.config/skhd/skhdrc                            # Hotkey daemon
 ├── ghostty/.config/ghostty/config                      # Terminal
-└── sketchybar/.config/sketchybar/sketchybarrc          # Menu bar
+├── sketchybar/.config/sketchybar/sketchybarrc          # Menu bar
+└── kanata/.config/kanata/kanata.kbd                    # Keyboard remapper (ACTIVE)
 
 Validation Scripts:
 ├── ~/.config/sketchybar/test_sketchybar.sh
 ├── ~/.config/sketchybar/debug_sketchybar.sh
 └── ~/.config/sketchybar/plugin_health_monitor.sh
+
+System-Level Services (LaunchDaemons):
+├── /Library/LaunchDaemons/com.example.kanata.plist
+├── /Library/LaunchDaemons/com.example.karabiner-vhiddaemon.plist
+└── /Library/LaunchDaemons/com.example.karabiner-vhidmanager.plist
 ```
 
 ## 🎯 User Intent Mapping
@@ -72,7 +78,7 @@ Validation Scripts:
 2. **DO NOT** create new documentation files unless explicitly requested
 
 3. **DO NOT** suggest changes to:
-   - Karabiner-Elements vs Kanata setup (user has chosen Karabiner)
+   - Kanata config filename (`kanata.kbd` is correct, NOT `config.kbd`)
    - Tmux prefix (Ctrl+A is intentional, not Ctrl+B)
    - Yabai gap sizes (1px is intentional)
 
@@ -102,7 +108,12 @@ Validation Scripts:
 
 ### Input Management
 - **Karabiner-Elements** - Active (Caps→Ctrl, Right Cmd/Shift→Backspace)
-- **Kanata** - Configured but inactive (home row mods available)
+- **Kanata** - Keyboard remapper with home row mods (a/s/d/f, j/k/l/;)
+  - **Config**: `~/.config/kanata/kanata.kbd` (CRITICAL: NOT config.kbd!)
+  - **Auto-start**: LaunchDaemon at `/Library/LaunchDaemons/com.example.kanata.plist`
+  - **Install script**: `kanata/install_kanata_macos.sh` (sets up all 3 LaunchDaemons)
+  - **Dependencies**: Karabiner-DriverKit-VirtualHIDDevice (required for input interception)
+  - **Status check**: `sudo launchctl print system/com.example.kanata`
 
 ## 🛠️ Common Tasks
 
@@ -129,12 +140,20 @@ stow -D ghostty
 ### Service Management
 
 ```bash
-# Start services (first time)
+# Homebrew services
 brew services start yabai skhd sketchybar
 
 # Restart after config changes (REQUIRED)
 brew services restart yabai
 brew services restart sketchybar
+
+# Kanata (LaunchDaemon - NOT Homebrew service)
+sudo launchctl print system/com.example.kanata          # Check status
+sudo launchctl kickstart -k system/com.example.kanata   # Restart
+ps aux | grep kanata | grep -v grep                      # Verify running
+
+# After Kanata config changes
+sudo launchctl kickstart -k system/com.example.kanata
 ```
 
 ### Configuration Validation
@@ -236,6 +255,42 @@ stow <component>     # Re-stow
 ls -la ~/.<config_file>
 ```
 
+### Kanata Issues
+
+**⚠️ CRITICAL**: Kanata config file MUST be named `kanata.kbd` (NOT `config.kbd`)
+
+```bash
+# Service won't start on boot
+sudo launchctl print system/com.example.kanata | grep "state ="
+# If state = "spawn scheduled" and "last exit code = 1", check config path
+
+# Verify config file exists
+ls -la ~/.config/kanata/kanata.kbd
+
+# Common issues:
+# 1. Wrong config path in plist (check: sudo cat /Library/LaunchDaemons/com.example.kanata.plist)
+# 2. Missing Karabiner-DriverKit-VirtualHIDDevice
+# 3. Missing Input Monitoring/Accessibility permissions
+# 4. Another Kanata instance running (only one can run)
+
+# Check if running
+ps aux | grep kanata | grep -v grep
+
+# Kill duplicate instances
+sudo pkill -9 kanata
+
+# Reinstall LaunchDaemons (if corrupted)
+cd ~/dotfiles/kanata
+./install_kanata_macos.sh
+
+# Check Karabiner VirtualHID daemons are running
+sudo launchctl print system/com.example.karabiner-vhiddaemon | grep "state ="
+sudo launchctl print system/com.example.karabiner-vhidmanager | grep "state ="
+
+# System logs (if available)
+log show --predicate 'process == "kanata"' --last 10m
+```
+
 ## 📚 Documentation Reference
 
 This repository has comprehensive documentation for detailed information:
@@ -271,12 +326,30 @@ This repository has comprehensive documentation for detailed information:
 - Test with `~/.config/sketchybar/test_sketchybar.sh`
 
 ### Input Management Switch (Karabiner ↔ Kanata)
-Currently using Karabiner-Elements. To switch to Kanata:
-1. Stop Karabiner service
-2. `sudo kanata --cfg ~/.config/kanata/kanata.kbd`
-3. Configure launch daemon for auto-start
 
-**Kanata features:** Home row mods (a/s/d/f/j/k/l/; as modifiers), 150ms tap/200ms hold, layer-based mapping.
+**Current Status (Nov 2025)**: Kanata is ACTIVE and configured with LaunchDaemons for auto-start on boot.
+
+**Setup Details**:
+- **Active Services**: 3 LaunchDaemons running
+  - `com.example.kanata` - Main Kanata service
+  - `com.example.karabiner-vhiddaemon` - Karabiner VirtualHID daemon
+  - `com.example.karabiner-vhidmanager` - Karabiner VirtualHID manager
+- **Config File**: `~/.config/kanata/kanata.kbd` (200ms tap, 230ms hold)
+- **Auto-start**: Enabled via LaunchDaemon (RunAtLoad + KeepAlive)
+- **Port**: 10000
+
+**Kanata Features Enabled**:
+- Home row mods (a/s/d/f → Cmd/Alt/Shift/Ctrl, j/k/l/; → Ctrl/Shift/Alt/Cmd)
+- Caps Lock → Ctrl
+- Function layer (Fn key toggle)
+- Devices: Apple Internal Keyboard + Logitech MX Mechanical
+
+**To Disable Kanata and Switch Back to Karabiner-Elements**:
+```bash
+sudo launchctl bootout system /Library/LaunchDaemons/com.example.kanata.plist
+sudo launchctl disable system/com.example.kanata
+# Then enable Karabiner-Elements
+```
 
 ## 🔌 Advanced Integrations
 
@@ -686,3 +759,4 @@ git stash pop  # Restore if needed
 - Added Tmuxinator for complex session layouts
 - Expanded SketchyBar to 30+ plugins with comprehensive testing framework
 - **Oct 2025**: Nvim added as git subtree (see Git Subtree Management below)
+- do not run sleep with a areospace command it hangs

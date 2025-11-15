@@ -1,11 +1,11 @@
 ;; defsrc is still necessary
 (defcfg
   process-unmapped-keys yes
-  ;; Explicitly include both Mac and Logitech keyboards
-  macos-dev-names-include (
-    "Apple Internal Keyboard / Trackpad"
-    "MX MCHNCL M"
-  )
+  ;; Capture ALL keyboards by removing the include filter
+  ;; macos-dev-names-include (
+  ;;   "Apple Internal Keyboard / Trackpad"
+  ;;   "MX MCHNCL M"
+  ;; )
 )
 
 (defsrc
@@ -14,8 +14,8 @@
   fn
 )
 (defvar
-  tap-time 150
-  hold-time 200
+  tap-time 200
+  hold-time 230
 )
 
 (defalias
