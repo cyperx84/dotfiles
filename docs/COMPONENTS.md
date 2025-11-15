@@ -13,13 +13,54 @@ This document provides comprehensive documentation for all 15+ components in the
 
 ## Window Management
 
-### 🦞 Yabai - Tiling Window Manager
+### 🚀 Aerospace - Modern Tiling Window Manager
+**Purpose**: Next-generation tiling window manager for macOS with integrated keybindings
+**Status**: ✅ Active (PRIMARY)
+**Dependencies**: None (self-contained)
+
+**Key Files**:
+- `aerospace/.config/aerospace/aerospace.toml` - Complete configuration (194 lines)
+
+**Configuration Highlights**:
+```toml
+# Auto-start on login
+start-at-login = true
+
+# SketchyBar integration
+exec-on-workspace-change = ['/bin/bash', '-c',
+    "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
+]
+
+# Gaps configuration
+[gaps]
+    inner.horizontal = 2
+    inner.vertical = 2
+    outer.top = 32  # SketchyBar padding
+```
+
+**Integration Points**:
+- **SketchyBar**: Direct workspace callbacks via `exec-on-workspace-change`
+- **Native Keybindings**: All hotkeys defined in aerospace.toml (no external daemon)
+- **Automatic**: Launches at login, validates config on startup
+
+**Key Features**:
+- **Layouts**: Tiles and accordion modes
+- **Smart Resize**: Context-aware window resizing
+- **Service Mode**: Advanced operations mode (`shift+alt+cmd+r`)
+- **Normalization**: Automatic container flattening and orientation handling
+
+**Common Operations**: See [KEYBINDS.md - Window Management (Aerospace)](KEYBINDS.md#window-management)
+
+**Switching**: See `WM_SWITCHING.md` for switching between Aerospace and Yabai
+
+### 🦞 Yabai - Tiling Window Manager (LEGACY)
 **Purpose**: Binary space partitioning window manager for macOS
-**Status**: ✅ Active
+**Status**: ⚠️ Legacy/Alternative (not auto-started)
 **Dependencies**: SKHD for hotkeys, SketchyBar integration
 
 **Key Files**:
 - `yabai/.config/yabai/yabairc` - Main configuration
+- `skhd/.config/skhd/skhdrc.yabai.backup` - Backed up SKHD config
 - Related: `skhd/.config/skhd/skhdrc` (hotkeys)
 
 **Configuration Highlights**:
@@ -38,18 +79,21 @@ yabai -m config mouse_modifier alt
 
 **Integration Points**:
 - **SKHD**: Hotkey bindings for window operations
-- **SketchyBar**: Space indicators and window information
+- **SketchyBar**: Space indicators and window information (requires manual setup)
 - **Exclusions**: System Settings, Calculator, Karabiner-Elements
 
-**Common Operations**: See [KEYBINDS.md - Window Management](KEYBINDS.md#window-management)
+**Common Operations**: See [KEYBINDS.md - Window Management (Yabai)](KEYBINDS.md#window-management)
 
-### ⚡ SKHD - Hotkey Daemon
-**Purpose**: System-wide hotkey management for Yabai and other operations
-**Status**: ✅ Active
+**Switching**: See `WM_SWITCHING.md` for activating Yabai instead of Aerospace
+
+### ⚡ SKHD - Hotkey Daemon (LEGACY)
+**Purpose**: System-wide hotkey management for Yabai
+**Status**: ⚠️ Legacy (used only with Yabai, not Aerospace)
 **Dependencies**: Yabai for window management
 
 **Key Files**:
 - `skhd/.config/skhd/skhdrc` - Hotkey definitions
+- `skhd/.config/skhd/skhdrc.yabai.backup` - Original Yabai-era config
 
 **Categories of Bindings**:
 - **Window Focus**: `shift+ctrl+hjkl` (west/south/north/east)
@@ -60,10 +104,12 @@ yabai -m config mouse_modifier alt
 
 **Integration**: Seamlessly controls Yabai window manager operations
 
+**Note**: Aerospace has integrated keybindings and does not use SKHD
+
 ### 📊 SketchyBar - Menu Bar Replacement
 **Purpose**: Customizable macOS menu bar with system information
 **Status**: ✅ Active
-**Dependencies**: Yabai for space information, various system tools
+**Dependencies**: Aerospace (primary) or Yabai for space information, various system tools
 
 **Key Files**:
 - `sketchybar/.config/sketchybar/sketchybarrc` - Main configuration
@@ -73,7 +119,10 @@ yabai -m config mouse_modifier alt
 **Plugin Architecture**:
 ```
 plugins/
-├── aerospace.sh          # Space management
+├── aerospace.sh          # Aerospace workspace management (PRIMARY)
+├── create_workspace.sh   # Workspace creation handler
+├── space_window_count.sh # Window count per workspace
+├── space.sh             # Space display (works with both WMs)
 ├── brew.sh               # Package updates
 ├── calendar.sh           # Date/time display
 ├── claude.sh             # Claude integration

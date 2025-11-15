@@ -5,7 +5,7 @@
 
 ## Table of Contents
 
-- [Window Management](#window-management) - Window focus, movement, resizing across Yabai/Tmux
+- [Window Management](#window-management) - Window focus, movement, resizing (Aerospace + Tmux)
 - [Session Workflow](#session-workflow) - Tmux sessions, Sesh, Tmuxinator integration
 - [File Operations](#file-operations) - File managers, directory navigation, listing
 - [Git Workflow](#git-workflow) - Git aliases and operations
@@ -17,7 +17,65 @@
 
 ## Window Management
 
-### Yabai Window Operations (SKHD)
+### Aerospace Window Operations (PRIMARY)
+*Source: `aerospace/.config/aerospace/aerospace.toml`*
+
+**Window Focus & Movement:**
+| Keybind | Action | Description |
+|---------|---------|-------------|
+| `Shift+Ctrl+h/j/k/l` | Focus window | Move focus to left/down/up/right |
+| `Shift+Ctrl+Alt+h/j/k/l` | Move window | Move window to left/down/up/right |
+| `Ctrl+Alt+h/j/k/l` | Move inverted | Move window (inverted for correct direction) |
+
+**Layout Management:**
+| Keybind | Action | Description |
+|---------|---------|-------------|
+| `Shift+Ctrl+e` | Toggle float/tile | Toggle between floating and tiling |
+| `Shift+Ctrl+v` | Toggle orientation | Toggle horizontal/vertical layout |
+| `Shift+Ctrl+t` | Tiles layout | Switch to tiles layout |
+| `Shift+Ctrl+a` | Accordion layout | Switch to accordion layout |
+| `Shift+Alt+t` | Float toggle | Toggle floating/tiling |
+| `Shift+Ctrl+q` | Float center | Float window and center |
+| `Shift+Ctrl+w` | Fullscreen | Toggle fullscreen mode |
+| `Shift+Ctrl+r` | Balance | Flatten workspace tree (reset layout) |
+
+**Window Resizing:**
+| Keybind | Action | Description |
+|---------|---------|-------------|
+| `Ctrl+Alt+Cmd+j` | Resize smaller | Make window smaller (smart, context-aware) |
+| `Ctrl+Alt+Cmd+k` | Resize larger | Make window larger (smart, context-aware) |
+
+**Workspace Navigation:**
+| Keybind | Action | Description |
+|---------|---------|-------------|
+| `Cmd+Ctrl+j/k/l` | Focus workspace | Switch to workspace 1/2/3 |
+| `Cmd+Ctrl+n/p` | Next/prev workspace | Navigate to next/previous workspace |
+| `Ctrl+Shift+4-9` | Focus workspace 4-9 | Switch to workspace 4-9 |
+
+**Move Window to Workspace:**
+| Keybind | Action | Description |
+|---------|---------|-------------|
+| `Shift+Alt+j/k/l` | Move to workspace | Move window to workspace 1/2/3 |
+| `Shift+Alt+4-9` | Move to workspace | Move window to workspace 4-9 |
+| `Shift+Alt+n/p` | Move next/prev | Move window to next/previous workspace (wrap-around) |
+
+**Display Management:**
+| Keybind | Action | Description |
+|---------|---------|-------------|
+| `Shift+Alt+s/g` | Move display | Move window to previous/next monitor (wrap-around) |
+
+**Service Mode** (`Shift+Alt+Cmd+r` to enter):
+| Keybind | Action | Description |
+|---------|---------|-------------|
+| `Esc` | Reload & exit | Reload config and return to main mode |
+| `r` | Reset layout | Flatten workspace tree and exit |
+| `f` | Toggle float | Toggle floating/tiling and exit |
+| `Backspace` | Close others | Close all windows except current and exit |
+| `Shift+Ctrl+Alt+h/j/k/l` | Join pane | Join with left/down/up/right and exit |
+
+### Yabai Window Operations (LEGACY)
+> **Note**: Used only when Yabai is active instead of Aerospace. See `WM_SWITCHING.md`.
+
 *Source: `skhd/.config/skhd/skhdrc`*
 
 | Keybind | Action | Description |

@@ -37,28 +37,30 @@ A curated collection of configuration files for a complete macOS development env
 
 ## 🌟 Features
 
-- **🪟 Tiling Window Management**: Yabai + SKHD for seamless window control
+- **🪟 Tiling Window Management**: Aerospace for modern, integrated window control (Primary)
 - **🎨 Beautiful Terminal**: Ghostty with custom shaders and Starship prompt
-- **⌨️ Advanced Key Remapping**: Karabiner-Elements for ergonomic keyboard improvements
+- **⌨️ Advanced Key Remapping**: Kanata with home row mods + Karabiner-Elements
 - **📊 System Monitoring**: SketchyBar for elegant macOS menu bar replacement
 - **🚀 Terminal Multiplexing**: Tmux with Catppuccin theme and advanced plugins
 - **⚡ Modern Shell**: Zsh with FZF, syntax highlighting, and intelligent completions
 - **🛠️ Development Ready**: Neovim with extensive plugin ecosystem
+- **🔄 Flexible WM Setup**: Easy switching between Aerospace and Yabai (see `WM_SWITCHING.md`)
 
 ## 📂 Project Structure
 
 ```
 dotfiles/
+├── aerospace/       # Modern tiling window manager (PRIMARY)
 ├── ghostty/          # Modern terminal emulator configuration
-├── kanata/           # Advanced keyboard remapper (alternative to karabiner)
+├── kanata/           # Advanced keyboard remapper with home row mods
 ├── karabiner/        # Keyboard remapping and shortcuts
 ├── nvim/            # Neovim editor configuration
 ├── sketchybar/      # macOS menu bar replacement
-├── skhd/            # Hotkey daemon for window management
+├── skhd/            # Hotkey daemon (LEGACY - for Yabai)
 ├── starship/        # Cross-shell prompt themes
 ├── tmux/            # Terminal multiplexer configuration
 ├── tmuxinator/      # Complex tmux session layouts
-├── yabai/           # Tiling window manager
+├── yabai/           # Tiling window manager (LEGACY/Alternative)
 └── zsh/             # Z shell configuration and plugins
 ```
 
@@ -91,7 +93,28 @@ Sophisticated keyboard remapping with home row modifiers:
 - **Timing**: 150ms tap time, 200ms hold time for optimal response
 - **Status**: Configured but inactive (use instead of Karabiner if preferred)
 
-### 🎛️ **SKHD** - Hotkey Daemon
+### 🚀 **Aerospace** - Modern Tiling Window Manager (PRIMARY)
+Next-generation tiling window manager for macOS:
+- **Configuration**: Single TOML file with integrated keybindings (no external daemon)
+- **Layout**: Tiles and accordion modes with 2px gaps
+- **Auto-start**: Launches at login automatically
+- **SketchyBar Integration**: Direct workspace callbacks for seamless integration
+- **Padding**: 32px top padding for SketchyBar
+
+**Key Features:**
+- Native window management without external dependencies
+- Smart resize adapts to window position
+- Workspace navigation: `cmd+ctrl+jkl` for workspaces 1-3
+- Window focus: `shift+ctrl+hjkl`
+- Window movement: `shift+ctrl+alt+hjkl`
+- Toggle fullscreen: `shift+ctrl+w`
+- Service mode: `shift+alt+cmd+r` for advanced operations
+
+**See**: `WM_SWITCHING.md` for switching to Yabai if needed
+
+### 🎛️ **SKHD** - Hotkey Daemon (LEGACY)
+> **Note**: Used only with Yabai. Aerospace has integrated keybindings.
+
 Powerful hotkey system for window management and system control:
 
 **Window Management:**
@@ -105,12 +128,15 @@ Powerful hotkey system for window management and system control:
 - `shift+alt+1-7` - Move window to desktop
 - `shift+alt+p/n` - Move window to prev/next space
 
-### 🦞 **Yabai** - Tiling Window Manager
+### 🦞 **Yabai** - Tiling Window Manager (LEGACY/Alternative)
+> **Note**: Available as alternative to Aerospace. See `WM_SWITCHING.md` for switching.
+
 Binary space partitioning window manager:
 - **Layout**: BSP (Binary Space Partitioning)
 - **Padding**: Minimal 1px gaps for clean appearance
 - **Mouse**: Follows focus with drag-to-move/resize
 - **Integration**: Works with SketchyBar (32px external bar)
+- **Status**: Available but not auto-started (use WM switching guide)
 
 **Excluded Apps**: System Settings, Calculator, Karabiner-Elements
 

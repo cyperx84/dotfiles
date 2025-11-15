@@ -149,14 +149,15 @@ ghl                        # List GitHub repos (if using GitHub CLI)
 
 ### Seamless Window & Pane Navigation
 
-**Goal**: Unified navigation across Yabai windows and Tmux panes
+**Goal**: Unified navigation across Aerospace windows and Tmux panes
 
 ```bash
-# Yabai Window Management (system-wide)
+# Aerospace Window Management (system-wide - PRIMARY)
 Shift+Ctrl+h/j/k/l         # Focus windows
 Shift+Ctrl+Alt+h/j/k/l     # Move windows
-Ctrl+Alt+Cmd+h/j/k/l       # Resize windows
-Ctrl+1/2/3/4/5             # Switch spaces
+Ctrl+Alt+Cmd+j/k           # Resize windows (smart, context-aware)
+Cmd+Ctrl+j/k/l             # Switch workspaces 1-3
+Ctrl+Shift+4-9             # Switch workspaces 4-9
 
 # Tmux Pane Management (within terminal)
 C-a h/j/k/l                # Focus panes
@@ -173,10 +174,19 @@ C-a v                      # Horizontal split
 ### Layout Management
 
 ```bash
-# Yabai Layouts
-Alt+t                      # Toggle float
-Ctrl+Cmd+w                 # Toggle fullscreen
-Ctrl+Cmd+r                 # Balance windows
+# Aerospace Layouts (PRIMARY)
+Shift+Ctrl+e               # Toggle float/tile
+Shift+Ctrl+v               # Toggle horizontal/vertical orientation
+Shift+Ctrl+t               # Tiles layout
+Shift+Ctrl+a               # Accordion layout
+Shift+Ctrl+w               # Toggle fullscreen
+Shift+Ctrl+r               # Balance windows (flatten workspace tree)
+Shift+Alt+Cmd+r            # Enter service mode for advanced operations
+
+# Legacy (Yabai - if using instead of Aerospace)
+# Alt+t                    # Toggle float
+# Ctrl+Cmd+w               # Toggle fullscreen
+# Ctrl+Cmd+r               # Balance windows
 
 # Tmux Layouts
 C-a T                      # Session/layout switcher
