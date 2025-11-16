@@ -59,3 +59,8 @@ if [ "$SENDER" = "aerospace_workspace_change" ]; then
   # Update window count for this workspace
   "$PLUGIN_DIR/space_window_count.sh" "$WORKSPACE_ID"
 fi
+
+# Handle periodic updates - only update window count
+if [ "$SENDER" = "routine" ]; then
+  "$PLUGIN_DIR/space_window_count.sh" "$WORKSPACE_ID"
+fi

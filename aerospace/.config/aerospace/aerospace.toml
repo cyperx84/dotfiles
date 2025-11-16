@@ -4,12 +4,15 @@
 # Commands to run after AeroSpace startup
 # Launch SketchyBar (workspaces created on-demand)
 after-startup-command = [
-  'exec-and-forget sketchybar'
+  'exec-and-forget sketchybar',
+  'exec-and-forget /bin/bash -c "sleep 0.5 && sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused)"'
 ]
 
 # Notify SketchyBar when workspace changes
-exec-on-workspace-change = ['/bin/bash', '-c',
-    "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
+exec-on-workspace-change = [
+    '/bin/bash',
+    '-c',
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
 ]
 
 # Start AeroSpace at login
@@ -97,6 +100,10 @@ automatically-unhide-macos-hidden-apps = false
     #     activate
     # end tell'
     # '''
+
+    # App launchers
+    cmd-j = 'exec-and-forget open -a Ghostty'
+    cmd-k = 'exec-and-forget open -a Zen'
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'

@@ -58,6 +58,7 @@ do
     background.height=20
     background.border_width=1
     background.drawing=on
+    update_freq=2
     script="$PLUGIN_DIR/aerospace.sh $sid"
   )
 

@@ -1,11 +1,11 @@
 ;; defsrc is still necessary
 (defcfg
   process-unmapped-keys yes
-  ;; Capture ALL keyboards by removing the include filter
-  ;; macos-dev-names-include (
-  ;;   "Apple Internal Keyboard / Trackpad"
-  ;;   "MX MCHNCL M"
-  ;; )
+  ;; Explicitly list both keyboards
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+    "MX MCHNCL M"
+  )
 )
 
 (defsrc
