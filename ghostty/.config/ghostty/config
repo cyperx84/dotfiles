@@ -52,4 +52,4 @@ keybind = super+alt+shift+k=resize_split:up,10
 keybind = super+alt+shift+l=resize_split:right,10
 
 # Ghostty Custom shaders
-custom-shader = shaders/cursor_smear_rainbow.glsl
+# custom-shader = shaders/cursor_smear_rainbow.glsl

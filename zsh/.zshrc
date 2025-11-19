@@ -314,3 +314,6 @@ ccg() {
 
 # direnv hook
 eval "$(direnv hook zsh)"
+
+# Added by Antigravity
+export PATH="/Users/cyperx/.antigravity/antigravity/bin:$PATH"

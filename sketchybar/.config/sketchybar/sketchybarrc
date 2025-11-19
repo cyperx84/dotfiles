@@ -165,4 +165,7 @@ sketchybar --hotload on
 
 sketchybar --update
 
+# Trigger initial workspace highlight
+/bin/bash -c "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused 2>/dev/null || echo '1')" &
+
 echo "sketchybar configuation loaded.."

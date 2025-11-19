@@ -4,8 +4,7 @@
 # Commands to run after AeroSpace startup
 # Launch SketchyBar (workspaces created on-demand)
 after-startup-command = [
-  'exec-and-forget sketchybar',
-  'exec-and-forget /bin/bash -c "sleep 0.5 && sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused)"'
+  'exec-and-forget sketchybar'
 ]
 
 # Notify SketchyBar when workspace changes

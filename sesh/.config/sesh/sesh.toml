@@ -67,6 +67,20 @@ preview_command = "~/.tmux/scripts/sesh_preview.sh {}"
 # Custom session configurations
 # Quick-access sessions for frequently used workspaces
 # These sessions will always appear in sesh list, even when not running
+[[session]]
+name = "notes"
+path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+startup_command = "nvim INDEX.md"
+
+[[session]]
+name = "dotfiles"
+path = "~/dotfiles"
+startup_command = "nvim"
+
+[[sessiopn]]
+name = "claude config"
+path = "~/.claude"
+startup_command = ""
 
 [[session]]
 name = "code"
