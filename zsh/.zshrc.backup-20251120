@@ -25,16 +25,11 @@ if [ -n "$TMUX" ] && [ "$TERM_PROGRAM" = "ghostty" ]; then
     export TERM_PROGRAM="ghostty"
 fi
 
-export GPG_TTY=$(tty)
+autoload -U compinit; compinit
 
-# Lazy-load GPG agent (saves 50-100ms, only launches when GPG is used)
-if (( $+commands[gpg] )); then
-  gpg() {
-    gpgconf --launch gpg-agent > /dev/null 2>&1
-    unfunction gpg
-    command gpg "$@"
-  }
-fi
+export GPG_TTY=$(tty)
+gpgconf --launch gpg-agent > /dev/null 2>&1
+
 
 if command -v sketchybar &>/dev/null; then
 function brew() {
@@ -47,7 +42,7 @@ fi
 
 # Navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
-ff() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
+f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
 fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 
 ### FZF ###
@@ -58,10 +53,10 @@ export FZF_CTRL_F_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.fzf/shell/key-bindings.zsh ] && source ~/.fzf/shell/key-bindings.zsh
 [ -f ~/.fzf/shell/completion.zsh ] && source ~/.fzf/shell/completion.zsh
-
-# Cache brew --prefix to avoid repeated calls (saves 100-200ms)
-HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
-source "$HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+# source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
+source $(brew --prefix zsh-fast-syntax-highlighting)/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8,bold'
 _fzf_comprun() {
   local command=$1
   shift
@@ -74,18 +69,7 @@ _fzf_comprun() {
   esac
 }
 
-# Completion initialization with cache optimization (must be before UV/Starship/Zoxide)
-fpath=(/Users/cyperx/.docker/completions ~/.zfunctions $fpath)
-autoload -Uz compinit
-
-# Only rebuild completion cache once per day (speeds up shell startup)
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qNmh+24) ]]; then
-  compinit -i
-else
-  compinit -C -i
-fi
-
-# Yazi
+# Yazi 
 function f() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
@@ -97,7 +81,11 @@ function f() {
 
 # UV Python
 eval "$(uv generate-shell-completion zsh)"
+# alias uvsa="$(source .venv/bin/activate)"
 
+# bindkey '^e' autosuggest-execute
+# bindkey '^w' autosuggest-accept
+# bindkey '^u' autosuggest-toggle
 bindkey '^f' vi-forward-word
 bindkey '^u' up-line-or-search
 bindkey '^p' down-line-or-search
@@ -155,6 +143,7 @@ alias ......="cd ../../../../.."
 alias nm="nmap -sC -sV -oN nmap"
 
 # K8S
+# export KUBECONFIG=~/.kube/config
 alias k="kubectl"
 alias ka="kubectl apply -f"
 alias kg="kubectl get"
@@ -167,6 +156,7 @@ alias kns="kubens"
 alias kl="kubectl logs -f"
 alias ke="kubectl exec -it"
 alias kcns='kubectl config set-context --current --namespace'
+alias podname=''
 
 # HTTP requests with xh!
 alias http="xh"
@@ -177,6 +167,19 @@ alias lt="eza --tree --level=2 --long --icons --git"
 alias ltree="eza --tree --level=2  --icons --git"
 alias l="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias ll="eza --color=always --long --git --icons=always"
+
+# SEC STUFF
+# alias gobust='gobuster dir --wordlist ~/security/wordlists/diccnoext.txt --wildcard --url'
+# alias dirsearch='python dirsearch.py -w db/dicc.txt -b -u'
+# alias massdns='~/hacking/tools/massdns/bin/massdns -r ~/hacking/tools/massdns/lists/resolvers.txt -t A -o S bf-targets.txt -w livehosts.txt -s 4000'
+# alias server='python -m http.server 4445'
+# alias tunnel='ngrok http 4445'
+# alias fuzz='ffuf -w ~/hacking/SecLists/content_discovery_all.txt -mc all -u'
+# alias gr='~/go/src/github.com/tomnomnom/gf/gf'
+
+# source <(kubectl completion zsh)
+# complete -C '/usr/local/bin/aws_completer' aws
+
 
 # List all images in Dir
 alias iva='find . -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.gif" -o -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.webp" -o -iname "*.svg" \) -exec kitty +kitten icat {} \;'
@@ -245,10 +248,15 @@ export BAT_THEME=tokyonight_night
 
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
-
-# Consolidated PATH configuration (order matters: higher priority first)
-export PATH="$HOME/.npm-global/bin:/opt/homebrew/opt/icu4c@77/bin:/usr/local/bin:/usr/local/sbin:$PATH"
-
+export PATH="$HOME/.npm-global/bin:$PATH"
+export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/cyperx/.docker/completions ~/.zfunctions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
 alias oc="opencode"
 
 # Claude Code - unset DeepSeek env vars before running
@@ -261,6 +269,8 @@ cc() {
     unset CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
     /Users/cyperx/.claude/local/claude --dangerously-skip-permissions "$@"
 }
+
+# alias claude="/Users/cyperx/.claude/local/claude"
 
 # DeepSeek with Claude Code
 ccds() {
@@ -302,18 +312,8 @@ ccg() {
 }
 
 
-# Antigravity PATH (appended to main PATH configuration above)
-export PATH="$PATH:/Users/cyperx/.antigravity/antigravity/bin"
+# direnv hook
+eval "$(direnv hook zsh)"
 
-# Lazy-load direnv (saves 50-100ms, only loads when entering directory with .envrc)
-if (( $+commands[direnv] )); then
-  _direnv_lazy_load() {
-    eval "$(direnv hook zsh)"
-    unfunction _direnv_lazy_load
-    # Check current directory after loading
-    [[ -f .envrc ]] && direnv allow
-  }
-  # Hook into directory change
-  autoload -U add-zsh-hook
-  add-zsh-hook chpwd _direnv_lazy_load
-fi
+# Added by Antigravity
+export PATH="/Users/cyperx/.antigravity/antigravity/bin:$PATH"

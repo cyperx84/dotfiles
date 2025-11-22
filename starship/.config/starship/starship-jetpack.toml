@@ -1,5 +1,6 @@
 # version: 1.0.0
 
+command_timeout = 2000
 add_newline = true
 continuation_prompt = "[▸▹ ](dimmed white)"
 
