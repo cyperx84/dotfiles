@@ -31,7 +31,10 @@ automatically-unhide-macos-hidden-apps = true
     # App launchers
     cmd-j = 'exec-and-forget open -a Ghostty'
     cmd-k = 'exec-and-forget open -a Zen'
-    cmd-l = 'exec-and-forget open -a Obsidian'
+    cmd-l = 'exec-and-forget open -a Claude'
+    cmd-u = 'exec-and-forget open -a Antigravity'    
+    cmd-i = 'exec-and-forget open -a IPhone Mirroring'
+    cmd-o = 'exec-and-forget open -a Obsidian'
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'
@@ -52,7 +55,7 @@ automatically-unhide-macos-hidden-apps = true
     shift-ctrl-alt-l = 'move right'
 
     # Toggle window split
-    # shift-ctrl-e = 'layout tiling floating'
+    shift-ctrl-e = 'layout tiling floating'
 
     # Layout toggles
     shift-ctrl-v = 'layout horizontal vertical'  # Toggle horizontal/vertical
@@ -75,21 +78,13 @@ automatically-unhide-macos-hidden-apps = true
     # Balance windows
     shift-ctrl-r = 'flatten-workspace-tree'
 
-    # Workspace navigations with numbers
-    cmd-ctrl-1 = 'workspace 1'
-    cmd-ctrl-2 = 'workspace 2'
-    cmd-ctrl-3 = 'workspace 3'
-    cmd-ctrl-4 = 'workspace 4'
-    cmd-ctrl-5 = 'workspace 5'
-    cmd-ctrl-6 = 'workspace 6'
-
     # Workspace navigation (cmd + ctrl + jkl) HOMEROW Versions
-    # cmd-ctrl-j = 'workspace 1'
-    # cmd-ctrl-k = 'workspace 2'
-    # cmd-ctrl-l = 'workspace 3'
-    # cmd-ctrl-u = 'workspace 4'
-    # cmd-ctrl-i = 'workspace 5'
-    # cmd-ctrl-o = 'workspace 6'
+    cmd-ctrl-j = 'workspace 1'
+    cmd-ctrl-k = 'workspace 2'
+    cmd-ctrl-l = 'workspace 3'
+    cmd-ctrl-u = 'workspace 4'
+    cmd-ctrl-i = 'workspace 5'
+    cmd-ctrl-o = 'workspace 6'
 
     # Additional workspace navigation
     cmd-ctrl-n = 'workspace next'

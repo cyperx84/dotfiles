@@ -224,7 +224,7 @@ return {
           { 'n', '<leader>os', ':ObsidianSearch<CR>', '[O]bsidian [S]earch' },
           { 'n', '<leader>ob', ':ObsidianBacklinks<CR>', '[O]bsidian [B]acklinks' },
           { 'n', '<leader>ol', ':ObsidianLinks<CR>', '[O]bsidian [L]inks' },
-          { 'n', '<leader>ot', ':ObsidianTags<CR>', '[O]bsidian [T]ags' },
+          -- { 'n', '<leader>ot', ':ObsidianTags<CR>', '[O]bsidian [T]ags' }, -- Disabled: using custom version below
 
           -- Daily notes
           { 'n', '<leader>od', ':ObsidianToday<CR>', '[O]bsidian Today ([D]aily)' },
@@ -272,5 +272,92 @@ return {
       end,
       desc = 'Auto-reload markdown files when changed externally',
     })
+
+    -- Custom tag search (workaround for ObsidianTags issues)
+    local function vault_tag_search()
+      local vault_path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes'
+      local telescope = require 'telescope.builtin'
+      local pickers = require 'telescope.pickers'
+      local finders = require 'telescope.finders'
+      local conf = require('telescope.config').values
+      local actions = require 'telescope.actions'
+      local action_state = require 'telescope.actions.state'
+      local previewers = require 'telescope.previewers'
+
+      -- Get all unique tags
+      local cmd = string.format(
+        "cd '%s' && find . -name '*.md' -type f -exec grep -h '^  - ' {} \\; 2>/dev/null | sed 's/^  - //' | sort -u",
+        vault_path
+      )
+      local handle = io.popen(cmd)
+      local result = handle:read '*a'
+      handle:close()
+
+      local tags = {}
+      for tag in result:gmatch '[^\n]+' do
+        if tag ~= '' and not tag:match '^%[' then
+          table.insert(tags, tag)
+        end
+      end
+
+      -- Show tag picker
+      pickers
+        .new({}, {
+          prompt_title = 'Vault Tags',
+          finder = finders.new_table { results = tags },
+          sorter = conf.generic_sorter {},
+          attach_mappings = function(prompt_bufnr, map)
+            actions.select_default:replace(function()
+              local selection = action_state.get_selected_entry()
+              actions.close(prompt_bufnr)
+              -- Get files with selected tag
+              local files_cmd = string.format(
+                "cd '%s' && find . -name '*.md' -type f -exec grep -l '^  - %s$' {} \\; 2>/dev/null | sed 's|^./||'",
+                vault_path,
+                selection[1]:gsub("'", "'\\''") -- Escape single quotes
+              )
+              local files_handle = io.popen(files_cmd)
+              local files_result = files_handle:read '*a'
+              files_handle:close()
+
+              local files = {}
+              for file in files_result:gmatch '[^\n]+' do
+                table.insert(files, file)
+              end
+
+              if #files == 0 then
+                vim.notify('No files found with tag: ' .. selection[1], vim.log.levels.WARN)
+                return
+              end
+
+              -- Show files picker
+              pickers
+                .new({}, {
+                  prompt_title = 'Files with tag: ' .. selection[1],
+                  finder = finders.new_table {
+                    results = files,
+                    entry_maker = function(entry)
+                      return {
+                        value = entry,
+                        display = entry,
+                        ordinal = entry,
+                        path = vault_path .. '/' .. entry,
+                      }
+                    end,
+                  },
+                  sorter = conf.generic_sorter {},
+                  previewer = previewers.vim_buffer_cat.new {},
+                })
+                :find()
+            end)
+            return true
+          end,
+        })
+        :find()
+    end
+
+    -- Create custom command and keymap
+    vim.api.nvim_create_user_command('VaultTags', vault_tag_search, {})
+    vim.keymap.set('n', '<leader>ot', vault_tag_search, { buffer = false, desc = '[O]bsidian [T]ags (custom)' })
   end,
 }

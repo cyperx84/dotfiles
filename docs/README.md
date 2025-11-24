@@ -24,7 +24,6 @@ This comprehensive documentation system covers all aspects of the dotfiles repos
 | Document | Purpose | Best For |
 |----------|---------|----------|
 | **[🏠 README.md](../README.md)** | Repository overview and quick start | First-time setup and navigation |
-| **[🔄 WM_SWITCHING.md](../WM_SWITCHING.md)** | Window manager switching guide | Switching between Aerospace and Yabai |
 | **[🤖 CLAUDE.md](../CLAUDE.md)** | Claude Code specific guidance | AI-assisted development |
 | **[👨‍💻 AGENTS.md](../AGENTS.md)** | Development and testing procedures | Contributing and maintenance |
 
@@ -68,10 +67,9 @@ This comprehensive documentation system covers all aspects of the dotfiles repos
 
 ### Tool Integration Points
 ```
-Window Management: Aerospace (PRIMARY) ↔ SketchyBar
-                   Yabai + SKHD (LEGACY) ↔ SketchyBar
+Window Management: Aerospace ↔ SketchyBar
 Terminal Stack: Ghostty ↔ Tmux ↔ Zsh ↔ Starship
-Session Management: Sesh ↔ Tmux ↔ Tmuxinator ↔ FZF
+Session Management: Sesh ↔ Tmux ↔ FZF
 Development: Neovim ↔ Tmux ↔ Git ↔ File Managers
 Input: Kanata + Karabiner ↔ All Applications
 ```
@@ -92,9 +90,7 @@ Input: Kanata + Karabiner ↔ All Applications
 zsh/.zshrc                                      # Shell aliases, functions, keybinds
 tmux/.tmux.conf                                 # Terminal multiplexer config
 nvim/.config/nvim/lua/keymaps.lua              # Neovim core keybinds
-aerospace/.config/aerospace/aerospace.toml     # Window manager (PRIMARY)
-yabai/.config/yabai/yabairc                    # Window manager (LEGACY)
-skhd/.config/skhd/skhdrc                       # Hotkey daemon (LEGACY - for Yabai)
+aerospace/.config/aerospace/aerospace.toml     # Window manager
 ghostty/.config/ghostty/config                 # Terminal emulator settings
 sesh/.config/sesh/sesh.toml                    # Session management config
 sketchybar/.config/sketchybar/sketchybarrc     # Menu bar config
@@ -127,12 +123,9 @@ sesh list                                # Sesh session validation (manual check
 
 ### Service Management
 ```bash
-killall AeroSpace && open -a AeroSpace    # Restart window manager (PRIMARY)
+killall AeroSpace && open -a AeroSpace    # Restart window manager
 brew services restart sketchybar          # Restart menu bar
 sketchybar --reload                       # Reload SketchyBar config
-
-# Legacy (if using Yabai instead of Aerospace):
-# brew services restart yabai && brew services restart skhd
 ```
 
 ### Documentation Navigation

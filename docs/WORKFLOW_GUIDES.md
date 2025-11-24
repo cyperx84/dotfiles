@@ -28,17 +28,11 @@ sd                          # Fuzzy connect to any session
 
 # Method 2: Tmux Session Switcher (from within tmux)
 C-a T                       # Advanced session switcher with previews
-
-# Method 3: Tmuxinator Layouts (complex setups)
-sesh-tmux                   # List available layouts
-sesh-start <layout>         # Start predefined layout
-# or C-a M                  # Tmux keybind for layout selector
 ```
 
 **Integration Points:**
 - **Sesh** provides the session definitions
 - **Tmux** handles the actual session management
-- **Tmuxinator** defines complex multi-pane layouts
 - **FZF** powers the fuzzy selection interface
 - **Zsh** provides quick access keybind
 
@@ -183,14 +177,8 @@ Shift+Ctrl+w               # Toggle fullscreen
 Shift+Ctrl+r               # Balance windows (flatten workspace tree)
 Shift+Alt+Cmd+r            # Enter service mode for advanced operations
 
-# Legacy (Yabai - if using instead of Aerospace)
-# Alt+t                    # Toggle float
-# Ctrl+Cmd+w               # Toggle fullscreen
-# Ctrl+Cmd+r               # Balance windows
-
 # Tmux Layouts
-C-a T                      # Session/layout switcher
-C-a M                      # Tmuxinator layout selector
+C-a T                      # Session switcher
 C-a N                      # New session
 ```
 
@@ -248,7 +236,6 @@ mkdir new-project && cd new-project
 
 # 2. Session Creation
 sc new-project             # Create/connect to sesh session
-# or create tmuxinator layout for complex projects
 
 # 3. Initial Setup (within session)
 git init
@@ -394,7 +381,7 @@ gp                         # Push changes
 | Session Management | Sesh + Tmux + FZF | Shared session names, FZF selection |
 | File Navigation | Eza + Yazi + Telescope | Consistent preview, similar interfaces |
 | Git Operations | Zsh aliases + Neogit | Quick terminal ops, detailed GUI ops |
-| Window Management | Yabai + Tmux + Neovim | Unified navigation keybinds |
+| Window Management | Aerospace + Tmux + Neovim | Unified navigation keybinds |
 | Search | FZF + Telescope + ripgrep | Consistent fuzzy finding paradigm |
 | Note-Taking | Obsidian + Telescope | Cross-search capabilities |
 

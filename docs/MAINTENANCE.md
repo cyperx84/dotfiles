@@ -21,7 +21,8 @@ This guide provides comprehensive maintenance procedures for the dotfiles system
 sesh list                                           # Sesh sessions (manual check)
 
 # Quick service status check
-brew services list | grep -E "(yabai|skhd|sketchybar)"
+brew services list | grep sketchybar
+pgrep -l AeroSpace  # Check Aerospace status
 ```
 
 ### 📋 Sesh Validation
@@ -44,7 +45,6 @@ sesh connect <session-name>
 - Configuration syntax (`~/.config/sesh/sesh.toml`)
 - Session definitions load correctly
 - Essential tool dependencies (tmux, fzf, eza, yazi, nvim) are installed
-- Tmuxinator integration works
 - Session previews display correctly (FZF integration)
 
 ### 🎨 SketchyBar Validation
@@ -89,33 +89,31 @@ cd ~/.config/sketchybar/helper && make clean && make
 
 **Start Services**:
 ```bash
-# Window management
-brew services start yabai
-brew services start skhd
+# Window management (Application, not Homebrew service)
+open -a AeroSpace
 
 # Menu bar
 brew services start sketchybar
 
 # Check status
-brew services list | grep -E "(yabai|skhd|sketchybar)"
+pgrep -l AeroSpace
+brew services list | grep sketchybar
 ```
 
 **Restart Services** (after config changes):
 ```bash
 # Individual restarts
-brew services restart yabai
-brew services restart skhd
+killall AeroSpace && open -a AeroSpace  # Aerospace restarts and validates config
 brew services restart sketchybar
 
 # Quick reload (within active session)
 sketchybar --reload              # SketchyBar only
-yabai --restart-service          # Yabai only
+# Note: Aerospace auto-validates config on startup
 ```
 
 **Stop Services**:
 ```bash
-brew services stop yabai
-brew services stop skhd
+killall AeroSpace                # Stop Aerospace
 brew services stop sketchybar
 ```
 
@@ -133,15 +131,11 @@ tmux source-file ~/.tmux.conf
 # Zsh
 exec zsh
 # or: source ~/.zshrc
-```
 
-**Yabai Configuration**:
-```bash
-# Validate before restarting
-yabai --check-config
-
-# Restart if valid
-yabai --restart-service
+# Aerospace
+# Auto-validates on startup - just restart to validate
+killall AeroSpace && open -a AeroSpace
+# Check Console.app for "AeroSpace" if errors occur
 ```
 
 ---
@@ -152,22 +146,21 @@ yabai --restart-service
 
 **Window Management Issues**:
 ```bash
-# 1. Check service status
-brew services list | grep -E "(yabai|skhd)"
+# 1. Check if Aerospace is running
+pgrep -l AeroSpace
 
 # 2. Check permissions
 # System Preferences > Security & Privacy > Accessibility
-# Ensure yabai and skhd have permissions
+# Ensure AeroSpace.app has permissions
 
-# 3. Check configuration syntax
-yabai --check-config
+# 3. Restart Aerospace (validates config on startup)
+killall AeroSpace && open -a AeroSpace
 
-# 4. Check SKHD logs
-tail -f /usr/local/var/log/skhd/skhd.out.log
+# 4. Check Aerospace logs (if issues occur)
+# Open Console.app and filter for "AeroSpace"
 
-# 5. Manual restart
-brew services restart yabai
-brew services restart skhd
+# 5. Verify configuration file exists
+ls -la ~/.config/aerospace/aerospace.toml
 ```
 
 **SketchyBar Issues**:
@@ -298,8 +291,7 @@ cd ~/dotfiles && git pull
 stow -R */  # Restow all configurations
 
 # 3. Restart services
-brew services restart yabai
-brew services restart skhd
+killall AeroSpace && open -a AeroSpace
 brew services restart sketchybar
 
 # 4. Reload shell
@@ -333,18 +325,17 @@ stow --adopt component_name  # Adopt existing files
 **Solutions**:
 1. **Check Accessibility Permissions**:
    - System Preferences > Security & Privacy > Accessibility
-   - Add and enable `yabai` and `skhd`
+   - Add and enable `AeroSpace.app`
 
-2. **Restart Services**:
+2. **Restart Aerospace**:
    ```bash
-   brew services restart yabai
-   brew services restart skhd
+   killall AeroSpace && open -a AeroSpace
    ```
 
 3. **Check Configuration**:
-   ```bash
-   yabai --check-config
-   ```
+   - Aerospace validates config on startup
+   - Check Console.app for "AeroSpace" errors if issues occur
+   - Verify config file: `~/.config/aerospace/aerospace.toml`
 
 ### ❌ SketchyBar Not Displaying
 
@@ -451,8 +442,7 @@ stow --adopt component_name  # Adopt existing files
 **If everything breaks**:
 ```bash
 # 1. Stop all services
-brew services stop yabai
-brew services stop skhd
+killall AeroSpace
 brew services stop sketchybar
 
 # 2. Backup current config
@@ -464,8 +454,7 @@ stow -D */  # Remove all stow links
 stow */     # Re-create all links
 
 # 4. Restart services
-brew services start yabai
-brew services start skhd
+open -a AeroSpace
 brew services start sketchybar
 
 # 5. Restart shell
