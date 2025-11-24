@@ -73,24 +73,6 @@
 | `Backspace` | Close others | Close all windows except current and exit |
 | `Shift+Ctrl+Alt+h/j/k/l` | Join pane | Join with left/down/up/right and exit |
 
-### Yabai Window Operations (LEGACY)
-> **Note**: Used only when Yabai is active instead of Aerospace. See `WM_SWITCHING.md`.
-
-*Source: `skhd/.config/skhd/skhdrc`*
-
-| Keybind | Action | Description |
-|---------|---------|-------------|
-| `Shift+Ctrl+h/j/k/l` | Focus window | Move focus to west/south/north/east |
-| `Shift+Ctrl+Alt+h/j/k/l` | Move window | Warp window to west/south/north/east |
-| `Ctrl+Alt+Cmd+h/j/k/l` | Resize window | Resize window in direction |
-| `Ctrl+1/2/3/4/5` | Focus space | Switch to desktop space |
-| `Shift+Alt+1/2/3/4/5` | Move to space | Move window to space |
-| `Alt+t` | Toggle float | Float/unfloat window and center |
-| `Alt+p` | Picture-in-picture | Toggle sticky + PiP mode |
-| `Ctrl+Cmd+w` | Fullscreen | Toggle zoom-fullscreen |
-| `Ctrl+Cmd+r` | Balance | Balance window sizes |
-| `Shift+Alt+s/g` | Move display | Move window to left/right display |
-
 ### Tmux Pane & Window Navigation
 *Source: `tmux/.tmux.conf`*
 
@@ -369,7 +351,7 @@ Development:         ta (tmux), n (nvim), dps (docker ps)
 ```
 
 ### Integration Points
-- **SKHD + Tmux**: Window management spans both tools
+- **Aerospace + Tmux**: Window and session management with integrated keybindings
 - **Sesh + Tmux**: Session management with enhanced workflow
 - **FZF + Multiple**: Fuzzy finding across file, session, git operations
 - **Eza + Navigation**: Enhanced listings in file operations

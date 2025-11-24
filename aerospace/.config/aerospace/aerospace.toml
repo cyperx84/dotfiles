@@ -31,6 +31,7 @@ automatically-unhide-macos-hidden-apps = true
     # App launchers
     cmd-j = 'exec-and-forget open -a Ghostty'
     cmd-k = 'exec-and-forget open -a Zen'
+    cmd-l = 'exec-and-forget open -a Obsidian'
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'
@@ -51,7 +52,7 @@ automatically-unhide-macos-hidden-apps = true
     shift-ctrl-alt-l = 'move right'
 
     # Toggle window split
-    shift-ctrl-e = 'layout tiling floating'
+    # shift-ctrl-e = 'layout tiling floating'
 
     # Layout toggles
     shift-ctrl-v = 'layout horizontal vertical'  # Toggle horizontal/vertical
@@ -74,16 +75,30 @@ automatically-unhide-macos-hidden-apps = true
     # Balance windows
     shift-ctrl-r = 'flatten-workspace-tree'
 
-    # Workspace navigation (cmd + ctrl + jkl)
-    cmd-ctrl-j = 'workspace 1'
-    cmd-ctrl-k = 'workspace 2'
-    cmd-ctrl-l = 'workspace 3'
+    # Workspace navigations with numbers
+    cmd-ctrl-1 = 'workspace 1'
+    cmd-ctrl-2 = 'workspace 2'
+    cmd-ctrl-3 = 'workspace 3'
+    cmd-ctrl-4 = 'workspace 4'
+    cmd-ctrl-5 = 'workspace 5'
+    cmd-ctrl-6 = 'workspace 6'
+
+    # Workspace navigation (cmd + ctrl + jkl) HOMEROW Versions
+    # cmd-ctrl-j = 'workspace 1'
+    # cmd-ctrl-k = 'workspace 2'
+    # cmd-ctrl-l = 'workspace 3'
+    # cmd-ctrl-u = 'workspace 4'
+    # cmd-ctrl-i = 'workspace 5'
+    # cmd-ctrl-o = 'workspace 6'
 
     # Additional workspace navigation
     cmd-ctrl-n = 'workspace next'
     cmd-ctrl-p = 'workspace prev'
 
     # Focus and navigate to workspaces
+    ctrl-shift-1 = 'workspace 1'
+    ctrl-shift-2 = 'workspace 2'
+    ctrl-shift-3 = 'workspace 3'
     ctrl-shift-4 = 'workspace 4'
     ctrl-shift-5 = 'workspace 5'
     ctrl-shift-6 = 'workspace 6'
@@ -95,6 +110,13 @@ automatically-unhide-macos-hidden-apps = true
     shift-alt-j = 'move-node-to-workspace 1'
     shift-alt-k = 'move-node-to-workspace 2'
     shift-alt-l = 'move-node-to-workspace 3'
+    shift-alt-u = 'move-node-to-workspace 4'
+    shift-alt-i = 'move-node-to-workspace 5'
+    shift-alt-o = 'move-node-to-workspace 6'
+
+    shift-alt-1 = 'move-node-to-workspace 1'
+    shift-alt-2 = 'move-node-to-workspace 2'
+    shift-alt-3 = 'move-node-to-workspace 3'
     shift-alt-4 = 'move-node-to-workspace 4'
     shift-alt-5 = 'move-node-to-workspace 5'
     shift-alt-6 = 'move-node-to-workspace 6'

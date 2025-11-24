@@ -44,23 +44,19 @@ A curated collection of configuration files for a complete macOS development env
 - **🚀 Terminal Multiplexing**: Tmux with Catppuccin theme and advanced plugins
 - **⚡ Modern Shell**: Zsh with FZF, syntax highlighting, and intelligent completions
 - **🛠️ Development Ready**: Neovim with extensive plugin ecosystem
-- **🔄 Flexible WM Setup**: Easy switching between Aerospace and Yabai (see `WM_SWITCHING.md`)
 
 ## 📂 Project Structure
 
 ```
 dotfiles/
-├── aerospace/       # Modern tiling window manager (PRIMARY)
+├── aerospace/       # Tiling window manager
 ├── ghostty/          # Modern terminal emulator configuration
 ├── kanata/           # Advanced keyboard remapper with home row mods
 ├── karabiner/        # Keyboard remapping and shortcuts
 ├── nvim/            # Neovim editor configuration
 ├── sketchybar/      # macOS menu bar replacement
-├── skhd/            # Hotkey daemon (LEGACY - for Yabai)
 ├── starship/        # Cross-shell prompt themes
 ├── tmux/            # Terminal multiplexer configuration
-├── tmuxinator/      # Complex tmux session layouts
-├── yabai/           # Tiling window manager (LEGACY/Alternative)
 └── zsh/             # Z shell configuration and plugins
 ```
 
@@ -110,42 +106,12 @@ Next-generation tiling window manager for macOS:
 - Toggle fullscreen: `shift+ctrl+w`
 - Service mode: `shift+alt+cmd+r` for advanced operations
 
-**See**: `WM_SWITCHING.md` for switching to Yabai if needed
-
-### 🎛️ **SKHD** - Hotkey Daemon (LEGACY)
-> **Note**: Used only with Yabai. Aerospace has integrated keybindings.
-
-Powerful hotkey system for window management and system control:
-
-**Window Management:**
-- `ctrl+cmd+w` - Toggle fullscreen
-- `ctrl+cmd+q` - Float/unfloat window
-- `shift+ctrl+alt+hjkl` - Move windows
-- `ctrl+alt+cmd+hjkl` - Resize windows
-
-**Workspace Navigation:**
-- `ctrl+1-5` - Switch to desktop 1-5
-- `shift+alt+1-7` - Move window to desktop
-- `shift+alt+p/n` - Move window to prev/next space
-
-### 🦞 **Yabai** - Tiling Window Manager (LEGACY/Alternative)
-> **Note**: Available as alternative to Aerospace. See `WM_SWITCHING.md` for switching.
-
-Binary space partitioning window manager:
-- **Layout**: BSP (Binary Space Partitioning)
-- **Padding**: Minimal 1px gaps for clean appearance
-- **Mouse**: Follows focus with drag-to-move/resize
-- **Integration**: Works with SketchyBar (32px external bar)
-- **Status**: Available but not auto-started (use WM switching guide)
-
-**Excluded Apps**: System Settings, Calculator, Karabiner-Elements
-
 ### 📊 **SketchyBar** - Menu Bar Replacement
 Elegant and customizable macOS menu bar:
 - **Appearance**: Top position, 40px height, blur effects
 - **Font**: MonaspiceRn Nerd Font
 - **Modules**: Spaces, front app, clock, volume, battery
-- **Integration**: Yabai space indicators with click-to-focus
+- **Integration**: Aerospace workspace indicators
 
 ### 🪟 **Tmux** - Terminal Multiplexer
 Feature-rich terminal session management:
@@ -159,13 +125,6 @@ Feature-rich terminal session management:
 - `tmux-floax` - Floating terminal windows
 - `vim-tmux-navigator` - Seamless Vim integration
 - `tmux-resurrect` + `tmux-continuum` - Session persistence
-
-### 🏗️ **Tmuxinator** - Session Layouts
-Complex tmux session management:
-- **Pre-defined Layouts**: Create complex multi-pane, multi-window sessions
-- **Project-specific**: Custom session templates for different projects
-- **YAML Configuration**: Simple YAML files define session structure
-- **Integration**: Works seamlessly with tmux and sesh session managers
 
 ### 🚀 **Starship** - Cross-Shell Prompt
 Highly customizable prompt with multiple themes:
@@ -232,8 +191,7 @@ brew install --cask font-meslo-lg-nerd-font # MesloLGS Nerd Font
 
 #### System & Window Management
 ```bash
-brew install yabai                          # Tiling window manager
-brew install skhd                           # Hotkey daemon
+brew install --cask aerospace               # Tiling window manager
 brew install sketchybar                     # Menu bar replacement
 brew install stow                           # Configuration management
 ```
@@ -282,7 +240,6 @@ brew install kubens                        # Kubernetes namespace switcher
 
 # Additional Utilities
 brew install docker                        # Containerization
-brew install tmuxinator                    # Tmux session manager
 brew install switchaudio-osx              # Audio source switcher
 ```
 
@@ -290,11 +247,11 @@ brew install switchaudio-osx              # Audio source switcher
 For convenience, you can install all essential dependencies at once:
 ```bash
 # Essential packages only
-brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd-font
-brew install yabai skhd sketchybar stow starship tmux zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep nvim git gh yazi sesh jq wget curl
+brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd-font aerospace
+brew install sketchybar stow starship tmux zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep nvim git gh yazi sesh jq wget curl
 
 # Optional additions
-brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio-osx kanata
+brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
 ```
 
 ### Setup Instructions
@@ -314,14 +271,13 @@ brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio
    stow */
 
    # Or install individual components
-   stow ghostty karabiner sesh sketchybar skhd starship tmux tmuxinator yabai zsh nvim
+   stow ghostty karabiner sesh sketchybar starship tmux zsh nvim aerospace
    ```
 
 3. **Start services:**
    ```bash
-   # Start yabai and skhd
-   brew services start yabai
-   brew services start skhd
+   # Start Aerospace (or it will auto-start on login)
+   open -a AeroSpace
 
    # Start SketchyBar
    brew services start sketchybar
@@ -334,7 +290,7 @@ brew install uv node python kubectl kubectx kubens docker tmuxinator switchaudio
    ```
 
 4. **Configure permissions:**
-   - Grant accessibility permissions to SKHD and Yabai in System Preferences
+   - Grant accessibility permissions to Aerospace in System Preferences
    - Allow Karabiner-Elements to modify keyboard input
    - Configure Ghostty as default terminal
 
@@ -475,10 +431,10 @@ no                    # Open notes (Obsidian)
 
 ### Essential Keybinds
 ```bash
-# Window Management (Yabai/SKHD)
-ctrl+1-5             # Switch spaces
+# Window Management (Aerospace)
+cmd+ctrl+jkl         # Switch workspaces 1-3
 shift+ctrl+hjkl      # Focus windows
-ctrl+cmd+w           # Toggle fullscreen
+shift+ctrl+w         # Toggle fullscreen
 
 # Tmux (Prefix: Ctrl+A)
 C-a T                # Session switcher
@@ -499,10 +455,9 @@ jk                   # Exit insert mode
 # System Health Checks
 sesh list                                 # Check sesh sessions (manual)
 ~/.config/sketchybar/test_sketchybar.sh   # Test SketchyBar plugins
-yabai --check-config                      # Validate yabai config
 
 # Service Management
-brew services restart yabai               # Restart window manager
+killall AeroSpace && open -a AeroSpace    # Restart window manager
 sketchybar --reload                       # Reload menu bar
 exec zsh                                  # Reload shell config
 ```
@@ -515,10 +470,8 @@ exec zsh                                  # Reload shell config
 - `ghostty/config` - Terminal appearance and behavior
 - `karabiner/karabiner.json` - Simple keyboard remapping rules
 - `kanata/kanata.kbd` - Advanced keyboard remapping with home row mods
-- `skhd/skhdrc` - Hotkey definitions
-- `yabai/yabairc` - Window manager settings
+- `aerospace/aerospace.toml` - Window manager configuration
 - `tmux/.tmux.conf` - Terminal multiplexer setup
-- `tmuxinator/` - Complex session layout templates
 - `zsh/.zshrc` - Shell configuration and aliases
 
 ### Special Features

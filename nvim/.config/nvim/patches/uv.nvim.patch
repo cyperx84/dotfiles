@@ -1,0 +1,85 @@
+diff --git a/lua/uv/init.lua b/lua/uv/init.lua
+index 0c1b56a..43bd100 100644
+--- a/lua/uv/init.lua
++++ b/lua/uv/init.lua
+@@ -183,41 +183,55 @@ function M.run_python_selection()
+ 		return table.concat(lines, "\n")
+ 	end
+ 
+-	-- Get current buffer content to extract imports and global variables
++	-- Get current buffer content to extract imports, functions, classes, and global variables
+ 	---@return string[], string[]
+ 	local function get_buffer_globals()
+ 		local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+ 		local imports = {}
+ 		local globals = {}
+-		local in_class = false
+-		local class_indent = 0
++		local i = 1
++
++		while i <= #lines do
++			local line = lines[i]
+ 
+-		for _, line in ipairs(lines) do
+ 			-- Detect imports
+-			if line:match("^%s*import ") or line:match("^%s*from .+ import") then
++			if line:match("^import ") or line:match("^from .+ import") then
+ 				table.insert(imports, line)
+-			end
+-
+-			-- Detect class definitions to skip class variables
+-			if line:match("^%s*class ") then
+-				in_class = true
+-				class_indent = line:match("^(%s*)"):len()
+-			end
+-
+-			-- Check if we're exiting a class block
+-			if in_class and line:match("^%s*[^%s#]") then
+-				local current_indent = line:match("^(%s*)"):len()
+-				if current_indent <= class_indent then
+-					in_class = false
++				i = i + 1
++			-- Extract global function definitions (not indented)
++			elseif line:match("^def ") then
++				table.insert(globals, line)
++				i = i + 1
++				-- Include the function body
++				while i <= #lines do
++					local func_line = lines[i]
++					if func_line:match("^%s+") or func_line:match("^$") or func_line:match("^%s*#") then
++						table.insert(globals, func_line)
++						i = i + 1
++					else
++						break
++					end
+ 				end
+-			end
+-
+-			-- Detect global variable assignments (not in class, not inside functions)
+-			if not in_class and not line:match("^%s*def ") and line:match("^%s*[%w_]+ *=") then
+-				-- Check if it's not indented (global scope)
+-				if not line:match("^%s%s+") then
+-					table.insert(globals, line)
++			-- Extract global class definitions (not indented)
++			elseif line:match("^class ") then
++				table.insert(globals, line)
++				i = i + 1
++				-- Include the class body
++				while i <= #lines do
++					local class_line = lines[i]
++					if class_line:match("^%s+") or class_line:match("^$") or class_line:match("^%s*#") then
++						table.insert(globals, class_line)
++						i = i + 1
++					else
++						break
++					end
+ 				end
++			-- Detect global variable assignments (not indented, not function calls)
++			elseif line:match("^[%w_]+ *=") and not line:match("%(") then
++				table.insert(globals, line)
++				i = i + 1
++			else
++				i = i + 1
+ 			end
+ 		end
+ 

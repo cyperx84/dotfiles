@@ -1,0 +1,15 @@
+diff --git a/doc/tags b/doc/tags
+new file mode 100644
+index 0000000..e8f9246
+--- /dev/null
++++ b/doc/tags
+@@ -0,0 +1,9 @@
++copilot-copilot.lua	copilot.txt	/*copilot-copilot.lua*
++copilot-copilot.lua-commands	copilot.txt	/*copilot-copilot.lua-commands*
++copilot-copilot.lua-faq	copilot.txt	/*copilot-copilot.lua-faq*
++copilot-copilot.lua-install	copilot.txt	/*copilot-copilot.lua-install*
++copilot-copilot.lua-integrations	copilot.txt	/*copilot-copilot.lua-integrations*
++copilot-copilot.lua-requirements	copilot.txt	/*copilot-copilot.lua-requirements*
++copilot-copilot.lua-setup-and-configuration	copilot.txt	/*copilot-copilot.lua-setup-and-configuration*
++copilot-copilot.lua-table-of-contents	copilot.txt	/*copilot-copilot.lua-table-of-contents*
++copilot-links	copilot.txt	/*copilot-links*

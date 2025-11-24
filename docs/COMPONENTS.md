@@ -51,65 +51,10 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 
 **Common Operations**: See [KEYBINDS.md - Window Management (Aerospace)](KEYBINDS.md#window-management)
 
-**Switching**: See `WM_SWITCHING.md` for switching between Aerospace and Yabai
-
-### 🦞 Yabai - Tiling Window Manager (LEGACY)
-**Purpose**: Binary space partitioning window manager for macOS
-**Status**: ⚠️ Legacy/Alternative (not auto-started)
-**Dependencies**: SKHD for hotkeys, SketchyBar integration
-
-**Key Files**:
-- `yabai/.config/yabai/yabairc` - Main configuration
-- `skhd/.config/skhd/skhdrc.yabai.backup` - Backed up SKHD config
-- Related: `skhd/.config/skhd/skhdrc` (hotkeys)
-
-**Configuration Highlights**:
-```bash
-# BSP layout with minimal gaps
-yabai -m config layout bsp
-yabai -m config window_gap 1
-
-# External bar integration (SketchyBar)
-yabai -m config external_bar all:32:0
-
-# Mouse integration
-yabai -m config mouse_follows_focus on
-yabai -m config mouse_modifier alt
-```
-
-**Integration Points**:
-- **SKHD**: Hotkey bindings for window operations
-- **SketchyBar**: Space indicators and window information (requires manual setup)
-- **Exclusions**: System Settings, Calculator, Karabiner-Elements
-
-**Common Operations**: See [KEYBINDS.md - Window Management (Yabai)](KEYBINDS.md#window-management)
-
-**Switching**: See `WM_SWITCHING.md` for activating Yabai instead of Aerospace
-
-### ⚡ SKHD - Hotkey Daemon (LEGACY)
-**Purpose**: System-wide hotkey management for Yabai
-**Status**: ⚠️ Legacy (used only with Yabai, not Aerospace)
-**Dependencies**: Yabai for window management
-
-**Key Files**:
-- `skhd/.config/skhd/skhdrc` - Hotkey definitions
-- `skhd/.config/skhd/skhdrc.yabai.backup` - Original Yabai-era config
-
-**Categories of Bindings**:
-- **Window Focus**: `shift+ctrl+hjkl` (west/south/north/east)
-- **Window Movement**: `shift+ctrl+alt+hjkl`
-- **Window Resize**: `ctrl+alt+cmd+hjkl`
-- **Space Control**: `ctrl+1-5` (focus), `shift+alt+1-7` (move window)
-- **Window States**: `alt+t` (float), `ctrl+cmd+w` (fullscreen)
-
-**Integration**: Seamlessly controls Yabai window manager operations
-
-**Note**: Aerospace has integrated keybindings and does not use SKHD
-
 ### 📊 SketchyBar - Menu Bar Replacement
 **Purpose**: Customizable macOS menu bar with system information
 **Status**: ✅ Active
-**Dependencies**: Aerospace (primary) or Yabai for space information, various system tools
+**Dependencies**: Aerospace for workspace information, various system tools
 
 **Key Files**:
 - `sketchybar/.config/sketchybar/sketchybarrc` - Main configuration
@@ -220,7 +165,6 @@ bind-key l select-pane -R
 
 **Session Management**:
 - **Sesh Integration**: `C-a T` for advanced session switcher
-- **Tmuxinator Support**: `C-a M` for layout selection
 - **Quick Operations**: `C-a N` (new), `C-a R` (rename), `C-a X` (kill)
 
 **Integration Points**:
@@ -326,19 +270,6 @@ export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-rainbow.toml
 - Performance metrics and timing
 - Tmux-aware prompt handling
 
-### 🏗️ Tmuxinator - Session Layouts
-**Purpose**: Complex tmux session management with YAML definitions
-**Status**: ✅ Active
-**Dependencies**: Tmux, project directories
-
-**Key Files**:
-- `tmuxinator/.config/tmuxinator/` - YAML layout definitions
-
-**Integration**:
-- **Tmux**: `C-a M` binding for layout selection
-- **Sesh**: `sesh-tmux` and `sesh-start` aliases
-- **Project-based**: Each YAML file defines a complete development environment
-
 ---
 
 ## Development Tools
@@ -410,7 +341,7 @@ startup_script = "~/.config/sesh/scripts/claude_dev.sh"
 **Enhanced Workflow**:
 - **Quick Access**: `sd` (fuzzy connect), `sl` (list), `sc` (connect)
 - **Status Monitoring**: `sesh-dashboard`, `sesh-current`, `sesh-info`
-- **Integration**: Works with tmux and tmuxinator for complete session management
+- **Integration**: Works with tmux for complete session management
 
 **Validation**: Manual validation via `sesh list` (validation script removed Oct 2025)
 
@@ -500,9 +431,9 @@ function brew() {
 
 **Cross-Tool Integration Points**:
 
-1. **Window Management**: Yabai ↔ SKHD ↔ SketchyBar
+1. **Window Management**: Aerospace ↔ SketchyBar
 2. **Terminal Stack**: Ghostty ↔ Tmux ↔ Zsh ↔ Starship
-3. **Session Management**: Sesh ↔ Tmux ↔ Tmuxinator ↔ FZF
+3. **Session Management**: Sesh ↔ Tmux ↔ FZF
 4. **Development**: Neovim ↔ Tmux ↔ Git ↔ File Managers
 5. **Input**: Karabiner/Kanata ↔ All Applications
 
@@ -513,7 +444,7 @@ All components use GNU Stow for deployment:
 stow */
 
 # Deploy individual components
-stow ghostty yabai skhd # etc.
+stow ghostty aerospace sketchybar # etc.
 
 # Remove components
 stow -D component_name
@@ -525,16 +456,14 @@ stow -D component_name
 
 | Component | Status | Dependencies | Integration Level |
 |-----------|--------|--------------|------------------|
-| **Yabai** | ✅ Active | SKHD, SketchyBar | Core (Window Management) |
-| **SKHD** | ✅ Active | Yabai | Core (Hotkeys) |
-| **SketchyBar** | ✅ Active | Yabai, System Tools | High (System Info) |
+| **Aerospace** | ✅ Active | None | Core (Window Management) |
+| **SketchyBar** | ✅ Active | Aerospace, System Tools | High (System Info) |
 | **Ghostty** | ✅ Active | Fonts | Core (Terminal) |
 | **Tmux** | ✅ Active | Plugins | High (Session Management) |
 | **Zsh** | ✅ Active | Many CLI Tools | High (Shell Environment) |
 | **Starship** | ✅ Active | Nerd Fonts | Medium (Prompt) |
 | **Neovim** | ✅ Active | LSP Servers | High (Development) |
 | **Sesh** | ✅ Active | Tmux, FZF | High (Session Management) |
-| **Tmuxinator** | ✅ Active | Tmux | Medium (Complex Layouts) |
 | **Karabiner** | ✅ Active | None | Medium (Input Remapping) |
 | **Kanata** | ⚠️ Configured | None | Alternative Input Option |
 

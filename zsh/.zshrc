@@ -214,8 +214,6 @@ alias conf="cd $HOME/dotfiles && nvim"
 
 # notes
 alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
-alias tno="tmuxinator start notes"
-alias ts='tmuxinator start'
 
 # ======================
 # SESH SESSION MANAGEMENT
@@ -250,57 +248,6 @@ eval "$(zoxide init zsh)"
 export PATH="$HOME/.npm-global/bin:/opt/homebrew/opt/icu4c@77/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
 alias oc="opencode"
-
-# Claude Code - unset DeepSeek env vars before running
-cc() {
-    unset ANTHROPIC_BASE_URL
-    unset ANTHROPIC_AUTH_TOKEN
-    unset API_TIMEOUT_MS
-    unset ANTHROPIC_MODEL
-    unset ANTHROPIC_SMALL_FAST_MODEL
-    unset CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
-    /Users/cyperx/.claude/local/claude --dangerously-skip-permissions "$@"
-}
-
-# DeepSeek with Claude Code
-ccds() {
-    export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
-    export ANTHROPIC_AUTH_TOKEN=$(pass apis/DEEPSEEK_API_KEY)
-    export API_TIMEOUT_MS=600000
-    export ANTHROPIC_MODEL=deepseek-chat
-    export ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat
-    export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
-    claude "$@"
-}
-
-# MiniMax with Claude Code
-ccmm() {
-    export ANTHROPIC_BASE_URL=https://api.minimax.io/anthropic
-    export ANTHROPIC_AUTH_TOKEN=$(pass apis/MINIMAX_API_KEY)
-    export API_TIMEOUT_MS=3000000
-    export ANTHROPIC_MODEL=MiniMax-M2
-    export ANTHROPIC_SMALL_FAST_MODEL=MiniMax-M2
-    export ANTHROPIC_DEFAULT_SONNET_MODEL=MiniMax-M2
-    export ANTHROPIC_DEFAULT_OPUS_MODEL=MiniMax-M2
-    export ANTHROPIC_DEFAULT_HAIKU_MODEL=MiniMax-M2
-    export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
-    claude "$@"
-}
-
-# GLM with Claude Code
-ccg() {
-    export ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic
-    export ANTHROPIC_AUTH_TOKEN=$(pass apis/GLM_API_KEY)
-    export API_TIMEOUT_MS=3000000
-    export ANTHROPIC_MODEL=GLM-4.6
-    export ANTHROPIC_SMALL_FAST_MODEL=GLM-4.5-Air
-    export ANTHROPIC_DEFAULT_SONNET_MODEL=GLM-4.6
-    export ANTHROPIC_DEFAULT_OPUS_MODEL=GLM-4.6
-    export ANTHROPIC_DEFAULT_HAIKU_MODEL=GLM-4.5-Air
-    export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
-    claude "$@"
-}
-
 
 # Antigravity PATH (appended to main PATH configuration above)
 export PATH="$PATH:/Users/cyperx/.antigravity/antigravity/bin"

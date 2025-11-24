@@ -20,9 +20,6 @@ killall AeroSpace && open -a AeroSpace
 sketchybar --reload                                       # Reload SketchyBar
 tmux source-file ~/.tmux.conf                             # Reload tmux config
 
-# Alternative (Legacy): Yabai + SKHD
-# brew services restart yabai && brew services restart skhd && sketchybar --reload
-
 # Validation & testing
 ~/.config/sketchybar/test_sketchybar.sh                  # Test all plugins
 
@@ -40,9 +37,7 @@ Core Configs:
 ├── zsh/.zshrc                                           # Shell: aliases, functions, keybinds
 ├── tmux/.tmux.conf                                      # Multiplexer: Ctrl+A prefix
 ├── nvim/.config/nvim/lua/keymaps.lua                   # Neovim keybinds
-├── aerospace/.config/aerospace/aerospace.toml          # Window manager (PRIMARY)
-├── yabai/.config/yabai/yabairc                         # Window manager (LEGACY)
-├── skhd/.config/skhd/skhdrc                            # Hotkey daemon (LEGACY)
+├── aerospace/.config/aerospace/aerospace.toml          # Window manager
 ├── ghostty/.config/ghostty/config                      # Terminal
 ├── sketchybar/.config/sketchybar/sketchybarrc          # Menu bar
 └── kanata/.config/kanata/kanata.kbd                    # Keyboard remapper (ACTIVE)
@@ -66,7 +61,6 @@ System-Level Services (LaunchDaemons):
 | "How tools work together" | Check workflows | @docs/WORKFLOW_GUIDES.md |
 | "Component details" | Check components | @docs/COMPONENTS.md |
 | "Not working" / "Broken" | Troubleshoot | @docs/MAINTENANCE.md |
-| "Window manager" / "Switch WM" | Window manager guide | @WM_SWITCHING.md |
 | "Statusline" / "Context" | Check statusline | @docs/CLAUDE_STATUSLINE.md |
 | "Agent development" | Check guidelines | @AGENTS.md |
 | "Repository overview" | Check README | @README.md |
@@ -99,14 +93,10 @@ System-Level Services (LaunchDaemons):
 **Overview:** Comprehensive macOS development environment with 15+ integrated components managed via GNU Stow.
 
 ### Window Management Stack (Tightly Coupled)
-- **Aerospace** - Modern tiling window manager (PRIMARY, auto-starts on login)
+- **Aerospace** - Tiling window manager (auto-starts on login)
   - Native keybindings in config (no external daemon needed)
   - Direct SketchyBar integration via callbacks
   - 2px gaps, 32px top padding for SketchyBar
-- **Yabai + SKHD** - LEGACY/Alternative setup (available for switching)
-  - Yabai: BSP tiling window manager
-  - SKHD: Hotkey daemon
-  - See `WM_SWITCHING.md` for switching guide
 - **SketchyBar** - Menu bar replacement (30+ plugins, aerospace integration)
 
 ### Terminal Environment (3-Layer)
@@ -117,7 +107,6 @@ System-Level Services (LaunchDaemons):
 ### Development Tools
 - **Neovim** - 49 Lua config files (kickstart.nvim based)
 - **Starship** - 6 interchangeable prompt themes
-- **Tmuxinator** - Complex tmux session layouts
 
 ### Input Management
 - **Karabiner-Elements** - Active (Caps→Ctrl, Right Cmd/Shift→Backspace)
@@ -134,13 +123,10 @@ System-Level Services (LaunchDaemons):
 
 ```bash
 # Prerequisites
-brew install --cask aerospace                           # Window manager (PRIMARY)
+brew install --cask aerospace                           # Window manager
 brew install sketchybar stow starship tmux \
   zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep \
   nvim git gh yazi jq wget curl
-
-# Optional (Legacy window management):
-# brew install yabai skhd
 
 brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd-font
 
@@ -167,10 +153,6 @@ brew services start sketchybar
 brew services restart sketchybar                         # After config changes
 sketchybar --reload                                      # Reload without restart
 
-# Legacy Window Management (if using Yabai instead)
-# brew services start yabai skhd
-# brew services restart yabai && brew services restart skhd
-
 # Kanata (LaunchDaemon - NOT Homebrew service)
 sudo launchctl print system/com.example.kanata          # Check status
 sudo launchctl kickstart -k system/com.example.kanata   # Restart
@@ -195,10 +177,6 @@ killall AeroSpace && open -a AeroSpace
 # Debug tools
 ~/.config/sketchybar/debug_sketchybar.sh             # Full debug
 ~/.config/sketchybar/plugin_health_monitor.sh test  # Health check
-
-# Legacy (if using Yabai)
-# yabai --check-config
-# tail -f /usr/local/var/log/skhd/skhd.out.log
 ```
 
 ### Theme Switching
@@ -238,11 +216,7 @@ Extensive alias system (50+ git aliases, Docker/K8s workflows, navigation shortc
 See complete list: `alias | grep` or check `.zshrc` lines 100-300.
 
 ### Session Management
-Two session management systems:
-1. **Tmux resurrect/continuum** - Session persistence
-2. **Tmuxinator** - Complex multi-window layouts
-
-When modifying session configs, consider interactions between these tools.
+**Tmux resurrect/continuum** provides session persistence and automatic save/restore functionality.
 
 ## 🐛 Troubleshooting Quick Reference
 
@@ -259,18 +233,6 @@ cd ~/.config/sketchybar/helper && make clean && make
 # Plugin not updating
 ~/.config/sketchybar/plugin_health_monitor.sh test <plugin_name>
 sketchybar --trigger <plugin_name>.update
-```
-
-### Service Issues
-
-```bash
-# Services won't start
-brew services list                                   # Check status
-tail -f /usr/local/var/log/yabai/yabai.out.log      # Yabai logs
-tail -f /usr/local/var/log/skhd/skhd.out.log        # SKHD logs
-
-# Config syntax errors
-yabai --check-config
 ```
 
 ### Stow Issues
@@ -327,7 +289,6 @@ This repository has comprehensive documentation for detailed information:
 | Document | Purpose |
 |----------|---------|
 | @README.md | Repository overview and quick start |
-| @WM_SWITCHING.md | Window manager switching guide (Aerospace ↔ Yabai) |
 | @docs/COMPONENTS.md | Detailed component documentation |
 | @docs/KEYBINDS.md | Complete keybindings reference |
 | @docs/NEOVIM_KEYBINDS.md | Neovim-specific mappings |
@@ -342,14 +303,12 @@ This repository has comprehensive documentation for detailed information:
 - Aerospace config changes → `killall AeroSpace && open -a AeroSpace`
 - SketchyBar config changes → `sketchybar --reload`
 - Plugin changes → Test individual plugin before full reload
-- Legacy (Yabai/SKHD) → See `WM_SWITCHING.md` for switching guide
 
 ### Configuration Validation Workflow
 1. Make changes to config files
 2. Restart affected service (Aerospace auto-validates on startup)
 3. Verify functionality
 4. Check logs if issues occur (Console.app for Aerospace)
-5. For legacy Yabai: use `yabai --check-config` before restart
 
 ### Plugin Development (SketchyBar)
 - Follow event-driven pattern (see existing plugins in `sketchybar/.config/sketchybar/plugins/`)
@@ -405,46 +364,6 @@ mcphub/.config/mcphub/
 - **Usage**: Configure servers in `servers.json`, access via keybinding
 
 **Configuration**: Edit `mcp/.config/mcp/servers.json` to add/modify MCP servers
-
-### Claude Code Integration
-
-**Directory**: `.claude/` in home directory (also project-level)
-
-**Structure**:
-```
-~/.claude/
-├── agents/              # Custom agents
-├── config/              # Claude Code configuration
-├── data/                # Conversation history
-├── shell-snapshots/     # Shell state snapshots
-├── todos/               # Task tracking
-└── tools/               # Custom tools
-```
-
-**Shell Aliases** (in `zsh/.zshrc`):
-
-```bash
-# Claude Code - clean environment (unsets DeepSeek vars)
-cc() {
-    unset ANTHROPIC_BASE_URL ANTHROPIC_AUTH_TOKEN API_TIMEOUT_MS
-    unset ANTHROPIC_MODEL ANTHROPIC_SMALL_FAST_MODEL
-    unset CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
-    /Users/cyperx/.claude/local/claude --dangerously-skip-permissions "$@"
-}
-
-# DeepSeek with Claude Code (alternative model)
-ccds() {
-    export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
-    export ANTHROPIC_AUTH_TOKEN=$(pass apis/DEEPSEEK_API_KEY)
-    export API_TIMEOUT_MS=600000
-    export ANTHROPIC_MODEL=deepseek-chat
-    export ANTHROPIC_SMALL_FAST_MODEL=deepseek-chat
-    export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
-    claude "$@"
-}
-```
-
-**Usage**: Run `cc` for Claude Code, `ccds` for DeepSeek-powered Claude Code
 
 ### Git Subtree Management (Nvim)
 
@@ -544,30 +463,6 @@ make clean && make 2>&1 | tee compile.log
 ### Service Log Locations
 
 **IMPORTANT**: Know where to find logs when troubleshooting service issues.
-
-**Yabai**:
-```bash
-# Standard output log
-tail -f /usr/local/var/log/yabai/yabai.out.log
-
-# Error log
-tail -f /usr/local/var/log/yabai/yabai.err.log
-
-# Combined view
-tail -f /usr/local/var/log/yabai/*.log
-```
-
-**SKHD**:
-```bash
-# Standard output log
-tail -f /usr/local/var/log/skhd/skhd.out.log
-
-# Error log
-tail -f /usr/local/var/log/skhd/skhd.err.log
-
-# Watch for hotkey press events
-tail -f /usr/local/var/log/skhd/skhd.out.log | grep --line-buffered "hotkey"
-```
 
 **SketchyBar**:
 ```bash
@@ -671,12 +566,12 @@ readlink ~/.config/tool  # Should show ~/dotfiles/component/.config/tool
 **Partial Stowing** (Selective Installation):
 ```bash
 # Install only specific components
-stow ghostty yabai skhd sketchybar tmux zsh
+stow ghostty aerospace sketchybar tmux zsh
 
 # Skip others if not needed (useful for testing or partial deployments)
 
 # Example: Window management only
-stow yabai skhd sketchybar
+stow aerospace sketchybar
 ```
 
 **Restow** (Update Symlinks After Changes):
@@ -714,7 +609,6 @@ find ~ -maxdepth 3 -type l -ls | grep dotfiles
 | Component | Validation | How to Test |
 |-----------|-----------|-------------|
 | **Aerospace** | ✅ Validates on startup | Restart and check Console.app for errors |
-| **SKHD** (Legacy) | ❌ No syntax checking | Check logs: `tail -f /usr/local/var/log/skhd/skhd.out.log` |
 | **Tmux** | ❌ No pre-flight checks | Syntax errors shown on reload: `tmux source-file ~/.tmux.conf` |
 | **Zsh** | ❌ No automated testing | Errors only on shell reload: `exec zsh` |
 | **Sesh** | ❌ Validation script removed | Manual: `sesh list` (check for errors) |
@@ -724,7 +618,6 @@ find ~ -maxdepth 3 -type l -ls | grep dotfiles
 
 **✅ Components WITH Automated Validation**:
 - **Aerospace**: Validates on startup (check Console.app for errors)
-- **Yabai** (Legacy): `yabai --check-config`
 - **SketchyBar**: `~/.config/sketchybar/test_sketchybar.sh`
 - **Neovim**: `:checkhealth`, `:Lazy health`
 
@@ -732,18 +625,11 @@ find ~ -maxdepth 3 -type l -ls | grep dotfiles
 ```bash
 # Recommended after configuration changes:
 1. Make changes to config file(s)
-2. If validation available, run it (yabai --check-config)
+2. If validation available, run it
 3. Reload/restart service
 4. Check logs for errors immediately
 5. Test functionality manually
 6. If errors occur, rollback and investigate
-
-# Example: SKHD changes
-vim ~/.config/skhd/skhdrc
-brew services restart skhd
-tail -f /usr/local/var/log/skhd/skhd.out.log  # Watch for errors
-# Press a hotkey to test
-# If broken, fix and restart
 ```
 
 **Rollback Strategy**:
@@ -767,19 +653,16 @@ git stash pop  # Restore if needed
 ## 🔄 Recent Changes & Migrations
 
 ### **CRITICAL** - Window Manager Migration to Aerospace (Nov 2025)
-- **Action**: Migrated from Yabai + SKHD to Aerospace as primary window manager
+- **Action**: Migrated to Aerospace as window manager
 - **Added Files**:
   - `aerospace/.config/aerospace/aerospace.toml` (194 lines, complete config)
-  - `WM_SWITCHING.md` (switching guide between Aerospace and Yabai)
   - `sketchybar/.config/sketchybar/plugins/aerospace.sh` (workspace integration)
   - `sketchybar/.config/sketchybar/plugins/create_workspace.sh`
   - `sketchybar/.config/sketchybar/plugins/space_window_count.sh`
-- **Backed Up**: `skhd/.config/skhd/skhdrc.yabai.backup` (original SKHD config)
 - **Impact**:
-  - Aerospace now auto-starts on login (`start-at-login = true`)
+  - Aerospace auto-starts on login (`start-at-login = true`)
   - All keybindings integrated into aerospace.toml (no external hotkey daemon needed)
   - SketchyBar directly integrated via `exec-on-workspace-change` callback
-  - Yabai + SKHD remains available as legacy/alternative (see `WM_SWITCHING.md`)
   - **IMPORTANT**: Do not run `sleep` with aerospace commands (it hangs)
 
 ### **CRITICAL** - Sesh Script Migration (Oct 2025)
@@ -798,14 +681,8 @@ git stash pop  # Restore if needed
 - Updated keymaps.lua with new navigation bindings
 - Multiple file navigation options now available
 
-### Tmuxinator Layouts Standardized
-- All 4 layouts updated: coding.yml, docker.yml, dotfiles.yml, notes.yml
-- Improved consistency across session definitions
-
 ## 🏷️ Recent Updates (Historical)
 
 - Added Kanata keyboard remapper as alternative to Karabiner-Elements
-- Added Tmuxinator for complex session layouts
 - Expanded SketchyBar to 30+ plugins with comprehensive testing framework
 - **Oct 2025**: Nvim added as git subtree (see Git Subtree Management below)
-- do not run sleep with a areospace command it hangs

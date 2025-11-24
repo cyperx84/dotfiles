@@ -47,11 +47,10 @@ blacklist = [
 ]
 
 # Prioritize session sources
-# Active tmux sessions first for quick access, then tmuxinator projects
+# Active tmux sessions first for quick access
 # Note: zoxide is NOT included here - it loads on-demand via Ctrl+B keybind instead
 sort_order = [
     "tmux",
-    "tmuxinator",
     "config",
 ]
 
@@ -76,11 +75,6 @@ startup_command = "nvim INDEX.md"
 name = "dotfiles"
 path = "~/dotfiles"
 startup_command = "nvim"
-
-[[sessiopn]]
-name = "claude config"
-path = "~/.claude"
-startup_command = ""
 
 [[session]]
 name = "code"
