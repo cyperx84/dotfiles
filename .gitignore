@@ -2,7 +2,6 @@
 sketchybar/.config/sketchybar/helper/helper
 
 .genkit/
-# macOS
 .DS_Store
 
 # Backup files
