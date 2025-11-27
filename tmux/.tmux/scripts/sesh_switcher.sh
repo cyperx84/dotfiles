@@ -18,8 +18,8 @@
 #   - Graceful degradation for optional features
 #
 # KEYBINDINGS (within FZF):
+#   Esc             - Close switcher
 #   Ctrl+D/U        - Scroll preview window down/up
-#   Esc             - Abort selection
 #   Alt+N           - Create new session
 #   Alt+K           - Kill selected session
 #   Ctrl+T          - Toggle tmux-only view

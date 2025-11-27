@@ -1,5 +1,6 @@
 return {
   'olimorris/codecompanion.nvim',
+  version = 'v17.33.0',
   dependencies = {
     'nvim-lua/plenary.nvim',
     'nvim-treesitter/nvim-treesitter',
@@ -111,7 +112,7 @@ return {
           openai = function()
             return require('codecompanion.adapters').extend('openai', {
               env = {
-                api_key = 'cmd:pass show apis/OPENAI_API_KEY',
+                api_key = 'cmd:gopass show apis/OPENAI_API_KEY 2>/dev/null',
               },
               schema = {
                 model = { default = 'gpt-4o-mini' },
@@ -119,21 +120,10 @@ return {
             })
           end,
 
-          anthropic = function()
-            return require('codecompanion.adapters').extend('anthropic', {
-              env = {
-                api_key = 'cmd:pass show apis/ANTHROPIC_API_KEY',
-              },
-              schema = {
-                model = { default = 'claude-sonnet-4-20250514' },
-              },
-            })
-          end,
-
           gemini = function()
             return require('codecompanion.adapters').extend('gemini', {
               env = {
-                api_key = 'cmd:pass show apis/GEMINI_API_KEY',
+                api_key = 'cmd:gopass show apis/GEMINI_API_KEY 2>/dev/null',
               },
               schema = {
                 model = { default = 'gemini-2.0-flash-exp' },
@@ -144,7 +134,7 @@ return {
           deepseek = function()
             return require('codecompanion.adapters').extend('deepseek', {
               env = {
-                api_key = 'cmd:pass show apis/DEEPSEEK_API_KEY',
+                api_key = 'cmd:gopass show apis/DEEPSEEK_API_KEY 2>/dev/null',
               },
               schema = {
                 model = { default = 'deepseek-chat' },
@@ -154,33 +144,13 @@ return {
         },
 
         acp = {
-          claude_code = function()
-            return require('codecompanion.adapters').extend('claude_code', {
-              env = {
-                -- Using OAuth token from `claude setup-token`
-                CLAUDE_CODE_OAUTH_TOKEN = 'cmd:pass show apis/CLAUDE_CODE_OAUTH_TOKEN',
-              },
-            })
-          end,
-
-          gemini_cli = function()
-            return require('codecompanion.adapters').extend('gemini_cli', {
-              defaults = {
-                auth_method = 'gemini-api-key', -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
-              },
-              env = {
-                GEMINI_API_KEY = 'cmd:pass show apis/GEMINI_API_KEY',
-              },
-            })
-          end,
-
           codex = function()
             return require('codecompanion.adapters').extend('codex', {
               defaults = {
-                auth_method = 'openai-api-key', -- "openai-api-key"|"codex-api-key"|"chatgpt"
+                auth_method = 'openai-api-key',
               },
               env = {
-                OPENAI_API_KEY = 'cmd:pass show apis/OPENAI_API_KEY',
+                OPENAI_API_KEY = 'cmd:gopass show apis/OPENAI_API_KEY 2>/dev/null',
               },
             })
           end,
@@ -259,8 +229,8 @@ return {
             },
           },
         },
-        inline = { adapter = 'deepseek' },
-        cmd = { adapter = 'deepseek' },
+        inline = { adapter = 'anthropic' },
+        cmd = { adapter = 'anthropic' },
       },
       extensions = {
         mcphub = {

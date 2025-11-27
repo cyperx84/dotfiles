@@ -23,7 +23,8 @@ return {
       telescope.setup {
         defaults = {
           -- follow symlinks in both file and grep pickers
-          file_ignore_patterns = { '.git', 'node_modules', '.cache', '.obsidian', '.smart-connections' },
+          -- NOTE: These are regex patterns, not literal strings! Escape dots with \\
+          file_ignore_patterns = { '\\.git', 'node_modules', '\\.cache', '\\.obsidian', '\\.smart%-connections' },
           layout_strategy = 'flex',
           layout_config = {
             flex = {

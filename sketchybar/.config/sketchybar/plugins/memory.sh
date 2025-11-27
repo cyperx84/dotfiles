@@ -88,15 +88,46 @@ else
   ICON_COLOR=$GREEN
 fi
 
-# Create concise display format: "51%"
-DISPLAY_TEXT="${MEMORY_PERCENT}%"
+# Create compact single-line format: "11G 34%"
+USED_GB_INT=$(printf "%.0f" "$USED_GB")
+DISPLAY_TEXT="${USED_GB_INT}G ${MEMORY_PERCENT}%"
 
 # Add memory pressure indicator if critical
 if [ "$MEMORY_PRESSURE" -lt 15 ]; then
-  DISPLAY_TEXT="⚠️ ${DISPLAY_TEXT}"
+  DISPLAY_TEXT="⚠️${DISPLAY_TEXT}"
 fi
 
-# Update the display with enhanced formatting
+# Update memory item
 sketchybar --set $NAME label="$DISPLAY_TEXT" \
                     label.color=$COLOR \
                     icon.color=$ICON_COLOR
+
+# Update popup items if they exist (for detailed breakdown)
+if [ "$NAME" = "memory" ] || [ "$SENDER" = "routine" ]; then
+  # Calculate free memory
+  FREE_GB=$(echo "$TOTAL_GB - $USED_GB" | bc -l)
+  FREE_GB=$(printf "%.1f" "$FREE_GB")
+
+  # Calculate percentages for slider bars (0-100 range)
+  ACTIVE_PERCENT=$(echo "scale=0; ($ACTIVE_GB * 100) / $TOTAL_GB" | bc -l 2>/dev/null)
+  WIRED_PERCENT=$(echo "scale=0; ($WIRED_GB * 100) / $TOTAL_GB" | bc -l 2>/dev/null)
+  COMPRESSED_PERCENT=$(echo "scale=0; ($COMPRESSED_GB * 100) / $TOTAL_GB" | bc -l 2>/dev/null)
+  FREE_PERCENT=$(echo "scale=0; ($FREE_GB * 100) / $TOTAL_GB" | bc -l 2>/dev/null)
+
+  # Fallback to 0 if calculation fails
+  [[ "$ACTIVE_PERCENT" =~ ^[0-9]+$ ]] || ACTIVE_PERCENT=0
+  [[ "$WIRED_PERCENT" =~ ^[0-9]+$ ]] || WIRED_PERCENT=0
+  [[ "$COMPRESSED_PERCENT" =~ ^[0-9]+$ ]] || COMPRESSED_PERCENT=0
+  [[ "$FREE_PERCENT" =~ ^[0-9]+$ ]] || FREE_PERCENT=0
+
+  # Update popup items
+  sketchybar --set memory.active label="${ACTIVE_GB}GB" \
+                                 slider.percentage=$ACTIVE_PERCENT \
+             --set memory.wired label="${WIRED_GB}GB" \
+                                slider.percentage=$WIRED_PERCENT \
+             --set memory.compressed label="${COMPRESSED_GB}GB" \
+                                     slider.percentage=$COMPRESSED_PERCENT \
+             --set memory.free label="${FREE_GB}GB" \
+                               slider.percentage=$FREE_PERCENT \
+             --set memory.pressure label="${MEMORY_PRESSURE}%"
+fi

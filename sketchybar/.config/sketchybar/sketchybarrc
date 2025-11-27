@@ -14,6 +14,18 @@ SMALL_LABEL_FONT="$FONT:Medium:10.0"
 PADDINGS=1
 HELPER=git.felix.helper
 
+# Cleanup function for WiFi monitor
+cleanup_wifi_monitor() {
+  WIFI_MONITOR_PID_FILE="/tmp/sketchybar_wifi_monitor.pid"
+  if [ -f "$WIFI_MONITOR_PID_FILE" ]; then
+    kill "$(cat "$WIFI_MONITOR_PID_FILE")" 2>/dev/null
+    rm "$WIFI_MONITOR_PID_FILE"
+  fi
+}
+
+# Register cleanup on exit
+trap cleanup_wifi_monitor EXIT
+
 # Helper binary compilation with error handling
 compile_helper() {
   local helper_dir="$CONFIG_DIR/helper"
@@ -147,7 +159,9 @@ system_monitor_bracket=(
   click_script="$PLUGIN_DIR/system_monitor_details.sh"
 )
 
-sketchybar --add bracket system_monitor cpu.top cpu.percent cpu.sys cpu.user memory temperature disk network \
+sketchybar --add bracket system_monitor cpu.top cpu.percent cpu.sys cpu.user \
+                                        memory \
+                                        temperature disk network \
   --set system_monitor "${system_monitor_bracket[@]}"
 
 # source "$ITEM_DIR/timer.sh"
@@ -164,6 +178,17 @@ sketchybar --add bracket system_monitor cpu.top cpu.percent cpu.sys cpu.user mem
 sketchybar --hotload on
 
 sketchybar --update
+
+# Start WiFi monitor background process
+WIFI_MONITOR_PID_FILE="/tmp/sketchybar_wifi_monitor.pid"
+if [ -f "$WIFI_MONITOR_PID_FILE" ]; then
+  # Kill existing monitor if running
+  kill "$(cat "$WIFI_MONITOR_PID_FILE")" 2>/dev/null
+  rm "$WIFI_MONITOR_PID_FILE"
+fi
+
+# Start new monitor in background
+"$PLUGIN_DIR/wifi_monitor.sh" >/dev/null 2>&1 &
 
 # Trigger initial workspace highlight
 /bin/bash -c "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused 2>/dev/null || echo '1')" &

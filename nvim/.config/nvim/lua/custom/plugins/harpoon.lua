@@ -13,46 +13,33 @@ return {
       desc = 'Harpoon: Toggle Menu',
     })
 
-    local function safe_nav_file(id)
-      local ok, err = pcall(ui.nav_file, id)
-      if not ok then
-        -- Handle E325 (swap file exists) by attempting recovery
-        if err:find('E325') then
-          vim.notify('Harpoon: Swap file detected, recovering...', vim.log.levels.WARN)
-          -- Ignore the error and let Neovim handle it naturally
-        else
-          vim.notify('Harpoon: Navigation error - ' .. tostring(err), vim.log.levels.ERROR)
-        end
-      end
-    end
-
     vim.keymap.set('n', '<M-j>', function()
-      safe_nav_file(1)
+      ui.nav_file(1)
     end, {
       desc = 'Harpoon File 1',
     })
     vim.keymap.set('n', '<M-k>', function()
-      safe_nav_file(2)
+      ui.nav_file(2)
     end, {
       desc = 'Harpoon File 2',
     })
     vim.keymap.set('n', '<M-l>', function()
-      safe_nav_file(3)
+      ui.nav_file(3)
     end, {
       desc = 'Harpoon File 3',
     })
     vim.keymap.set('n', '<M-u>', function()
-      safe_nav_file(4)
+      ui.nav_file(4)
     end, {
       desc = 'Harpoon File 4',
     })
     vim.keymap.set('n', '<M-i>', function()
-      safe_nav_file(5)
+      ui.nav_file(5)
     end, {
       desc = 'Harpoon File 5',
     })
     vim.keymap.set('n', '<M-o>', function()
-      safe_nav_file(6)
+      ui.nav_file(6)
     end, {
       desc = 'Harpoon File 6',
     })

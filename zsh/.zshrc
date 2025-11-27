@@ -36,6 +36,7 @@ if (( $+commands[gpg] )); then
   }
 fi
 
+
 if command -v sketchybar &>/dev/null; then
 function brew() {
 	command brew "$@"
@@ -44,6 +45,9 @@ function brew() {
 	fi
 }
 fi
+
+autoload -U compinit && compinit
+source <(gopass completion zsh)
 
 # Navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
@@ -111,6 +115,8 @@ if [ -n "$TMUX" ]; then
 fi
 
 eval "$(starship init zsh)"
+
+alias pass="gopass"
 
 # Git
 alias gc="git commit -m"
@@ -264,3 +270,4 @@ if (( $+commands[direnv] )); then
   autoload -U add-zsh-hook
   add-zsh-hook chpwd _direnv_lazy_load
 fi
+
