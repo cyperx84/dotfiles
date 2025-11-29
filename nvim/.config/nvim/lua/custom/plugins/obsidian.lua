@@ -11,11 +11,11 @@ return {
       -- Workspace configuration
       workspaces = {
         {
-          name = 'personal',
+          name = 'notes',
           path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes',
         },
         {
-          name = 'newvault',
+          name = 'snowboarding',
           path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/newvault',
         },
       },
@@ -211,7 +211,42 @@ return {
 
           -- Utility
           { 'n', '<leader>oi', ':ObsidianPasteImg<CR>', '[O]bsidian Paste [I]mage' },
-          { 'n', '<leader>or', '<cmd>ObsidianRename<CR>', '[O]bsidian [R]ename' },
+          { 'n', '<leader>or', function()
+            vim.ui.input({ prompt = 'New note name: ' }, function(new_name)
+              if not new_name or new_name == '' then return end
+
+              local bufnr = vim.api.nvim_get_current_buf()
+              local current_file = vim.api.nvim_buf_get_name(bufnr)
+              local current_dir = vim.fn.fnamemodify(current_file, ':h')
+              local new_path = current_dir .. '/' .. new_name .. '.md'
+
+              vim.cmd 'w'
+              local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+              -- Generate new ID
+              local new_id = new_name:gsub('^%s*(.-)%s*$', '%1'):gsub('%s+', '-'):gsub('[^%w%-]', '')
+
+              -- Update id and title in frontmatter
+              for i = 1, #lines do
+                if lines[i]:match '^id:' then
+                  lines[i] = 'id: ' .. new_id
+                elseif lines[i]:match '^title:' then
+                  lines[i] = 'title: ' .. new_name
+                end
+              end
+
+              -- Write new file, verify it exists before deleting old
+              vim.fn.writefile(lines, new_path)
+              if vim.fn.filereadable(new_path) == 0 then
+                vim.notify('Error: Failed to create new file', vim.log.levels.ERROR)
+                return
+              end
+
+              vim.fn.delete(current_file)
+              vim.cmd('edit ' .. vim.fn.fnameescape(new_path))
+              vim.notify('Renamed to: ' .. new_name, vim.log.levels.INFO)
+            end)
+          end, '[O]bsidian [R]ename' },
           { 'n', '<leader>ow', ':ObsidianWorkspace<CR>', '[O]bsidian Switch [W]orkspace' },
           { 'n', '<leader>ox', ':ObsidianTOC<CR>', '[O]bsidian Table of Contents' },
         }

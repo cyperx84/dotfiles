@@ -8,12 +8,12 @@ return {
     'echasnovski/mini.icons',
   },
   config = function()
-    vim.api.nvim_set_hl(0, 'RenderMarkdownH1', { fg = '#FF5555', bold = true })
-    vim.api.nvim_set_hl(0, 'RenderMarkdownH2', { fg = '#F1FA8C', bold = true })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownH1', { fg = '#0000FF', bold = true })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownH2', { fg = '#FF692A', bold = true })
     vim.api.nvim_set_hl(0, 'RenderMarkdownH3', { fg = '#50FA7B', bold = true })
     vim.api.nvim_set_hl(0, 'RenderMarkdownH4', { fg = '#BD93F9', bold = true })
-    vim.api.nvim_set_hl(0, 'RenderMarkdownH5', { fg = '#8BE9FD', bold = true })
-    vim.api.nvim_set_hl(0, 'RenderMarkdownH6', { fg = '#FF79C6', bold = true })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownH5', { fg = '#FB2C36', bold = true })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownH6', { fg = '#9F9FA9', bold = true })
 
     -- Code block background only (let treesitter handle syntax colors)
     vim.api.nvim_set_hl(0, 'RenderMarkdownCode', { bg = '#121212' })
