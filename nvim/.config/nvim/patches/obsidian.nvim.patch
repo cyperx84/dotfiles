@@ -1,0 +1,121 @@
+diff --git a/lua/obsidian/commands/tags.lua b/lua/obsidian/commands/tags.lua
+index 3fc0efa..66e1d6f 100644
+--- a/lua/obsidian/commands/tags.lua
++++ b/lua/obsidian/commands/tags.lua
+@@ -15,7 +15,7 @@ local function gather_tag_picker_list(client, picker, tags)
+         if tag_loc.tag == tag or vim.startswith(tag_loc.tag, tag .. "/") then
+           local display = string.format("%s [%s] %s", tag_loc.note:display_name(), tag_loc.line, tag_loc.text)
+           entries[#entries + 1] = {
+-            value = { path = tag_loc.path, line = tag_loc.line, col = tag_loc.tag_start },
++            value = { path = tag_loc.path, line = tag_loc.line, col = tag_loc.tag_start, tag = tag_loc.tag },
+             display = display,
+             ordinal = display,
+             filename = tostring(tag_loc.path),
+@@ -37,11 +37,64 @@ local function gather_tag_picker_list(client, picker, tags)
+     end
+ 
+     vim.schedule(function()
++      -- BUG FIX: Set calling buffer so mappings know which note to modify
++      picker.calling_bufnr = vim.api.nvim_get_current_buf()
++
++      -- BUG FIX: Build custom selection mappings that extract tag from entry
++      local selection_mappings = {}
++
++      -- <C-x>: Add selected tag to current note's frontmatter
++      if picker.client.opts.picker.tag_mappings and picker.client.opts.picker.tag_mappings.tag_note then
++        local key = picker.client.opts.picker.tag_mappings.tag_note
++        if key and string.len(key) > 0 then
++          selection_mappings[key] = {
++            desc = "add tag to note",
++            callback = function(entry_value)
++              local note = picker.client:current_note(picker.calling_bufnr, { load_contents = true })
++              if not note then
++                log.warn("'%s' is not a note in your workspace", vim.api.nvim_buf_get_name(picker.calling_bufnr))
++                return
++              end
++
++              local tag = entry_value.tag
++              if tag and note:add_tag(tag) then
++                -- Update the frontmatter in the buffer
++                if picker.client:update_frontmatter(note, picker.calling_bufnr) then
++                  log.info("Added tag '%s' to note", tag)
++                else
++                  log.warn "Frontmatter unchanged"
++                end
++              else
++                log.warn("Note already has tag '%s'", tag)
++              end
++            end,
++            keep_open = true,
++          }
++        end
++      end
++
++      -- <C-l>: Insert tag text at cursor
++      if picker.client.opts.picker.tag_mappings and picker.client.opts.picker.tag_mappings.insert_tag then
++        local key = picker.client.opts.picker.tag_mappings.insert_tag
++        if key and string.len(key) > 0 then
++          selection_mappings[key] = {
++            desc = "insert tag",
++            callback = function(entry_value)
++              local tag = entry_value.tag
++              if tag then
++                vim.api.nvim_put({ "#" .. tag }, "", false, true)
++              end
++            end,
++          }
++        end
++      end
++
+       picker:pick(entries, {
+         prompt_title = "#" .. table.concat(tags, ", #"),
+         callback = function(value)
+           util.open_buffer(value.path, { line = value.line, col = value.col })
+         end,
++        selection_mappings = selection_mappings,
+       })
+     end)
+   end, { search = { sort = true } })
+diff --git a/lua/obsidian/workspace.lua b/lua/obsidian/workspace.lua
+index 3d898b6..09344d2 100644
+--- a/lua/obsidian/workspace.lua
++++ b/lua/obsidian/workspace.lua
+@@ -85,7 +85,13 @@ Workspace.new = function(path, opts)
+   else
+     local vault_root = find_vault_root(self.path)
+     if vault_root then
+-      self.root = vault_root
++      -- BUG FIX: If vault root is a parent of workspace path,
++      -- use workspace path instead (handles shared parent scenarios)
++      if vault_root:is_parent_of(self.path) then
++        self.root = self.path
++      else
++        self.root = vault_root
++      end
+     else
+       self.root = self.path
+     end
+@@ -165,12 +171,22 @@ Workspace.get_workspace_for_dir = function(cur_dir, workspaces)
+     return
+   end
+ 
++  -- BUG FIX: Find the most specific (longest) matching workspace path
++  local best_match = nil
++  local best_match_len = 0
++
+   for _, spec in ipairs(workspaces) do
+     local w = Workspace.new_from_spec(spec)
+     if w.path == cur_dir or w.path:is_parent_of(cur_dir) then
+-      return w
++      local path_len = #tostring(w.path.filename)
++      if path_len > best_match_len then
++        best_match = w
++        best_match_len = path_len
++      end
+     end
+   end
++
++  return best_match
+ end
+ 
+ --- Get the workspace corresponding to the current working directory (or a parent of), if there

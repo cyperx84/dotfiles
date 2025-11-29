@@ -3,7 +3,7 @@
 # AeroSpace workspace integration following best practices
 # https://nikitabobko.github.io/AeroSpace/goodies
 
-SPACE_ICONS=("󱙝" "󱌇" "󱍏" "󱃋" "󰋄" "󱞖" "󰯈" "󰠧" "󰊢" "󰔟")
+SPACE_ICONS=("󱙝" "󱌇" "󱍏" "󱃋" "󰋄" "󰠧" "󰟟" "󰊢" "󰯈" )
 
 # Add aerospace workspace change event
 sketchybar --add event aerospace_workspace_change
@@ -22,8 +22,7 @@ space_decorator=(
 sketchybar --add item space_decorator center \
            --set space_decorator "${space_decorator[@]}"
 
-# Create only first 6 workspace indicators by default
-for sid in 1 2 3 4 5 6
+for sid in 1 2 3 4 5 6 7 8 9 
 do
   # Use custom icon if available, otherwise use default
   i=$((sid - 1))

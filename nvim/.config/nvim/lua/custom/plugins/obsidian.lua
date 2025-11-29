@@ -78,14 +78,15 @@ return {
         return out
       end,
 
-      -- Disable frontmatter for files outside the vault
+      -- Enable frontmatter for all vaults in Documents folder
       disable_frontmatter = function(filename)
-        local vault_path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes'
+        local documents_path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents'
         local absolute_filename = vim.fn.fnamemodify(filename, ':p')
-        if not absolute_filename:match('^' .. vim.pesc(vault_path)) then
-          return true
+        -- Enable frontmatter for files in Documents (applies to all vaults: notes, newvault, etc.)
+        if absolute_filename:match('^' .. vim.pesc(documents_path)) then
+          return false
         end
-        return false
+        return true
       end,
 
       -- Attachments
@@ -97,7 +98,6 @@ return {
         end,
       },
 
-      -- Link style preferences (constitution: "Links are primary")
       preferred_link_style = 'wiki',
       wiki_link_func = 'use_alias_only',
 

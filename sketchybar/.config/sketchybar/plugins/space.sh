@@ -9,23 +9,11 @@ set_space_label() {
 
 mouse_clicked() {
   if [ "$BUTTON" = "right" ]; then
-    # Right-click: Remove this space from SketchyBar view
-    sketchybar --remove "$NAME"
+    # Right-click: do nothing
+    :
   else
-    if [ "$MODIFIER" = "shift" ]; then
-      # Shift+click: Rename workspace
-      SPACE_LABEL="$(osascript -e "return (text returned of (display dialog \"Give a name to workspace $NAME:\" default answer \"\" with icon note buttons {\"Cancel\", \"Continue\"} default button \"Continue\"))")"
-      if [ $? -eq 0 ]; then
-        if [ "$SPACE_LABEL" = "" ]; then
-          set_space_label "${NAME:6}"
-        else
-          set_space_label "${NAME:6} ($SPACE_LABEL)"
-        fi
-      fi
-    else
-      # Left-click: Switch to workspace
-      aerospace workspace "$SID" 2>/dev/null
-    fi
+    # Left-click: Switch to workspace
+    aerospace workspace "$SID" 2>/dev/null
   fi
 }
 

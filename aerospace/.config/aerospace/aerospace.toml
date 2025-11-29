@@ -13,7 +13,7 @@ enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
 accordion-padding = 1
 default-root-container-layout = 'tiles'
-default-root-container-orientation = 'vertical'
+default-root-container-orientation = 'horizontal'
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 automatically-unhide-macos-hidden-apps = true
 [key-mapping]
@@ -28,11 +28,11 @@ automatically-unhide-macos-hidden-apps = true
     outer.right =      2
 
 [mode.main.binding]
-    # App launchers
-    cmd-j = 'exec-and-forget open -a Ghostty'
-    cmd-k = 'exec-and-forget open -a Zen'
-    cmd-l = 'exec-and-forget open -a Claude'
-    cmd-u = 'exec-and-forget open -a Antigravity'    
+    # App launchers (with workspace assignment)
+    cmd-j = 'exec-and-forget ~/.config/aerospace/scripts/launch-app.sh Ghostty 1'
+    cmd-k = 'exec-and-forget ~/.config/aerospace/scripts/launch-app.sh Zen 2'
+    cmd-l = 'exec-and-forget ~/.config/aerospace/scripts/launch-app.sh Claude 3'
+    cmd-u = 'exec-and-forget ~/.config/aerospace/scripts/launch-app.sh Antigravity 4'    
     cmd-i = 'exec-and-forget open -a IPhone Mirroring'
     cmd-o = 'exec-and-forget open -a Obsidian'
 
