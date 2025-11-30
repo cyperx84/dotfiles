@@ -27,13 +27,102 @@ automatically-unhide-macos-hidden-apps = true
     outer.top =        32
     outer.right =      2
 
+# ============================================================================
+# Automatic Workspace Assignment
+# These rules automatically move app windows to designated workspaces when
+# they're opened, eliminating timing issues with manual move commands.
+# No scripts or sleep delays needed!
+# ============================================================================
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordesktop'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'com.google.antigravity'
+run = 'move-node-to-workspace 4'
+
+# Obsidian stays floating, no workspace assignment
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = 'layout floating'
+
+# ============================================================================
+# System Apps - Auto-Float Rules
+# These apps work better as floating windows (dialogs, utilities, etc.)
+# ============================================================================
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.SystemProfiler'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.calculator'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+if.window-title-regex-substring = 'Info|Copy|Move|Delete|Trash'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.notificationcenterui'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.SetupAssistant'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ScreenSaver.Engine'
+run = 'layout floating'
+
+# App Store and Software Update
+[[on-window-detected]]
+if.app-id = 'com.apple.AppStore'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.SoftwareUpdate'
+run = 'layout floating'
+
+# Security & Privacy dialogs
+[[on-window-detected]]
+if.app-id = 'com.apple.SecurityAgent'
+run = 'layout floating'
+
+# Archive Utility (for .zip, .tar, etc.)
+[[on-window-detected]]
+if.app-id = 'com.apple.archiveutility'
+run = 'layout floating'
+
 [mode.main.binding]
-    # App launchers (with workspace assignment)
-    cmd-j = 'exec-and-forget ~/.config/aerospace/scripts/launch-app.sh Ghostty 1'
-    cmd-k = 'exec-and-forget ~/.config/aerospace/scripts/launch-app.sh Zen 2'
-    cmd-l = 'exec-and-forget ~/.config/aerospace/scripts/launch-app.sh Claude 3'
-    cmd-u = 'exec-and-forget ~/.config/aerospace/scripts/launch-app.sh Antigravity 4'    
-    cmd-i = 'exec-and-forget open -a IPhone Mirroring'
+    # App launchers with workspace switching
+    # These launch the app AND switch to its workspace immediately
+    # The on-window-detected rules above handle moving the window automatically
+    cmd-j = ['exec-and-forget open -a Ghostty', 'workspace 1']
+    cmd-k = ['exec-and-forget open -a Zen', 'workspace 2']
+    cmd-l = ['exec-and-forget open -a Claude', 'workspace 3']
+    cmd-u = ['exec-and-forget open -a Antigravity', 'workspace 4']
+
+    # Apps without workspace assignment (stay on current workspace)
+    cmd-i = 'exec-and-forget open -a "IPhone Mirroring"'
     cmd-o = 'exec-and-forget open -a Obsidian'
 
     # Window focus (shift + ctrl + hjkl)

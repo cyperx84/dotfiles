@@ -81,8 +81,6 @@ System-Level Services (LaunchDaemons):
    - Tmux prefix (Ctrl+A is intentional, not Ctrl+B)
    - Aerospace gap sizes (2px inner, 32px top is intentional for SketchyBar)
 
-4. **DO NOT** run `sleep` commands with Aerospace commands (it hangs)
-
 4. **ALWAYS** validate before suggesting changes:
    - Run validation scripts before declaring changes complete
    - Test service restarts after config modifications
@@ -97,6 +95,8 @@ System-Level Services (LaunchDaemons):
   - Native keybindings in config (no external daemon needed)
   - Direct SketchyBar integration via callbacks
   - 2px gaps, 32px top padding for SketchyBar
+  - **Window detection rules** - Automatic workspace assignment via `on-window-detected` callbacks
+  - **Float rules** - System apps automatically float (System Preferences, Calculator, etc.)
 - **SketchyBar** - Menu bar replacement (30+ plugins, aerospace integration)
 
 ### Terminal Environment (3-Layer)
@@ -652,10 +652,33 @@ git stash pop  # Restore if needed
 
 ## 🔄 Recent Changes & Migrations
 
+### **OPTIMIZATION** - Aerospace Workspace Assignment (Nov 30, 2025)
+- **Action**: Replaced timing-based app launch scripts with declarative window detection rules
+- **Removed Files**:
+  - `aerospace/.config/aerospace/scripts/launch-app.sh` (timing-dependent script)
+  - `aerospace/.config/aerospace/scripts/startup-apps.sh` (startup apps script)
+  - `aerospace/.config/aerospace/scripts/` (entire directory removed)
+- **Added Configuration**:
+  - `[[on-window-detected]]` rules in `aerospace.toml` for automatic workspace assignment
+  - Float rules for 13 system apps (System Preferences, Calculator, Activity Monitor, etc.)
+  - Simplified keybindings using array syntax: `['exec-and-forget open -a App', 'workspace N']`
+- **Benefits**:
+  - **No timing dependencies** - Apps move when ready, not after arbitrary delays
+  - **Works universally** - Any launch method (keyboard, Spotlight, Dock) routes apps correctly
+  - **No sleep/hang issues** - Eliminated problematic `sleep` commands
+  - **Cleaner config** - Declarative rules replace imperative scripts
+  - **Better UX** - Instant workspace switching, automatic window placement
+- **App Assignments**:
+  - Ghostty → Workspace 1 (Terminal)
+  - Zen Browser → Workspace 2 (Browser)
+  - Claude → Workspace 3 (AI Assistant)
+  - Antigravity → Workspace 4 (Other Tools)
+  - Obsidian → Floating (no workspace assignment)
+
 ### **CRITICAL** - Window Manager Migration to Aerospace (Nov 2025)
 - **Action**: Migrated to Aerospace as window manager
 - **Added Files**:
-  - `aerospace/.config/aerospace/aerospace.toml` (194 lines, complete config)
+  - `aerospace/.config/aerospace/aerospace.toml` (complete config with window detection rules)
   - `sketchybar/.config/sketchybar/plugins/aerospace.sh` (workspace integration)
   - `sketchybar/.config/sketchybar/plugins/create_workspace.sh`
   - `sketchybar/.config/sketchybar/plugins/space_window_count.sh`
@@ -663,7 +686,7 @@ git stash pop  # Restore if needed
   - Aerospace auto-starts on login (`start-at-login = true`)
   - All keybindings integrated into aerospace.toml (no external hotkey daemon needed)
   - SketchyBar directly integrated via `exec-on-workspace-change` callback
-  - **IMPORTANT**: Do not run `sleep` with aerospace commands (it hangs)
+  - Uses `on-window-detected` callbacks for automatic workspace assignment (Nov 30, 2025 optimization)
 
 ### **CRITICAL** - Sesh Script Migration (Oct 2025)
 - **Action**: Migrated all sesh-specific scripts from `sesh/.config/sesh/scripts/` to `tmux/.tmux/scripts/`

@@ -18,9 +18,9 @@ return {
       },
       -- Window-local options to use for oil buffers
       delete_to_trash = true,
-      skip_confirm_for_simple_edits = true,
-      skip_confirm_for_actions = true,
-      confirm_on_delete = false,
+      confirm = {
+        default = true,
+      },
       -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
       -- (:help prompt_save_on_select_new_entry)
       prompt_save_on_select_new_entry = false,
@@ -80,9 +80,9 @@ return {
         end,
       },
       float = {
-        -- padding = 1,
-        max_width = 100,
-        max_height = 25,
+        padding = 2,
+        max_width = 0.8,  -- 80% of screen width
+        max_height = 0.8, -- 80% of screen height
         border = 'rounded',
       },
       preview = {
@@ -119,6 +119,10 @@ return {
       bg = 'NONE'      -- Transparent background
     })
 
+    -- Make the float window background transparent
+    vim.api.nvim_set_hl(0, 'NormalFloat', {
+      bg = 'NONE'      -- Transparent background for float windows
+    })
 
     -- Global keybinds for toggling oil float
     vim.keymap.set('n', '<C-e>', function()

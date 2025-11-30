@@ -25,27 +25,25 @@ return {
           -- follow symlinks in both file and grep pickers
           -- NOTE: These are regex patterns, not literal strings! Escape dots with \\
           file_ignore_patterns = { '\\.git', 'node_modules', '\\.cache', '\\.obsidian', '\\.smart%-connections' },
-          layout_strategy = 'flex',
+          -- Centered float layout with larger preview
+          layout_strategy = 'horizontal',
           layout_config = {
-            flex = {
-              flip_columns = 100, -- Switch to horizontal when window >= 100 columns
-            },
             horizontal = {
               prompt_position = 'top',
-              preview_width = 0.6, -- Preview takes 60% of horizontal space
-              preview_cutoff = 1, -- Always show preview
-              width = { padding = 0 }, -- Full width responsiveness
-              height = { padding = 0 }, -- Full height responsiveness
-            },
-            vertical = {
-              prompt_position = 'top',
-              mirror = false, -- Preview on top, results on bottom
-              preview_cutoff = 1, -- Always show preview
-              preview_height = 0.5, -- Preview takes 50% of vertical space
-              width = { padding = 0 }, -- Full width responsiveness
-              height = { padding = 0 }, -- Full height responsiveness
+              width = 0.85,         -- 85% of screen width
+              height = 0.85,        -- 85% of screen height
+              preview_width = 0.6,  -- Preview takes 60% of the window
+              preview_cutoff = 1,   -- Always show preview
             },
           },
+
+          -- Border styling
+          borderchars = {
+            prompt  = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            results = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+          },
+
           sorting_strategy = 'ascending',
           winblend = 0,
           follow_symlinks = true,
@@ -77,6 +75,28 @@ return {
       pcall(telescope.load_extension, 'ui-select')
       pcall(telescope.load_extension, 'obsidian')
       pcall(telescope.load_extension, 'git_worktree')
+
+      -- Orange border with transparent background (matching Oil)
+      vim.api.nvim_set_hl(0, 'TelescopeBorder', {
+        fg = '#ff9e64',  -- Orange border color
+        bg = 'NONE'      -- Transparent background
+      })
+
+      vim.api.nvim_set_hl(0, 'TelescopePromptBorder', {
+        fg = '#ff9e64',
+        bg = 'NONE'
+      })
+
+      vim.api.nvim_set_hl(0, 'TelescopeResultsBorder', {
+        fg = '#ff9e64',
+        bg = 'NONE'
+      })
+
+      vim.api.nvim_set_hl(0, 'TelescopePreviewBorder', {
+        fg = '#ff9e64',
+        bg = 'NONE'
+      })
+
       -- keymaps
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
