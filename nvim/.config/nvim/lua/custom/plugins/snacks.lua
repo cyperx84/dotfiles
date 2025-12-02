@@ -92,6 +92,10 @@ return {
   config = function(_, opts)
     require("snacks").setup(opts)
 
+    -- Make float windows transparent (consistent with lspconfig)
+    vim.api.nvim_set_hl(0, 'FloatBorder', { fg = 'NONE', bg = 'none' })
+    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+
     Snacks.toggle.new({
       id = "ufo",
       name = "Enable/Disable ufo",
