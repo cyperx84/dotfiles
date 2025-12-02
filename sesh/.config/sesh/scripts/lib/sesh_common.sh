@@ -53,13 +53,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SESH_SCRIPTS_DIR_RESOLVED="${SESH_SCRIPTS_DIR:-${HOME}/.config/sesh/scripts}"
 
 # Source colors (if not already loaded)
-if [ -z "$COLOR_NEON_GREEN" ]; then
+# Use ${VAR+x} syntax to safely check if variable is set (works with set -u)
+if [ -z "${COLOR_NEON_GREEN+x}" ]; then
     # shellcheck source=./sesh_colors.sh
     source "${SESH_SCRIPTS_DIR_RESOLVED}/lib/sesh_colors.sh" || source "$SCRIPT_DIR/sesh_colors.sh"
 fi
 
 # Source icons (if not already loaded)
-if [ -z "$ICON_ATTACHED" ]; then
+# Use ${VAR+x} syntax to safely check if variable is set (works with set -u)
+if [ -z "${ICON_ATTACHED+x}" ]; then
     # shellcheck source=./sesh_icons.sh
     source "${SESH_SCRIPTS_DIR_RESOLVED}/lib/sesh_icons.sh" || source "$SCRIPT_DIR/sesh_icons.sh"
 fi
@@ -81,14 +83,28 @@ export NC='\033[0m'
 # ============================================================================
 
 # Sesh configuration file and directories
-export SESH_CONFIG="${SESH_CONFIG:-${HOME}/.config/sesh/sesh.toml}"
-export SESH_SCRIPTS_DIR="${SESH_SCRIPTS_DIR:-${HOME}/.config/sesh/scripts}"
-export TMUXINATOR_CONFIG_DIR="${TMUXINATOR_CONFIG_DIR:-${HOME}/.config/tmuxinator}"
+# Note: SESH_SCRIPTS_DIR may already be readonly in parent script (sesh_switcher.sh)
+# Only export if not already set
+if [ -z "${SESH_CONFIG+x}" ]; then
+    export SESH_CONFIG="${HOME}/.config/sesh/sesh.toml"
+fi
+if [ -z "${SESH_SCRIPTS_DIR+x}" ]; then
+    export SESH_SCRIPTS_DIR="${HOME}/.config/sesh/scripts"
+fi
+if [ -z "${TMUXINATOR_CONFIG_DIR+x}" ]; then
+    export TMUXINATOR_CONFIG_DIR="${HOME}/.config/tmuxinator"
+fi
 
 # Display mode and cache settings
-export SESH_DISPLAY_MODE_FILE="${SESH_DISPLAY_MODE_FILE:-${HOME}/.sesh_display_mode}"
-export SESH_CACHE_FILE="${SESH_CACHE_FILE:-/tmp/sesh_list_cache}"
-export SESH_CACHE_TTL="${SESH_CACHE_TTL:-2}"
+if [ -z "${SESH_DISPLAY_MODE_FILE+x}" ]; then
+    export SESH_DISPLAY_MODE_FILE="${HOME}/.sesh_display_mode"
+fi
+if [ -z "${SESH_CACHE_FILE+x}" ]; then
+    export SESH_CACHE_FILE="/tmp/sesh_list_cache"
+fi
+if [ -z "${SESH_CACHE_TTL+x}" ]; then
+    export SESH_CACHE_TTL="2"
+fi
 
 # ============================================================================
 # ERROR HANDLING FUNCTIONS
