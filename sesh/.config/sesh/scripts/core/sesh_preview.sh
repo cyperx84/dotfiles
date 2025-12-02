@@ -65,9 +65,9 @@ MODE_LABEL=$([ "$DISPLAY_MODE" = "detailed" ] && echo "📂 detailed" || echo "�
 # ============================================================================
 
 # Display keybinds at top of preview
-# CRITICAL FIX: Changed ⌥n → ⌥c (Alt+C is actual new session key)
+# Changed to Alt+N for new session (Alt+C moved to prefix+c in tmux.conf)
 # ADDED: "esc close" (missing from previous version)
-echo "  Keybinds: ⌥c new | ⌥k kill | ^b all | ^t tmux-only | ^/ zoxide | ^r $MODE_LABEL | ^s sort | ^d/u preview | esc close"
+echo "  Keybinds: ⌥n new | ⌥k kill | ^b all | ^t tmux-only | ^/ zoxide | ^r $MODE_LABEL | ^s sort | ^d/u preview | esc close"
 echo ""
 
 # ============================================================================
