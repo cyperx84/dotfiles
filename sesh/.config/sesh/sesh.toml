@@ -61,7 +61,7 @@ startup_command = ""
 
 # Preview command - uses integrated tmux script for session previews
 # The {} placeholder is replaced with the session path/name
-preview_command = "~/.tmux/scripts/sesh_preview.sh {}"
+preview_command = "~/.config/sesh/scripts/core/sesh_preview.sh {}"
 
 # Custom session configurations
 # Quick-access sessions for frequently used workspaces

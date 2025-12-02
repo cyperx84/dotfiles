@@ -43,11 +43,11 @@
 # CALLS:
 #   - sesh connect/list
 #   - fzf-tmux (fuzzy selection)
-#   - sesh_list_lightweight.sh (session enumeration)
-#   - sesh_preview_with_keybinds.sh (preview rendering)
+#   - sesh_list.sh (session enumeration)
+#   - sesh_preview.sh (preview rendering)
 #   - sesh_clean_selection.sh (output sanitization)
 #   - sesh_create_new.sh (new session creation)
-#   - kill_sesh_session.sh (session termination)
+#   - sesh_kill.sh (session termination)
 #
 # USAGE:
 #   ~/.tmux/scripts/sesh_switcher.sh
@@ -59,7 +59,7 @@
 #   3 - User aborted in FZF (suppressed by || true)
 #
 # ENVIRONMENT:
-#   TMUX_SCRIPTS_DIR     - Override default scripts directory
+#   SESH_SCRIPTS_DIR     - Override default scripts directory
 #   FZF_PREVIEW_COLUMNS  - Customize preview width
 #
 # NOTES:
@@ -126,21 +126,24 @@ fi
 
 # ===== CONFIGURATION =====
 
-# Base directory for helper scripts (override with TMUX_SCRIPTS_DIR env var)
-readonly TMUX_SCRIPTS_DIR="${TMUX_SCRIPTS_DIR:-${HOME}/.tmux/scripts}"
+# Base directory for helper scripts (override with SESH_SCRIPTS_DIR env var)
+readonly SESH_SCRIPTS_DIR="${SESH_SCRIPTS_DIR:-${HOME}/.config/sesh/scripts}"
+
+# Source common functions and variables
+source "${SESH_SCRIPTS_DIR}/lib/sesh_common.sh"
 
 # Required helper scripts
-readonly SCRIPT_LIST_LIGHTWEIGHT="${TMUX_SCRIPTS_DIR}/sesh_list_lightweight.sh"
-readonly SCRIPT_PREVIEW="${TMUX_SCRIPTS_DIR}/sesh_preview_with_keybinds.sh"
-readonly SCRIPT_CLEAN_SELECTION="${TMUX_SCRIPTS_DIR}/sesh_clean_selection.sh"
+readonly SCRIPT_LIST_LIGHTWEIGHT="${SESH_SCRIPTS_DIR}/core/sesh_list.sh"
+readonly SCRIPT_PREVIEW="${SESH_SCRIPTS_DIR}/core/sesh_preview.sh"
+readonly SCRIPT_CLEAN_SELECTION="${SESH_SCRIPTS_DIR}/core/sesh_clean_selection.sh"
 
 # Optional helper scripts (used in keybindings)
-readonly SCRIPT_CREATE_NEW="${TMUX_SCRIPTS_DIR}/sesh_create_new.sh"
-readonly SCRIPT_KILL="${TMUX_SCRIPTS_DIR}/kill_sesh_session.sh"
+readonly SCRIPT_CREATE_NEW="${SESH_SCRIPTS_DIR}/utils/sesh_create_new.sh"
+readonly SCRIPT_KILL="${SESH_SCRIPTS_DIR}/utils/sesh_kill.sh"
 
 # Validate scripts directory exists
-if [[ ! -d "${TMUX_SCRIPTS_DIR}" ]]; then
-    echo "ERROR: Scripts directory not found: ${TMUX_SCRIPTS_DIR}" >&2
+if [[ ! -d "${SESH_SCRIPTS_DIR}" ]]; then
+    echo "ERROR: Scripts directory not found: ${SESH_SCRIPTS_DIR}" >&2
     exit 1
 fi
 
