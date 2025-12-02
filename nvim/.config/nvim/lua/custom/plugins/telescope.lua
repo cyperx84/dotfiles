@@ -76,27 +76,6 @@ return {
       pcall(telescope.load_extension, 'obsidian')
       pcall(telescope.load_extension, 'git_worktree')
 
-      -- Orange border with transparent background (matching Oil)
-      vim.api.nvim_set_hl(0, 'TelescopeBorder', {
-        fg = '#ff9e64',  -- Orange border color
-        bg = 'NONE'      -- Transparent background
-      })
-
-      vim.api.nvim_set_hl(0, 'TelescopePromptBorder', {
-        fg = '#ff9e64',
-        bg = 'NONE'
-      })
-
-      vim.api.nvim_set_hl(0, 'TelescopeResultsBorder', {
-        fg = '#ff9e64',
-        bg = 'NONE'
-      })
-
-      vim.api.nvim_set_hl(0, 'TelescopePreviewBorder', {
-        fg = '#ff9e64',
-        bg = 'NONE'
-      })
-
       -- keymaps
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })

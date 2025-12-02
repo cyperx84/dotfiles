@@ -151,7 +151,15 @@ return {
 
       local servers = {
         clangd = {},
-        pyright = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                typeCheckingMode = 'basic',
+              },
+            },
+          },
+        },
         rust_analyzer = {},
 
         lua_ls = {

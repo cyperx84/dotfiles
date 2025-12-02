@@ -5,6 +5,14 @@ return {
     local mark = require 'harpoon.mark'
     local ui = require 'harpoon.ui'
 
+    -- Setup Harpoon
+    require('harpoon').setup({
+      menu = {
+        width = 60,
+        height = 10,
+      }
+    })
+
     vim.keymap.set('n', '<M-m>', mark.add_file, {
       desc = 'Harpoon: Mark File',
     })

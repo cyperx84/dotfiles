@@ -25,7 +25,7 @@ end
 -- Custom function to launch Claude Code with MiniMax configuration
 local function launch_claude_minimax()
   -- Get MiniMax API key from pass
-  local handle = io.popen('pass apis/MINIMAX_API_KEY 2>/dev/null')
+  local handle = io.popen('zsh -i -c "pass apis/MINIMAX_API_KEY" 2>&1')
   if not handle then
     vim.notify('Error: Could not retrieve MiniMax API key from pass', vim.log.levels.ERROR)
     return
@@ -62,7 +62,7 @@ end
 -- Custom function to launch Claude Code with DeepSeek configuration (DEPRECATED - use MiniMax instead)
 local function launch_claude_deepseek()
   -- Get DeepSeek API key from pass
-  local handle = io.popen('pass apis/DEEPSEEK_API_KEY 2>/dev/null')
+  local handle = io.popen('zsh -i -c "pass apis/DEEPSEEK_API_KEY" 2>&1')
   if not handle then
     vim.notify('Error: Could not retrieve DeepSeek API key from pass', vim.log.levels.ERROR)
     return
@@ -96,7 +96,7 @@ end
 -- Custom function to launch Claude Code with GLM configuration
 local function launch_claude_glm()
   -- Get GLM API key from pass
-  local handle = io.popen('pass apis/GLM_API_KEY 2>/dev/null')
+  local handle = io.popen('zsh -i -c "pass apis/GLM_API_KEY" 2>&1')
   if not handle then
     vim.notify('Error: Could not retrieve GLM API key from pass', vim.log.levels.ERROR)
     return

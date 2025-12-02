@@ -114,15 +114,17 @@ return {
       },
     }
 
-    -- Orange border with transparent background
-    vim.api.nvim_set_hl(0, 'FloatBorder', {
-      fg = '#ff9e64',  -- Orange border color
-      bg = 'NONE'      -- Transparent background
-    })
-
     -- Make the float window background transparent
     vim.api.nvim_set_hl(0, 'NormalFloat', {
       bg = 'NONE'      -- Transparent background for float windows
+    })
+
+    -- Force transparent background for Oil float windows
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter' }, {
+      pattern = 'oil://*',
+      callback = function()
+        vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
+      end,
     })
 
     -- Global keybinds for toggling oil float

@@ -20,7 +20,7 @@
 # KEYBINDINGS (within FZF):
 #   Esc             - Close switcher
 #   Ctrl+D/U        - Scroll preview window down/up
-#   Alt+N           - Create new session
+#   Alt+C           - Create new session
 #   Alt+K           - Kill selected session
 #   Ctrl+T          - Toggle tmux-only view
 #   Ctrl+B          - Browse all sessions (requires zoxide)
@@ -172,13 +172,15 @@ done
 selected_session=$(
     "${SCRIPT_LIST_LIGHTWEIGHT}" | fzf-tmux -p 80%,60% \
         --ansi \
+        --layout=reverse \
         --no-sort --border-label ' sesh ' --prompt '⚡  ' \
         --header '' \
         --preview "${SCRIPT_PREVIEW} {}" \
         --preview-window 'right:70%' \
+        --color='border:#00ff00' \
         --bind 'ctrl-d:preview-page-down,ctrl-u:preview-page-up' \
         --bind 'esc:abort' \
-        --bind "alt-n:execute(${SCRIPT_CREATE_NEW})+abort" \
+        --bind "alt-c:execute(${SCRIPT_CREATE_NEW})+abort" \
         --bind "alt-k:execute(${SCRIPT_KILL} {})+reload(${SCRIPT_LIST_LIGHTWEIGHT})+change-header()" \
         --bind 'ctrl-t:change-prompt(🪟  )+reload('"${SCRIPT_LIST_LIGHTWEIGHT}"')+change-header()' \
         --bind 'ctrl-b:change-prompt(📦  )+reload(zoxide query -l)+change-header()' \

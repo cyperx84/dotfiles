@@ -57,6 +57,10 @@ fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 ### FZF ###
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 source <(fzf --zsh)
+
+# Green border styling for FZF (matches Ghostty cursor - applies to Sesh and other FZF interfaces)
+export FZF_DEFAULT_OPTS='--border=rounded --border-label="" --color=border:#00ff00'
+
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --icons --level=3 {} | head -200'"
 export FZF_CTRL_F_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
