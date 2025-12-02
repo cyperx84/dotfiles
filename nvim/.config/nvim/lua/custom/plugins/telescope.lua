@@ -30,8 +30,8 @@ return {
           layout_config = {
             horizontal = {
               prompt_position = 'top',
-              width = 0.85,         -- 85% of screen width
-              height = 0.85,        -- 85% of screen height
+              width = 0.8,         -- 80% of screen width (matches Oil.nvim)
+              height = 0.8,        -- 80% of screen height (matches Oil.nvim)
               preview_width = 0.6,  -- Preview takes 60% of the window
               preview_cutoff = 1,   -- Always show preview
             },

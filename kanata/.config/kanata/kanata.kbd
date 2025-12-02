@@ -1,4 +1,4 @@
-;; defsrc is still necessary
+;; Kanata keyboard configuration
 (defcfg
   process-unmapped-keys yes
   ;; Explicitly list both keyboards
@@ -10,16 +10,21 @@
 
 (defsrc
   f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
-  caps a s d f j k l ; rmet
+  tab  caps a s d f j k l ; rmet
+  lsft rsft
   fn
 )
+
 (defvar
   tap-time 200
   hold-time 230
 )
 
 (defalias
-  escctrl lctl
+  ;; UPDATED: Caps Lock → Escape on tap, Ctrl on hold (Vim-friendly)
+  escctrl (tap-hold $tap-time $hold-time esc lctl)
+
+  ;; Home row mods (unchanged)
   a (tap-hold $tap-time $hold-time a lmet)
   s (tap-hold $tap-time $hold-time s lalt)
   d (tap-hold $tap-time $hold-time d lsft)
@@ -28,17 +33,39 @@
   k (tap-hold $tap-time $hold-time k rsft)
   l (tap-hold $tap-time $hold-time l ralt)
   ; (tap-hold $tap-time $hold-time ; rmet)
-  fnl (tap-hold 200 200 fn (layer-toggle fn))
+
+  ;; UPDATED: Fixed to use variables instead of hardcoded values
+  fnl (tap-hold $tap-time $hold-time fn (layer-toggle fn))
+
+  ;; NEW: Tab → Hyper (Cmd+Alt+Shift+Ctrl) on hold
+  hypertab (tap-hold $tap-time $hold-time tab (multi lmet lalt lsft lctl))
+
+  ;; NEW: Right Shift → Backspace
+  rshiftbspc bspc
+
+  ;; NEW: Right Command → Toggle custom layer (to be populated later)
+  rmetlayer (layer-toggle custom)
 )
 
 (deflayer base
   brdn  brup  _    _    _    _   prev  pp  next  mute  vold  volu
-  @escctrl @a @s @d @f @j @k @l @; bspc
+  @hypertab @escctrl @a @s @d @f @j @k @l @; @rmetlayer
+  _ @rshiftbspc
   @fnl
 )
 
 (deflayer fn
   f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
-  @escctrl _ _ _ _ _ _ _ _ _
+  tab  @escctrl _ _ _ _ _ _ _ _ _
+  _ _
   fn
+)
+
+;; NEW: Empty custom layer for future customization
+;; Right Command activates this layer - populate with your desired mappings
+(deflayer custom
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _
+  _
 )

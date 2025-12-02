@@ -30,8 +30,8 @@ return {
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
           map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
           map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('<leader>so', require('telescope.builtin').lsp_document_symbols, '[S]earch D[o]cument Symbols')
+          map('<leader>sW', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[S]earch [W]orkspace Symbols')
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -92,6 +92,30 @@ return {
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
           end
+        end,
+      })
+
+      -- Configure LSP hover and signature windows
+      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+        vim.lsp.handlers.hover,
+        { border = 'single' }
+      )
+      vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+        vim.lsp.handlers.signature_help,
+        { border = 'single' }
+      )
+
+      -- Make float windows transparent
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'FloatBorder', { fg = '#888888', bg = 'none' })
+
+      -- Remove terminal window borders
+      vim.api.nvim_create_autocmd('TermOpen', {
+        group = vim.api.nvim_create_augroup('terminal-config', { clear = true }),
+        callback = function()
+          vim.opt_local.signcolumn = 'no'
+          vim.opt_local.number = false
+          vim.opt_local.relativenumber = false
         end,
       })
 

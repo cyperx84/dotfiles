@@ -23,8 +23,8 @@ return {
           },
           ui = {
             window = {
-              width = 0.8,
-              height = 0.8,
+              width = 100,  -- Use fixed pixel width instead of percentage
+              height = 30,  -- Use fixed pixel height instead of percentage
               border = 'rounded',
               relative = 'editor',
               zindex = 50,
@@ -96,11 +96,15 @@ return {
             end,
           },
         },
+        -- Global picker configuration - use Telescope for all pickers
+        picker = {
+          provider = 'telescope',
+        },
         action_palette = {
           width = 75,
           height = 10,
           prompt = 'Prompt', -- Prompt used for interactive LLM calls
-          provider = 'snacks', -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
+          provider = 'telescope', -- Use Telescope instead of Snacks to avoid dimension issues
           opts = {
             show_default_actions = true, -- Show the default actions in the action palette?
             show_default_prompt_library = true, -- Show the default prompt library in the action palette?
@@ -243,5 +247,6 @@ return {
         },
       },
     }
+
   end,
 }

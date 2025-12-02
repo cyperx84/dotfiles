@@ -42,6 +42,7 @@ return {
       send_to_quickfix_list = "<c-q>",
       change_working_directory = "<c-\\>",
       open_and_pick_window = "<c-o>",
+      close_yazi = "<Esc>",
     },
     yazi_floating_window_border = "none",
     floating_window_scaling_factor = 0.9,

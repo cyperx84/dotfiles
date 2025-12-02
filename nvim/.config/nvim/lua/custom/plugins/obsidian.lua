@@ -16,7 +16,7 @@ return {
         },
         {
           name = 'snowboarding',
-          path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/snowboard',
+          path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/snowboarding',
         },
       },
 
@@ -248,35 +248,21 @@ return {
                 end
               end
 
-              -- Write new file and verify it was created
-              local write_ok, write_err = pcall(vim.fn.writefile, lines, new_path)
+              -- Write updated frontmatter to current file
+              local write_ok = pcall(vim.fn.writefile, lines, current_file)
               if not write_ok then
-                vim.notify('Error: Failed to write new file: ' .. tostring(write_err), vim.log.levels.ERROR)
+                vim.notify('Error: Failed to write file', vim.log.levels.ERROR)
                 return
               end
 
-              if vim.fn.filereadable(new_path) == 0 then
-                vim.notify('Error: New file was not created successfully', vim.log.levels.ERROR)
-                return
+              -- Rename file if needed
+              if current_file ~= new_path then
+                vim.fn.system('mv ' .. vim.fn.shellescape(current_file) .. ' ' .. vim.fn.shellescape(new_path))
               end
 
-              -- Try to open new file BEFORE deleting old one
-              local edit_ok, edit_err = pcall(vim.cmd, 'edit ' .. vim.fn.fnameescape(new_path))
-              if not edit_ok then
-                -- Rollback: delete the new file we just created
-                vim.fn.delete(new_path)
-                vim.notify('Error: Failed to open new file: ' .. tostring(edit_err), vim.log.levels.ERROR)
-                return
-              end
-
-              -- Only delete old file after successfully opening new one
-              local delete_ok, delete_err = pcall(vim.fn.delete, current_file)
-              if not delete_ok then
-                vim.notify('Warning: New file created but failed to delete old file: ' .. tostring(delete_err), vim.log.levels.WARN)
-                vim.notify('Old file: ' .. current_file, vim.log.levels.WARN)
-              else
-                vim.notify('Renamed to: ' .. new_name, vim.log.levels.INFO)
-              end
+              -- Open the file (renamed or same)
+              pcall(vim.cmd, 'edit ' .. vim.fn.fnameescape(new_path))
+              vim.notify('Renamed to: ' .. new_name, vim.log.levels.INFO)
             end)
           end, '[O]bsidian [R]ename' },
           { 'n', '<leader>ow', ':ObsidianWorkspace<CR>', '[O]bsidian Switch [W]orkspace' },

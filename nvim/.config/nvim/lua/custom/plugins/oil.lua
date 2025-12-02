@@ -4,7 +4,7 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
     require('oil').setup {
-      default_file_explorer = true,
+      default_file_explorer = false,  -- Disable split mode, use float instead
       columns = {
         'icon',
         -- "permissions",
@@ -69,6 +69,7 @@ return {
         ['g\\'] = { 'actions.toggle_trash', mode = 'n' },
         ['<c-e>'] = 'actions.close',
         ['q'] = 'actions.close',
+        ['<ESC>'] = 'actions.close',
       },
       -- Set to false to disable all of the above keymaps
       use_default_keymaps = true,
