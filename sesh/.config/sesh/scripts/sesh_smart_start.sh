@@ -25,7 +25,7 @@ detect_and_start() {
             npm start
         else
             echo "📝 Node.js project - opening editor"
-            nvim .
+            nvim
         fi
         return
     fi
@@ -38,7 +38,7 @@ detect_and_start() {
             cargo watch -x run
         else
             echo "🦀 Rust project - opening editor"
-            nvim .
+            nvim
         fi
         return
     fi
@@ -63,7 +63,7 @@ detect_and_start() {
             python app.py
         else
             echo "🐍 Python project - opening editor"
-            nvim .
+            nvim
         fi
         return
     fi
@@ -76,7 +76,7 @@ detect_and_start() {
             go run main.go
         else
             echo "🐹 Go project - opening editor"
-            nvim .
+            nvim
         fi
         return
     fi
@@ -99,14 +99,14 @@ detect_and_start() {
             make run
         else
             echo "🔨 Makefile project - opening editor"
-            nvim .
+            nvim
         fi
         return
     fi
 
     # Default: just open neovim
     echo "📝 Opening editor in: $SESSION_PATH"
-    nvim .
+    nvim
 }
 
 # Run detection and start

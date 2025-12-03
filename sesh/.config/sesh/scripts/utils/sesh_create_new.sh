@@ -29,7 +29,7 @@ else
     # Create and connect to new session
     echo "Creating session '$session_name'..."
     CURRENT_DIR=$(pwd)
-    tmux new-session -d -s "$session_name" "cd '$CURRENT_DIR' && bash ~/.tmux/scripts/sesh_smart_start.sh '$CURRENT_DIR' '$session_name'"
+    tmux new-session -d -s "$session_name" "cd '$CURRENT_DIR' && bash ~/.config/sesh/scripts/sesh_smart_start.sh '$CURRENT_DIR' '$session_name'"
     sleep 1
     sesh connect "$session_name"
 fi

@@ -187,15 +187,16 @@ clean_session_name() {
     # Remove leading/trailing whitespace
     input=$(echo "$input" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
-    # Remove status icons (●, ○, ◆, ◉, 📁, ▣, ▪)
-    input=$(echo "$input" | sed -e 's/^[●○◆◉📁▣▪][[:space:]]*//')
+    # Remove status icons (>, *, -, +, #, /, G, D, S, C)
+    input=$(echo "$input" | sed -e 's/^[>*-+#\/GDS][[:space:]]*//')
 
     # Remove emoji prefixes (any non-alphanumeric leading characters)
     input=$(echo "$input" | sed -E 's/^[^[:alnum:]~\/\._-]+[[:space:]]*//')
 
-    # Remove metadata like (2w 3p), git info, resource info
+    # Remove metadata like (2w 3p), git info, resource info, Claude status
     input=$(echo "$input" | sed -E 's/[[:space:]]*\([0-9]+w[[:space:]]+[0-9]+p\).*//' | \
-        sed -E 's/[[:space:]]+[🔥✓⏰💤📦].*//' | \
+        sed -E 's/[[:space:]]+[!+~_-].*//' | \
+        sed -E 's/[[:space:]]+\[C:[0-9*.]*\].*//' | \
         xargs)
 
     # Expand tilde to HOME

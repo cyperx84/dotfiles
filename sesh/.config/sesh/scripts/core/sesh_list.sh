@@ -176,6 +176,12 @@ CACHED_PYTHON_VERSION=""
 CACHED_NODE_VERSION=""
 CACHED_RUST_VERSION=""
 CACHED_GO_VERSION=""
+DOCKER_DAEMON_AVAILABLE=0
+
+# Check docker daemon once (expensive check ~100ms)
+if command -v docker &> /dev/null && docker info &>/dev/null 2>&1; then
+    DOCKER_DAEMON_AVAILABLE=1
+fi
 
 if command -v python3 &> /dev/null; then
     CACHED_PYTHON_VERSION=$(python3 --version 2>&1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
@@ -237,6 +243,9 @@ get_git_info() {
         return
     fi
 
+    # Quick check: is this a git repo? (faster than cd + git command)
+    [ ! -d "$expanded_dir/.git" ] && ! git -C "$expanded_dir" rev-parse --git-dir &>/dev/null && return
+
     cd "$expanded_dir" || return
 
     local branch
@@ -244,16 +253,21 @@ get_git_info() {
     [ -z "$branch" ] && return
 
     # Truncate branch name if too long
-    if [ ${#branch} -gt 15 ]; then
-        branch="${branch:0:12}..."
-    fi
+    [ ${#branch} -gt 15 ] && branch="${branch:0:12}..."
 
     # Single git status call for efficiency
     local git_status=$(git status --porcelain 2>/dev/null)
-    local staged=$(echo "$git_status" | grep -c '^[MADRC]' 2>/dev/null || echo "0")
-    local modified=$(echo "$git_status" | grep -c '^.[MD]' 2>/dev/null || echo "0")
-    local untracked=$(echo "$git_status" | grep -c '^??' 2>/dev/null || echo "0")
-    local conflicts=$(echo "$git_status" | grep -c '^UU' 2>/dev/null || echo "0")
+
+    # Use bash parameter expansion instead of grep (faster)
+    local staged=0 modified=0 untracked=0 conflicts=0
+    while IFS= read -r line; do
+        case "$line" in
+            [MADRC]*)    ((staged++)) ;;
+            ?[MD]*)      ((modified++)) ;;
+            \?\?*)       ((untracked++)) ;;
+            UU*)         ((conflicts++)) ;;
+        esac
+    done <<< "$git_status"
 
     # Get upstream status
     local ahead="0"
@@ -432,8 +446,8 @@ get_container_info() {
 
     local output=""
 
-    # Quick docker daemon check
-    if command -v docker &> /dev/null && docker info &>/dev/null; then
+    # Use cached docker daemon status (checked once at startup)
+    if [ "$DOCKER_DAEMON_AVAILABLE" -eq 1 ]; then
         local expanded_dir="${dir/#\~/$HOME}"
 
         if [ -f "$expanded_dir/docker-compose.yml" ] || [ -f "$expanded_dir/compose.yml" ]; then
@@ -441,7 +455,7 @@ get_container_info() {
             if [ "$compose_running" -gt 0 ]; then
                 local color="$COLOR_NEON_BLUE"
                 [ "$compose_running" -gt 3 ] && color="$COLOR_NEON_YELLOW"
-                output=" ${color}${ICON_DOCKER}×${compose_running}${COLOR_RESET}"
+                output=" ${color}${ICON_DOCKER}${compose_running}${COLOR_RESET}"
             fi
         fi
     fi
@@ -601,14 +615,56 @@ get_activity_indicator() {
         time_str="${months}mo ago"
     fi
 
-    case "$DISPLAY_MODE" in
-        compact)
-            echo " $icon"
-            ;;
-        detailed)
-            echo " $icon $time_str"
-            ;;
-    esac
+    # Only show icon for quick switching
+    echo " $icon"
+}
+
+# ============================================================================
+# CLAUDE CODE STATUS TRACKING
+# ============================================================================
+
+# Get Claude Code instances running in a tmux session
+# Reads status files from ~/.cache/claude-sessions/ created by Claude Code hooks
+# Returns compact format: [C:2*1.] = 2 thinking, 1 waiting
+get_claude_info() {
+    local session_name="$1"
+    local status_dir="${HOME}/.cache/claude-sessions"
+
+    # Skip if no status directory
+    [ ! -d "$status_dir" ] && return
+
+    local thinking_count=0
+    local waiting_count=0
+
+    # Read all Claude status files
+    for status_file in "$status_dir"/claude-*.json; do
+        [ ! -f "$status_file" ] && continue
+
+        # Parse the status file (single jq call for efficiency)
+        read -r tmux_session state pid < <(jq -r '[.tmux_session // "", .state // "", .pid // ""] | @tsv' "$status_file" 2>/dev/null)
+
+        # Only count if this Claude instance is in the current tmux session
+        if [ "$tmux_session" = "$session_name" ]; then
+            # Verify the process is still running (cleanup stale files)
+            if [ -n "$pid" ] && ! kill -0 "$pid" 2>/dev/null; then
+                rm -f "$status_file" 2>/dev/null
+                continue
+            fi
+
+            case "$state" in
+                thinking) ((thinking_count++)) ;;
+                waiting) ((waiting_count++)) ;;
+            esac
+        fi
+    done
+
+    # Build compact output: ⚡2⏸1 or ⚡2 or ⏸1
+    if [ "$thinking_count" -gt 0 ] || [ "$waiting_count" -gt 0 ]; then
+        local status=""
+        [ "$thinking_count" -gt 0 ] && status="⚡${thinking_count}"
+        [ "$waiting_count" -gt 0 ] && status="${status}⏸${waiting_count}"
+        echo " ${COLOR_NEON_MAGENTA}${status}${COLOR_RESET}"
+    fi
 }
 
 # ============================================================================
@@ -623,14 +679,16 @@ get_session_metadata() {
 
     IFS=',' read -r windows panes <<< "$metadata"
 
-    case "$DISPLAY_MODE" in
-        compact)
-            echo " ${COLOR_GRAY}(${windows}w ${panes}p)${COLOR_RESET}"
-            ;;
-        detailed)
-            echo " ${COLOR_GRAY}(${windows}w ${panes}p)${COLOR_RESET}"
-            ;;
-    esac
+    # Return empty string - window/pane count not needed for quick switching
+    # case "$DISPLAY_MODE" in
+    #     compact)
+    #         echo " ${COLOR_GRAY}(${windows}w ${panes}p)${COLOR_RESET}"
+    #         ;;
+    #     detailed)
+    #         echo " ${COLOR_GRAY}(${windows}w ${panes}p)${COLOR_RESET}"
+    #         ;;
+    # esac
+    echo ""
 }
 
 # ============================================================================
@@ -768,6 +826,10 @@ sesh list "$@" | while IFS= read -r session; do
         resources=""
         containers=""
         dev_env=""
+        claude_info=""
+
+        # Always show Claude status (important to see at a glance)
+        claude_info=$(get_claude_info "$clean_session")
 
         if [[ "$DISPLAY_MODE" == "detailed" ]]; then
             git_info=$(get_git_info "$clean_session")
@@ -787,11 +849,11 @@ sesh list "$@" | while IFS= read -r session; do
 
         # Build output line
         if [[ "$clean_session" == "$CURRENT_SESSION" ]]; then
-            echo -e "${COLOR_ATTACHED}${ICON_ATTACHED} ${clean_session}${COLOR_RESET}${git_info}${activity_icon}${resources}${containers}${dev_env}${metadata}"
+            echo -e "${COLOR_ATTACHED}${ICON_ATTACHED} ${clean_session}${COLOR_RESET}${git_info}${activity_icon}${resources}${containers}${dev_env}${claude_info}${metadata}"
         elif [ "$is_stale" = true ]; then
-            echo -e "${COLOR_STALE}${ICON_ACTIVE} ${clean_session}${COLOR_RESET}${git_info}${activity_icon}${resources}${containers}${dev_env}${metadata}"
+            echo -e "${COLOR_STALE}${ICON_ACTIVE} ${clean_session}${COLOR_RESET}${git_info}${activity_icon}${resources}${containers}${dev_env}${claude_info}${metadata}"
         else
-            echo -e "${COLOR_ACTIVE}${ICON_ACTIVE} ${clean_session}${COLOR_RESET}${git_info}${activity_icon}${resources}${containers}${dev_env}${metadata}"
+            echo -e "${COLOR_ACTIVE}${ICON_ACTIVE} ${clean_session}${COLOR_RESET}${git_info}${activity_icon}${resources}${containers}${dev_env}${claude_info}${metadata}"
         fi
 
     elif [[ "$is_tmuxinator" == true ]]; then

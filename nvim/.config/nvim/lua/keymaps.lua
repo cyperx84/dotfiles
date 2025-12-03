@@ -86,9 +86,8 @@ vim.keymap.set("n", "<leader>gt", "<cmd>:lua require('telescope').extensions.git
 vim.keymap.set("n", "<leader>m", "<cmd>MCPHub<CR>", { desc = "MCPHub" })
 
 --Code Companion
-vim.keymap.set("n", "<M-c>", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
-vim.keymap.set("n", "<leader>CC", "<cmd>CodeCompanion<CR>", { desc = "Code Companion" })
-vim.keymap.set("n", "<leader>Cc", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
+vim.keymap.set("n", "<leader>Cc", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
+vim.keymap.set("n", "<leader>CC", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
 vim.keymap.set("n", "<leader>Cb", "<cmd>CodeCompanionChat Add<CR>", { desc = "Add Buffer to Chat" })
 vim.keymap.set("v", "<leader>Cs", "<cmd>CodeCompanionChat Add<CR>", { desc = "Add Selection to Chat" })
 

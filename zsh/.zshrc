@@ -258,7 +258,7 @@ eval "$(zoxide init zsh)"
 export PATH="$HOME/.npm-global/bin:/opt/homebrew/opt/icu4c@77/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
 alias oc="opencode"
-
+alias cc="claude --dangerously-skip-permissions"
 # Antigravity PATH (appended to main PATH configuration above)
 export PATH="$PATH:/Users/cyperx/.antigravity/antigravity/bin"
 
