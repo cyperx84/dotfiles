@@ -4,7 +4,7 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
     require('oil').setup {
-      default_file_explorer = false,  -- Disable split mode, use float instead
+      default_file_explorer = false,
       columns = {
         'icon',
         -- "permissions",
@@ -82,8 +82,8 @@ return {
       },
       float = {
         padding = 2,
-        max_width = 0.8,  -- 80% of screen width
-        max_height = 0.8, -- 80% of screen height
+        max_width = 0.5,  -- 80% of screen width
+        max_height = 0.5, -- 80% of screen height
         border = 'rounded',
       },
       preview = {

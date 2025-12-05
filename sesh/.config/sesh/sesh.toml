@@ -1,10 +1,16 @@
 # Sesh Configuration
 # Managed via GNU Stow - symlinked to ~/.config/sesh/sesh.toml
+#
+# Platform Support: macOS, Linux (Arch, Ubuntu, Fedora, Debian)
+# - Paths using ~ will expand correctly on all platforms
+# - Platform-specific system paths are handled by scripts (sesh_common.sh)
+# - This blacklist supplements script-level filtering
 
 # Blacklist sessions from appearing in sesh list
 # Filter out system directories, cache, junk paths, and development artifacts
+# Note: macOS-specific paths (/Users, /Library) won't match on Linux (harmless)
 blacklist = [
-    # System directories
+    # System directories (macOS-specific, ignored on Linux)
     "scratch",
     "/Users",
     "/",

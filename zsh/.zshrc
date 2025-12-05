@@ -131,6 +131,7 @@ alias gs="git status"
 
 # Kanata - restart to pick up Bluetooth keyboards after boot
 alias kr='sudo launchctl kickstart -k system/com.example.kanata'
+
 alias glog="git log --graph --topo-order --pretty='%w(100,0,6)%C(yellow)%h%C(bold)%C(black)%d %C(cyan)%ar %C(green)%an%n%C(bold)%C(white)%s %N' --abbrev-commit"
 alias gdiff="git diff"
 alias gco="git checkout"

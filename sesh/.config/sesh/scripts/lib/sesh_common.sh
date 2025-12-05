@@ -44,6 +44,168 @@
 ################################################################################
 
 # ============================================================================
+# PLATFORM DETECTION - Cross-platform compatibility layer
+# ============================================================================
+
+# Detect operating system (called once on load)
+# Returns: "macos" or "linux" or "unknown"
+detect_os() {
+    case "$(uname -s)" in
+        Darwin*) echo "macos" ;;
+        Linux*)  echo "linux" ;;
+        *)       echo "unknown" ;;
+    esac
+}
+
+# Detect Linux distribution (only called on Linux systems)
+# Returns: "arch", "ubuntu", "fedora", "debian", or "unknown"
+detect_linux_distro() {
+    if [[ -f /etc/os-release ]]; then
+        local id
+        id=$(grep '^ID=' /etc/os-release | cut -d= -f2 | tr -d '"')
+        case "$id" in
+            arch|manjaro|endeavouros) echo "arch" ;;
+            ubuntu|pop|mint)          echo "ubuntu" ;;
+            fedora|rhel|centos)       echo "fedora" ;;
+            debian)                   echo "debian" ;;
+            *)                        echo "unknown" ;;
+        esac
+    else
+        echo "unknown"
+    fi
+}
+
+# Get platform-appropriate package manager install command
+# Usage: get_package_install_cmd <package_name>
+# Returns: Installation command string for current platform
+get_package_install_cmd() {
+    local pkg="$1"
+
+    case "$SESH_OS" in
+        macos)
+            echo "brew install $pkg"
+            ;;
+        linux)
+            case "$SESH_LINUX_DISTRO" in
+                arch)
+                    # Prefer yay if available, fall back to pacman
+                    if command -v yay &>/dev/null; then
+                        echo "yay -S $pkg"
+                    else
+                        echo "sudo pacman -S $pkg"
+                    fi
+                    ;;
+                ubuntu|debian)
+                    echo "sudo apt install $pkg"
+                    ;;
+                fedora)
+                    echo "sudo dnf install $pkg"
+                    ;;
+                *)
+                    echo "# Install $pkg using your package manager"
+                    ;;
+            esac
+            ;;
+        *)
+            echo "# Install $pkg using your package manager"
+            ;;
+    esac
+}
+
+# Get platform-specific directory blacklist for filtering
+# Returns: Newline-separated list of paths to exclude
+get_path_blacklist() {
+    local blacklist=()
+
+    # Common blacklist patterns (all platforms)
+    blacklist+=(
+        "/"
+        ".Trash"
+        "node_modules"
+        ".git"
+        ".cache"
+        ".DS_Store"
+    )
+
+    # Platform-specific system paths
+    case "$SESH_OS" in
+        macos)
+            blacklist+=(
+                "/Users/Shared"
+                "/Library/Preferences"
+                "/Library/LaunchDaemons"
+                "/System/Library"
+                "/private/tmp"
+                "/private/var"
+            )
+            ;;
+        linux)
+            blacklist+=(
+                "/usr/lib"
+                "/lib"
+                "/lib64"
+                "/etc/systemd"
+                "/var/lib"
+                "/var/cache"
+                "/tmp"
+                "/proc"
+                "/sys"
+                "/dev"
+            )
+            ;;
+    esac
+
+    # User-defined blacklist via environment variable (colon-separated)
+    if [[ -n "${SESH_PATH_BLACKLIST:-}" ]]; then
+        IFS=':' read -ra user_blacklist <<< "$SESH_PATH_BLACKLIST"
+        blacklist+=("${user_blacklist[@]}")
+    fi
+
+    printf '%s\n' "${blacklist[@]}"
+}
+
+# Get file modification time in a platform-aware way
+# Usage: get_file_mtime <file_path>
+# Returns: Unix timestamp of last modification
+get_file_mtime() {
+    local file="$1"
+
+    case "$SESH_OS" in
+        macos)
+            # macOS uses BSD stat with -f flag
+            stat -f %m "$file" 2>/dev/null
+            ;;
+        linux|*)
+            # Linux uses GNU stat with -c flag
+            stat -c %Y "$file" 2>/dev/null
+            ;;
+    esac
+}
+
+# Initialize platform detection (called once when this file is sourced)
+# Sets SESH_OS and SESH_LINUX_DISTRO environment variables
+init_platform_detection() {
+    # Allow user override for testing (e.g., SESH_PLATFORM_OVERRIDE=linux)
+    if [[ -n "${SESH_PLATFORM_OVERRIDE:-}" ]]; then
+        export SESH_OS="$SESH_PLATFORM_OVERRIDE"
+    else
+        export SESH_OS="${SESH_OS:-$(detect_os)}"
+    fi
+
+    # Detect Linux distribution if on Linux
+    if [[ "$SESH_OS" == "linux" ]]; then
+        if [[ -n "${SESH_DISTRO_OVERRIDE:-}" ]]; then
+            export SESH_LINUX_DISTRO="$SESH_DISTRO_OVERRIDE"
+        else
+            export SESH_LINUX_DISTRO="${SESH_LINUX_DISTRO:-$(detect_linux_distro)}"
+        fi
+    fi
+}
+
+# Run initialization immediately when this file is sourced
+init_platform_detection
+
+# ============================================================================
 # DEPENDENCY LOADING - Source color and icon definitions
 # ============================================================================
 
@@ -187,8 +349,9 @@ clean_session_name() {
     # Remove leading/trailing whitespace
     input=$(echo "$input" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
-    # Remove status icons (>, *, -, +, #, /, G, D, S, C)
-    input=$(echo "$input" | sed -e 's/^[>*-+#\/GDS][[:space:]]*//')
+    # Remove status icons (>, *, -, +, #, G, D, S, C)
+    # Note: / is NOT removed here to preserve absolute paths
+    input=$(echo "$input" | sed -e 's/^[>*-+#GDS][[:space:]]*//')
 
     # Remove emoji prefixes (any non-alphanumeric leading characters)
     input=$(echo "$input" | sed -E 's/^[^[:alnum:]~\/\._-]+[[:space:]]*//')
@@ -198,6 +361,15 @@ clean_session_name() {
         sed -E 's/[[:space:]]+[!+~_-].*//' | \
         sed -E 's/[[:space:]]+\[C:[0-9*.]*\].*//' | \
         xargs)
+
+    # Remove trailing project type indicators (emojis and short text like js, py, ts, G)
+    # Match one or more sequences of: space followed by 1-3 alphanumeric chars or emoji
+    input=$(echo "$input" | sed -E 's/([[:space:]]+[[:alnum:]]{1,3})+$//')
+
+    # Remove trailing emoji characters if perl is available
+    if command -v perl &> /dev/null; then
+        input=$(echo "$input" | perl -pe 's/\s+[\x{1F300}-\x{1F9FF}]+$//')
+    fi
 
     # Expand tilde to HOME
     input="${input/#\~/$HOME}"

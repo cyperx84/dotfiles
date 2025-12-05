@@ -67,6 +67,7 @@ DISPLAY_MODE="${SESH_DISPLAY_MODE:-detailed}"
 SORT_MODE="${SESH_SORT_MODE:-activity}"
 FILTER_MODE="${SESH_FILTER_MODE:-all}"
 USE_CACHE=false
+FAST_MODE=false
 
 # Display mode toggle file
 DISPLAY_MODE_FILE="${SESH_DISPLAY_MODE_FILE:-${HOME}/.sesh_display_mode}"
@@ -96,6 +97,11 @@ while [[ $# -gt 0 ]]; do
             ;;
         --cache)
             USE_CACHE=true
+            shift
+            ;;
+        --fast)
+            FAST_MODE=true
+            DISPLAY_MODE="compact"
             shift
             ;;
         # Short-form flags for interactive display
@@ -147,7 +153,7 @@ CACHE_TTL="${SESH_CACHE_TTL:-2}"
 is_cache_valid() {
     [ ! -f "$CACHE_FILE" ] && return 1
 
-    local cache_time=$(stat -f %m "$CACHE_FILE" 2>/dev/null || stat -c %Y "$CACHE_FILE" 2>/dev/null)
+    local cache_time=$(get_file_mtime "$CACHE_FILE")
     local now=$(date +%s)
     local age=$((now - cache_time))
 
@@ -735,28 +741,35 @@ sesh list "$@" | while IFS= read -r session; do
         *"[90m"*) sesh_type="config" ;;
     esac
 
-    # Strip ANSI codes and icons
-    clean_session=$(echo "$session" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/\[[0-9;]*m//g')
-    clean_session=$(echo "$clean_session" | sed -E 's/^[◆●◉◯📁▪▣][[:space:]]*//')
-    clean_session=$(echo "$clean_session" | xargs)
+    # Strip ANSI codes and icons (combined operations for speed)
+    clean_session=$(echo "$session" | sed -E 's/\x1b\[[0-9;]*m//g; s/\[[0-9;]*m//g; s/^[◆●◉◯📁▪▣][[:space:]]*//; s/^[[:space:]]+//; s/[[:space:]]+$//')
 
     [ -z "$clean_session" ] && continue
 
-    # Create deduplication key
-    dedup_key=$(echo "$clean_session" | sed -E 's/^[[:space:]]*[^[:alnum:]~\/\._-]+[[:space:]]*//' | xargs)
-    dedup_normalized=$(echo "$dedup_key" | sed 's|^~/||')
+    # Create deduplication key (combined operations)
+    dedup_key=$(echo "$clean_session" | sed -E 's/^[[:space:]]*[^[:alnum:]~\/\._-]+[[:space:]]*//; s/^[[:space:]]+//; s/[[:space:]]+$//')
+    dedup_normalized="${dedup_key#\~/}"
 
     # Global deduplication
     if [[ -n "${seen_sessions[$dedup_key]}" ]] || [[ -n "${seen_sessions[$dedup_normalized]}" ]]; then
         continue
     fi
 
-    # Blacklist filtering
-    case "$clean_session" in
-        "/Users"|"/"|"/dev"|"/usr/bin"|"/Library/Preferences"|"/Library/LaunchDaemons"|*.cache*|*node_modules*|*.Trash*|*.DS_Store*)
-            continue
-            ;;
-    esac
+    # Blacklist filtering (platform-aware)
+    # Use exact matching for paths, not substring matching
+    is_blacklisted=false
+    expanded_clean="${clean_session/#\~/$HOME}"
+    while IFS= read -r pattern; do
+        # Exact path match or component match (e.g., "node_modules" anywhere in path)
+        if [[ "$expanded_clean" == "$pattern" ]] || [[ "$expanded_clean" == "$pattern"/* ]] || [[ "$expanded_clean" == *"/$pattern"/* ]] || [[ "$expanded_clean" == *"/$pattern" ]]; then
+            is_blacklisted=true
+            break
+        fi
+    done < <(get_path_blacklist)
+
+    if [[ "$is_blacklisted" == "true" ]]; then
+        continue
+    fi
 
     # Determine session type
     is_tmux_session=false
@@ -778,6 +791,8 @@ sesh list "$@" | while IFS= read -r session; do
         is_directory=true
         is_sesh_toml_session "$dedup_normalized" && continue
         [ -f "$HOME/.config/tmuxinator/${dedup_key}.yml" ] && continue
+        # Skip directory if a tmux session with the same basename exists
+        [[ -n "${tmux_sessions[$dedup_normalized]}" ]] && continue
     fi
 
     # Apply filtering
@@ -819,8 +834,14 @@ sesh list "$@" | while IFS= read -r session; do
     # Build output
     if [[ "$is_tmux_session" == true ]]; then
         # Active tmux sessions
-        activity_icon=$(get_activity_indicator "$clean_session")
-        metadata=$(get_session_metadata "$clean_session")
+        activity_icon=""
+        metadata=""
+
+        # Skip activity/metadata in fast mode
+        if [[ "$FAST_MODE" == false ]]; then
+            activity_icon=$(get_activity_indicator "$clean_session")
+            metadata=$(get_session_metadata "$clean_session")
+        fi
 
         git_info=""
         resources=""
@@ -828,14 +849,17 @@ sesh list "$@" | while IFS= read -r session; do
         dev_env=""
         claude_info=""
 
-        # Always show Claude status (important to see at a glance)
-        claude_info=$(get_claude_info "$clean_session")
+        # Skip expensive checks in fast mode
+        if [[ "$FAST_MODE" == false ]]; then
+            # Always show Claude status (important to see at a glance)
+            claude_info=$(get_claude_info "$clean_session")
 
-        if [[ "$DISPLAY_MODE" == "detailed" ]]; then
-            git_info=$(get_git_info "$clean_session")
-            resources=$(get_session_resources "$clean_session")
-            containers=$(get_container_info "$clean_session" "$clean_session")
-            dev_env=$(get_dev_env_info "$clean_session" "$clean_session")
+            if [[ "$DISPLAY_MODE" == "detailed" ]]; then
+                git_info=$(get_git_info "$clean_session")
+                resources=$(get_session_resources "$clean_session")
+                containers=$(get_container_info "$clean_session" "$clean_session")
+                dev_env=$(get_dev_env_info "$clean_session" "$clean_session")
+            fi
         fi
 
         # Check if stale
@@ -858,10 +882,13 @@ sesh list "$@" | while IFS= read -r session; do
 
     elif [[ "$is_tmuxinator" == true ]]; then
         # Tmuxinator projects
-        tmuxinator_root=$(grep "^root:" "$HOME/.config/tmuxinator/${clean_session}.yml" 2>/dev/null | sed 's/root: *//' | sed "s|~|$HOME|" | tr -d '"' | tr -d "'")
-        project_icons=$(detect_project_type "$tmuxinator_root")
-
-        echo -e "${COLOR_TMUXINATOR}${ICON_TMUXINATOR} ${clean_session}${COLOR_RESET}${project_icons}"
+        if [[ "$FAST_MODE" == false ]]; then
+            tmuxinator_root=$(grep "^root:" "$HOME/.config/tmuxinator/${clean_session}.yml" 2>/dev/null | sed 's/root: *//' | sed "s|~|$HOME|" | tr -d '"' | tr -d "'")
+            project_icons=$(detect_project_type "$tmuxinator_root")
+            echo -e "${COLOR_TMUXINATOR}${ICON_TMUXINATOR} ${clean_session}${COLOR_RESET}${project_icons}"
+        else
+            echo -e "${COLOR_TMUXINATOR}${ICON_TMUXINATOR} ${clean_session}${COLOR_RESET}"
+        fi
 
     elif [[ "$is_custom" == true ]]; then
         # Custom sesh sessions
@@ -869,9 +896,12 @@ sesh list "$@" | while IFS= read -r session; do
 
     elif [[ "$is_directory" == true ]]; then
         # Zoxide directories
-        project_icons=$(detect_project_type "$clean_session")
-
-        echo -e "${COLOR_DIRECTORY}${ICON_DIRECTORY} ${clean_session}${COLOR_RESET}${project_icons}"
+        if [[ "$FAST_MODE" == false ]]; then
+            project_icons=$(detect_project_type "$clean_session")
+            echo -e "${COLOR_DIRECTORY}${clean_session}${COLOR_RESET}${project_icons}"
+        else
+            echo -e "${COLOR_DIRECTORY}${clean_session}${COLOR_RESET}"
+        fi
     else
         # Unknown type
         echo "${clean_session}"
