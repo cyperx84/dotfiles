@@ -131,8 +131,5 @@ return {
     vim.keymap.set('n', '<C-e>', function()
       require('oil').toggle_float()
     end, { desc = 'Toggle Oil float with cursor on current file' })
-    vim.keymap.set('n', '<C-M-e>', function()
-      require('oil').toggle_float(vim.fn.getcwd())
-    end, { desc = 'Toggle Oil float at current working directory' })
   end,
 }

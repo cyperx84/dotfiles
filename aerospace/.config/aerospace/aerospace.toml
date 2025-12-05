@@ -115,14 +115,17 @@ run = 'layout floating'
     # App launchers with workspace switching
     # These launch the app AND switch to its workspace immediately
     # The on-window-detected rules above handle moving the window automatically
-    cmd-j = ['exec-and-forget open -a Ghostty', 'workspace 1']
-    cmd-k = ['exec-and-forget open -a Zen', 'workspace 2']
-    cmd-l = ['exec-and-forget open -a Claude', 'workspace 3']
-    cmd-u = ['exec-and-forget open -a Antigravity', 'workspace 4']
+    cmd-enter = ['exec-and-forget open -a Ghostty', 'workspace 1']
+    cmd-shift-b = ['exec-and-forget open -a Zen', 'workspace 2']
+    cmd-shift-c = ['exec-and-forget open -a Claude', 'workspace 3']
+    cmd-shift-u = ['exec-and-forget open -a Antigravity', 'workspace 4']
 
     # Apps without workspace assignment (stay on current workspace)
-    cmd-i = 'exec-and-forget open -a "IPhone Mirroring"'
-    cmd-o = 'exec-and-forget open -a Obsidian'
+    cmd-shift-i = 'exec-and-forget open -a "IPhone Mirroring"'
+    cmd-shift-o = 'exec-and-forget open -a Obsidian'
+    cmd-shift-y = 'exec-and-forget open -a Zen https://youtube.com'
+    cmd-shift-p = 'exec-and-forget open -a Zen https://perplexity.com'
+    cmd-shift-t = 'exec-and-forget open -a Ghostty --args -e tmux attach'
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'
@@ -167,12 +170,12 @@ run = 'layout floating'
     shift-ctrl-r = 'flatten-workspace-tree'
 
     # Workspace navigation (cmd + ctrl + jkl) HOMEROW Versions
-    cmd-ctrl-j = 'workspace 1'
-    cmd-ctrl-k = 'workspace 2'
-    cmd-ctrl-l = 'workspace 3'
-    cmd-ctrl-u = 'workspace 4'
-    cmd-ctrl-i = 'workspace 5'
-    cmd-ctrl-o = 'workspace 6'
+    cmd-j = 'workspace 1'
+    cmd-k = 'workspace 2'
+    cmd-l = 'workspace 3'
+    cmd-u = 'workspace 4'
+    cmd-i = 'workspace 5'
+    cmd-o = 'workspace 6'
 
     # Additional workspace navigation
     cmd-ctrl-n = 'workspace next'

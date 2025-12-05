@@ -40,10 +40,6 @@ vim.keymap.set('n', '<C-q>', ':q<CR>', { desc = 'Quit current buffer' })
 
 -- Yazi
 vim.keymap.set('n', '-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
--- -- OIL
--- vim.keymap.set('n', '<c-e>', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
--- Neotree
--- vim.keymap.set('n', '<leader>E', '<Cmd>Neotree toggle<CR>', { desc = 'Open Neotree' })
 
 -- Neogit
 vim.keymap.set("n", "<leader>gg", "<cmd>Neogit kind=floating<CR>", { desc = "Floating" })

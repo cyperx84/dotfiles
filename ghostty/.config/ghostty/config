@@ -31,6 +31,7 @@ macos-secure-input-indication = false
 
 # Keybinds
 keybind = ctrl+l=unbind
+keybind = cmd+shift+p=unbind
 keybind = global:cmd+/=toggle_quick_terminal
 keybind = "cmd+shift+s=toggle_secure_input"
 keybind = shift+enter=text:\n
