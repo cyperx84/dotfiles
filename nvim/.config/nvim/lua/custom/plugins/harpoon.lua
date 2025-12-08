@@ -17,7 +17,7 @@ return {
       desc = 'Harpoon: Mark File',
     })
 
-    vim.keymap.set('n', '<c-M-e>', ui.toggle_quick_menu, {
+    vim.keymap.set('n', '<M-e>', ui.toggle_quick_menu, {
       desc = 'Harpoon: Toggle Menu',
     })
 

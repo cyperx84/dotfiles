@@ -233,13 +233,20 @@ alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && n
 # Core aliases
 alias sl='sesh list -t -c -d'                      # List sessions (compact, deduplicated)
 
-# Fuzzy connect with FZF cancellation handling
 sc() {
-    local selected_session
-    selected_session=$(sesh list -d | fzf)
-    if [[ -n "${selected_session}" ]]; then
-        sesh connect "${selected_session}"
+    local session_name="$1"
+
+    # If no argument, use fzf to select
+    if [[ -z "$session_name" ]]; then
+        session_name=$(sesh list -d | fzf)
+        [[ -z "$session_name" ]] && return
     fi
+
+    # Strip whitespace
+    session_name=$(echo "$session_name" | xargs)
+
+    # Suppress "failed to switch" error when already in target session
+    sesh connect "$session_name" 2>&1 | grep -v "failed to switch to tmux session"
 }
 
 # Management aliases

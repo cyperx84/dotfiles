@@ -36,6 +36,7 @@
 
   ;; UPDATED: Fixed to use variables instead of hardcoded values
   fnl (tap-hold $tap-time $hold-time fn (layer-toggle fn))
+  fnlvanilla (tap-hold $tap-time $hold-time fn (layer-toggle fnvanilla))
 
   ;; NEW: Tab → Hyper (Cmd+Alt+Shift+Ctrl) on hold
   hypertab (tap-hold $tap-time $hold-time tab (multi lmet lalt lsft lctl))
@@ -45,6 +46,11 @@
 
   ;; NEW: Right Command → Toggle custom layer (to be populated later)
   rmetlayer (layer-toggle custom)
+  rmetvanilla (layer-toggle customvanilla)
+
+  ;; NEW: Toggle home row mods on/off (switches to vanilla layer)
+  togmods (layer-switch vanilla)
+  togbase (layer-switch base)
 )
 
 (deflayer base
@@ -55,17 +61,42 @@
 )
 
 (deflayer fn
-  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+  @togmods   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
   tab  @escctrl _ _ _ _ _ _ _ _ _
   _ _
-  fn
+  @fnl
 )
 
-;; NEW: Empty custom layer for future customization
-;; Right Command activates this layer - populate with your desired mappings
+;; NEW: Custom layer - Right Command activates this layer
+;; Hold Right Cmd + Tab = Toggle home row mods
 (deflayer custom
   _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _
+  @togmods    _    _    _    _    _    _    _    _    _    _
+  _    _
+  _
+)
+
+;; NEW: Vanilla layer - no home row mods (for when you want normal typing)
+;; Right Cmd + Tab to toggle ON/OFF, or Fn+F1 to toggle
+(deflayer vanilla
+  brdn  brup  _    _    _    _   prev  pp  next  mute  vold  volu
+  tab @escctrl a s d f j k l ; @rmetvanilla
+  _ @rshiftbspc
+  @fnlvanilla
+)
+
+;; Fn layer for vanilla (has toggle back to base)
+(deflayer fnvanilla
+  @togbase   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+  tab  @escctrl _ _ _ _ _ _ _ _ _
+  _ _
+  @fnlvanilla
+)
+
+;; Custom layer for vanilla (Right Cmd + Tab to toggle back)
+(deflayer customvanilla
+  _    _    _    _    _    _    _    _    _    _    _    _
+  @togbase    _    _    _    _    _    _    _    _    _    _
   _    _
   _
 )

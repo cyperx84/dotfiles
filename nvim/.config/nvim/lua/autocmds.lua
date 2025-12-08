@@ -19,4 +19,40 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+-- Auto-position cursor below frontmatter and fold it when opening markdown files
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufWinEnter', 'BufWritePost' }, {
+  pattern = '*.md',
+  group = vim.api.nvim_create_augroup('markdown-frontmatter-cursor', { clear = true }),
+  callback = function()
+    -- Only proceed if file starts with frontmatter delimiter
+    local first_line = vim.fn.getline(1)
+    if first_line ~= '---' then
+      return
+    end
+
+    -- Find the closing frontmatter delimiter
+    local line_count = vim.fn.line('$')
+    for i = 2, math.min(50, line_count) do  -- Limit search to first 50 lines
+      if vim.fn.getline(i) == '---' then
+        -- Set foldmethod to manual to create the fold
+        vim.opt_local.foldmethod = 'manual'
+
+        -- Create fold for frontmatter section (lines 1 to i)
+        vim.cmd(string.format('1,%d fold', i))
+
+        -- Move to line 1 and close the fold
+        vim.api.nvim_win_set_cursor(0, { 1, 0 })
+        vim.cmd('normal! zc')
+
+        -- Move cursor to first line after frontmatter
+        local target_line = i + 1
+        if target_line <= line_count then
+          vim.api.nvim_win_set_cursor(0, { target_line, 0 })
+        end
+        return
+      end
+    end
+  end,
+})
+
 -- vim: ts=2 sts=2 sw=2 et
