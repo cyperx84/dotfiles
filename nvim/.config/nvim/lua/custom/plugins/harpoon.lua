@@ -13,7 +13,7 @@ return {
       }
     })
 
-    vim.keymap.set('n', '<C-M-m>', mark.add_file, {
+    vim.keymap.set('n', '<M-m>', mark.add_file, {
       desc = 'Harpoon: Mark File',
     })
 

@@ -22,6 +22,35 @@ return {
   opts = {
     bigfile = { enabled = true },
     picker = { enabled = false },  -- Disabled due to dimension validation issues - use Telescope instead
+    image = {
+      enabled = true,
+      doc = {
+        enabled = true,
+        inline = true,
+        max_width = 80,
+        max_height = 40,
+      },
+      resolve = function(path, src)
+        -- First try obsidian API resolution
+        local ok, obsidian_api = pcall(require, "obsidian")
+        if ok and obsidian_api.api and obsidian_api.api.path_is_note(path) then
+          local resolved = obsidian_api.api.resolve_image_path(src)
+          if resolved and vim.fn.filereadable(resolved) == 1 then
+            return resolved
+          end
+        end
+
+        -- Fallback: resolve relative to vault root
+        local vault_root = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes')
+        local fallback_path = vault_root .. '/' .. src
+        if vim.fn.filereadable(fallback_path) == 1 then
+          return fallback_path
+        end
+
+        -- Return original if nothing works
+        return src
+      end,
+    },
     dashboard = {
       preset = {
         pick = nil,
@@ -91,6 +120,11 @@ return {
   },
   config = function(_, opts)
     require("snacks").setup(opts)
+
+    -- Explicitly setup image module
+    if opts.image and opts.image.enabled then
+      require("snacks").image.setup()
+    end
 
     -- Make float window background transparent
     vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
