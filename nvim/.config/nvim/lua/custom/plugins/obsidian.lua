@@ -1,5 +1,5 @@
 return {
-  'epwalsh/obsidian.nvim',
+  'obsidian-nvim/obsidian.nvim',
   version = '*',
   lazy = true,
   ft = 'markdown',
@@ -50,50 +50,53 @@ return {
         return slug
       end,
 
-      -- Frontmatter aligned with vault constitution
-      note_frontmatter_func = function(note)
-        local now = os.date '%Y-%m-%d %H:%M'
-        local created_date = (note.metadata and note.metadata.created) or now
+      -- Frontmatter configuration (new format)
+      frontmatter = {
+        -- Enable frontmatter for all vaults in Documents folder
+        enabled = function(filename)
+          local documents_path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents'
+          local absolute_filename = vim.fn.fnamemodify(filename, ':p')
+          -- Enable frontmatter for files in Documents (applies to all vaults: notes, newvault, etc.)
+          if absolute_filename:match('^' .. vim.pesc(documents_path)) then
+            return true
+          end
+          return false
+        end,
 
-        local out = {
-          id = note.id,
-          title = note.title or '',
-          created = created_date,
-          modified = now,
-          reviewed = nil,
-          tags = note.tags or {},
-          aliases = note.aliases or {},
-          base = nil,
-        }
+        -- Custom frontmatter function aligned with vault constitution
+        func = function(note)
+          local now = os.date '%Y-%m-%d %H:%M'
+          local created_date = (note.metadata and note.metadata.created) or now
 
-        -- Preserve other existing metadata
-        if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-          for k, v in pairs(note.metadata) do
-            if k ~= 'created' and k ~= 'modified' then
-              out[k] = v
+          local out = {
+            id = note.id,
+            title = note.title or '',
+            created = created_date,
+            modified = now,
+            reviewed = nil,
+            tags = note.tags or {},
+            aliases = note.aliases or {},
+            base = nil,
+          }
+
+          -- Preserve other existing metadata
+          if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+            for k, v in pairs(note.metadata) do
+              if k ~= 'created' and k ~= 'modified' then
+                out[k] = v
+              end
             end
           end
-        end
 
-        return out
-      end,
-
-      -- Enable frontmatter for all vaults in Documents folder
-      disable_frontmatter = function(filename)
-        local documents_path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents'
-        local absolute_filename = vim.fn.fnamemodify(filename, ':p')
-        -- Enable frontmatter for files in Documents (applies to all vaults: notes, newvault, etc.)
-        if absolute_filename:match('^' .. vim.pesc(documents_path)) then
-          return false
-        end
-        return true
-      end,
+          return out
+        end,
+      },
 
       -- Attachments
       attachments = {
         img_folder = 'assets/imgs',
-        img_text_func = function(client, path)
-          path = client:vault_relative_path(path) or path
+        img_text_func = function(path)
+          -- Path is already relative in new fork
           return string.format('![%s](%s)', path.name, path)
         end,
       },
@@ -105,31 +108,6 @@ return {
       follow_url_func = function(url)
         vim.fn.jobstart({ 'open', url }, { detach = true })
       end,
-
-      -- Essential keymaps
-      mappings = {
-        -- Override 'gf' to work on markdown/wiki links
-        ['gf'] = {
-          action = function()
-            return require('obsidian').util.gf_passthrough()
-          end,
-          opts = { noremap = false, expr = true, buffer = true },
-        },
-        -- Toggle checkboxes
-        ['<leader>ch'] = {
-          action = function()
-            return require('obsidian').util.toggle_checkbox()
-          end,
-          opts = { buffer = true, desc = 'Toggle [Ch]eckbox' },
-        },
-        -- Smart action (context-aware: follow link or toggle checkbox)
-        ['<cr>'] = {
-          action = function()
-            return require('obsidian').util.smart_action()
-          end,
-          opts = { buffer = true, expr = true, desc = 'Smart action' },
-        },
-      },
 
       -- Picker configuration
       picker = {
@@ -153,6 +131,9 @@ return {
 
       -- YAML parser
       yaml_parser = 'native',
+
+      -- Disable legacy commands (use new :Obsidian xxx format)
+      legacy_commands = false,
     }
 
     -- Markdown file autocmd for settings and keymaps
@@ -168,6 +149,19 @@ return {
 
         -- Obsidian command keymaps
         local opts = { buffer = true }
+
+        -- Override 'gf' to work on markdown/wiki links
+        vim.keymap.set('n', 'gf', '<cmd>Obsidian follow_link<CR>', { buffer = true, desc = 'Follow link under cursor' })
+
+        -- Toggle checkboxes
+        vim.keymap.set('n', '<leader>ch', function()
+          return require('obsidian').util.toggle_checkbox()
+        end, vim.tbl_extend('force', opts, { desc = 'Toggle [Ch]eckbox' }))
+
+        -- Smart action (context-aware: follow link or toggle checkbox)
+        vim.keymap.set('n', '<cr>', function()
+          return require('obsidian').util.smart_action()
+        end, { buffer = true, expr = true, desc = 'Smart action' })
 
         -- Checkbox operations
         vim.keymap.set('n', '<leader>oc', function()
@@ -191,26 +185,26 @@ return {
         -- Essential keymaps
         local keymaps = {
           -- Note operations
-          { 'n', '<leader>on', ':ObsidianNew<CR>', '[O]bsidian [N]ew note' },
-          { 'n', '<leader>oo', ':ObsidianOpen<CR>', '[O]bsidian [O]pen in app' },
-          { 'n', '<leader>of', ':ObsidianQuickSwitch<CR>', '[O]bsidian [F]ind note' },
+          { 'n', '<leader>on', ':Obsidian new<CR>', '[O]bsidian [N]ew note' },
+          { 'n', '<leader>oo', ':Obsidian open<CR>', '[O]bsidian [O]pen in app' },
+          { 'n', '<leader>of', ':Obsidian quick_switch<CR>', '[O]bsidian [F]ind note' },
 
-          -- Search operations (using built-in commands)
-          { 'n', '<leader>os', ':ObsidianSearch<CR>', '[O]bsidian [S]earch' },
-          { 'n', '<leader>ob', ':ObsidianBacklinks<CR>', '[O]bsidian [B]acklinks' },
-          { 'n', '<leader>ol', ':ObsidianLinks<CR>', '[O]bsidian [L]inks' },
-          { 'n', '<leader>ot', ':ObsidianTags<CR>', '[O]bsidian [T]ags' },
+          -- Search operations (using new commands)
+          { 'n', '<leader>os', ':Obsidian search<CR>', '[O]bsidian [S]earch' },
+          { 'n', '<leader>ob', ':Obsidian backlinks<CR>', '[O]bsidian [B]acklinks' },
+          { 'n', '<leader>ol', ':Obsidian links<CR>', '[O]bsidian [L]inks' },
+          { 'n', '<leader>ot', ':Obsidian tags<CR>', '[O]bsidian [T]ags' },
 
           -- Daily notes
-          { 'n', '<leader>od', ':ObsidianToday<CR>', '[O]bsidian [D]aily note' },
-          { 'n', '<leader>oy', ':ObsidianYesterday<CR>', '[O]bsidian [Y]esterday' },
-          { 'n', '<leader>om', ':ObsidianTomorrow<CR>', '[O]bsidian To[m]orrow' },
+          { 'n', '<leader>od', ':Obsidian today<CR>', '[O]bsidian [D]aily note' },
+          { 'n', '<leader>oy', ':Obsidian yesterday<CR>', '[O]bsidian [Y]esterday' },
+          { 'n', '<leader>om', ':Obsidian tomorrow<CR>', '[O]bsidian To[m]orrow' },
 
           -- Link operations
-          { 'n', '<leader>oF', ':ObsidianFollowLink<CR>', '[O]bsidian [F]ollow link' },
+          { 'n', '<leader>oF', ':Obsidian follow_link<CR>', '[O]bsidian [F]ollow link' },
 
           -- Utility
-          { 'n', '<leader>oi', ':ObsidianPasteImg<CR>', '[O]bsidian Paste [I]mage' },
+          { 'n', '<leader>oi', ':Obsidian paste_img<CR>', '[O]bsidian Paste [I]mage' },
           { 'n', '<leader>or', function()
             vim.ui.input({ prompt = 'New note name: ' }, function(new_name)
               if not new_name or new_name == '' then return end
@@ -265,15 +259,15 @@ return {
               vim.notify('Renamed to: ' .. new_name, vim.log.levels.INFO)
             end)
           end, '[O]bsidian [R]ename' },
-          { 'n', '<leader>ow', ':ObsidianWorkspace<CR>', '[O]bsidian Switch [W]orkspace' },
-          { 'n', '<leader>ox', ':ObsidianTOC<CR>', '[O]bsidian Table of Contents' },
+          { 'n', '<leader>ow', ':Obsidian workspace<CR>', '[O]bsidian Switch [W]orkspace' },
+          { 'n', '<leader>ox', ':Obsidian toc<CR>', '[O]bsidian Table of Contents' },
         }
 
         -- Visual mode keymaps
         local visual_keymaps = {
-          { 'v', '<leader>oe', ':ObsidianExtractNote<CR>', '[O]bsidian [E]xtract note' },
-          { 'v', '<leader>oL', ':ObsidianLink<CR>', '[O]bsidian [L]ink selection' },
-          { 'v', '<leader>oln', ':ObsidianLinkNew<CR>', '[O]bsidian [L]ink [N]ew' },
+          { 'v', '<leader>oe', ':Obsidian extract_note<CR>', '[O]bsidian [E]xtract note' },
+          { 'v', '<leader>oL', ':Obsidian link<CR>', '[O]bsidian [L]ink selection' },
+          { 'v', '<leader>oln', ':Obsidian link_new<CR>', '[O]bsidian [L]ink [N]ew' },
         }
 
         -- Set all keymaps
