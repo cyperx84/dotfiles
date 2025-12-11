@@ -172,29 +172,34 @@ return {
         return entry
       end
 
-      -- Get typed query from Telescope (for creating new tags)
-      local function get_prompt()
-        local has_state, state = pcall(require, 'telescope.actions.state')
-        if not has_state then return nil end
-        local picker = state.get_current_picker(vim.api.nvim_get_current_buf())
-        if not picker then return nil end
-        local query = picker:_get_prompt()
-        return (query and query ~= '') and query or nil
-      end
-
       mappings.insert_tag = function(entry)
         return orig_insert_tag(normalize(entry))
       end
 
       mappings.tag_note = function(...)
         local entries = { ... }
-        if #entries == 0 then
-          local query = get_prompt()
-          if query then entries = { query } end
-        end
         for i, entry in ipairs(entries) do
           entries[i] = normalize(entry)
         end
+
+        -- Fix: Ensure calling_bufnr is valid (broken in fresh vaults with no tags)
+        local picker = require('obsidian.picker')
+        if not picker.state.calling_bufnr or not vim.api.nvim_buf_is_valid(picker.state.calling_bufnr) then
+          -- Try alternate buffer first (the markdown file we came from)
+          local alt_buf = vim.fn.bufnr('#')
+          if alt_buf ~= -1 and vim.api.nvim_buf_is_valid(alt_buf) then
+            picker.state.calling_bufnr = alt_buf
+          else
+            -- Fallback: find first markdown buffer
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+              if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == 'markdown' then
+                picker.state.calling_bufnr = buf
+                break
+              end
+            end
+          end
+        end
+
         return orig_tag_note(unpack(entries))
       end
     end)

@@ -25,8 +25,6 @@ show_tmux_session_preview() {
         return 1
     fi
 
-    echo -e "${BLUE}${BOLD}● Tmux Session: ${session_name}${NC}"
-
     # Get session info in a single tmux call (optimized)
     IFS='|' read -r windows session_id path activity created < <(
         tmux display-message -p -t "$session_name" \
@@ -36,42 +34,36 @@ show_tmux_session_preview() {
     # Calculate pane count
     local panes=$(tmux list-panes -s -t "$session_name" 2>/dev/null | wc -l | tr -d ' ')
 
-    # Activity status
+    # Build compact single-line status with nerd font icons
+    local status_icon status_color status_time=""
     if [ -n "$activity" ]; then
         local now=$(date +%s)
         local since=$((now - activity))
+        status_time="$(human_time $since)"
         if [ $since -lt 300 ]; then
-            echo -e "${CYAN}Status:${NC} ${GREEN}🟢 Active${NC} ($(human_time $since) ago)"
+            status_icon="" status_color="${GREEN}"
         elif [ $since -lt 3600 ]; then
-            echo -e "${CYAN}Status:${NC} ${YELLOW}🟡 Idle${NC} ($(human_time $since) ago)"
+            status_icon="" status_color="${YELLOW}"
         else
-            echo -e "${CYAN}Status:${NC} ${RED}🔴 Stale${NC} ($(human_time $since) ago)"
+            status_icon="󰒲" status_color="${RED}"
         fi
     fi
 
-    # Age
-    if [ -n "$created" ]; then
-        local now=$(date +%s)
-        local age=$((now - created))
-        echo -e "${CYAN}Age:${NC} $(human_time $age)"
-    fi
+    # Compact path (replace $HOME with ~)
+    local short_path="${path/#$HOME/\~}"
 
-    # Window and pane counts
-    echo -e "${CYAN}Windows:${NC} $windows  ${CYAN}Panes:${NC} $panes"
-
-    # Current path
-    if [ -n "$path" ]; then
-        echo -e "${CYAN}Path:${NC} $path"
-    fi
+    # Single-line session info with clean spacing and nerd font icons
+    #  session   status  time 󰖯 windows  panes  path
+    echo -e "${BLUE}${BOLD} ${session_name}${NC}  ${status_color}${status_icon}${NC}  ${MAGENTA} ${status_time}${NC}  ${CYAN}󰖯 ${windows}${NC}  ${CYAN} ${panes}${NC}  ${GRAY} ${short_path}${NC}"
 
     # Current pane content preview
     echo ""
-    echo -e "${CYAN}━━ Current Pane ━━${NC}"
+    echo -e "${CYAN} ─────────────────────────────────────${NC}"
     local active_pane=$(tmux display-message -p -t "$session_name" '#{pane_id}' 2>/dev/null)
     if [ -n "$active_pane" ]; then
-        local content=$(tmux capture-pane -t "$active_pane" -p -e -J -S -10 2>/dev/null)
+        local content=$(tmux capture-pane -t "$active_pane" -p -e -J -S -50 2>/dev/null)
         if [ -n "$content" ]; then
-            echo "$content" | tail -8
+            echo "$content" | tail -40
         else
             echo -e "${GRAY}(empty pane)${NC}"
         fi
@@ -80,7 +72,7 @@ show_tmux_session_preview() {
     # Directory preview
     if [ -n "$path" ] && [ -d "$path" ]; then
         echo ""
-        echo -e "${CYAN}━━ Directory Preview ━━${NC}"
+        echo -e "${CYAN} ─────────────────────────────────────${NC}"
         if command -v eza &> /dev/null; then
             eza --icons --color=always --group-directories-first -a -l "$path" 2>/dev/null | head -8
         else
@@ -144,9 +136,9 @@ show_tmuxinator_preview() {
         echo -e "${CYAN}━━ Current Pane ━━${NC}"
         local active_pane=$(tmux display-message -p -t "$session_name" '#{pane_id}' 2>/dev/null)
         if [ -n "$active_pane" ]; then
-            local content=$(tmux capture-pane -t "$active_pane" -p -e -J -S -10 2>/dev/null)
+            local content=$(tmux capture-pane -t "$active_pane" -p -e -J -S -50 2>/dev/null)
             if [ -n "$content" ]; then
-                echo "$content" | tail -8
+                echo "$content" | tail -40
             else
                 echo -e "${GRAY}(empty pane)${NC}"
             fi
@@ -303,9 +295,9 @@ show_sesh_custom_preview() {
         echo -e "${CYAN}━━ Current Pane ━━${NC}"
         local active_pane=$(tmux display-message -p -t "$session_name" '#{pane_id}' 2>/dev/null)
         if [ -n "$active_pane" ]; then
-            local content=$(tmux capture-pane -t "$active_pane" -p -e -J -S -10 2>/dev/null)
+            local content=$(tmux capture-pane -t "$active_pane" -p -e -J -S -50 2>/dev/null)
             if [ -n "$content" ]; then
-                echo "$content" | tail -8
+                echo "$content" | tail -40
             else
                 echo -e "${GRAY}(empty pane)${NC}"
             fi

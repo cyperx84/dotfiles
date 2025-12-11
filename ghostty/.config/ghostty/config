@@ -1,5 +1,5 @@
 theme = Monokai Remastered
-font-family = ZedMono NFM ExtraBold
+font-family = ZedMono NFM Bold
 font-family-bold = Monaspace Radon ExtraBold
 font-family-italic = Monaspace Radon Italic
 font-family-bold-italic = Monaspace Krypton ExtraBold Italic
@@ -34,11 +34,11 @@ keybind = cmd+shift+p=unbind
 keybind = global:cmd+/=toggle_quick_terminal
 keybind = "cmd+shift+s=toggle_secure_input"
 keybind = shift+enter=text:\n
-keybind = cmd+e=text:\x1be
 
 # Scrolling
 keybind = super+alt+u=scroll_page_up
 keybind = super+alt+d=scroll_page_down
+keybind = alt+slash=scroll_page_up
 
 # Split navigation (vim-like)
 keybind = super+alt+h=goto_split:left

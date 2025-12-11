@@ -1,7 +1,8 @@
 #!/bin/bash
 source "$CONFIG_DIR/colors.sh"
 
-COUNT="$(brew outdated | wc -l | tr -d ' ')"
+# Optimized: use xargs to trim whitespace instead of tr
+COUNT="$(brew outdated | wc -l | xargs)"
 
 COLOR=$RED
 

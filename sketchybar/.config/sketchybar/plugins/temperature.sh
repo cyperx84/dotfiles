@@ -6,12 +6,12 @@ source "$CONFIG_DIR/icons.sh"
 
 # Get CPU temperature using macmon (sudoless, works on M1/M2/M3)
 get_cpu_temp() {
-  # Use macmon pipe for single sample with JSON output
-  local temp=$(macmon pipe -s 1 -i 100 2>/dev/null | jq -r '.temp.cpu_temp_avg' 2>/dev/null)
+  # Use macmon pipe for single sample with JSON output (with timeout)
+  local temp=$(timeout 2 macmon pipe -s 1 -i 100 2>/dev/null | jq -r '.temp.cpu_temp_avg' 2>/dev/null)
 
   if [[ -n "$temp" ]] && [[ "$temp" =~ ^[0-9.]+$ ]]; then
-    # Round to 1 decimal place
-    printf "%.1f" "$temp"
+    # Round to integer (cleaner display)
+    printf "%.0f" "$temp"
   else
     # Fallback to thermal state if macmon fails
     local thermal_state=$(sysctl -n machdep.xcpm.cpu_thermal_level 2>/dev/null)

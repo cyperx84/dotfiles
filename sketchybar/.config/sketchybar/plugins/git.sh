@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Git plugin with error handling
+# Git plugin with error handling - optimized version
 
 # Check if NAME variable is set
 if [ -z "$NAME" ]; then
@@ -15,38 +15,41 @@ if ! command -v git &> /dev/null; then
   exit 1
 fi
 
-# Check if we're in a git repository
-if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+# Get git status with branch in single call (optimized)
+# --porcelain --branch gives us both status and branch info
+GIT_STATUS=$(git status --porcelain --branch 2>/dev/null) || {
   sketchybar --set $NAME drawing=off 2>/dev/null
   exit 0
-fi
+}
 
 # Make sure we're visible
 if ! sketchybar --set $NAME drawing=on 2>/dev/null; then
   echo "Warning: Failed to set drawing=on for git plugin" >&2
 fi
 
-# Get current branch
-BRANCH=$(git branch --show-current 2>/dev/null)
-if [ -z "$BRANCH" ]; then
-  BRANCH="detached"
-fi
+# Extract branch from ## line using awk (single extraction)
+BRANCH=$(echo "$GIT_STATUS" | awk '/^##/ {
+  # Handle "## branch...origin/branch" format
+  branch=$2
+  # Remove ...origin/branch part if present
+  sub(/\.\.\..*/, "", branch)
+  print branch
+  exit
+}')
 
-# Limit branch name length
-if [ ${#BRANCH} -gt 12 ]; then
-  BRANCH="${BRANCH:0:9}..."
-fi
+# Default to detached if no branch
+[ -z "$BRANCH" ] && BRANCH="detached"
 
-# Check git status
-GIT_STATUS=$(git status --porcelain 2>/dev/null)
+# Limit branch name length using bash parameter expansion
+[ ${#BRANCH} -gt 12 ] && BRANCH="${BRANCH:0:9}..."
 
-# Determine icon and color based on git status
-if [ -z "$GIT_STATUS" ]; then
-  # Clean repository
+# Determine icon and color based on git status using bash regex
+if [ -z "$GIT_STATUS" ] || ! echo "$GIT_STATUS" | grep -qv '^##'; then
+  # Clean repository (only has ## line or empty)
   ICON="󰊢"
   COLOR="0xffa6da95"  # Green
-elif echo "$GIT_STATUS" | grep -q "^UU\|^AA\|^DD"; then
-  # Merge conflicts
+elif [[ "$GIT_STATUS" =~ ^(UU|AA|DD) ]]; then
+  # Merge conflicts - bash regex instead of grep
   ICON="󰅙"
   COLOR="0xffed8796"  # Red
 else
@@ -58,5 +61,4 @@ fi
 # Update sketchybar with error handling
 if ! sketchybar --set $NAME icon="$ICON" icon.color=$COLOR label="$BRANCH" 2>/dev/null; then
   echo "Warning: Failed to update sketchybar for git plugin" >&2
-  exit 1
 fi

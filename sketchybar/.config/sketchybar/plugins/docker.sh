@@ -29,8 +29,8 @@ if ! sketchybar --set $NAME drawing=on 2>/dev/null; then
   echo "Warning: Failed to set drawing=on for docker plugin" >&2
 fi
 
-# Get running container count
-CONTAINER_COUNT=$(docker ps --format "table {{.Names}}" 2>/dev/null | tail -n +2 | wc -l | tr -d ' ')
+# Get running container count (optimized with xargs for trimming)
+CONTAINER_COUNT=$(docker ps -q 2>/dev/null | wc -l | xargs)
 
 # Handle display based on container count
 # Update display based on container count with error handling

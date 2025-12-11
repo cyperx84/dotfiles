@@ -8,7 +8,7 @@ docker_status=(
   label.color=$WHITE
   padding_left=2
   padding_right=4
-  update_freq=10
+  update_freq=30
   script="$PLUGIN_DIR/docker.sh"
   click_script="open -a 'Docker Desktop'"
 )

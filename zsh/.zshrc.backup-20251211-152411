@@ -47,15 +47,7 @@ function brew() {
 fi
 
 autoload -U compinit && compinit
-
-# Lazy-load gopass completion (saves 100-200ms on shell startup)
-if (( $+commands[gopass] )); then
-  gopass() {
-    source <(command gopass completion zsh)
-    unfunction gopass
-    command gopass "$@"
-  }
-fi
+source <(gopass completion zsh)
 
 # Navigation
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }

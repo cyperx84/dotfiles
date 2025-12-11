@@ -78,7 +78,7 @@ spotify_state=(
   slider.percentage=40
   slider.width=115
   script="$PLUGIN_DIR/spotify.sh"
-  update_freq=1
+  update_freq=5
   updates=when_shown
 )
 

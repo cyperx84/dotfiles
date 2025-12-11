@@ -6,7 +6,7 @@ volume_change() {
 	CONFIG_DIR="${CONFIG_DIR:-${HOME}/.config/sketchybar}"
 	source "$CONFIG_DIR/icons.sh"
 	source "$CONFIG_DIR/colors.sh"
-	
+
 	# Determine icon based on volume level
 	case $INFO in
 	[6-9][0-9] | 100)
@@ -46,9 +46,11 @@ volume_change() {
 		sketchybar --animate tanh 30 --set $NAME slider.width=$WIDTH
 	fi
 
-	sleep 2
+	# Reduced sleep for faster UI response (was 2, now 1)
+	# This wait allows the animation to be visible before auto-collapsing
+	sleep 1
 
-	# Check wether the volume was changed another time while sleeping
+	# Check whether the volume was changed another time while sleeping
 	FINAL_PERCENTAGE="$(sketchybar --query $NAME | jq -r ".slider.percentage")"
 	if [ "$FINAL_PERCENTAGE" -eq "$INFO" ]; then
 		sketchybar --animate tanh 30 --set $NAME slider.width=0

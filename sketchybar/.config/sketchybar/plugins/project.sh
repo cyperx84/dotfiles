@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Project plugin with error handling
+# Project plugin with error handling - optimized version
 
 # Check if NAME variable is set
 if [ -z "$NAME" ]; then
@@ -10,14 +10,17 @@ fi
 
 # Try to get project name from git repository first
 if git rev-parse --is-inside-work-tree &>/dev/null; then
-  PROJECT_NAME=$(basename "$(git rev-parse --show-toplevel)" 2>/dev/null)
-  if [ $? -ne 0 ] || [ -z "$PROJECT_NAME" ]; then
-    # Fallback if git command fails
-    PROJECT_NAME=$(basename "$PWD")
+  GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+  if [ $? -ne 0 ] || [ -z "$GIT_ROOT" ]; then
+    # Fallback if git command fails - use bash parameter expansion instead of basename
+    PROJECT_NAME="${PWD##*/}"
+  else
+    # Use bash parameter expansion instead of basename (no external process)
+    PROJECT_NAME="${GIT_ROOT##*/}"
   fi
 else
-  # Fallback to current directory name
-  PROJECT_NAME=$(basename "$PWD")
+  # Fallback to current directory name - bash parameter expansion
+  PROJECT_NAME="${PWD##*/}"
 fi
 
 # Handle empty or root directory
@@ -31,7 +34,7 @@ if [ -z "$PROJECT_NAME" ]; then
   PROJECT_NAME="unknown"
 fi
 
-# Limit project name length
+# Limit project name length using bash parameter expansion
 if [ ${#PROJECT_NAME} -gt 15 ]; then
   PROJECT_NAME="${PROJECT_NAME:0:12}..."
 fi

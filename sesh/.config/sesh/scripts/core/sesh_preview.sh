@@ -64,10 +64,6 @@ MODE_LABEL=$([ "$DISPLAY_MODE" = "detailed" ] && echo "📂 detailed" || echo "�
 # KEYBINDS HEADER
 # ============================================================================
 
-# Display keybinds at top of preview
-# Simplified to show only active keybinds (removed mode-switching)
-echo "⌥n new | ⌥k kill | ^r reload | ^s sort | esc close"
-echo ""
 
 # ============================================================================
 # SESSION INPUT PROCESSING
