@@ -1,52 +1,37 @@
 #!/bin/bash
 
-# Tmux plugin with error handling
+# Tmux plugin - maximum performance version
 
-# Check if NAME variable is set
-if [ -z "$NAME" ]; then
-  echo "Error: NAME variable not set" >&2
-  exit 1
-fi
+# Check NAME variable
+[ -z "$NAME" ] && exit 1
 
-# Check if tmux is available
-if ! command -v tmux &> /dev/null; then
-  echo "Warning: tmux command not found" >&2
-  sketchybar --set $NAME drawing=off 2>/dev/null
+# Check tmux availability
+command -v tmux &>/dev/null || { sketchybar --set "$NAME" drawing=off 2>/dev/null; exit 0; }
+
+# Get session data in one call: "attached,name" per line
+sessions=$(tmux list-sessions -F '#{session_attached},#{session_name}' 2>/dev/null) || {
+  sketchybar --set "$NAME" drawing=off 2>/dev/null
   exit 0
-fi
+}
 
-# Check if tmux server is running
-if ! pgrep tmux &>/dev/null; then
-  # No tmux server running
-  if ! sketchybar --set $NAME drawing=off 2>/dev/null; then
-    echo "Warning: Failed to set drawing=off for tmux plugin" >&2
-  fi
-  exit 0
-fi
+# Parse with pure bash (no external processes)
+attached=""
+session_count=0
+first_session=""
 
-# Get current tmux session info
-CURRENT_SESSION=$(tmux display-message -p '#S' 2>/dev/null)
-SESSION_COUNT=$(tmux list-sessions 2>/dev/null | wc -l | tr -d ' ')
+while IFS=',' read -r is_attached name; do
+  ((session_count++))
+  [ -z "$first_session" ] && first_session="$name"
+  [ "$is_attached" = "1" ] && [ -z "$attached" ] && attached="$name"
+done <<< "$sessions"
 
-if [ "$SESSION_COUNT" -eq 0 ]; then
-  # No sessions (shouldn't happen if server is running, but just in case)
-  if ! sketchybar --set $NAME drawing=off 2>/dev/null; then
-    echo "Warning: Failed to set drawing=off for tmux plugin" >&2
-  fi
-elif [ -n "$CURRENT_SESSION" ]; then
-  # We're attached to a session - show session name
-  if ! sketchybar --set $NAME drawing=on label="$CURRENT_SESSION" label.color="0xffa6da95" 2>/dev/null; then
-    echo "Warning: Failed to update sketchybar for active tmux session" >&2
-  fi
-elif [ "$SESSION_COUNT" -eq 1 ]; then
-  # Single detached session
-  SESSION_NAME=$(tmux list-sessions -F '#S' 2>/dev/null | head -1)
-  if ! sketchybar --set $NAME drawing=on label="$SESSION_NAME" label.color="0xff80ff00" 2>/dev/null; then
-    echo "Warning: Failed to update sketchybar for detached tmux session" >&2
-  fi
+# Update SketchyBar
+if [ "$session_count" -eq 0 ]; then
+  sketchybar --set "$NAME" drawing=off 2>/dev/null
+elif [ -n "$attached" ]; then
+  sketchybar --set "$NAME" drawing=on label="$attached" label.color=0xffa6da95 2>/dev/null
+elif [ "$session_count" -eq 1 ]; then
+  sketchybar --set "$NAME" drawing=on label="$first_session" label.color=0xff80ff00 2>/dev/null
 else
-  # Multiple sessions
-  if ! sketchybar --set $NAME drawing=on label="$SESSION_COUNT" label.color="0xfff5a97f" 2>/dev/null; then
-    echo "Warning: Failed to update sketchybar for multiple tmux sessions" >&2
-  fi
+  sketchybar --set "$NAME" drawing=on label="$session_count" label.color=0xfff5a97f 2>/dev/null
 fi

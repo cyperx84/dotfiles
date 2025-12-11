@@ -9,7 +9,7 @@ network=(
   padding_left=2
   padding_right=4
   background.drawing=off
-  update_freq=2
+  update_freq=10
   script="$PLUGIN_DIR/network.sh"
 )
 

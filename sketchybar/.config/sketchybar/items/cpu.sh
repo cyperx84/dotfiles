@@ -20,7 +20,7 @@ cpu_percent=(
   width=55
   background.drawing=off
   icon.drawing=off
-  update_freq=4
+  update_freq=10
   script="$PLUGIN_DIR/cpu.sh"
   mach_helper="$HELPER"
 )

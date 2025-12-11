@@ -9,7 +9,7 @@ temperature=(
   padding_left=2
   padding_right=2
   background.drawing=off
-  update_freq=5
+  update_freq=15
   script="$PLUGIN_DIR/temperature.sh"
 )
 

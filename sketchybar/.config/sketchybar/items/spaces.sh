@@ -3,26 +3,26 @@
 # AeroSpace workspace integration following best practices
 # https://nikitabobko.github.io/AeroSpace/goodies
 
-SPACE_ICONS=("󱙝" "󱌇" "󱍏" "󱃋" "󰋄" "󰠧" "󰟟" "󰊢" "󰯈" )
+SPACE_ICONS=("󱙝" "󱌇" "󱍏" "󱃋" "󰋄" "󰟟")
 
 # Add aerospace workspace change event
 sketchybar --add event aerospace_workspace_change
 
 # Add space decorator (left side decoration)
-space_decorator=(
-  icon=󰯉
-  icon.font="$FONT:Heavy:20.0"
-  icon.color=$SPACE_ACTIVE_TEXT
-  padding_left=10
-  padding_right=8
-  label.drawing=off
-  display=active
-)
+# space_decorator=(
+#   icon=󰯉
+#   icon.font="$FONT:Heavy:20.0"
+#   icon.color=$SPACE_ACTIVE_TEXT
+#   padding_left=10
+#   padding_right=8
+#   label.drawing=off
+#   display=active
+# )
 
 sketchybar --add item space_decorator center \
            --set space_decorator "${space_decorator[@]}"
 
-for sid in 1 2 3 4 5 6 7 8 9 
+for sid in 1 2 3 4 5 6
 do
   # Use custom icon if available, otherwise use default
   i=$((sid - 1))
@@ -69,15 +69,15 @@ do
   "$PLUGIN_DIR/space_window_count.sh" "$sid"
 done
 
-space_creator=(
-  icon=󰯉
-  icon.font="$FONT:Heavy:20.0"
-  icon.color=$SPACE_ACTIVE_TEXT
-  padding_left=10
-  padding_right=8
-  label.drawing=off
-  display=active
-)
+# space_creator=(
+#   icon=󰯉
+#   icon.font="$FONT:Heavy:20.0"
+#   icon.color=$SPACE_ACTIVE_TEXT
+#   padding_left=10
+#   padding_right=8
+#   label.drawing=off
+#   display=active
+# )
 
 sketchybar --add item space_creator center \
            --set space_creator "${space_creator[@]}"
