@@ -12,7 +12,7 @@
 #   sesh_switcher.sh
 #
 # KEYBINDINGS:
-#   ESC       - Abort selection
+#   ESC/Alt+E - Abort selection (toggle close)
 #   Alt+N     - Create new session
 #   Alt+K     - Kill selected session
 #   Ctrl+R    - Reload session list
@@ -297,6 +297,7 @@ selected_session=$(
         --color="border:${FZF_BORDER_COLOR}" \
         --bind 'ctrl-d:preview-page-down,ctrl-u:preview-page-up' \
         --bind 'esc:abort' \
+        --bind 'alt-e:abort' \
         --bind "alt-n:execute(${SCRIPT_CREATE_NEW})+abort" \
         --bind "alt-k:execute(${SCRIPT_KILL} {})+reload(${SCRIPT_LIST} --fast)" \
         --bind "ctrl-r:reload(${SCRIPT_LIST} --fast)" \

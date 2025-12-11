@@ -205,7 +205,7 @@ return {
     -- Terminal options
     terminal = {
       split_side = 'right',
-      provider = 'snacks', -- Changed from 'snacks' to fix scrolling issues
+      provider = 'snacks', -- "auto", "snacks", "native", "external", "none", or custom provider table
       auto_close = true, -- Auto-close terminal after command completion
       split_width_percentage = 0.35, -- 35% of window width (adjust as needed)
       cwd_provider = function(ctx)
@@ -222,6 +222,8 @@ return {
     diff_opts = {
       auto_close_on_accept = true,
       vertical_split = true, -- Better for code comparison
+      open_in_current_tab = true,
+      keep_terminal_focus = true, -- If true, moves focus back to terminal after diff opens
     },
   },
   config = function(_, opts)

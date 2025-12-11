@@ -6,6 +6,7 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim',
   },
+
   config = function()
     require('obsidian').setup {
       -- Workspace configuration
@@ -17,6 +18,10 @@ return {
         {
           name = 'snowboarding',
           path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/snowboarding',
+        },
+        {
+          name = 'cyperx',
+          path = vim.fn.expand '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/cyperx',
         },
       },
 
@@ -31,7 +36,7 @@ return {
 
       -- Completion
       completion = {
-        nvim_cmp = true,
+        nvim_cmp = false,
         min_chars = 2,
       },
 
@@ -141,6 +146,58 @@ return {
       -- Disable legacy commands (use new :Obsidian xxx format)
       legacy_commands = false,
     }
+
+    -- ========================================================================
+    -- MONKEY-PATCH: Fix tag picker data format issues
+    -- Problem: Plugin expects entry.user_data as string, but Telescope returns
+    --          {tag="x"} for existing tags or raw strings for new tags
+    -- ========================================================================
+    vim.schedule(function()
+      local ok, mappings = pcall(require, 'obsidian.picker.mappings')
+      if not ok then return end
+
+      local orig_insert_tag = mappings.insert_tag
+      local orig_tag_note = mappings.tag_note
+
+      -- Normalize any entry format to {user_data = "tagname"}
+      local function normalize(entry)
+        if type(entry) == 'string' then
+          return { user_data = entry }
+        end
+        if type(entry) == 'table' and entry.user_data then
+          if type(entry.user_data) == 'table' and entry.user_data.tag then
+            entry.user_data = entry.user_data.tag
+          end
+        end
+        return entry
+      end
+
+      -- Get typed query from Telescope (for creating new tags)
+      local function get_prompt()
+        local has_state, state = pcall(require, 'telescope.actions.state')
+        if not has_state then return nil end
+        local picker = state.get_current_picker(vim.api.nvim_get_current_buf())
+        if not picker then return nil end
+        local query = picker:_get_prompt()
+        return (query and query ~= '') and query or nil
+      end
+
+      mappings.insert_tag = function(entry)
+        return orig_insert_tag(normalize(entry))
+      end
+
+      mappings.tag_note = function(...)
+        local entries = { ... }
+        if #entries == 0 then
+          local query = get_prompt()
+          if query then entries = { query } end
+        end
+        for i, entry in ipairs(entries) do
+          entries[i] = normalize(entry)
+        end
+        return orig_tag_note(unpack(entries))
+      end
+    end)
 
     -- Markdown file autocmd for settings and keymaps
     vim.api.nvim_create_autocmd('FileType', {

@@ -283,3 +283,4 @@ if (( $+commands[direnv] )); then
   add-zsh-hook chpwd _direnv_lazy_load
 fi
 
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"

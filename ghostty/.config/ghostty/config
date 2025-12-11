@@ -1,9 +1,8 @@
 theme = Monokai Remastered
-font-family = Myna
-font-family-bold = MonaspiceRn Nerd Font Mono
-font-family-italic = MonaspiceRn Nerd Font Mono
-# font-family-bold-italic = MonaspiceXe Nerd Font Mono
-font-family-bold-italic = FantasqueSansM Nerd Font Mono
+font-family = ZedMono NFM ExtraBold
+font-family-bold = Monaspace Radon ExtraBold
+font-family-italic = Monaspace Radon Italic
+font-family-bold-italic = Monaspace Krypton ExtraBold Italic
 font-size = 16
 font-feature = "ss01"
 font-feature = "ss02"
@@ -35,7 +34,7 @@ keybind = cmd+shift+p=unbind
 keybind = global:cmd+/=toggle_quick_terminal
 keybind = "cmd+shift+s=toggle_secure_input"
 keybind = shift+enter=text:\n
-keybind = cmd+e=text:\x01e
+keybind = cmd+e=text:\x1be
 
 # Scrolling
 keybind = super+alt+u=scroll_page_up

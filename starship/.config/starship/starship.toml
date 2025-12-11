@@ -148,9 +148,6 @@ format = "via [$symbol]($style)"
 [deno]
 format = "via [$symbol]($style)"
 
-[dotnet]
-format = "[$symbol(🎯 $tfm )]($style)"
-
 [elixir]
 format = 'via [$symbol]($style)'
 
@@ -270,8 +267,8 @@ disabled = false
 
 [character]
 disabled = false
-success_symbol = '[/>](bold color_orange)'
-error_symbol = '[](bold fg:color_red)'
+success_symbol = '[=>](color_orange)'
+error_symbol = '[/=](fg:color_red)'
 vimcmd_symbol = '[](bold fg:color_green)'
 vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
 vimcmd_replace_symbol = '[](bold fg:color_purple)'
