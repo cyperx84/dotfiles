@@ -3,9 +3,7 @@ return {
   version = '*',
   lazy = true,
   ft = 'markdown',
-  dependencies = {
-    'nvim-lua/plenary.nvim',
-  },
+  -- No dependencies required for v3.13.0+
 
   config = function()
     require('obsidian').setup {
@@ -31,17 +29,24 @@ return {
         date_format = '%Y-%m-%d',
         alias_format = '%B %-d, %Y',
         default_tags = { 'daily-note' },
-        template = nil,
+        template = 'daily.md',
       },
 
-      -- Completion
+      -- Completion - use blink.cmp
       completion = {
-        nvim_cmp = false,
+        blink = true,
         min_chars = 2,
       },
 
       -- Notes location (constitution: all notes live in root)
       new_notes_location = 'current_dir',
+
+      -- Templates configuration (per-vault templates/ folder)
+      templates = {
+        folder = 'templates',
+        date_format = '%Y-%m-%d',
+        time_format = '%H:%M',
+      },
 
       -- Note ID function - creates URL-friendly slugs
       note_id_func = function(title)
@@ -68,7 +73,6 @@ return {
           return false
         end,
 
-        -- Custom frontmatter function aligned with vault constitution
         func = function(note)
           local now = os.date '%Y-%m-%d %H:%M'
           local created_date = (note.metadata and note.metadata.created) or now
@@ -78,16 +82,19 @@ return {
             title = note.title or '',
             created = created_date,
             modified = now,
-            reviewed = nil,
+            reviewed = (note.metadata and note.metadata.reviewed) or nil,
             tags = note.tags or {},
+            topics = (note.metadata and note.metadata.topics) or {},
+            refs = (note.metadata and note.metadata.refs) or {},
             aliases = note.aliases or {},
-            base = nil,
+            base = (note.metadata and note.metadata.base) or nil,
           }
 
-          -- Preserve other existing metadata
+          -- Preserve additional custom metadata fields
           if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
             for k, v in pairs(note.metadata) do
-              if k ~= 'created' and k ~= 'modified' then
+              -- Skip fields we've already handled explicitly
+              if not vim.tbl_contains({ 'created', 'modified', 'reviewed', 'topics', 'refs', 'base' }, k) then
                 out[k] = v
               end
             end
@@ -266,6 +273,10 @@ return {
           { 'n', '<leader>on', ':Obsidian new<CR>', '[O]bsidian [N]ew note' },
           { 'n', '<leader>oo', ':Obsidian open<CR>', '[O]bsidian [O]pen in app' },
           { 'n', '<leader>of', ':Obsidian quick_switch<CR>', '[O]bsidian [F]ind note' },
+
+          -- Template operations
+          { 'n', '<leader>oT', ':Obsidian new_from_template<CR>', '[O]bsidian New from [T]emplate' },
+          { 'n', '<leader>op', ':Obsidian template<CR>', '[O]bsidian Insert tem[P]late' },
 
           -- Search operations (using new commands)
           { 'n', '<leader>os', ':Obsidian search<CR>', '[O]bsidian [S]earch' },

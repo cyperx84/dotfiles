@@ -116,16 +116,16 @@ run = 'layout floating'
     # These launch the app AND switch to its workspace immediately
     # The on-window-detected rules above handle moving the window automatically
     cmd-enter = ['exec-and-forget open -a Ghostty', 'workspace 1']
-    cmd-shift-b = ['exec-and-forget open -a Zen', 'workspace 2']
-    cmd-shift-c = ['exec-and-forget open -a Claude', 'workspace 3']
-    cmd-shift-u = ['exec-and-forget open -a Antigravity', 'workspace 4']
+    cmd-ctrl-b = ['exec-and-forget open -a Zen', 'workspace 2']
+    cmd-ctrl-c = ['exec-and-forget open -a Claude', 'workspace 3']
+    cmd-ctrl-u = ['exec-and-forget open -a Antigravity', 'workspace 4']
 
     # Apps without workspace assignment (stay on current workspace)
-    cmd-shift-i = 'exec-and-forget open -a "IPhone Mirroring"'
-    cmd-shift-o = 'exec-and-forget open -a Obsidian'
-    cmd-shift-y = 'exec-and-forget open -a Zen https://youtube.com'
-    cmd-shift-p = 'exec-and-forget open -a Zen https://perplexity.com'
-    cmd-shift-t = 'exec-and-forget open -a Ghostty --args -e tmux attach'
+    cmd-ctrl-i = 'exec-and-forget open -a "IPhone Mirroring"'
+    cmd-ctrl-o = 'exec-and-forget open -a Obsidian'
+    cmd-ctrl-y = 'exec-and-forget open -a Zen https://youtube.com'
+    cmd-ctrl-p = 'exec-and-forget open -a Zen https://perplexity.com'
+    cmd-ctrl-t = 'exec-and-forget open -a Ghostty --args -e tmux attach'
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'
@@ -177,9 +177,9 @@ run = 'layout floating'
     cmd-i = 'workspace 5'
     cmd-o = 'workspace 6'
 
-    # Additional workspace navigation
-    cmd-ctrl-n = 'workspace next'
-    cmd-ctrl-p = 'workspace prev'
+    # Additional workspace navigation - binds need changing
+    shift-ctrl-n = 'workspace next'
+    shift-ctrl-p = 'workspace prev'
 
     # Focus and navigate to workspaces
     ctrl-shift-1 = 'workspace 1'
@@ -217,6 +217,12 @@ run = 'layout floating'
     # Move window between displays
     shift-alt-s = 'move-node-to-monitor --wrap-around prev'
     shift-alt-g = 'move-node-to-monitor --wrap-around next'
+
+    # join-with
+    cmd-alt-shift-h = 'join-with left'
+    cmd-alt-shift-j = 'join-with down'
+    cmd-alt-shift-k = 'join-with up'
+    cmd-alt-shift-l = 'join-with right'
 
     # Service mode
     shift-alt-cmd-r = 'mode service'
