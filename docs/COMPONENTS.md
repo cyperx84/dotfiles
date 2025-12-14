@@ -13,16 +13,20 @@ This document provides comprehensive documentation for all 15+ components in the
 
 ## Window Management
 
-### 🚀 Aerospace - Modern Tiling Window Manager
-**Purpose**: Next-generation tiling window manager for macOS with integrated keybindings
+### 🚀 HyprSpace - Tiling Window Manager with Dwindle Layout
+**Purpose**: Aerospace fork with Hyprland-style binary tree tiling (dwindle layout)
 **Status**: ✅ Active (PRIMARY)
 **Dependencies**: None (self-contained)
 
 **Key Files**:
-- `aerospace/.config/aerospace/aerospace.toml` - Complete configuration (194 lines)
+- `aerospace/.config/aerospace/hyprspace.toml` - Complete configuration
+- Symlinked to `~/.hyprspace.toml`
 
 **Configuration Highlights**:
 ```toml
+# Dwindle layout - auto split direction based on aspect ratio
+default-root-container-layout = 'dwindle'
+
 # Auto-start on login
 start-at-login = true
 
@@ -30,6 +34,10 @@ start-at-login = true
 exec-on-workspace-change = ['/bin/bash', '-c',
     "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
 ]
+
+# Window change trigger for instant SketchyBar updates
+[[on-window-detected]]
+run = 'exec-and-forget sketchybar --trigger window_change'
 
 # Gaps configuration
 [gaps]
@@ -39,22 +47,63 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 ```
 
 **Integration Points**:
-- **SketchyBar**: Direct workspace callbacks via `exec-on-workspace-change`
-- **Native Keybindings**: All hotkeys defined in aerospace.toml (no external daemon)
+- **SketchyBar**: Direct workspace callbacks + window change events for instant updates
+- **JankyBorders**: Auto-started via `after-startup-command`
+- **Native Keybindings**: All hotkeys defined in hyprspace.toml (no external daemon)
 - **Automatic**: Launches at login, validates config on startup
 
 **Key Features**:
-- **Layouts**: Tiles and accordion modes
+- **Dwindle Layout**: Hyprland-style binary tree tiling (auto split direction)
 - **Smart Resize**: Context-aware window resizing
 - **Service Mode**: Advanced operations mode (`shift+alt+cmd+r`)
 - **Normalization**: Automatic container flattening and orientation handling
+- **CLI**: `hyprspace` command (same syntax as `aerospace`)
 
-**Common Operations**: See [KEYBINDS.md - Window Management (Aerospace)](KEYBINDS.md#window-management)
+**Service Management**:
+```bash
+open -a HyprSpace                         # Start
+killall HyprSpace && open -a HyprSpace    # Restart
+hyprspace reload-config                   # Reload config only
+hyprspace list-workspaces --focused       # Check focused workspace
+```
+
+**Common Operations**: See [KEYBINDS.md - Window Management](KEYBINDS.md#window-management)
+
+### 🔲 JankyBorders - Window Borders
+**Purpose**: Lightweight window border system for visual clarity
+**Status**: ✅ Active
+**Dependencies**: None
+
+**Key Files**:
+- `borders/.config/borders/bordersrc` - Configuration script
+
+**Configuration**:
+```bash
+options=(
+    style=round
+    width=5.0
+    hidpi=on
+    active_color=0xff00ff00    # Bright green for active window
+    inactive_color=0xff494d64  # Muted gray for inactive windows
+)
+borders "${options[@]}"
+```
+
+**Integration Points**:
+- **HyprSpace**: Auto-started via `after-startup-command`
+- **Visual**: Provides clear window boundaries
+
+**Service Management**:
+```bash
+borders                          # Start
+killall borders && borders &     # Restart
+pgrep -l borders                 # Check if running
+```
 
 ### 📊 SketchyBar - Menu Bar Replacement
 **Purpose**: Customizable macOS menu bar with system information
 **Status**: ✅ Active
-**Dependencies**: Aerospace for workspace information, various system tools
+**Dependencies**: HyprSpace for workspace information, various system tools
 
 **Key Files**:
 - `sketchybar/.config/sketchybar/sketchybarrc` - Main configuration
@@ -64,10 +113,10 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 **Plugin Architecture**:
 ```
 plugins/
-├── aerospace.sh          # Aerospace workspace management (PRIMARY)
+├── aerospace.sh          # HyprSpace workspace management (PRIMARY)
 ├── create_workspace.sh   # Workspace creation handler
 ├── space_window_count.sh # Window count per workspace
-├── space.sh             # Space display (works with both WMs)
+├── space.sh             # Space display (click to switch)
 ├── brew.sh               # Package updates
 ├── calendar.sh           # Date/time display
 ├── claude.sh             # Claude integration
@@ -431,7 +480,7 @@ function brew() {
 
 **Cross-Tool Integration Points**:
 
-1. **Window Management**: Aerospace ↔ SketchyBar
+1. **Window Management**: HyprSpace ↔ JankyBorders ↔ SketchyBar
 2. **Terminal Stack**: Ghostty ↔ Tmux ↔ Zsh ↔ Starship
 3. **Session Management**: Sesh ↔ Tmux ↔ FZF
 4. **Development**: Neovim ↔ Tmux ↔ Git ↔ File Managers
@@ -456,8 +505,9 @@ stow -D component_name
 
 | Component | Status | Dependencies | Integration Level |
 |-----------|--------|--------------|------------------|
-| **Aerospace** | ✅ Active | None | Core (Window Management) |
-| **SketchyBar** | ✅ Active | Aerospace, System Tools | High (System Info) |
+| **HyprSpace** | ✅ Active | None | Core (Window Management) |
+| **JankyBorders** | ✅ Active | HyprSpace | Medium (Visual Enhancement) |
+| **SketchyBar** | ✅ Active | HyprSpace, System Tools | High (System Info) |
 | **Ghostty** | ✅ Active | Fonts | Core (Terminal) |
 | **Tmux** | ✅ Active | Plugins | High (Session Management) |
 | **Zsh** | ✅ Active | Many CLI Tools | High (Shell Environment) |

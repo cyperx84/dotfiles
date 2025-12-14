@@ -186,6 +186,6 @@ sketchybar --update
 # "$PLUGIN_DIR/wifi_monitor.sh" >/dev/null 2>&1 &
 
 # Trigger initial workspace highlight
-/bin/bash -c "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused 2>/dev/null || echo '1')" &
+/bin/bash -c "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(hyprspace list-workspaces --focused 2>/dev/null || echo '1')" &
 
 echo "sketchybar configuation loaded.."

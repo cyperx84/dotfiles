@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# JankyBorders configuration
+# https://github.com/FelixKratz/JankyBorders
+
+options=(
+    style=round
+    width=5.0
+    hidpi=on
+    active_color=0xff00ff00    # Bright green for active window
+    inactive_color=0xff494d64  # Muted gray for inactive windows
+)
+
+borders "${options[@]}"

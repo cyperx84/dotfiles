@@ -13,7 +13,7 @@ mouse_clicked() {
     :
   else
     # Left-click: Switch to workspace
-    aerospace workspace "$SID" 2>/dev/null
+    hyprspace workspace "$SID" 2>/dev/null
   fi
 }
 

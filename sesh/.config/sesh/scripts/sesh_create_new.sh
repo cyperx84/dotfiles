@@ -22,12 +22,11 @@ if tmux has-session -t "$session_name" 2>/dev/null; then
     sleep 1
     sesh connect "$session_name"
 else
-    # Create and connect to new session using current directory
+    # Create and connect to new session in home directory
     echo "Creating session '$session_name'..."
     sleep 0.5
-    # Create tmux session in current directory and run smart start detection
-    CURRENT_DIR=$(pwd)
-    tmux new-session -d -s "$session_name" "cd '$CURRENT_DIR' && bash ~/.tmux/scripts/sesh_smart_start.sh '$CURRENT_DIR' '$session_name'"
-    sleep 1
+    # Create tmux session in home directory with a simple shell
+    tmux new-session -d -s "$session_name" -c "$HOME"
+    sleep 0.5
     sesh connect "$session_name"
 fi

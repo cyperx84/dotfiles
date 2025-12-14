@@ -13,11 +13,11 @@ return {
       }
     })
 
-    vim.keymap.set('n', '<leader>jm', mark.add_file, {
+    vim.keymap.set('n', '<leader>hm', mark.add_file, {
       desc = 'Harpoon: Mark File',
     })
 
-    vim.keymap.set('n', '<leader>j', ui.toggle_quick_menu, {
+    vim.keymap.set('n', '<leader>h', ui.toggle_quick_menu, {
       desc = 'Harpoon: Toggle Menu',
     })
 

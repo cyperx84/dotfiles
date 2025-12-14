@@ -72,8 +72,8 @@ format = '[$user]($style)'
 
 [directory]
 truncation_length = 3
-truncation_symbol = "󰇘/"
-read_only = " ◈"
+truncation_symbol = "󰇘"
+read_only = "◈"
 use_os_path_sep = false
 style = "bold color_orange"
 format = '[$path]($style)[$read_only]($read_only_style)'
@@ -81,7 +81,7 @@ repo_root_style = 'bold italic blue'
 repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) [△](bold bright-blue)'
 
 [directory.substitutions]
-"~" = " 󰠧"
+"~" = "󰠧"
 "notes" = ""
 "Documents" = "󱔗"
 "Downloads" = ""

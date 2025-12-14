@@ -1,29 +1,33 @@
 #!/usr/bin/env bash
 
-# AeroSpace workspace indicator plugin
-# Based on: https://nikitabobko.github.io/AeroSpace/goodies
-# Optimized to only update changed workspaces
+# HyprSpace workspace indicator plugin
+# Optimized for instant updates on workspace/window changes
 
-# Set PLUGIN_DIR if not already set
 PLUGIN_DIR="${PLUGIN_DIR:-$HOME/.config/sketchybar/plugins}"
-
 source "$CONFIG_DIR/colors.sh"
 
-# Get the workspace ID for this space item
 WORKSPACE_ID="$1"
-SID="$1"  # Set SID for space.sh compatibility
+SID="$1"
 
-# Handle mouse clicks (delegate to space.sh for interactive features)
+# Handle mouse clicks
 if [ "$SENDER" = "mouse.clicked" ]; then
   source "$PLUGIN_DIR/space.sh"
   exit 0
 fi
 
-# Handle workspace changes
+# Update window count (called by multiple events)
+update_window_count() {
+  "$PLUGIN_DIR/space_window_count.sh" "$WORKSPACE_ID"
+}
+
+# Get current focused workspace
+get_focused() {
+  hyprspace list-workspaces --focused 2>/dev/null || echo "1"
+}
+
+# Handle workspace change - update highlighting
 if [ "$SENDER" = "aerospace_workspace_change" ]; then
-  # Check if this workspace is the focused one
   if [ "$WORKSPACE_ID" = "$FOCUSED_WORKSPACE" ]; then
-    # Active workspace styling - orange icon with green highlight
     sketchybar --set "$NAME" \
       icon.highlight=on \
       icon.color="$SPACE_WINDOW_INDICATOR" \
@@ -39,7 +43,6 @@ if [ "$SENDER" = "aerospace_workspace_change" ]; then
       padding_left=3 \
       padding_right=3
   else
-    # Inactive workspace styling - orange icon, green label
     sketchybar --set "$NAME" \
       icon.highlight=off \
       icon.color="$SPACE_WINDOW_INDICATOR" \
@@ -55,12 +58,15 @@ if [ "$SENDER" = "aerospace_workspace_change" ]; then
       padding_left=2 \
       padding_right=2
   fi
-
-  # Update window count for this workspace
-  "$PLUGIN_DIR/space_window_count.sh" "$WORKSPACE_ID"
+  update_window_count
+  exit 0
 fi
 
-# Handle periodic updates - only update window count
-if [ "$SENDER" = "routine" ]; then
-  "$PLUGIN_DIR/space_window_count.sh" "$WORKSPACE_ID"
+# Handle window change / front app switch / routine - just update counts
+if [ "$SENDER" = "window_change" ] || [ "$SENDER" = "front_app_switched" ] || [ "$SENDER" = "routine" ]; then
+  update_window_count
+  exit 0
 fi
+
+# Default: update window count
+update_window_count

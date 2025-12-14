@@ -26,10 +26,9 @@ if tmux has-session -t "$session_name" 2>/dev/null; then
     echo "Session '$session_name' already exists. Connecting..."
     sesh connect "$session_name"
 else
-    # Create and connect to new session
+    # Create and connect to new session in home directory
     echo "Creating session '$session_name'..."
-    CURRENT_DIR=$(pwd)
-    tmux new-session -d -s "$session_name" "cd '$CURRENT_DIR' && bash ~/.config/sesh/scripts/sesh_smart_start.sh '$CURRENT_DIR' '$session_name'"
-    sleep 1
+    tmux new-session -d -s "$session_name" -c "$HOME"
+    sleep 0.5
     sesh connect "$session_name"
 fi

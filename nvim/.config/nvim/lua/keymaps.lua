@@ -82,36 +82,13 @@ vim.keymap.set("n", "<leader>gt", "<cmd>:lua require('telescope').extensions.git
 vim.keymap.set("n", "<leader>m", "<cmd>MCPHub<CR>", { desc = "MCPHub" })
 
 --Code Companion
-vim.keymap.set("n", "<leader>Cc", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
+vim.keymap.set("n", "<M-'>", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Code Companion Chat Toggle" })
 vim.keymap.set("n", "<leader>CC", "<cmd>CodeCompanionActions<CR>", { desc = "Code Companion Actions" })
 vim.keymap.set("n", "<leader>Cb", "<cmd>CodeCompanionChat Add<CR>", { desc = "Add Buffer to Chat" })
 vim.keymap.set("v", "<leader>Cs", "<cmd>CodeCompanionChat Add<CR>", { desc = "Add Selection to Chat" })
 
 --Claude-code History
 vim.keymap.set("n", "<leader>ch", "<cmd>ClaudeHistory<CR>", { desc = "Claude-code History" })
-
--- Python Documentation Lookup
-vim.keymap.set("n", "<leader>hp", function()
-  vim.ui.input({ prompt = "Python module: " }, function(module)
-    if module and module ~= "" then
-      -- Create a new buffer for the documentation
-      vim.cmd("enew")
-      vim.cmd("file pydoc-" .. module)
-      vim.bo.swapfile = false
-      vim.bo.bufhidden = "wipe"
-      vim.bo.filetype = "help"  -- Set filetype to help for better highlighting
-
-      -- Run pydoc in the new buffer
-      local cmd = "read !python3 -m pydoc " .. vim.fn.shellescape(module)
-      vim.cmd(cmd)
-      vim.cmd("normal! gg")
-      vim.cmd("setlocal nomodifiable")
-      vim.notify("Python docs for: " .. module, vim.log.levels.INFO)
-    end
-  end)
-end, { desc = "[H]elp [P]ython module" })
-
--- NOTE: Markdown header navigation (gj/gk) is defined in autocmds.lua for markdown files
 
 -- Exit insert mode without hitting Esc
 vim.keymap.set("i", "jk", "<Esc><Esc>", { desc = "Esc" })
@@ -141,7 +118,7 @@ vim.keymap.set("n", "<leader>Y", "\"+Y", { desc = "Yank line to system clipboard
 vim.keymap.set("n", "<leader>D", "\"_d", { desc = "Delete to void register" })
 vim.keymap.set("v", "<leader>D", "\"_d", { desc = "Delete to void register" })
 
--- Get out Q
+-- Quit with q
 vim.keymap.set("n", "Q", "<nop>")
 
 -- close buffer

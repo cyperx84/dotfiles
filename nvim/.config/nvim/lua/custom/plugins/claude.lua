@@ -272,7 +272,6 @@ return {
     -- Core Claude Code commands
     { "<M-;>", launch_claude_normal, desc = "Toggle Claude (normal)" },
     { "<M-;>", toggle_claude_no_focus, desc = "Toggle Claude (close)", mode = "t" },
-    { "<M-'>", launch_claude_minimax, desc = "Toggle Claude (MiniMax)" },
     { "<leader>cf", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
     { "<leader>cm", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
 

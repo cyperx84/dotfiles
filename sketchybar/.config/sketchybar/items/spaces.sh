@@ -1,12 +1,13 @@
 #!/bin/bash
 
-# AeroSpace workspace integration following best practices
+# HyprSpace workspace integration (optimized for instant updates)
 # https://nikitabobko.github.io/AeroSpace/goodies
 
 SPACE_ICONS=("󱙝" "󱌇" "󱍏" "󱃋" "󰋄" "󰟟")
 
-# Add aerospace workspace change event
+# Add custom events for workspace and window changes
 sketchybar --add event aerospace_workspace_change
+sketchybar --add event window_change
 
 # Add space decorator (left side decoration)
 # space_decorator=(
@@ -61,8 +62,8 @@ do
   )
 
   sketchybar --add item space.$sid center \
-             --subscribe space.$sid aerospace_workspace_change mouse.clicked \
-             --set space.$sid "${space[@]}"
+             --subscribe space.$sid aerospace_workspace_change window_change front_app_switched mouse.clicked \
+             --set space.$sid update_freq=2 "${space[@]}"
 
   # Set initial window count
   "$PLUGIN_DIR/space_window_count.sh" "$sid"

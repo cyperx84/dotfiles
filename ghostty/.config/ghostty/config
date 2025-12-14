@@ -1,9 +1,9 @@
 theme = Monokai Remastered
-font-family = ZedMono NFM Bold
+font-family = ZedMono NFM ExtraBold
 font-family-bold = Monaspace Radon ExtraBold
 font-family-italic = Monaspace Radon Italic
 font-family-bold-italic = Monaspace Krypton ExtraBold Italic
-font-size = 16
+font-size = 20
 font-feature = "ss01"
 font-feature = "ss02"
 font-feature = "ss03"

@@ -232,7 +232,9 @@ alias ta='tmux attach -d'
 alias conf="cd $HOME/dotfiles && nvim"
 
 # notes
-alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim INDEX.md"
+alias note="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim Index.md"
+alias notes="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/cyperx && nvim !Index.md"
+alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/snowboard && nvim Index.md"
 
 # ======================
 # SESH SESSION MANAGEMENT
@@ -242,19 +244,11 @@ alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && n
 alias sl='sesh list -t -c -d'                      # List sessions (compact, deduplicated)
 
 sc() {
-    local session_name="$1"
-
-    # If no argument, use fzf to select
-    if [[ -z "$session_name" ]]; then
-        session_name=$(sesh list -d | fzf)
-        [[ -z "$session_name" ]] && return
-    fi
-
-    # Strip whitespace
-    session_name=$(echo "$session_name" | xargs)
-
-    # Suppress "failed to switch" error when already in target session
-    sesh connect "$session_name" 2>&1 | grep -v "failed to switch to tmux session"
+    exec </dev/tty
+    exec <&1
+    local session="${1:-$(sesh list | fzf --height 40% --reverse --border)}"
+    [[ -z "$session" ]] && return
+    TMUX= sesh connect "$session"
 }
 
 # Management aliases

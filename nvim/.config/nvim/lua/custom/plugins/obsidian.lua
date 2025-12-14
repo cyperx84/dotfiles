@@ -23,7 +23,6 @@ return {
         },
       },
 
-      -- Daily notes (inbox folder per vault constitution)
       daily_notes = {
         folder = 'inbox',
         date_format = '%Y-%m-%d',
@@ -32,16 +31,13 @@ return {
         template = 'daily.md',
       },
 
-      -- Completion - use blink.cmp
       completion = {
         blink = true,
         min_chars = 2,
       },
 
-      -- Notes location (constitution: all notes live in root)
       new_notes_location = 'current_dir',
 
-      -- Templates configuration (per-vault templates/ folder)
       templates = {
         folder = 'templates',
         date_format = '%Y-%m-%d',
@@ -119,7 +115,7 @@ return {
         end,
       },
 
-      preferred_link_style = 'wiki',
+      preferred_link_style = 'markdown',
       wiki_link_func = 'use_alias_only',
 
       -- Open URLs in browser
