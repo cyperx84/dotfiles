@@ -222,25 +222,17 @@ bind-key l select-pane -R
 - **FZF**: Fuzzy finding for sessions and files
 - **Ghostty**: Color and terminal capability passthrough
 
-**Custom Scripts**:
-**Location**: `tmux/.tmux/scripts/` (migrated from `sesh/.config/sesh/scripts/` Oct 2025)
+**Session Scripts**:
+**Location**: `sesh/.config/sesh/scripts/`
 
-**Scripts** (12 files):
-- `sesh_list_enhanced.sh` - Enhanced session listing with icons, git integration, and resource monitoring (7.3KB)
-- `sesh_list_wrapper.sh` - Toggles session list display mode (compact/detailed)
-- `sesh_list_icons.sh` - Icon mapping for different session types
-- `sesh_preview.sh` - FZF preview window content with detailed session information (18KB)
-- `sesh_switcher.sh` - Smart session switching logic with fallback
-- `sesh_smart_start.sh` - Intelligent session creation with context detection
-- `sesh_clean_selection.sh` - Enhanced FZF selection with cleanup
-- `sesh_edit.sh` - Edit session configurations interactively
-- `session_helper.sh` - General session utilities and helpers
-- `kill_sesh_session.sh` - Kill specific session with confirmation
-- `sesh_create_new.sh` - Create new named sessions
-- `sesh_preview_with_keybinds.sh` - Preview with embedded keybind reference
+**Structure**:
+- `core/` - Core session logic (sesh_switcher.sh)
+- `lib/` - Shared libraries (sesh_colors.sh)
+- `utils/` - Utility scripts
+- Root scripts: sesh_list_enhanced.sh, sesh_preview.sh, sesh_smart_start.sh, etc.
 
 **Integration**:
-- Called from tmux keybindings: `C-a e` (session switcher), `C-a L` (session list)
+- Called from tmux keybindings: Alt+e (session switcher via `core/sesh_switcher.sh`)
 - Used by FZF session switcher for previews
 - Referenced in `sesh.toml` for preview_command
 - Provide enhanced display with icons and contextual information
@@ -370,9 +362,7 @@ nvim/
 
 **Key Files**:
 - `sesh/.config/sesh/sesh.toml` - Session definitions
-- `tmux/.tmux/scripts/sesh_*.sh` - Session management scripts (migrated Oct 2025)
-
-**⚠️ NOTE**: Sesh-specific scripts were migrated from `sesh/.config/sesh/scripts/` to `tmux/.tmux/scripts/` in Oct 2025
+- `sesh/.config/sesh/scripts/` - Session management scripts
 
 **Session Templates**:
 ```toml
@@ -398,63 +388,38 @@ startup_script = "~/.config/sesh/scripts/claude_dev.sh"
 
 ## Input Management
 
-### ⌨️ Karabiner-Elements - Keyboard Remapping
-**Purpose**: Simple, reliable keyboard modifications for ergonomic improvements
-**Status**: ✅ Active (Default Choice)
+### 🥋 Kanata - Advanced Keyboard Remapper (Active)
+**Purpose**: Sophisticated keyboard remapping with home row modifiers
+**Status**: ✅ Active (PRIMARY)
+**Dependencies**: Karabiner-DriverKit-VirtualHIDDevice (for input interception)
+
+**Key Files**:
+- `kanata/.config/kanata/kanata.kbd` - Layer definitions
+- `/Library/LaunchDaemons/com.example.kanata.plist` - Auto-start daemon
+
+**Active Remappings**:
+- **Caps Lock**: Escape on tap, Ctrl on hold
+- **Home Row Mods**: a/s/d/f → Cmd/Alt/Shift/Ctrl, j/k/l/; → Ctrl/Shift/Alt/Cmd
+- **Right Shift**: Backspace
+- **Tab**: Tab on tap, Hyper (Cmd+Alt+Shift+Ctrl) on hold
+- **Timing**: 200ms tap, 230ms hold thresholds
+
+**Service Management**:
+```bash
+sudo launchctl print system/com.example.kanata   # Check status
+sudo launchctl kickstart -k system/com.example.kanata  # Restart
+```
+
+### ⌨️ Karabiner-Elements - Keyboard Remapping (Unconfigured)
+**Purpose**: Alternative keyboard modifier (currently unused)
+**Status**: ⚠️ Installed but unconfigured
 **Dependencies**: None
 
 **Key Files**:
 - `karabiner/.config/karabiner/karabiner.json` - Configuration
 
-**Remapping Rules**:
-```json
-{
-  "simple_modifications": [
-    { "from": "caps_lock", "to": "left_control" },
-    { "from": "right_command", "to": "delete_or_backspace" },
-    { "from": "right_shift", "to": "delete_or_backspace" }
-  ]
-}
-```
-
-**Features**:
-- **Function Key Passthrough**: F1-F12 work as expected
-- **Device-Specific**: Different rules per keyboard
-- **Stability**: Reliable, simple configuration
-
-### 🥋 Kanata - Advanced Keyboard Remapper
-**Purpose**: Sophisticated keyboard remapping with home row modifiers
-**Status**: ⚠️ Configured but Inactive (Alternative to Karabiner)
-**Dependencies**: None (runs as system service)
-
-**Key Files**:
-- `kanata/.config/kanata/kanata.kbd` - Layer definitions
-
-**Home Row Modifiers**:
-```lisp
-(defalias
-  a (tap-hold 150 200 a lmet)    ; a/Left Cmd
-  s (tap-hold 150 200 s lalt)    ; s/Left Alt
-  d (tap-hold 150 200 d lsft)    ; d/Left Shift
-  f (tap-hold 150 200 f lctl)    ; f/Left Control
-  j (tap-hold 150 200 j rctl)    ; j/Right Control
-  k (tap-hold 150 200 k rsft)    ; k/Right Shift
-  l (tap-hold 150 200 l ralt)    ; l/Right Alt
-  ; (tap-hold 150 200 ; rmet)    ; ;/Right Cmd
-)
-```
-
-**Advanced Features**:
-- **Layer System**: Function layer via Fn key
-- **Timing Control**: 150ms tap, 200ms hold thresholds
-- **Ergonomic**: Reduces finger movement for modifier keys
-
-**Activation** (if preferred over Karabiner):
-```bash
-# Stop Karabiner-Elements
-# Start kanata as system service:
-sudo kanata --cfg ~/.config/kanata/kanata.kbd
-```
+**Current State**: `simple_modifications` is empty - no active remappings.
+Kanata is the primary keyboard remapper.
 
 ---
 
@@ -514,8 +479,8 @@ stow -D component_name
 | **Starship** | ✅ Active | Nerd Fonts | Medium (Prompt) |
 | **Neovim** | ✅ Active | LSP Servers | High (Development) |
 | **Sesh** | ✅ Active | Tmux, FZF | High (Session Management) |
-| **Karabiner** | ✅ Active | None | Medium (Input Remapping) |
-| **Kanata** | ⚠️ Configured | None | Alternative Input Option |
+| **Kanata** | ✅ Active | Karabiner-DriverKit | High (Input Remapping) |
+| **Karabiner** | ⚠️ Unconfigured | None | Installed but unused |
 
 ---
 

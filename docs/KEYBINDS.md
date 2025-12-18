@@ -106,7 +106,7 @@
 | `C-a M` | Tmuxinator | Launch tmuxinator project with FZF |
 
 ### Sesh Aliases
-*Source: `tmux/.tmux/scripts/` (scripts migrated Oct 2025)*
+*Source: `sesh/.config/sesh/scripts/`*
 
 | Alias | Command | Description |
 |-------|---------|-------------|
@@ -287,20 +287,12 @@
 
 ## System Integration
 
-### Hardware Remapping - Karabiner Elements
-*Source: `karabiner/.config/karabiner/karabiner.json`*
-
-| From | To | Description |
-|------|-----|-------------|
-| `Caps Lock` | `Left Control` | Caps as Control |
-| `Right Command` | `Backspace` | Right Cmd as Backspace |
-| `Right Shift` | `Backspace` | Right Shift as Backspace |
-
-### Hardware Remapping - Kanata (Alternative)
+### Hardware Remapping - Kanata (Active)
 *Source: `kanata/.config/kanata/kanata.kbd`*
 
 | Key | Tap | Hold | Description |
 |-----|-----|------|-------------|
+| `Caps Lock` | `Escape` | `Left Control` | Caps as Esc/Ctrl |
 | `a` | `a` | `Left Meta` | Home row modifier |
 | `s` | `s` | `Left Alt` | Home row modifier |
 | `d` | `d` | `Left Shift` | Home row modifier |
@@ -309,6 +301,14 @@
 | `k` | `k` | `Right Shift` | Home row modifier |
 | `l` | `l` | `Right Alt` | Home row modifier |
 | `;` | `;` | `Right Meta` | Home row modifier |
+| `Right Shift` | `Backspace` | - | Quick delete |
+| `Tab` | `Tab` | `Hyper` | Tab as Hyper key |
+
+### Hardware Remapping - Karabiner Elements (Unconfigured)
+*Source: `karabiner/.config/karabiner/karabiner.json`*
+
+Karabiner-Elements is installed but has no active remappings (`simple_modifications` is empty).
+Kanata is the primary keyboard remapper.
 
 ### Zsh Keybinds
 *Source: `zsh/.zshrc`*

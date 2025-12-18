@@ -12,8 +12,6 @@
 blacklist = [
     # System directories (macOS-specific, ignored on Linux)
     "scratch",
-    "/Users",
-    "/",
     "/dev",
     "/usr/bin",
     "/Library/Preferences",
@@ -54,10 +52,10 @@ blacklist = [
 
 # Prioritize session sources
 # Active tmux sessions first for quick access
-# Note: zoxide is NOT included here - it loads on-demand via Ctrl+B keybind instead
 sort_order = [
     "tmux",
     "config",
+    "zoxide",
 ]
 
 # Default session configuration
@@ -74,8 +72,8 @@ preview_command = "~/.config/sesh/scripts/core/sesh_preview.sh {}"
 # These sessions will always appear in sesh list, even when not running
 [[session]]
 name = "notes"
-path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
-startup_command = "nvim INDEX.md"
+path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/cyperx"
+startup_command = "nvim 00-index.md"
 
 [[session]]
 name = "dotfiles"

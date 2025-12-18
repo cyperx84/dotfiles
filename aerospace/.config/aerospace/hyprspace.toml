@@ -126,13 +126,14 @@ run = 'layout floating'
     # App launchers with workspace switching
     # These launch the app AND switch to its workspace immediately
     # The on-window-detected rules above handle moving the window automatically
-    cmd-enter = ['exec-and-forget open -a Ghostty']
-    cmd-ctrl-b = ['exec-and-forget open -a Zen']
+    ctrl-space = ['exec-and-forget open -na Ghostty']
+    cmd-ctrl-b = ['exec-and-forget open -na Zen']
     cmd-ctrl-c = ['exec-and-forget open -a Claude']
     cmd-ctrl-u = ['exec-and-forget open -a Antigravity']
 
     # Apps without workspace assignment (stay on current workspace)
     cmd-ctrl-i = 'exec-and-forget open -a "IPhone Mirroring"'
+    cmd-ctrl-s = 'exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh'
     cmd-ctrl-o = 'exec-and-forget open -a Obsidian'
     cmd-ctrl-y = 'exec-and-forget open -a Zen https://youtube.com'
     cmd-ctrl-p = 'exec-and-forget open -a Zen https://perplexity.com'

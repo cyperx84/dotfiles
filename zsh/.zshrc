@@ -46,8 +46,6 @@ function brew() {
 }
 fi
 
-autoload -U compinit && compinit
-
 # Lazy-load gopass completion (saves 100-200ms on shell startup)
 if (( $+commands[gopass] )); then
   gopass() {
@@ -70,7 +68,7 @@ source <(fzf --zsh)
 export FZF_DEFAULT_OPTS='--border=rounded --border-label="" --color=border:#00ff00'
 
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --icons --level=3 {} | head -200'"
-export FZF_CTRL_F_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
+export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.fzf/shell/key-bindings.zsh ] && source ~/.fzf/shell/key-bindings.zsh
 [ -f ~/.fzf/shell/completion.zsh ] && source ~/.fzf/shell/completion.zsh
@@ -197,17 +195,8 @@ alias ltree="eza --tree --level=2  --icons --git"
 alias l="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias ll="eza --color=always --long --git --icons=always"
 
-# List all images in Dir
-alias iva='find . -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.gif" -o -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.webp" -o -iname "*.svg" \) -exec kitty +kitten icat {} \;'
-
 export EDITOR='nvim'
 export VISUAL='nvim'
-
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nvim'
-else
-  export EDITOR='vim'
-fi
 
 # NEOVIM
 alias n='NVIM_APPNAME="nvim" nvim'
@@ -233,7 +222,7 @@ alias conf="cd $HOME/dotfiles && nvim"
 
 # notes
 alias note="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim Index.md"
-alias notes="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/cyperx && nvim !Index.md"
+alias notes="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/cyperx && nvim 00-Index.md"
 alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/snowboard && nvim Index.md"
 
 # ======================
@@ -286,3 +275,4 @@ if (( $+commands[direnv] )); then
 fi
 
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"

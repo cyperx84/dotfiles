@@ -14,6 +14,9 @@ function icon_map() {
   "kitty")
     icon_result=":kitty:"
     ;;
+  "Ghostty" | "ghostty")
+    icon_result=":terminal:"
+    ;;
   "ClickUp")
     icon_result=":click_up:"
     ;;

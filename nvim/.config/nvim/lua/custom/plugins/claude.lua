@@ -151,10 +151,11 @@ local function send_all_buffers()
     return
   end
 
-  -- Send each buffer
+  -- Send each buffer using the Lua API directly (bypasses command parsing bug with spaces in paths)
+  local claudecode = require("claudecode")
   for _, buf in ipairs(valid_buffers) do
     local bufname = vim.api.nvim_buf_get_name(buf)
-    local success, err = pcall(vim.cmd, 'ClaudeCodeAdd ' .. vim.fn.fnameescape(bufname))
+    local success, err = pcall(claudecode.send_at_mention, bufname, nil, nil, "send_all_buffers")
     if not success then
       vim.notify('Error adding buffer ' .. bufname .. ': ' .. (err or 'Unknown error'), vim.log.levels.ERROR)
     end

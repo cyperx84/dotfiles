@@ -213,20 +213,17 @@ tail -f /usr/local/var/log/skhd/skhd.out.log
 log stream --predicate 'process == "sketchybar"'
 ```
 
-## 🔄 Recent Changes (Oct 2025)
+## 🔄 Recent Changes
 
-### Critical Migrations
+### Dec 2025 Updates
+- **Kanata**: Now PRIMARY keyboard remapper (Karabiner unconfigured)
+- **Sesh Scripts**: Located in `sesh/.config/sesh/scripts/` (organized into core/, lib/, utils/)
+- **Validation**: `~/bin/validate_sesh.sh` was removed; use `sesh list` for manual validation
 
-**1. Sesh Script Migration**
-- **FROM**: `sesh/.config/sesh/scripts/` (7 scripts)
-- **TO**: `tmux/.tmux/scripts/` (11 scripts)
-- **IMPACT**: Session management now fully integrated into tmux workflow
-- **NOTE**: `~/bin/validate_sesh.sh` was REMOVED
-
-**2. Nvim Git Subtree**
-- Converted from git submodule to git subtree
-- Can be updated with: `git subtree pull --prefix nvim <repo> main`
-- Can be used independently on any system
+### Oct 2025 Updates
+- **Nvim Git Subtree**: Converted from git submodule to git subtree
+  - Can be updated with: `git subtree pull --prefix nvim <repo> main`
+  - Can be used independently on any system
 
 ## 🏷️ Key Integration Points
 
@@ -250,18 +247,15 @@ Custom navigation in `.zshrc`:
 - `fv` - Fuzzy file open with editor
 - `f` - General fuzzy file operations
 
-### Tmux Custom Scripts
+### Sesh Session Scripts
 
-**Location**: `tmux/.tmux/scripts/`
+**Location**: `sesh/.config/sesh/scripts/`
 
-**Scripts** (11 files):
-- `sesh_list_enhanced.sh` - Enhanced session listing
-- `sesh_list_icons.sh` - Icon mapping
-- `sesh_preview.sh` - FZF preview window content
-- `sesh_switcher.sh` - Main session switching logic
-- `sesh_smart_start.sh` - Intelligent session creation
-- `sesh_edit.sh` - Edit session configurations
-- `session_helper.sh` - General utilities
+**Structure**:
+- `core/sesh_switcher.sh` - Main session switching logic
+- `lib/sesh_colors.sh` - Color definitions
+- `utils/` - Utility scripts
+- Root: sesh_list_enhanced.sh, sesh_preview.sh, sesh_smart_start.sh, etc.
 
 Referenced in:
 - `tmux/.tmux.conf` (keybindings)

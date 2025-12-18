@@ -118,13 +118,15 @@ System-Level Services (LaunchDaemons):
 - **Starship** - 6 interchangeable prompt themes
 
 ### Input Management
-- **Karabiner-Elements** - Active (Caps→Ctrl, Right Cmd/Shift→Backspace)
-- **Kanata** - Keyboard remapper with home row mods (a/s/d/f, j/k/l/;)
-  - **Config**: `~/.config/kanata/kanata.kbd` (CRITICAL: NOT config.kbd!)
+- **Kanata** - Active (PRIMARY) - Advanced keyboard remapper with home row mods
+  - **Home row mods**: a/s/d/f → Cmd/Alt/Shift/Ctrl, j/k/l/; → Ctrl/Shift/Alt/Cmd
+  - **Caps Lock**: Escape on tap, Ctrl on hold
+  - **Right Shift**: Backspace
+  - **Config**: `~/.config/kanata/kanata.kbd` (200ms tap, 230ms hold)
   - **Auto-start**: LaunchDaemon at `/Library/LaunchDaemons/com.example.kanata.plist`
-  - **Install script**: `kanata/install_kanata_macos.sh` (sets up all 3 LaunchDaemons)
   - **Dependencies**: Karabiner-DriverKit-VirtualHIDDevice (required for input interception)
   - **Status check**: `sudo launchctl print system/com.example.kanata`
+- **Karabiner-Elements** - Installed but unconfigured (simple_modifications empty)
 
 ## 🛠️ Common Tasks
 
@@ -510,26 +512,28 @@ brew services list
 ls -la /usr/local/var/log/
 ```
 
-### Tmux Custom Scripts
+### Sesh Session Scripts
 
-**Location**: `tmux/.tmux/scripts/` (7 scripts)
-
-**IMPORTANT**: These scripts replaced the previous `sesh/.config/sesh/scripts/` directory (Oct 2025 migration).
+**Location**: `sesh/.config/sesh/scripts/`
 
 **Scripts**:
 ```
-tmux/.tmux/scripts/
-├── sesh_list_enhanced.sh      # Enhanced session listing with icons & filtering (7.3KB)
-├── sesh_list_icons.sh         # Icon mapping for different session types (942B)
-├── sesh_preview.sh            # FZF preview window content (18KB)
-├── sesh_switcher.sh           # Main session switching logic (3.0KB)
-├── sesh_smart_start.sh        # Intelligent session creation (3.3KB)
-├── sesh_edit.sh               # Edit session configurations (1.1KB)
-└── session_helper.sh          # General session utilities (4.3KB)
+sesh/.config/sesh/scripts/
+├── core/                      # Core session logic
+│   └── sesh_switcher.sh       # Main session switching logic
+├── lib/                       # Shared libraries
+│   └── sesh_colors.sh         # Color definitions
+├── utils/                     # Utility scripts
+├── sesh_list_enhanced.sh      # Enhanced session listing with icons & filtering
+├── sesh_list_icons.sh         # Icon mapping for different session types
+├── sesh_preview.sh            # FZF preview window content
+├── sesh_smart_start.sh        # Intelligent session creation
+├── sesh_edit.sh               # Edit session configurations
+└── session_helper.sh          # General session utilities
 ```
 
 **Integration**:
-- Called from tmux keybindings (`C-a e` - session switcher, `C-a L` - session list)
+- Called from tmux keybindings (Alt+e - session switcher via `core/sesh_switcher.sh`)
 - Used by FZF session switcher for previews
 - Provide icons and enhanced display for sessions
 - Referenced in `sesh.toml` for preview command
@@ -538,10 +542,10 @@ tmux/.tmux/scripts/
 - **sesh_preview.sh**: Shows session contents in FZF preview pane
 - **sesh_switcher.sh**: Smart session switching with creation fallback
 - **sesh_smart_start.sh**: Creates sessions with intelligent defaults
-- **sesh_list_icons.sh**: Maps session types to icons (📁, 🔧, 📝, etc.)
+- **sesh_list_icons.sh**: Maps session types to icons
 
 **Referenced In**:
-- `tmux/.tmux.conf` (keybindings)
+- `tmux/.tmux.conf` (keybindings reference `~/.config/sesh/scripts/core/sesh_switcher.sh`)
 - `sesh/.config/sesh/sesh.toml` (preview_command)
 
 ### Advanced Stow Operations
@@ -747,16 +751,11 @@ git stash pop  # Restore if needed
   - SketchyBar directly integrated via `exec-on-workspace-change` callback
   - Uses `on-window-detected` callbacks for automatic workspace assignment (Nov 30, 2025 optimization)
 
-### **CRITICAL** - Sesh Script Migration (Oct 2025)
-- **Action**: Migrated all sesh-specific scripts from `sesh/.config/sesh/scripts/` to `tmux/.tmux/scripts/`
-- **Deleted Files**:
-  - `sesh/.config/sesh/scripts/*` (all 7 scripts removed)
-  - `sesh/bin/validate_sesh.sh` (validation script removed)
-- **Impact**:
-  - Session management now fully integrated into tmux workflow
-  - **IMPORTANT**: `~/bin/validate_sesh.sh` references in docs are OBSOLETE
-  - Sesh validation is now manual: `sesh list` (should show sessions without errors)
-  - All functionality moved to tmux scripts (see Tmux Scripts section below)
+### Sesh Scripts Location
+- **Location**: Scripts remain in `sesh/.config/sesh/scripts/`
+- **Structure**: Organized into `core/`, `lib/`, `utils/` subdirectories
+- **Validation**: Manual via `sesh list` (should show sessions without errors)
+- **Note**: `~/bin/validate_sesh.sh` was removed; validation is now manual
 
 ### Neovim Configuration Updates
 - Modified file manager plugins: mini.lua, oil.lua, telescope.lua, yazi.lua
@@ -765,6 +764,6 @@ git stash pop  # Restore if needed
 
 ## 🏷️ Recent Updates (Historical)
 
-- Added Kanata keyboard remapper as alternative to Karabiner-Elements
+- **Dec 2025**: Kanata now PRIMARY keyboard remapper (Karabiner unconfigured)
 - Expanded SketchyBar to 30+ plugins with comprehensive testing framework
 - **Oct 2025**: Nvim added as git subtree (see Git Subtree Management below)

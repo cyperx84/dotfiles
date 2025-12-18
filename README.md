@@ -77,19 +77,20 @@ Modern GPU-accelerated terminal with extensive customization:
 - macOS-specific optimizations
 - Secure input handling
 
-### ⛓️‍💥 **Karabiner-Elements** - Keyboard Remapping
-Advanced keyboard customization for ergonomic improvements:
-- **Caps Lock** → Left Control (vim-friendly)
-- **Right Command** → Backspace
-- **Right Shift** → Backspace
-- **Function Keys**: Customized F1-F12 mappings
-
-### 🦾 **Kanata** - Advanced Keyboard Remapper (Alternative)
+### 🦾 **Kanata** - Advanced Keyboard Remapper (Active)
 Sophisticated keyboard remapping with home row modifiers:
+- **Caps Lock**: Escape on tap, Ctrl on hold
 - **Home Row Mods**: Hold a/s/d/f/j/k/l/; for modifiers (Cmd/Alt/Shift/Ctrl)
-- **Layer System**: Function layer accessible via Fn key
-- **Timing**: 150ms tap time, 200ms hold time for optimal response
-- **Status**: Configured but inactive (use instead of Karabiner if preferred)
+- **Right Shift**: Backspace
+- **Tab**: Hyper key (Cmd+Alt+Shift+Ctrl) on hold
+- **Timing**: 200ms tap, 230ms hold thresholds
+- **Auto-start**: LaunchDaemon runs at boot
+- **Status**: ✅ Active (PRIMARY)
+
+### ⛓️‍💥 **Karabiner-Elements** - Keyboard Remapping (Unconfigured)
+Installed but currently unused:
+- **Status**: ⚠️ `simple_modifications` is empty
+- Kanata is the primary keyboard remapper
 
 ### 🚀 **HyprSpace** - Tiling Window Manager with Dwindle Layout (PRIMARY)
 Aerospace fork with Hyprland-style binary tree tiling:
@@ -384,22 +385,28 @@ git subtree merge --prefix nvim https://github.com/cyperx84/nvim.git main --squa
 
 ## ⚙️ Customization
 
-### Keyboard Remapping Choice
-Choose between two keyboard remapping solutions:
+### Keyboard Remapping
+Kanata is the active keyboard remapper with home row mods:
 
-**Karabiner-Elements (Default):**
+**Kanata (Active):**
 ```bash
-# Already active if you followed installation
-# Simple remappings work out of the box
+# Check status
+sudo launchctl print system/com.example.kanata
+
+# Restart after config changes
+sudo launchctl kickstart -k system/com.example.kanata
+
+# View config
+cat ~/.config/kanata/kanata.kbd
 ```
 
-**Kanata (Advanced Alternative):**
+**To switch to Karabiner-Elements:**
 ```bash
-# Disable Karabiner-Elements first
-# Then start kanata with:
-sudo kanata --cfg ~/.config/kanata/kanata.kbd
+# Disable Kanata
+sudo launchctl bootout system /Library/LaunchDaemons/com.example.kanata.plist
 
-# For permanent activation, create a launch daemon
+# Configure Karabiner-Elements via its GUI
+# Add remappings to simple_modifications
 ```
 
 ### Starship Themes
