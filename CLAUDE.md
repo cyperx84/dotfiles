@@ -253,6 +253,49 @@ cd ~/.config/sketchybar/helper && make clean && make
 sketchybar --trigger <plugin_name>.update
 ```
 
+### Temperature Monitoring (M4 Mac)
+
+**⚠️ IMPORTANT**: M4 Macs have different temperature sensor behavior than M1/M2/M3.
+
+**The Problem**: Tools like `macmon` report `cpu_temp_avg` which reads die hotspot sensors (TCMb ~90-100°C). This is misleading - modern chips have hotspots that run 90°C+ even at idle.
+
+**The Solution**: The temperature plugin uses `smctemp` to read heatsink temperature (TH0x ~50-60°C) which is more representative.
+
+**Available SMC Sensors on M4**:
+| Sensor | Typical Value | What it measures |
+|--------|---------------|------------------|
+| `TW0P` | ~40°C | Enclosure/ambient |
+| `TH0x` | ~55°C | **Heatsink** (what we display) |
+| `TCMb` | ~98°C | Die hotspot max (misleading) |
+| `TPSD` | ~48°C | SSD temperature |
+
+**Dependencies**:
+```bash
+# smctemp is required for accurate M4 temperature
+brew tap narugit/tap && brew install narugit/tap/smctemp
+
+# Verify it works
+smctemp -l | grep TH0x
+```
+
+**Troubleshooting**:
+```bash
+# Check what temperature is being reported
+cat /tmp/sketchybar_temp_cache
+
+# Test the plugin directly
+CONFIG_DIR="$HOME/.config/sketchybar" NAME="temperature" bash ~/.config/sketchybar/plugins/temperature.sh
+
+# View all temperature sensors
+smctemp -l | grep -E "^  T[A-Za-z0-9]+" | sort -t']' -k2 -n
+
+# If smctemp unavailable, falls back to macmon (less accurate on M4)
+```
+
+**Reference**:
+- smctemp GitHub: https://github.com/narugit/smctemp
+- Stats app M4 issues: https://github.com/exelban/stats/issues/2249
+
 ### Stow Issues
 
 ```bash
@@ -672,6 +715,22 @@ git stash pop  # Restore if needed
 - **Comments:** Inline for complex logic, header blocks for files
 
 ## 🔄 Recent Changes & Migrations
+
+### **FIX** - M4 Mac Temperature Monitoring (Dec 19, 2025)
+- **Problem**: Temperature plugin displayed incorrect readings (~91°C at idle) on M4 Macs
+- **Root Cause**: `macmon` reports die hotspot temperature (TCMb sensor) which is always high on modern chips
+- **Solution**: Now uses `smctemp` to read heatsink temperature (TH0x sensor, ~55°C) which is more representative
+- **New Dependency**: `brew tap narugit/tap && brew install narugit/tap/smctemp`
+- **Modified Files**:
+  - `sketchybar/.config/sketchybar/plugins/temperature.sh` - Rewrote to use smctemp TH0x sensor
+- **Key Learnings**:
+  - M4 die sensors (TCMb) report 90-100°C even at idle - this is **normal** for modern chips
+  - Heatsink sensors (TH0x, ~55°C) represent actual thermal state
+  - Enclosure sensors (TW0P, ~40°C) show what TG Pro reports as "idle temperature"
+- **Fallback**: If smctemp unavailable, falls back to macmon (less accurate on M4)
+- **References**:
+  - smctemp: https://github.com/narugit/smctemp
+  - M4 sensor issues: https://github.com/exelban/stats/issues/2249
 
 ### **CRITICAL** - HyprSpace Migration + Dwindle Layout (Dec 13, 2025)
 - **Action**: Switched from Aerospace to HyprSpace (upstream fork) for Hyprland-style dwindle tiling

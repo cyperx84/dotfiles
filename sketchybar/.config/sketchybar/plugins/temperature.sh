@@ -1,33 +1,44 @@
 #!/bin/bash
 
-# CPU temperature monitoring using macmon (works on Apple Silicon without sudo)
+# CPU temperature monitoring using smctemp (direct SMC access)
 source "$CONFIG_DIR/colors.sh"
 source "$CONFIG_DIR/icons.sh"
 
-# Get CPU temperature using macmon (sudoless, works on M1/M2/M3)
+# Get CPU temperature using smctemp's heatsink sensor (TH0x)
+# This is more meaningful than die hotspot (TCMb) which is always high
 get_cpu_temp() {
-  # Use macmon pipe for single sample with JSON output (with timeout)
-  local temp=$(timeout 2 macmon pipe -s 1 -i 100 2>/dev/null | jq -r '.temp.cpu_temp_avg' 2>/dev/null)
+  # Try smctemp first - reads heatsink temp (TH0x) which is more useful
+  if command -v smctemp &>/dev/null; then
+    # Get TH0x (heatsink max) - more representative than die hotspot
+    local heatsink=$(smctemp -l 2>/dev/null | grep "TH0x" | awk '{print $4}')
 
-  if [[ -n "$temp" ]] && [[ "$temp" =~ ^[0-9.]+$ ]]; then
-    # Round to integer (cleaner display)
-    printf "%.0f" "$temp"
-  else
-    # Fallback to thermal state if macmon fails
-    local thermal_state=$(sysctl -n machdep.xcpm.cpu_thermal_level 2>/dev/null)
-    if [ -n "$thermal_state" ] && [[ "$thermal_state" =~ ^[0-9]+$ ]]; then
-      # Convert thermal level to approximate temperature
-      case "$thermal_state" in
-        0) echo "45" ;;
-        1) echo "55" ;;
-        2) echo "65" ;;
-        3) echo "75" ;;
-        *) echo "80" ;;
-      esac
-    else
-      echo "50"  # Safe default
+    if [[ -n "$heatsink" ]] && [[ "$heatsink" =~ ^[0-9.]+$ ]]; then
+      local temp_int=${heatsink%.*}
+      echo "$temp_int" > /tmp/sketchybar_temp_cache
+      echo "$temp_int"
+      return
     fi
   fi
+
+  # Fallback to macmon if smctemp unavailable
+  local macmon_data=$(timeout 3 macmon pipe -s 1 -i 100 2>/dev/null)
+  if [ -n "$macmon_data" ]; then
+    local temp=$(echo "$macmon_data" | jq -r '.temp.cpu_temp_avg' 2>/dev/null)
+    if [[ -n "$temp" ]] && [[ "$temp" =~ ^[0-9.]+$ ]]; then
+      local temp_int=${temp%.*}
+      echo "$temp_int" > /tmp/sketchybar_temp_cache
+      echo "$temp_int"
+      return
+    fi
+  fi
+
+  # Use cached value if available
+  if [ -f /tmp/sketchybar_temp_cache ]; then
+    cat /tmp/sketchybar_temp_cache
+    return
+  fi
+
+  echo "40"  # Safe default
 }
 
 # Get temperature with error handling

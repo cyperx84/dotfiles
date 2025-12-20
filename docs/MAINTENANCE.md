@@ -181,6 +181,33 @@ sketchybar --reload
 ~/.config/sketchybar/debug_sketchybar.sh
 ```
 
+**Temperature Plugin Issues (M4 Mac)**:
+```bash
+# Check current temperature reading
+cat /tmp/sketchybar_temp_cache
+
+# Test temperature plugin directly
+CONFIG_DIR="$HOME/.config/sketchybar" NAME="temperature" bash ~/.config/sketchybar/plugins/temperature.sh
+
+# Verify smctemp is installed (required for accurate M4 readings)
+which smctemp || brew tap narugit/tap && brew install narugit/tap/smctemp
+
+# Check heatsink temperature (what we display)
+smctemp -l | grep TH0x
+
+# View all available temperature sensors
+smctemp -l | grep -E "^  T[A-Za-z0-9]+"
+
+# Compare die hotspot vs heatsink (die is always higher)
+echo "Die hotspot (TCMb):"; smctemp -l | grep TCMb
+echo "Heatsink (TH0x):"; smctemp -l | grep TH0x
+
+# If temperature seems wrong, clear cache and reload
+rm -f /tmp/sketchybar_temp_cache && sketchybar --reload
+```
+
+**Note**: On M4 Macs, die sensors (TCMb) report 90-100°C even at idle - this is normal for modern chips. The temperature plugin uses heatsink temperature (TH0x, ~50-60°C) which is more representative of actual thermal state.
+
 **Terminal/Tmux Issues**:
 ```bash
 # 1. Check Ghostty configuration

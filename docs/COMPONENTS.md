@@ -124,9 +124,16 @@ plugins/
 ├── front_app.sh          # Active application
 ├── git.sh                # Git repository status
 ├── github.sh             # GitHub notifications
+├── temperature.sh        # CPU temperature (M4-aware, uses smctemp)
 ├── volume.sh             # Audio control
 └── ... (25+ more plugins)
 ```
+
+**Temperature Monitoring (M4 Mac)**:
+The temperature plugin uses `smctemp` to read heatsink temperature (TH0x sensor) instead of die hotspot sensors. This provides meaningful temperature readings on M4 Macs where die sensors report 90°C+ even at idle.
+- **Dependency**: `brew tap narugit/tap && brew install narugit/tap/smctemp`
+- **Fallback**: Uses macmon if smctemp unavailable (less accurate on M4)
+- **Cache**: `/tmp/sketchybar_temp_cache`
 
 **Styling**:
 - **Position**: Top bar, 40px height

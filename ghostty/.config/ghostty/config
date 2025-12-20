@@ -25,6 +25,11 @@ macos-option-as-alt = true
 shell-integration = zsh
 shell-integration-features = cursor,sudo,title
 
+quick-terminal-size = 75%,85%
+quick-terminal-position = center
+quick-terminal-animation-duration = 0.2
+quick-terminal-autohide = true
+
 macos-auto-secure-input = false
 macos-secure-input-indication = false
 

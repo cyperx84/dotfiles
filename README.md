@@ -239,6 +239,9 @@ brew install sesh                          # Session management
 brew install jq                            # JSON processor
 brew install wget                          # File downloader
 brew install curl                          # Data transfer tool
+
+# Temperature monitoring (required for M4 Macs)
+brew tap narugit/tap && brew install narugit/tap/smctemp
 ```
 
 #### Optional Tools
@@ -264,6 +267,7 @@ For convenience, you can install all essential dependencies at once:
 # Essential packages only
 brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd-font BarutSRB/tap/hyprspace
 brew tap FelixKratz/formulae && brew install borders
+brew tap narugit/tap && brew install narugit/tap/smctemp  # M4 temperature monitoring
 brew install sketchybar stow starship tmux zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep nvim git gh yazi sesh jq wget curl
 
 # Optional additions

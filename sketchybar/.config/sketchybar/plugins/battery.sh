@@ -2,18 +2,26 @@
 
 source "$CONFIG_DIR/colors.sh"
 
-# Single pmset call - reuse output (optimized)
+# Get battery status
 BATTERY_INFO="$(pmset -g batt)"
-
-# Extract percentage from cached output
 PERCENTAGE=$(echo "$BATTERY_INFO" | grep -Eo "[0-9]+%" | head -1 | tr -d '%')
-
-# Check if charging from cached output
 CHARGING=$(echo "$BATTERY_INFO" | grep -q 'AC Power' && echo "yes" || echo "no")
 
-# Check for the absence of "InternalBattery" to determine no battery present
-# My mac mini doesn't have a battery, and it was leaving a blank space where the
-# battery was supposed to be
+# Get real-time power usage from macmon (Apple Silicon specific)
+# Uses total system power (sys_power)
+POWER_WATT=$(timeout 3 macmon pipe -s 1 -i 100 2>/dev/null | jq -r '.sys_power' 2>/dev/null)
+POWER_LABEL=""
+
+if [[ -n "$POWER_WATT" ]] && [[ "$POWER_WATT" != "null" ]]; then
+  # Format to integer
+  POWER_INT=$(printf "%.0f" "$POWER_WATT")
+  if [ "$CHARGING" = "yes" ]; then
+    POWER_LABEL=" +${POWER_INT}W"
+  else
+    POWER_LABEL=" -${POWER_INT}W"
+  fi
+fi
+
 if ! echo "$BATTERY_INFO" | grep -q "InternalBattery"; then
   sketchybar --set "$NAME" drawing=off
   exit 0
@@ -35,10 +43,6 @@ case "${PERCENTAGE}" in
   ICON=""
   COLOR=$YELLOW
   ;;
-# [3-5][0-9])
-#   ICON=""
-#   COLOR=$YELLOW
-#   ;;
 [1-2][0-9])
   ICON=""
   COLOR=$RED
@@ -50,6 +54,4 @@ if [ "$CHARGING" = "yes" ]; then
   ICON=""
 fi
 
-# The item invoking this script (name $NAME) will get its icon and label
-# updated with the current battery status
-sketchybar --set "$NAME" icon="$ICON" label="${PERCENTAGE}" icon.color=$COLOR
+sketchybar --set "$NAME" icon="$ICON" label="${PERCENTAGE}%${POWER_LABEL}" icon.color=$COLOR

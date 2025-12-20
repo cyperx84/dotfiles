@@ -123,21 +123,19 @@ if.app-id = 'com.apple.archiveutility'
 run = 'layout floating'
 
 [mode.main.binding]
-    # App launchers with workspace switching
-    # These launch the app AND switch to its workspace immediately
-    # The on-window-detected rules above handle moving the window automatically
     ctrl-space = ['exec-and-forget open -na Ghostty']
     cmd-ctrl-b = ['exec-and-forget open -na Zen']
     cmd-ctrl-c = ['exec-and-forget open -a Claude']
     cmd-ctrl-u = ['exec-and-forget open -a Antigravity']
-
-    # Apps without workspace assignment (stay on current workspace)
-    cmd-ctrl-i = 'exec-and-forget open -a "IPhone Mirroring"'
-    cmd-ctrl-s = 'exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh'
-    cmd-ctrl-o = 'exec-and-forget open -a Obsidian'
-    cmd-ctrl-y = 'exec-and-forget open -a Zen https://youtube.com'
-    cmd-ctrl-p = 'exec-and-forget open -a Zen https://perplexity.com'
-    cmd-ctrl-t = 'exec-and-forget open -a Ghostty --args -e tmux attach'
+    cmd-ctrl-g = ['exec-and-forget open -a "Google Chrome"']
+    cmd-ctrl-a = ['exec-and-forget open -a "Ableton Live 12 Suite"']
+    cmd-ctrl-d = ['exec-and-forget open -a "DaVinci Resolve"']
+    cmd-ctrl-i = ['exec-and-forget open -a "iPhone Mirroring"']
+    cmd-ctrl-s = ['exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh']
+    cmd-ctrl-o = ['exec-and-forget open -a Obsidian']
+    cmd-ctrl-y = ['exec-and-forget open -a Zen "https://youtube.com"']
+    cmd-ctrl-p = ['exec-and-forget open -a Zen "https://perplexity.com"']
+    cmd-ctrl-t = ['exec-and-forget open -na Ghostty --args -e "tmux attach"']
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'
