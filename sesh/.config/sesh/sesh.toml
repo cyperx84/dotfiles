@@ -90,7 +90,3 @@ name = "github"
 path = "~/github"
 startup_command = "" 
 
-[[session]]
-name = "temp"
-path = "~/Code/temp"
-startup_command = "" 
