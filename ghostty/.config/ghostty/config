@@ -38,7 +38,7 @@ keybind = ctrl+l=unbind
 keybind = cmd+shift+p=unbind
 keybind = global:cmd+/=toggle_quick_terminal
 keybind = "cmd+shift+s=toggle_secure_input"
-keybind = shift+enter=text:\n
+# keybind = shift+enter=text:\n  # Removed for Claude Code compatibility
 
 # Scrolling
 keybind = super+alt+u=scroll_page_up

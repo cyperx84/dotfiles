@@ -130,6 +130,22 @@ local function launch_claude_glm()
   -- Focus moves to Claude panel automatically
 end
 
+-- Custom function to add current buffer to Claude Code (handles spaces in paths)
+local function add_current_buffer()
+  local bufname = vim.api.nvim_buf_get_name(0)
+  if bufname == '' then
+    vim.notify('No file in current buffer', vim.log.levels.WARN)
+    return
+  end
+  local claudecode = require("claudecode")
+  local success, err = pcall(claudecode.send_at_mention, bufname, nil, nil, "add_buffer")
+  if success then
+    vim.notify('Added buffer to Claude Code', vim.log.levels.INFO)
+  else
+    vim.notify('Error adding buffer: ' .. (err or 'Unknown error'), vim.log.levels.ERROR)
+  end
+end
+
 -- Custom function to send all open buffers to Claude Code
 local function send_all_buffers()
   local buffers = vim.api.nvim_list_bufs()
@@ -281,7 +297,7 @@ return {
     { "<leader>cC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
 
     -- File/content management
-    { "<leader>cb", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+    { "<leader>cb", add_current_buffer, desc = "Add current buffer" },
     { "<leader>cB", send_all_buffers, desc = "Add all buffers to Claude" },
     { "<leader>cs", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send selection to Claude" },
     { "<leader>cS", "<cmd>.ClaudeCodeSend<cr>", mode = "n", desc = "Send current line to Claude" },
