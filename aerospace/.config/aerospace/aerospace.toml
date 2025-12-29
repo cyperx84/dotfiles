@@ -1,8 +1,5 @@
 after-startup-command = [
-  # Create symlink so aerospace CLI can communicate with HyprSpace
-  'exec-and-forget ln -sf /tmp/com.barut.hyprspace-$USER.sock /tmp/bobko.aerospace-$USER.sock',
-  'exec-and-forget sketchybar',
-  'exec-and-forget borders'
+  'exec-and-forget sketchybar'
 ]
 
 exec-on-workspace-change = [
@@ -15,11 +12,8 @@ start-at-login = true
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
 accordion-padding = 1
-
-# DWINDLE LAYOUT - Hyprland-style binary tree tiling
-# Split direction is automatic: Width > Height = side-by-side, Height > Width = top-and-bottom
-default-root-container-layout = 'dwindle'
-
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'horizontal'
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 automatically-unhide-macos-hidden-apps = false
 [key-mapping]
@@ -59,13 +53,6 @@ automatically-unhide-macos-hidden-apps = false
 # [[on-window-detected]]
 # if.app-id = 'md.obsidian'
 # run = 'move-node-to-workspace 6'
-
-# ============================================================================
-# Global Window Detection - Trigger SketchyBar update on ANY new window
-# ============================================================================
-
-[[on-window-detected]]
-run = 'exec-and-forget sketchybar --trigger window_change'
 
 # ============================================================================
 # System Apps - Auto-Float Rules
@@ -125,19 +112,20 @@ if.app-id = 'com.apple.archiveutility'
 run = 'layout floating'
 
 [mode.main.binding]
-    ctrl-space = ['exec-and-forget open -na Ghostty']
-    cmd-ctrl-b = ['exec-and-forget open -na Zen']
-    cmd-ctrl-c = ['exec-and-forget open -a Claude']
-    cmd-ctrl-u = ['exec-and-forget open -a Antigravity']
-    cmd-ctrl-g = ['exec-and-forget open -a "Google Chrome"']
-    cmd-ctrl-a = ['exec-and-forget open -a "Ableton Live 12 Suite"']
-    cmd-ctrl-d = ['exec-and-forget open -a "DaVinci Resolve"']
-    cmd-ctrl-i = ['exec-and-forget open -a "iPhone Mirroring"']
-    cmd-ctrl-s = ['exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh']
-    cmd-ctrl-o = ['exec-and-forget open -a Obsidian']
-    cmd-ctrl-y = ['exec-and-forget open -a Zen "https://youtube.com"']
-    cmd-ctrl-p = ['exec-and-forget open -a Zen "https://perplexity.com"']
-    cmd-ctrl-t = ['exec-and-forget open -na Ghostty --args -e "tmux attach"']
+    # App launchers with workspace switching
+    # These launch the app AND switch to its workspace immediately
+    # The on-window-detected rules above handle moving the window automatically
+    cmd-enter = 'exec-and-forget open -na Ghostty'
+    cmd-ctrl-b = 'exec-and-forget open -na Zen'
+    cmd-ctrl-c = 'exec-and-forget open -na Claude'
+    cmd-ctrl-u = 'exec-and-forget open -na Antigravity'
+
+    # Apps without workspace assignment (stay on current workspace)
+    cmd-ctrl-i = 'exec-and-forget open -na "IPhone Mirroring"'
+    cmd-ctrl-o = 'exec-and-forget open -na Obsidian'
+    cmd-ctrl-y = 'exec-and-forget open -na Zen --args https://youtube.com'
+    cmd-ctrl-p = 'exec-and-forget open -na Zen --args https://perplexity.com'
+    cmd-ctrl-t = 'exec-and-forget open -na Ghostty --args -e tmux attach'
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'

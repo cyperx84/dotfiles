@@ -122,7 +122,7 @@ source "$ITEM_DIR/tmux.sh"
 # source "$ITEM_DIR/dev_servers.sh"
 # source "$ITEM_DIR/docker.sh"
 
-# source "$ITEM_DIR/mic.sh"
+source "$ITEM_DIR/mic.sh"
 
 ###############################################################################
 #                                 Center
@@ -141,6 +141,7 @@ source "$ITEM_DIR/brew.sh"
 source "$ITEM_DIR/wifi.sh"
 source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/volume.sh"
+source "$ITEM_DIR/audio_output.sh"
 
 source "$ITEM_DIR/cpu.sh"
 source "$ITEM_DIR/memory.sh"
@@ -186,6 +187,6 @@ sketchybar --update
 # "$PLUGIN_DIR/wifi_monitor.sh" >/dev/null 2>&1 &
 
 # Trigger initial workspace highlight
-/bin/bash -c "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(hyprspace list-workspaces --focused 2>/dev/null || echo '1')" &
+/bin/bash -c "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused 2>/dev/null || echo '1')" &
 
 echo "sketchybar configuation loaded.."

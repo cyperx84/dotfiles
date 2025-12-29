@@ -261,6 +261,45 @@ alias cc="claude --dangerously-skip-permissions"
 # Antigravity PATH (appended to main PATH configuration above)
 export PATH="$PATH:/Users/cyperx/.antigravity/antigravity/bin"
 
+# ======================
+# AUDIO DEVICE SWITCHING
+# ======================
+
+# FZF-based output device selector
+audio-output() {
+    local device
+    device=$(SwitchAudioSource -a -t output | fzf --prompt="Output > " --height=40% --reverse --border)
+    [[ -n "$device" ]] && SwitchAudioSource -t output -s "$device" && echo "Output: $device"
+}
+
+# FZF-based input device selector
+audio-input() {
+    local device
+    device=$(SwitchAudioSource -a -t input | fzf --prompt="Input > " --height=40% --reverse --border)
+    [[ -n "$device" ]] && SwitchAudioSource -t input -s "$device" && echo "Input: $device"
+}
+
+# Quick aliases
+alias ao='audio-output'
+alias ai='audio-input'
+alias as='echo "Output: $(SwitchAudioSource -c -t output)" && echo "Input: $(SwitchAudioSource -c -t input)"'
+
+# Quick output device switches
+alias speakers='SwitchAudioSource -t output -s "Mac mini Speakers"'
+alias monitor='SwitchAudioSource -t output -s "LG ULTRAGEAR+"'
+alias mod-out='SwitchAudioSource -t output -s "Mod"'
+alias scarlett-out='SwitchAudioSource -t output -s "Scarlett 2i2 USB"'
+alias blackhole-out='SwitchAudioSource -t output -s "BlackHole 16ch"'
+
+# Quick input device switches
+alias scarlett-in='SwitchAudioSource -t input -s "Scarlett 2i2 USB"'
+alias mod-in='SwitchAudioSource -t input -s "Mod"'
+alias blackhole-in='SwitchAudioSource -t input -s "BlackHole 16ch"'
+
+# Recording mode (Multi-Output + BlackHole input for screen recording with system audio)
+alias rec='SwitchAudioSource -t output -s "Multi-Output Device" && SwitchAudioSource -t input -s "BlackHole 16ch" && echo "Recording mode ON"'
+alias rec-off='SwitchAudioSource -t output -s "Mac mini Speakers" && SwitchAudioSource -t input -s "Scarlett 2i2 USB" && echo "Recording mode OFF"'
+
 # Lazy-load direnv (saves 50-100ms, only loads when entering directory with .envrc)
 if (( $+commands[direnv] )); then
   _direnv_lazy_load() {
@@ -276,3 +315,4 @@ fi
 
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"

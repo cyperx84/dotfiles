@@ -24,20 +24,6 @@ vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Save file' })
 -- Quick quit
 vim.keymap.set('n', '<C-q>', ':q<CR>', { desc = 'Quit current buffer' })
 
--- NOTE: TextYankPost autocmd moved to options.lua or autocmds.lua for better organization
-
--- [[FILES]]
-
--- Mini.Files
--- vim.keymap.set('n', '<c-e>', function()
---   local bufname = vim.api.nvim_buf_get_name(0)
---   if vim.bo.filetype == 'minifiles' or bufname:match('^MiniFiles') then
---     require('mini.files').close()
---   else
---     require('mini.files').open()
---   end
--- end, { desc = 'Toggle mini.files' })
-
 -- Yazi
 vim.keymap.set('n', '-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
 
@@ -67,7 +53,7 @@ vim.keymap.set("n", "<leader>tm", "<cmd>Markview<CR>", { desc = "Toggle Markview
 vim.keymap.set("n", "<leader>tt", "<cmd>TransparentToggle<CR>", { desc = "Transparent Toggle" })
 
 -- toggle MiniDiff
-vim.keymap.set("n", "<leader>td", function() require('mini.diff').toggle_overlay() end, { desc = "Toggle MiniDiff" })
+vim.keymap.set("n", "<leader>td", function() require('mini.diff').toggle_overlay(0) end, { desc = "Toggle MiniDiff" })
 
 -- Paste Image
 vim.keymap.set("n", "<leader>pi", "<cmd>PasteImage<CR>", { desc = "Paste Image" })

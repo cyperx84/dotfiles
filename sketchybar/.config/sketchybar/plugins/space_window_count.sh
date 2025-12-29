@@ -12,7 +12,7 @@ if [ -z "$SID" ]; then
 fi
 
 # Get window count for this workspace
-window_count=$(hyprspace list-windows --workspace "$SID" 2>/dev/null | wc -l | tr -d ' ')
+window_count=$(aerospace list-windows --workspace "$SID" 2>/dev/null | wc -l | tr -d ' ')
 
 # Set label based on window count
 case $window_count in

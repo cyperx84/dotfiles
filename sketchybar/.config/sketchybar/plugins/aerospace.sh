@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# HyprSpace workspace indicator plugin
+# Aerospace workspace indicator plugin
 # Optimized for instant updates on workspace/window changes
 
 PLUGIN_DIR="${PLUGIN_DIR:-$HOME/.config/sketchybar/plugins}"
@@ -22,7 +22,7 @@ update_window_count() {
 
 # Get current focused workspace
 get_focused() {
-  hyprspace list-workspaces --focused 2>/dev/null || echo "1"
+  aerospace list-workspaces --focused 2>/dev/null || echo "1"
 }
 
 # Handle workspace change - update highlighting

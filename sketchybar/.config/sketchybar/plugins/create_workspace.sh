@@ -7,7 +7,7 @@ source "$CONFIG_DIR/colors.sh"
 PLUGIN_DIR="${PLUGIN_DIR:-$HOME/.config/sketchybar/plugins}"
 
 # Get all workspace names as sorted numbers
-WORKSPACES=$(hyprspace list-workspaces --all | grep -E '^[0-9]+$' | sort -n)
+WORKSPACES=$(aerospace list-workspaces --all | grep -E '^[0-9]+$' | sort -n)
 
 # Find the first gap in the sequence, or use next number
 NEW_WORKSPACE=1
@@ -53,4 +53,4 @@ sketchybar --add item space.$NEW_WORKSPACE center before space_creator \
 "$PLUGIN_DIR/space_window_count.sh" "$NEW_WORKSPACE"
 
 # Switch to new workspace
-hyprspace workspace "$NEW_WORKSPACE"
+aerospace workspace "$NEW_WORKSPACE"
