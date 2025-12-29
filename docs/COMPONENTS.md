@@ -409,6 +409,8 @@ startup_script = "~/.config/sesh/scripts/claude_dev.sh"
 - **Home Row Mods**: a/s/d/f → Cmd/Alt/Shift/Ctrl, j/k/l/; → Ctrl/Shift/Alt/Cmd
 - **Right Shift**: Backspace
 - **Tab**: Tab on tap, Hyper (Cmd+Alt+Shift+Ctrl) on hold
+- **Forward slash (/)**: / on tap, Numbers layer on hold
+- **Right Cmd**: Toggle home row mods on/off (tap to switch base↔vanilla layers)
 - **Timing**: 200ms tap, 230ms hold thresholds
 
 **Service Management**:

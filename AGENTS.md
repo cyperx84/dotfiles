@@ -30,7 +30,7 @@ tags:
 4. **Key system preferences**
    - Tmux prefix (Ctrl+A is intentional, not Ctrl+B)
    - Yabai gap sizes (1px is intentional)
-   - Karabiner vs Kanata setup (user has chosen Karabiner)
+   - Karabiner vs Kanata setup (user has chosen Kanata as PRIMARY)
 
 ## 📂 Repository Structure
 
@@ -46,8 +46,8 @@ dotfiles/
 ├── sketchybar/             # Menu bar: sketchybarrc + 69 plugins
 ├── ghostty/                # Terminal: config
 ├── starship/               # Prompt: 6 theme variants
-├── karabiner/              # Keyboard: karabiner.json
-├── kanata/                 # Keyboard alt: kanata.kbd (inactive)
+├── kanata/                 # Keyboard: kanata.kbd (ACTIVE - PRIMARY)
+├── karabiner/              # Keyboard alt: karabiner.json (inactive)
 ├── sesh/                   # Session manager: sesh.toml
 ├── tmuxinator/             # Complex layouts: YAML configs
 └── mcp/ + mcphub/          # Model Context Protocol
@@ -143,8 +143,8 @@ set -g @floax-height '80%'
 ```
 
 **Keyboard Remapping**:
-Currently using **Karabiner-Elements** (not Kanata).
-Config: `karabiner/karabiner.json`
+Currently using **Kanata** (PRIMARY) with home row mods. Karabiner-Elements is installed but unconfigured.
+Config: `kanata/.config/kanata/kanata.kbd`
 
 ## 🐛 Troubleshooting Procedures
 

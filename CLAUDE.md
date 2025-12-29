@@ -122,6 +122,9 @@ System-Level Services (LaunchDaemons):
   - **Home row mods**: a/s/d/f → Cmd/Alt/Shift/Ctrl, j/k/l/; → Ctrl/Shift/Alt/Cmd
   - **Caps Lock**: Escape on tap, Ctrl on hold
   - **Right Shift**: Backspace
+  - **Tab**: Tab on tap, Hyper on hold
+  - **Forward slash (/)**: / on tap, Numbers layer on hold
+  - **Right Cmd**: Toggle home row mods on/off (tap to switch base↔vanilla layers)
   - **Config**: `~/.config/kanata/kanata.kbd` (200ms tap, 230ms hold)
   - **Auto-start**: LaunchDaemon at `/Library/LaunchDaemons/com.example.kanata.plist`
   - **Dependencies**: Karabiner-DriverKit-VirtualHIDDevice (required for input interception)
@@ -391,7 +394,11 @@ This repository has comprehensive documentation for detailed information:
 
 **Kanata Features Enabled**:
 - Home row mods (a/s/d/f → Cmd/Alt/Shift/Ctrl, j/k/l/; → Ctrl/Shift/Alt/Cmd)
-- Caps Lock → Ctrl
+- Caps Lock → Escape (tap) / Ctrl (hold)
+- Right Shift → Backspace
+- Tab → Hyper key (hold)
+- Forward slash (/) → Numbers layer (hold)
+- Right Cmd → Toggle home row mods on/off
 - Function layer (Fn key toggle)
 - Devices: Apple Internal Keyboard + Logitech MX Mechanical
 

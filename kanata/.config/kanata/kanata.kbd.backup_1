@@ -1,0 +1,102 @@
+;; Kanata keyboard configuration
+(defcfg
+  process-unmapped-keys yes
+  ;; Explicitly list both keyboards
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+    "MX MCHNCL M"
+  )
+)
+
+(defsrc
+  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+  tab  caps a s d f j k l ; rmet
+  lsft rsft
+  fn
+)
+
+(defvar
+  tap-time 200
+  hold-time 230
+)
+
+(defalias
+  ;; UPDATED: Caps Lock → Escape on tap, Ctrl on hold (Vim-friendly)
+  escctrl (tap-hold $tap-time $hold-time esc lctl)
+
+  ;; Home row mods (unchanged)
+  a (tap-hold $tap-time $hold-time a lmet)
+  s (tap-hold $tap-time $hold-time s lalt)
+  d (tap-hold $tap-time $hold-time d lsft)
+  f (tap-hold $tap-time $hold-time f lctl)
+  j (tap-hold $tap-time $hold-time j rctl)
+  k (tap-hold $tap-time $hold-time k rsft)
+  l (tap-hold $tap-time $hold-time l ralt)
+  ; (tap-hold $tap-time $hold-time ; rmet)
+
+  ;; UPDATED: Fixed to use variables instead of hardcoded values
+  fnl (tap-hold $tap-time $hold-time fn (layer-toggle fn))
+  fnlvanilla (tap-hold $tap-time $hold-time fn (layer-toggle fnvanilla))
+
+  ;; NEW: Tab → Hyper (Cmd+Alt+Shift+Ctrl) on hold
+  hypertab (tap-hold $tap-time $hold-time tab (multi lmet lalt lsft lctl))
+
+  ;; NEW: Right Shift → Backspace
+  rshiftbspc bspc
+
+  ;; NEW: Right Command → Toggle custom layer (to be populated later)
+  rmetlayer (layer-toggle custom)
+  rmetvanilla (layer-toggle customvanilla)
+
+  ;; NEW: Toggle home row mods on/off (switches to vanilla layer)
+  togmods (layer-switch vanilla)
+  togbase (layer-switch base)
+)
+
+(deflayer base
+  brdn  brup  _    _    _    _   prev  pp  next  mute  vold  volu
+  @hypertab @escctrl @a @s @d @f @j @k @l @; @rmetlayer
+  _ @rshiftbspc
+  @fnl
+)
+
+(deflayer fn
+  @togmods   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+  tab  @escctrl _ _ _ _ _ _ _ _ _
+  _ _
+  @fnl
+)
+
+;; NEW: Custom layer - Right Command activates this layer
+;; Hold Right Cmd + Tab = Toggle home row mods
+(deflayer custom
+  _    _    _    _    _    _    _    _    _    _    _    _
+  @togmods    _    _    _    _    _    _    _    _    _    _
+  _    _
+  _
+)
+
+;; NEW: Vanilla layer - no home row mods (for when you want normal typing)
+;; Right Cmd + Tab to toggle ON/OFF, or Fn+F1 to toggle
+(deflayer vanilla
+  brdn  brup  _    _    _    _   prev  pp  next  mute  vold  volu
+  tab @escctrl a s d f j k l ; @rmetvanilla
+  _ @rshiftbspc
+  @fnlvanilla
+)
+
+;; Fn layer for vanilla (has toggle back to base)
+(deflayer fnvanilla
+  @togbase   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+  tab  @escctrl _ _ _ _ _ _ _ _ _
+  _ _
+  @fnlvanilla
+)
+
+;; Custom layer for vanilla (Right Cmd + Tab to toggle back)
+(deflayer customvanilla
+  _    _    _    _    _    _    _    _    _    _    _    _
+  @togbase    _    _    _    _    _    _    _    _    _    _
+  _    _
+  _
+)
