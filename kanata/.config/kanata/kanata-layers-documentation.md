@@ -14,7 +14,7 @@
 3. [Layer Reference](#layer-reference)
    - [Base Layer](#base-layer)
    - [Symbols Layer](#symbols-layer-space-hold)
-   - [Numbers Layer](#numbers-layer-right-cmd-hold)
+   - [Numbers Layer](#numbers-layer-apostrophe-hold)
    - [Function Layer](#function-layer-fn-hold)
    - [Vanilla Layer](#vanilla-layer-no-home-row-mods)
 4. [Visual Layer Maps](#visual-layer-maps)
@@ -37,7 +37,7 @@ This kanata configuration transforms a standard keyboard into an ergonomic, laye
 |---------|----------------|
 | Home Row Mods | ASDF/JKL; become modifiers when held |
 | Symbol Layer | Space-hold activates programming symbols |
-| Number Layer | Right-Cmd-hold activates numpad |
+| Number Layer | Apostrophe-hold activates numpad |
 | Vim-friendly Caps | Escape on tap, Control on hold |
 | Hyper Key | Tab-hold becomes Cmd+Alt+Shift+Ctrl |
 | Layer Toggle | Switch between HRM and vanilla modes |
@@ -59,7 +59,7 @@ This kanata configuration transforms a standard keyboard into an ergonomic, laye
 ├─────────────────────────────────────────────────────────────┤
 │  fn / fnvanilla    ← Fn key hold                            │
 ├─────────────────────────────────────────────────────────────┤
-│  nums              ← Right Cmd hold                         │
+│  nums              ← Apostrophe (') hold                    │
 ├─────────────────────────────────────────────────────────────┤
 │  sym               ← Space hold                             │
 ├─────────────────────────────────────────────────────────────┤
@@ -72,7 +72,7 @@ This kanata configuration transforms a standard keyboard into an ergonomic, laye
 | Activator | Layer | Behavior |
 |-----------|-------|----------|
 | `Space` (hold) | `sym` | Symbols while held |
-| `Right Cmd` (hold) | `nums` | Numpad while held |
+| `'` (hold) | `nums` | Numpad while held |
 | `Fn` (hold) | `fn` | Function keys while held |
 | `Fn + F1` | Toggle | Switch base ↔ vanilla |
 
@@ -90,11 +90,11 @@ This kanata configuration transforms a standard keyboard into an ergonomic, laye
 
 ### No Conflicts Between Layers
 
-**Important:** The home row mod on `;` (Right Cmd) does **not** conflict with the numbers layer:
+**Important:** The `'` (apostrophe) key has dual functionality without conflicts:
 
-- Holding `;` outputs the `rmet` keycode for keyboard shortcuts
-- Only the **physical Right Cmd key** triggers the numbers layer
-- These are separate mechanisms in kanata
+- Tap `'` outputs a single quote character
+- Hold `'` activates the numbers layer
+- These use kanata's tap-hold mechanism with configurable timing
 
 ---
 
@@ -124,7 +124,7 @@ The default layer with home row modifiers active.
 | `Caps Lock` | Escape | Left Control |
 | `Tab` | Tab | Hyper (⌘⌥⇧⌃) |
 | `Space` | Space | Symbols Layer |
-| `Right Cmd` | Right Cmd | Numbers Layer |
+| `'` | ' (apostrophe) | Numbers Layer |
 | `Right Shift` | Backspace | — |
 | `Fn` | Fn | Function Layer |
 
@@ -132,7 +132,7 @@ The default layer with home row modifiers active.
 
 ### Symbols Layer (Space Hold)
 
-Activated by holding the spacebar. Optimized for programming with brackets on home row.
+Activated by holding the spacebar. Optimized for Python/Neovim/CLI with high-frequency symbols on home row.
 
 #### Layout Diagram
 
@@ -143,18 +143,18 @@ Activated by holding the spacebar. Optimized for programming with brackets on ho
 │                                                                 │
 │  LEFT HAND                         RIGHT HAND                   │
 │                                                                 │
-│  ┌─────┬─────┬─────┬─────┐        ┌─────┬─────┬─────┬─────┐    │
-│  │  `  │  ~  │  \  │  |  │        │  ^  │  &  │  *  │  %  │    │
-│  │  q  │  w  │  e  │  r  │        │  y  │  u  │  i  │  o  │    │
-│  ├─────┼─────┼─────┼─────┤        ├─────┼─────┼─────┼─────┤    │
-│  │  {  │  }  │  (  │  )  │        │  -  │  =  │  _  │  +  │    │
-│  │  a  │  s  │  d  │  f  │ ←HOME  │  h  │  j  │  k  │  l  │    │
-│  ├─────┼─────┼─────┼─────┤        ├─────┼─────┼─────┼─────┤    │
-│  │  !  │  @  │  [  │  ]  │        │  #  │  $  │  '  │  "  │    │
-│  │  z  │  x  │  c  │  v  │        │  n  │  m  │  ,  │  .  │    │
-│  └─────┴─────┴─────┴─────┘        └─────┴─────┴─────┴─────┘    │
+│  ┌─────┬─────┬─────┬─────┬─────┐  ┌─────┬─────┬─────┬─────┬─────┐│
+│  │  !  │  @  │  #  │  $  │  %  │  │  ^  │  &  │  *  │  (  │  )  ││
+│  │  q  │  w  │  e  │  r  │  t  │  │  y  │  u  │  i  │  o  │  p  ││
+│  ├─────┼─────┼─────┼─────┼─────┤  ├─────┼─────┼─────┼─────┼─────┤│
+│  │  {  │  }  │  [  │  ]  │  .  │  │  :  │  =  │  _  │  -  │  |  ││
+│  │  a  │  s  │  d  │  f  │  g  │  │  h  │  j  │  k  │  l  │  ;  ││
+│  ├─────┼─────┼─────┼─────┼─────┤  ├─────┼─────┼─────┼─────┼─────┤│
+│  │  <  │  >  │  "  │  '  │  `  │  │  ~  │  \  │  +  │  ?  │     ││
+│  │  z  │  x  │  c  │  v  │  b  │  │  n  │  m  │  ,  │  .  │  /  ││
+│  └─────┴─────┴─────┴─────┴─────┘  └─────┴─────┴─────┴─────┴─────┘│
 │                                                                 │
-│  ; = :   ' = "                                                  │
+│  Top row = number row shift symbols    Home row = most common  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -162,59 +162,66 @@ Activated by holding the spacebar. Optimized for programming with brackets on ho
 
 | Key | Symbol | Description | Python Use Case |
 |-----|--------|-------------|-----------------|
-| `q` | `` ` `` | Backtick | Shell command substitution |
-| `w` | `~` | Tilde | Home directory, bitwise NOT |
-| `e` | `\` | Backslash | Line continuation, escapes |
-| `r` | `\|` | Pipe | Shell pipes, union types (`int \| str`) |
+| **Top Row (Number Row Symbols)** ||||
+| `q` | `!` | Exclamation | Not operator, shell commands |
+| `w` | `@` | At sign | Decorators, email addresses |
+| `e` | `#` | Hash | Comments, dict keys |
+| `r` | `$` | Dollar | Shell variables, regex |
+| `t` | `%` | Percent | Modulo, string formatting |
+| `y` | `^` | Caret | XOR, regex anchors |
+| `u` | `&` | Ampersand | Bitwise AND, references |
+| `i` | `*` | Asterisk | Multiplication, unpacking |
+| `o` | `(` | Left paren | Function calls, tuples |
+| `p` | `)` | Right paren | Function calls, tuples |
+| **Home Row (High Frequency)** ||||
 | `a` | `{` | Left brace | Dicts, sets, f-strings |
 | `s` | `}` | Right brace | Dicts, sets, f-strings |
-| `d` | `(` | Left paren | Function calls, tuples |
-| `f` | `)` | Right paren | Function calls, tuples |
-| `c` | `[` | Left bracket | Lists, indexing |
-| `v` | `]` | Right bracket | Lists, indexing |
-| `h` | `-` | Minus | Subtraction, CLI flags |
-| `j` | `=` | Equals | Assignment |
-| `k` | `_` | Underscore | Variable names |
-| `l` | `+` | Plus | Addition |
-| `;` | `:` | Colon | Slices, dict, type hints |
-| `z` | `!` | Exclamation | Not operator |
-| `x` | `@` | At sign | Decorators |
-| `n` | `#` | Hash | Comments |
-| `m` | `$` | Dollar | Shell variables |
-| `,` | `'` | Single quote | Strings |
-| `.` | `"` | Double quote | Strings |
-| `y` | `^` | Caret | XOR, regex |
-| `u` | `&` | Ampersand | Bitwise AND |
-| `i` | `*` | Asterisk | Multiplication, unpacking |
-| `o` | `%` | Percent | Modulo, string formatting |
+| `d` | `[` | Left bracket | Lists, indexing, slicing |
+| `f` | `]` | Right bracket | Lists, indexing, slicing |
+| `g` | `.` | Period | Method calls, attributes, imports |
+| `h` | `:` | Colon | Slices, dicts, function defs, type hints |
+| `j` | `=` | Equals | Assignment, comparisons |
+| `k` | `_` | Underscore | Variable names (snake_case) |
+| `l` | `-` | Minus | Subtraction, CLI flags, ranges |
+| `;` | `\|` | Pipe | Shell pipes, union types |
+| **Bottom Row (Paired Symbols)** ||||
+| `z` | `<` | Less than | Comparisons, redirects |
+| `x` | `>` | Greater than | Comparisons, redirects |
+| `c` | `"` | Double quote | Strings (docstrings) |
+| `v` | `'` | Single quote | Strings, char literals |
+| `b` | `` ` `` | Backtick | Shell substitution, markdown |
+| `n` | `~` | Tilde | Home directory, bitwise NOT |
+| `m` | `\` | Backslash | Line continuation, escapes, paths |
+| `,` | `+` | Plus | Addition, concatenation |
+| `.` | `?` | Question | Ternary, regex quantifier |
 
 ---
 
-### Numbers Layer (Right Cmd Hold)
+### Numbers Layer (Apostrophe ' Hold)
 
-Activated by holding the Right Command key. Provides numpad-style number entry on the right hand. **Left hand is transparent** - passes through to base layer so letters and home row mods still work.
+Activated by holding the apostrophe key. Provides numpad-style number entry with 1-6 on qwerty top row. **Left hand is transparent** - passes through to base layer so letters and home row mods still work.
 
 #### Layout Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                   NUMBERS LAYER (Right Cmd Hold)                │
+│                   NUMBERS LAYER (Apostrophe ' Hold)             │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  LEFT HAND (transparent)           RIGHT HAND (numpad)          │
 │                                                                 │
-│  ┌─────┬─────┬─────┬─────┐        ┌─────┬─────┬─────┬─────┐    │
-│  │     │  /  │  *  │  -  │        │  =  │  7  │  8  │  9  │    │
-│  │  q  │  w  │  e  │  r  │        │  y  │  u  │  i  │  o  │    │
-│  ├─────┼─────┼─────┼─────┤        ├─────┼─────┼─────┼─────┤    │
-│  │ (a) │ (s) │ (d) │ (f) │        │  0  │  4  │  5  │  6  │    │
-│  │pass │thru │base │layer│ ←HOME  │  h  │  j  │  k  │  l  │    │
-│  ├─────┼─────┼─────┼─────┤        ├─────┼─────┼─────┼─────┤    │
-│  │     │     │  .  │  +  │        │  ,  │  1  │  2  │  3  │    │
-│  │  z  │  x  │  c  │  v  │        │  n  │  m  │  ,  │  .  │    │
-│  └─────┴─────┴─────┴─────┘        └─────┴─────┴─────┴─────┘    │
+│  ┌─────┬─────┬─────┬─────┬─────┐  ┌─────┬─────┬─────┬─────┬─────┐│
+│  │  1  │  2  │  3  │  4  │  5  │  │  6  │  7  │  8  │  9  │  +  ││
+│  │  q  │  w  │  e  │  r  │  t  │  │  y  │  u  │  i  │  o  │  p  ││
+│  ├─────┼─────┼─────┼─────┼─────┤  ├─────┼─────┼─────┼─────┼─────┤│
+│  │ (a) │ (s) │ (d) │ (f) │ (g) │  │  0  │  4  │  5  │  6  │  -  ││
+│  │pass │thru │base │layer│     │  │  h  │  j  │  k  │  l  │  ;  ││
+│  ├─────┼─────┼─────┼─────┼─────┤  ├─────┼─────┼─────┼─────┼─────┤│
+│  │     │     │  .  │  +  │     │  │  ,  │  1  │  2  │  3  │  /  ││
+│  │  z  │  x  │  c  │  v  │  b  │  │  n  │  m  │  ,  │  .  │  /  ││
+│  └─────┴─────┴─────┴─────┴─────┘  └─────┴─────┴─────┴─────┴─────┘│
 │                                                                 │
-│  p = +   ; = -   / = /                                          │
+│  Top row: 1-6 on qwerty          Numpad: 0 on home row         │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -222,33 +229,39 @@ Activated by holding the Right Command key. Provides numpad-style number entry o
 
 | Key | Output | Description |
 |-----|--------|-------------|
-| `y` | `=` | Equals |
+| **Top Row (Quick Access 1-9)** |||
+| `q` | `1` | One |
+| `w` | `2` | Two |
+| `e` | `3` | Three |
+| `r` | `4` | Four |
+| `t` | `5` | Five |
+| `y` | `6` | Six |
 | `u` | `7` | Seven |
 | `i` | `8` | Eight |
 | `o` | `9` | Nine |
 | `p` | `+` | Plus |
-| `h` | `0` | Zero (home row - most common digit) |
+| **Home Row (Numpad Center)** |||
+| `h` | `0` | Zero (most common digit, home row) |
 | `j` | `4` | Four |
 | `k` | `5` | Five |
 | `l` | `6` | Six |
 | `;` | `-` | Minus |
+| **Bottom Row (Low Numbers)** |||
 | `n` | `,` | Comma (thousand separator) |
 | `m` | `1` | One |
 | `,` | `2` | Two |
 | `.` | `3` | Three |
 | `/` | `/` | Divide |
-| `w` | `/` | Divide (alt position) |
-| `e` | `*` | Multiply |
-| `r` | `-` | Minus (alt position) |
+| **Left Hand Math Operators** |||
 | `c` | `.` | Decimal point |
-| `v` | `+` | Plus (alt position) |
+| `v` | `+` | Plus |
 
 #### Left Hand Behavior
 
 The left hand passes through to the base layer:
-- **Letters work normally** - type `a`, `s`, `d`, `f`, etc.
-- **Home row mods work** - hold `a` for Cmd, `s` for Alt, etc.
-- **Math operators available** - `w=/`, `e=*`, `r=-`, `c=.`, `v=+`
+- **Letters work normally** - type `a`, `s`, `d`, `f`, `g`, etc.
+- **Home row mods work** - hold `a` for Cmd, `s` for Alt, `d` for Shift, `f` for Ctrl
+- **Math operators available** - `c=.`, `v=+` for one-handed calculations
 
 ---
 
@@ -289,14 +302,14 @@ A "stock" layer without home row modifiers for:
 │ TAB │  Q  │  W  │  E  │  R  │  T  │  Y  │  U  │  I  │  O  │  P  │ ... │
 │Hyper│     │     │     │     │     │     │     │     │     │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-│CAPS │  A  │  S  │  D  │  F  │  G  │  H  │  J  │  K  │  L  │  ;  │ ... │
-│Esc/ │ ⌘   │ ⌥   │ ⇧   │ ⌃   │     │     │ ⌃   │ ⇧   │ ⌥   │ ⌘   │     │
+│CAPS │  A  │  S  │  D  │  F  │  G  │  H  │  J  │  K  │  L  │  ;  │  '  │
+│Esc/ │ ⌘   │ ⌥   │ ⇧   │ ⌃   │     │     │ ⌃   │ ⇧   │ ⌥   │ ⌘   │ Nums│
 │Ctrl │     │     │     │     │     │     │     │     │     │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 │Shift│  Z  │  X  │  C  │  V  │  B  │  N  │  M  │  ,  │  .  │  /  │Bksp │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
 │ Fn  │Ctrl │ Alt │ Cmd │█████ SPACE █████│ Cmd │ Alt │     │     │     │
-│Layer│     │     │     │█████ Sym   █████│ Nums│     │     │     │     │
+│Layer│     │     │     │█████ Sym   █████│     │     │     │     │     │
 └─────┴─────┴─────┴─────┴─────────────────┴─────┴─────┴─────┴─────┴─────┘
 ```
 
@@ -309,49 +322,49 @@ Print this out and keep it by your keyboard until you've memorized the layers.
 ### Symbols (Space + Key)
 
 ```
-┌─────────────────────────────────────┐
-│           LEFT HAND                 │
-├───────┬───────┬───────┬───────┬─────┤
-│ q = ` │ w = ~ │ e = \ │ r = | │     │
-├───────┼───────┼───────┼───────┼─────┤
-│ a = { │ s = } │ d = ( │ f = ) │     │  ← HOME ROW
-├───────┼───────┼───────┼───────┼─────┤
-│ z = ! │ x = @ │ c = [ │ v = ] │     │
-└───────┴───────┴───────┴───────┴─────┘
+┌──────────────────────────────────────────────┐
+│              LEFT HAND                       │
+├───────┬───────┬───────┬───────┬───────┬──────┤
+│ q = ! │ w = @ │ e = # │ r = $ │ t = % │      │
+├───────┼───────┼───────┼───────┼───────┼──────┤
+│ a = { │ s = } │ d = [ │ f = ] │ g = . │      │  ← HOME ROW
+├───────┼───────┼───────┼───────┼───────┼──────┤
+│ z = < │ x = > │ c = " │ v = ' │ b = ` │      │
+└───────┴───────┴───────┴───────┴───────┴──────┘
 
-┌─────────────────────────────────────┐
-│           RIGHT HAND                │
-├───────┬───────┬───────┬───────┬─────┤
-│ y = ^ │ u = & │ i = * │ o = % │     │
-├───────┼───────┼───────┼───────┼─────┤
-│ h = - │ j = = │ k = _ │ l = + │ ; =:│  ← HOME ROW
-├───────┼───────┼───────┼───────┼─────┤
-│ n = # │ m = $ │ , = ' │ . = " │     │
-└───────┴───────┴───────┴───────┴─────┘
+┌──────────────────────────────────────────────┐
+│              RIGHT HAND                      │
+├───────┬───────┬───────┬───────┬───────┬──────┤
+│ y = ^ │ u = & │ i = * │ o = ( │ p = ) │      │
+├───────┼───────┼───────┼───────┼───────┼──────┤
+│ h = : │ j = = │ k = _ │ l = - │ ; = | │      │  ← HOME ROW
+├───────┼───────┼───────┼───────┼───────┼──────┤
+│ n = ~ │ m = \ │ , = + │ . = ? │       │      │
+└───────┴───────┴───────┴───────┴───────┴──────┘
 ```
 
-### Numbers (Right Cmd + Key)
+### Numbers (Apostrophe ' + Key)
 
 ```
-┌─────────────────────────────────────┐
-│    LEFT HAND (transparent)          │
-├───────┬───────┬───────┬───────┬─────┤
-│       │ w = / │ e = * │ r = - │     │
-├───────┼───────┼───────┼───────┼─────┤
-│  (a)  │  (s)  │  (d)  │  (f)  │     │  ← PASS THROUGH
-├───────┼───────┼───────┼───────┼─────┤
-│       │       │ c = . │ v = + │     │
-└───────┴───────┴───────┴───────┴─────┘
+┌──────────────────────────────────────────────┐
+│      LEFT HAND (transparent)                 │
+├───────┬───────┬───────┬───────┬───────┬──────┤
+│ q = 1 │ w = 2 │ e = 3 │ r = 4 │ t = 5 │      │
+├───────┼───────┼───────┼───────┼───────┼──────┤
+│  (a)  │  (s)  │  (d)  │  (f)  │  (g)  │      │  ← PASS THROUGH
+├───────┼───────┼───────┼───────┼───────┼──────┤
+│       │       │ c = . │ v = + │       │      │
+└───────┴───────┴───────┴───────┴───────┴──────┘
 
-┌─────────────────────────────────────┐
-│           RIGHT HAND                │
-├───────┬───────┬───────┬───────┬─────┤
-│ y = = │ u = 7 │ i = 8 │ o = 9 │p = +│
-├───────┼───────┼───────┼───────┼─────┤
-│ h = 0 │ j = 4 │ k = 5 │ l = 6 │; = -│  ← NUMPAD
-├───────┼───────┼───────┼───────┼─────┤
-│ n = , │ m = 1 │ , = 2 │ . = 3 │/ = /│
-└───────┴───────┴───────┴───────┴─────┘
+┌──────────────────────────────────────────────┐
+│              RIGHT HAND                      │
+├───────┬───────┬───────┬───────┬───────┬──────┤
+│ y = 6 │ u = 7 │ i = 8 │ o = 9 │ p = + │      │
+├───────┼───────┼───────┼───────┼───────┼──────┤
+│ h = 0 │ j = 4 │ k = 5 │ l = 6 │ ; = - │      │  ← NUMPAD
+├───────┼───────┼───────┼───────┼───────┼──────┤
+│ n = , │ m = 1 │ , = 2 │ . = 3 │ / = / │      │
+└───────┴───────┴───────┴───────┴───────┴──────┘
 ```
 
 ### Special Keys
@@ -434,24 +447,24 @@ launchctl load ~/Library/LaunchAgents/com.kanata.plist
 ### Learning Path
 
 #### Week 1: Core Movements
-1. Practice `Space + d/f` for `()` - function calls
-2. Practice `Space + a/s` for `{}` - dicts
-3. Practice `Space + c/v` for `[]` - lists
+1. Practice `Space + a/s` for `{}` - dicts
+2. Practice `Space + d/f` for `[]` - lists
+3. Practice `Space + o/p` for `()` - function calls
 
 #### Week 2: Operators
 1. Add `Space + j` for `=` - assignment
-2. Add `Space + h` for `-` and `Space + l` for `+`
+2. Add `Space + l` for `-` and `Space + g` for `.`
 3. Practice `Space + k` for `_` - variable names
 
 #### Week 3: Shell Symbols
-1. `Space + e` for `\` - line continuation
-2. `Space + r` for `|` - pipes
-3. `Space + q` for `` ` `` - command substitution
+1. `Space + ;` for `|` - pipes
+2. `Space + h` for `:` - function defs
+3. `Space + m` for `\` - line continuation
 
 #### Week 4: Numbers
-1. Practice numpad layout with Right Cmd
-2. Focus on home row: `0` on `h`, `456` on `jkl`
-3. Add math operators: `/` `*` `-` `+`
+1. Practice qwerty numbers with `'` hold: `'q`=1, `'w`=2, etc.
+2. Focus on numpad home row: `0` on `h`, `456` on `jkl`
+3. Add math operators: `.` on `c`, `+` on `v`
 
 ### Common Patterns
 
@@ -459,31 +472,31 @@ launchctl load ~/Library/LaunchAgents/com.kanata.plist
 ```python
 def my_function():
 ```
-Keystrokes: `d-e-f Space Space+k m-y Space+k f-u-n-c... Space+d Space+f Space+;`
+Keystrokes: `d-e-f Space Space+k m-y Space+k f-u-n-c-t-i-o-n Space+o Space+p Space+h`
 
 #### Dictionary Literal
 ```python
 {"key": "value"}
 ```
-Keystrokes: `Space+a Space+. k-e-y Space+. Space+; Space Space+. v-a-l-u-e Space+. Space+s`
+Keystrokes: `Space+a Space+c k-e-y Space+c Space+h Space Space+c v-a-l-u-e Space+c Space+s`
 
 #### List Comprehension
 ```python
 [x for x in items]
 ```
-Keystrokes: `Space+c x Space f-o-r Space x Space i-n Space i-t-e-m-s Space+v`
+Keystrokes: `Space+d x Space f-o-r Space x Space i-n Space i-t-e-m-s Space+f`
 
 #### Shell Pipeline
 ```bash
 cat file | grep pattern
 ```
-Keystrokes: `c-a-t Space f-i-l-e Space Space+r Space g-r-e-p Space p-a-t-t-e-r-n`
+Keystrokes: `c-a-t Space f-i-l-e Space Space+; Space g-r-e-p Space p-a-t-t-e-r-n`
 
 #### F-string
 ```python
 f"{variable}"
 ```
-Keystrokes: `f Space+. Space+a v-a-r-i-a-b-l-e Space+s Space+.`
+Keystrokes: `f Space+c Space+a v-a-r-i-a-b-l-e Space+s Space+c`
 
 ### Tips
 

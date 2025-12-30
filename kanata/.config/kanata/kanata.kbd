@@ -6,16 +6,16 @@
 ;; Purpose: Ergonomic layers for Python development & terminal workflows
 ;; 
 ;; LAYERS:
-;;   - base:    Home row mods, Space→Symbols, /→Numbers, RCmd→Toggle HRM
+;;   - base:    Home row mods, Space→Symbols, '→Numbers, RCmd→Toggle HRM
 ;;   - sym:     Programming symbols (Space hold)
-;;   - nums:    Numpad layout (/ hold)
+;;   - nums:    Numpad layout (' hold)
 ;;   - fn:      Function keys (Fn hold)
 ;;   - vanilla: No home row mods (toggle with RCmd tap)
 ;;
 ;; QUICK REFERENCE:
-;;   Space + d/f = ()    Space + a/s = {}    Space + c/v = []
-;;   Space + e = \       Space + r = |       Space + q = `
-;;   / + jkl = 456       / + h = 0           / + m,. = 123
+;;   Space + qwertyuiop = !@#$%^&*()
+;;   Space + asdf = {}[]    Space + gh = .:    Space + jkl; = =_-|
+;;   ' + qwerty = 123456    ' + jkl = 456      ' + h = 0    ' + m,. = 123
 ;;   RCmd (tap) = Toggle home row mods on/off
 ;; ============================================================================
 
@@ -100,9 +100,9 @@
   spsym (tap-hold $tap-time $hold-time spc (layer-toggle sym))
   
   ;; -------------------------------------------------------------------------
-  ;; FORWARD SLASH → / (tap) / Numbers Layer (hold)
+  ;; APOSTROPHE → ' (tap) / Numbers Layer (hold)
   ;; -------------------------------------------------------------------------
-  slashnums (tap-hold $tap-time $hold-time / (layer-toggle nums))
+  quotenums (tap-hold $tap-time $hold-time ' (layer-toggle nums))
 
   ;; -------------------------------------------------------------------------
   ;; RIGHT SHIFT → Backspace
@@ -149,10 +149,10 @@
   @hypertab q  w    e    r    t    y    u    i    o    p    [    ]    \
   
   ;; Home row: Esc/Ctrl on Caps, home row mods on letters
-  @escctrl @a  @s   @d   @f   g    h    @j   @k   @l   @;   '    ret
-  
-  ;; Bottom row: Normal shift, backspace on right shift, / holds for nums
-  lsft z    x    c    v    b    n    m    ,    .    @slashnums    @rshiftbspc
+  @escctrl @a  @s   @d   @f   g    h    @j   @k   @l   @;   @quotenums    ret
+
+  ;; Bottom row: Normal shift, backspace on right shift, / is normal
+  lsft z    x    c    v    b    n    m    ,    .    /    @rshiftbspc
 
   ;; Modifier row: Fn layer, normal mods, Space→Sym, RCmd→Toggle HRM
   @fnl lctl lalt lmet           @spsym         @togmods ralt
@@ -161,82 +161,83 @@
 ;; ============================================================================
 ;; SYMBOLS LAYER (Space Hold)
 ;; ============================================================================
-;; Optimized for Python/programming. Brackets on home row.
+;; Optimized for Python/Neovim/CLI. High-frequency symbols on home row.
 ;;
 ;; LEFT HAND:
-;;   q=`  w=~  e=\  r=|
-;;   a={  s=}  d=(  f=)         ← BRACKETS ON HOME ROW
-;;   z=!  x=@  c=[  v=]
+;;   q=!  w=@  e=#  r=$  t=%    ← NUMBER ROW SHIFT SYMBOLS
+;;   a={  s=}  d=[  f=]  g=.    ← BRACKETS + DOT ON HOME ROW
+;;   z=<  x=>  c="  v='  b=`
 ;;
 ;; RIGHT HAND:
-;;   y=^  u=&  i=*  o=%
-;;   h=-  j==  k=_  l=+  ;=:    ← OPERATORS ON HOME ROW
-;;   n=#  m=$  ,='  .="
+;;   y=^  u=&  i=*  o=(  p=)    ← NUMBER ROW SHIFT SYMBOLS
+;;   h=:  j==  k=_  l=-  ;=|    ← OPERATORS ON HOME ROW
+;;   n=~  m=\  ,=+  .=?
 
 (deflayer sym
   ;; F-row: Pass through
   _    _    _    _    _    _    _    _    _    _    _    _
-  
+
   ;; Number row: Pass through
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  
-  ;; Top row: Hard-to-reach symbols
-  ;;   q    w      e    r      t    y      u      i      o      p
-  _    grv  S-grv  \    S-\    _    S-6    S-7    S-8    S-5    _    _    _    _
-  ;;   `    ~      \    |           ^      &      *      %
-  
+
+  ;; Top row: Shift symbols from number row
+  ;;   q    w    e    r    t    y    u    i    o    p
+  _    S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  _    _    _
+  ;;   !    @    #    $    %    ^    &    *    (    )
+
   ;; Home row: Brackets (left) and operators (right)
-  ;;   a      s      d      f      g    h    j    k      l      ;
-  _    S-[    S-]    S-9    S-0    _    -    =    S--    S-=    S-;    S-'  _
-  ;;   {      }      (      )           -    =    _      +      :      "
-  
-  ;; Bottom row: More symbols
-  ;;   z      x      c    v    b    n      m      ,    .
-  _    S-1    S-2    [    ]    _    S-3    S-4    '    S-'  _    _
-  ;;   !      @      [    ]         #      $      '    "
-  
+  ;;   a    s    d    f    g    h      j    k    l    ;
+  _    S-[  S-]  [    ]    .    S-;    =    S--  -    S-\  _    _
+  ;;   {    }    [    ]    .    :      =    _    -    |
+
+  ;; Bottom row: Comparison and quotes
+  ;;   z    x    c    v    b      n      m    ,    .    /
+  _    S-,  S-.  S-'  '    grv    S-grv  \    S-=  S-/  _    _
+  ;;   <    >    "    '    `      ~      \    +    ?
+
   ;; Modifier row: Pass through (Space is being held)
   _    _    _    _              _              _    _
 )
 
 ;; ============================================================================
-;; NUMBERS LAYER (Right Cmd Hold)
+;; NUMBERS LAYER (Apostrophe ' Hold)
 ;; ============================================================================
-;; Numpad-style layout on right hand. Left hand is transparent (passes
-;; through to base layer) so you can still type letters if needed.
+;; Numpad-style layout on right hand with 1-6 on qwerty top row.
+;; Left hand is transparent (passes through to base layer) so you can
+;; still type letters and use home row mods if needed.
 ;;
 ;; LEFT HAND: Transparent (base layer)
 ;;   - Letters still work
 ;;   - Home row mods still work
 ;;
 ;; RIGHT HAND:
-;;   w=/  e=*  r=-       y==  u=7  i=8  o=9  p=+
-;;                       h=0  j=4  k=5  l=6  ;=-    ← NUMPAD HOME ROW
-;;        c=.  v=+       n=,  m=1  ,=2  .=3  /=/
+;;   q=1  w=2  e=3  r=4  t=5  y=6     u=7  i=8  o=9  p=+
+;;                                    h=0  j=4  k=5  l=6  ;=-
+;;                  c=.  v=+          n=,  m=1  ,=2  .=3  /=/
 
 (deflayer nums
   ;; F-row: Pass through
   _    _    _    _    _    _    _    _    _    _    _    _
-  
+
   ;; Number row: Pass through
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  
-  ;; Top row: Math operators (left), high numbers (right)
-  ;;   q    w    e      r    t    y    u    i    o    p
-  _    _    /    S-8    -    _    =    7    8    9    S-=  _    _    _
-  ;;        /    *      -         =    7    8    9    +
-  
+
+  ;; Top row: Numbers 1-6 on left, 7-9+ on right
+  ;;   q    w    e    r    t    y    u    i    o    p
+  _    1    2    3    4    5    6    7    8    9    S-=  _    _    _
+  ;;   1    2    3    4    5    6    7    8    9    +
+
   ;; Home row: Transparent (left), numpad home (right)
   ;;   a    s    d    f    g    h    j    k    l    ;
   _    _    _    _    _    _    0    4    5    6    -    _    _
   ;;   (pass through)        0    4    5    6    -
-  
+
   ;; Bottom row: Decimal/plus (left), low numbers (right)
   ;;   z    x    c    v      b    n    m    ,    .    /
   _    _    _    .    S-=    _    ,    1    2    3    /    _
   ;;             .    +           ,    1    2    3    /
-  
-  ;; Modifier row: Pass through (Right Cmd is being held)
+
+  ;; Modifier row: Pass through (' is being held)
   _    _    _    _              _              _    _
 )
 
@@ -285,10 +286,10 @@
   @hypertab q  w    e    r    t    y    u    i    o    p    [    ]    \
   
   ;; Home row: Esc/Ctrl on Caps, normal letters (no HRM)
-  @escctrl a  s    d    f    g    h    j    k    l    ;    '    ret
-  
-  ;; Bottom row: Normal shift, backspace on right shift, / holds for nums
-  lsft z    x    c    v    b    n    m    ,    .    @slashnums    @rshiftbspc
+  @escctrl a  s    d    f    g    h    j    k    l    ;    @quotenums    ret
+
+  ;; Bottom row: Normal shift, backspace on right shift, / is normal
+  lsft z    x    c    v    b    n    m    ,    .    /    @rshiftbspc
 
   ;; Modifier row: Fn layer (vanilla version), Space→Sym, RCmd→Toggle HRM
   @fnlvanilla lctl lalt lmet      @spsym         @togbase ralt
@@ -318,14 +319,17 @@
 ;; ============================================================================
 ;; 
 ;; TESTING CHECKLIST:
-;; [ ] Space + d = (
-;; [ ] Space + f = )
-;; [ ] Space + e = \
-;; [ ] Space + r = |
-;; [ ] / + j = 4
-;; [ ] / + h = 0
-;; [ ] / + a = a (transparent, letter works)
-;; [ ] / (tap) = /
+;; [ ] Space + q = !
+;; [ ] Space + e = #
+;; [ ] Space + g = .
+;; [ ] Space + h = :
+;; [ ] Space + j = =
+;; [ ] Space + l = -
+;; [ ] ' + q = 1
+;; [ ] ' + j = 4
+;; [ ] ' + h = 0
+;; [ ] ' (tap) = '
+;; [ ] / (tap) = / (should be normal)
 ;; [ ] Caps tap = Escape
 ;; [ ] Caps hold + c = Ctrl+C
 ;; [ ] RCmd (tap) = Toggle HRM on/off

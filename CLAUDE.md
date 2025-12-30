@@ -123,7 +123,8 @@ System-Level Services (LaunchDaemons):
   - **Caps Lock**: Escape on tap, Ctrl on hold
   - **Right Shift**: Backspace
   - **Tab**: Tab on tap, Hyper on hold
-  - **Forward slash (/)**: / on tap, Numbers layer on hold
+  - **Apostrophe (')**: ' on tap, Numbers layer on hold
+  - **Forward slash (/)**: Regular / key (no layer)
   - **Right Cmd**: Toggle home row mods on/off (tap to switch base↔vanilla layers)
   - **Config**: `~/.config/kanata/kanata.kbd` (200ms tap, 230ms hold)
   - **Auto-start**: LaunchDaemon at `/Library/LaunchDaemons/com.example.kanata.plist`

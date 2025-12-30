@@ -83,7 +83,8 @@ Sophisticated keyboard remapping with home row modifiers:
 - **Home Row Mods**: Hold a/s/d/f/j/k/l/; for modifiers (Cmd/Alt/Shift/Ctrl)
 - **Right Shift**: Backspace
 - **Tab**: Hyper key (Cmd+Alt+Shift+Ctrl) on hold
-- **Forward slash (/)**: / on tap, Numbers layer on hold
+- **Apostrophe (')**: ' on tap, Numbers layer on hold
+- **Forward slash (/)**: Regular / key (no layer)
 - **Right Cmd**: Toggle home row mods on/off (tap to switch base↔vanilla layers)
 - **Timing**: 200ms tap, 230ms hold thresholds
 - **Auto-start**: LaunchDaemon runs at boot

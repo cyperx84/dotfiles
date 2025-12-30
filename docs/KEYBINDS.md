@@ -303,7 +303,8 @@
 | `;` | `;` | `Right Meta` | Home row modifier |
 | `Right Shift` | `Backspace` | - | Quick delete |
 | `Tab` | `Tab` | `Hyper` | Tab as Hyper key |
-| `/` | `/` | `Numbers Layer` | Forward slash / Numpad |
+| `'` | `'` | `Numbers Layer` | Apostrophe / Numpad |
+| `/` | `/` | - | Forward slash (normal) |
 | `Right Cmd` | `Toggle HRM` | - | Switch base↔vanilla layers |
 
 ### Hardware Remapping - Karabiner Elements (Unconfigured)
