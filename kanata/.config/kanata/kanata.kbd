@@ -1,22 +1,23 @@
 ;; ============================================================================
 ;; KANATA KEYBOARD CONFIGURATION
 ;; ============================================================================
-;; Version: 1.1
+;; Version: 1.2
 ;; Author: Cyperx
 ;; Purpose: Ergonomic layers for Python development & terminal workflows
-;; 
+;;
 ;; LAYERS:
-;;   - base:    Home row mods, Space→Symbols, '→Numbers, RCmd→Toggle HRM
+;;   - base:    Home row mods, Space→Symbols, RCmd→Numbers
 ;;   - sym:     Programming symbols (Space hold)
-;;   - nums:    Numpad layout (' hold)
+;;   - nums:    Numpad + Arrow keys (RCmd hold)
 ;;   - fn:      Function keys (Fn hold)
-;;   - vanilla: No home row mods (toggle with RCmd tap)
+;;   - vanilla: No home row mods (toggle via RCmd+Tab in nums layer)
 ;;
 ;; QUICK REFERENCE:
 ;;   Space + qwertyuiop = !@#$%^&*()
 ;;   Space + asdf = {}[]    Space + gh = .:    Space + jkl; = =_-|
-;;   ' + qwerty = 123456    ' + jkl = 456      ' + h = 0    ' + m,. = 123
-;;   RCmd (tap) = Toggle home row mods on/off
+;;   RCmd + qwerty = 123456    RCmd + jkl = 456    RCmd + h = 0
+;;   RCmd + asdf = ←↓↑→ (arrow keys)
+;;   RCmd + Tab = Toggle home row mods on/off
 ;; ============================================================================
 
 (defcfg
@@ -100,11 +101,6 @@
   spsym (tap-hold $tap-time $hold-time spc (layer-toggle sym))
   
   ;; -------------------------------------------------------------------------
-  ;; APOSTROPHE → ' (tap) / Numbers Layer (hold)
-  ;; -------------------------------------------------------------------------
-  quotenums (tap-hold $tap-time $hold-time ' (layer-toggle nums))
-
-  ;; -------------------------------------------------------------------------
   ;; RIGHT SHIFT → Backspace
   ;; -------------------------------------------------------------------------
   ;; Convenient backspace without reaching
@@ -117,9 +113,17 @@
   fnlvanilla (tap-hold $tap-time $hold-time fn (layer-toggle fnvanilla))
   
   ;; -------------------------------------------------------------------------
+  ;; RIGHT CMD → rmet (tap) / Numbers Layer (hold)
+  ;; -------------------------------------------------------------------------
+  ;; Hold Right Cmd to access numbers layer
+  ;; In nums layer, Tab toggles to vanilla mode
+  rmetnums (tap-hold $tap-time $hold-time rmet (layer-toggle nums))
+  rmetvanillanums (tap-hold $tap-time $hold-time rmet (layer-toggle numsvanilla))
+
+  ;; -------------------------------------------------------------------------
   ;; LAYER TOGGLES
   ;; -------------------------------------------------------------------------
-  ;; Fn+F1 toggles between base (with HRM) and vanilla (without HRM)
+  ;; In nums layer, Tab toggles between base (with HRM) and vanilla (without HRM)
   togmods (layer-switch vanilla)
   togbase (layer-switch base)
 )
@@ -149,13 +153,13 @@
   @hypertab q  w    e    r    t    y    u    i    o    p    [    ]    \
   
   ;; Home row: Esc/Ctrl on Caps, home row mods on letters
-  @escctrl @a  @s   @d   @f   g    h    @j   @k   @l   @;   @quotenums    ret
+  @escctrl @a  @s   @d   @f   g    h    @j   @k   @l   @;   '    ret
 
   ;; Bottom row: Normal shift, backspace on right shift, / is normal
   lsft z    x    c    v    b    n    m    ,    .    /    @rshiftbspc
 
-  ;; Modifier row: Fn layer, normal mods, Space→Sym, RCmd→Toggle HRM
-  @fnl lctl lalt lmet           @spsym         @togmods ralt
+  ;; Modifier row: Fn layer, normal mods, Space→Sym, RCmd→Nums layer
+  @fnl lctl lalt lmet           @spsym         @rmetnums ralt
 )
 
 ;; ============================================================================
@@ -200,15 +204,14 @@
 )
 
 ;; ============================================================================
-;; NUMBERS LAYER (Apostrophe ' Hold)
+;; NUMBERS LAYER (Right Cmd Hold)
 ;; ============================================================================
 ;; Numpad-style layout on right hand with 1-6 on qwerty top row.
-;; Left hand is transparent (passes through to base layer) so you can
-;; still type letters and use home row mods if needed.
+;; Left hand has WASD-style arrow keys for navigation.
 ;;
-;; LEFT HAND: Transparent (base layer)
-;;   - Letters still work
-;;   - Home row mods still work
+;; LEFT HAND:
+;;   Tab = Toggle to vanilla mode (disable HRM)
+;;   a=←  s=↓  d=↑  f=→  (WASD-style arrows)
 ;;
 ;; RIGHT HAND:
 ;;   q=1  w=2  e=3  r=4  t=5  y=6     u=7  i=8  o=9  p=+
@@ -222,22 +225,22 @@
   ;; Number row: Pass through
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
 
-  ;; Top row: Numbers 1-6 on left, 7-9+ on right
-  ;;   q    w    e    r    t    y    u    i    o    p
-  _    1    2    3    4    5    6    7    8    9    S-=  _    _    _
-  ;;   1    2    3    4    5    6    7    8    9    +
+  ;; Top row: Tab→Toggle vanilla, then numbers 1-6 on left, 7-9+ on right
+  ;;   tab       q    w    e    r    t    y    u    i    o    p
+  @togmods  1    2    3    4    5    6    7    8    9    S-=  _    _    _
+  ;;   toggle    1    2    3    4    5    6    7    8    9    +
 
-  ;; Home row: Transparent (left), numpad home (right)
-  ;;   a    s    d    f    g    h    j    k    l    ;
-  _    _    _    _    _    _    0    4    5    6    -    _    _
-  ;;   (pass through)        0    4    5    6    -
+  ;; Home row: Arrow keys (left), numpad home (right)
+  ;;   caps   a     s     d    f      g    h    j    k    l    ;
+  _    left  down  up   rght   _    0    4    5    6    -    _    _
+  ;;          ←     ↓     ↑    →           0    4    5    6    -
 
   ;; Bottom row: Decimal/plus (left), low numbers (right)
   ;;   z    x    c    v      b    n    m    ,    .    /
   _    _    _    .    S-=    _    ,    1    2    3    /    _
   ;;             .    +           ,    1    2    3    /
 
-  ;; Modifier row: Pass through (' is being held)
+  ;; Modifier row: Pass through (RCmd is being held)
   _    _    _    _              _              _    _
 )
 
@@ -265,34 +268,33 @@
 ;; ============================================================================
 ;; VANILLA LAYER (No Home Row Mods)
 ;; ============================================================================
-;; For gaming or when HRM causes issues. Toggle with RCmd tap.
+;; For gaming or when HRM causes issues. Toggle via RCmd+Tab in nums layer.
 ;;
 ;; Preserves:
 ;;   - Esc/Ctrl on Caps
 ;;   - Hyper on Tab
 ;;   - Space → Symbols
-;;   - Forward slash (/) → Numbers
-;;   - Right Cmd (tap): Toggle back to base layer (enable HRM)
+;;   - Right Cmd (hold): Numbers layer (with toggle back to base)
 ;;   - Backspace on Right Shift
 
 (deflayer vanilla
   ;; F-row: Media keys
   brdn brup _    _    _    _    prev pp   next mute vold volu
-  
+
   ;; Number row: Pass through
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-  
+
   ;; Top row: Hyper-Tab, then normal keys (no HRM)
   @hypertab q  w    e    r    t    y    u    i    o    p    [    ]    \
-  
+
   ;; Home row: Esc/Ctrl on Caps, normal letters (no HRM)
-  @escctrl a  s    d    f    g    h    j    k    l    ;    @quotenums    ret
+  @escctrl a  s    d    f    g    h    j    k    l    ;    '    ret
 
   ;; Bottom row: Normal shift, backspace on right shift, / is normal
   lsft z    x    c    v    b    n    m    ,    .    /    @rshiftbspc
 
-  ;; Modifier row: Fn layer (vanilla version), Space→Sym, RCmd→Toggle HRM
-  @fnlvanilla lctl lalt lmet      @spsym         @togbase ralt
+  ;; Modifier row: Fn layer (vanilla version), Space→Sym, RCmd→Nums layer
+  @fnlvanilla lctl lalt lmet      @spsym         @rmetvanillanums ralt
 )
 
 ;; ============================================================================
@@ -303,10 +305,10 @@
 (deflayer fnvanilla
   ;; F-row: Toggle back to base on F1
   @togbase f2  f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
-  
+
   ;; Number row: F1-F12
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-  
+
   ;; Other rows: Pass through
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   @escctrl _  _    _    _    _    _    _    _    _    _    _    _
@@ -315,9 +317,40 @@
 )
 
 ;; ============================================================================
+;; NUMBERS LAYER FOR VANILLA (Right Cmd Hold in Vanilla Mode)
+;; ============================================================================
+;; Same as nums layer but Tab toggles back to base instead of to vanilla.
+
+(deflayer numsvanilla
+  ;; F-row: Pass through
+  _    _    _    _    _    _    _    _    _    _    _    _
+
+  ;; Number row: Pass through
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+
+  ;; Top row: Tab→Toggle to base (HRM on), then numbers
+  ;;   tab       q    w    e    r    t    y    u    i    o    p
+  @togbase  1    2    3    4    5    6    7    8    9    S-=  _    _    _
+  ;;   toggle    1    2    3    4    5    6    7    8    9    +
+
+  ;; Home row: Arrow keys (left), numpad home (right)
+  ;;   caps   a     s     d    f      g    h    j    k    l    ;
+  _    left  down  up   rght   _    0    4    5    6    -    _    _
+  ;;          ←     ↓     ↑    →           0    4    5    6    -
+
+  ;; Bottom row: Decimal/plus (left), low numbers (right)
+  ;;   z    x    c    v      b    n    m    ,    .    /
+  _    _    _    .    S-=    _    ,    1    2    3    /    _
+  ;;             .    +           ,    1    2    3    /
+
+  ;; Modifier row: Pass through (RCmd is being held)
+  _    _    _    _              _              _    _
+)
+
+;; ============================================================================
 ;; END OF CONFIGURATION
 ;; ============================================================================
-;; 
+;;
 ;; TESTING CHECKLIST:
 ;; [ ] Space + q = !
 ;; [ ] Space + e = #
@@ -325,14 +358,19 @@
 ;; [ ] Space + h = :
 ;; [ ] Space + j = =
 ;; [ ] Space + l = -
-;; [ ] ' + q = 1
-;; [ ] ' + j = 4
-;; [ ] ' + h = 0
-;; [ ] ' (tap) = '
+;; [ ] RCmd + q = 1
+;; [ ] RCmd + j = 4
+;; [ ] RCmd + h = 0
+;; [ ] RCmd + a = ← (left arrow)
+;; [ ] RCmd + s = ↓ (down arrow)
+;; [ ] RCmd + d = ↑ (up arrow)
+;; [ ] RCmd + f = → (right arrow)
+;; [ ] RCmd + Tab = Toggle HRM on/off
+;; [ ] RCmd (tap) = sends Right Cmd
+;; [ ] ' (tap) = ' (just apostrophe)
 ;; [ ] / (tap) = / (should be normal)
 ;; [ ] Caps tap = Escape
 ;; [ ] Caps hold + c = Ctrl+C
-;; [ ] RCmd (tap) = Toggle HRM on/off
 ;;
 ;; TROUBLESHOOTING:
 ;; - Run with debug: sudo kanata -c kanata.kbd --debug

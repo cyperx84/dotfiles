@@ -27,19 +27,6 @@ vim.keymap.set('n', '<C-q>', ':q<CR>', { desc = 'Quit current buffer' })
 -- Yazi
 vim.keymap.set('n', '-', '<CMD>Yazi<CR>', { desc = 'Open parent directory' })
 
--- Neogit
-vim.keymap.set("n", "<leader>gg", "<cmd>Neogit kind=floating<CR>", { desc = "Floating" })
-vim.keymap.set("n", "<leader>gG", "<cmd>Neogit kind=split<CR>", { desc = "Auto" })
-vim.keymap.set("n", "<leader>gb", "<cmd>Neogit branch kind=auto<CR>", { desc = "Branch" })
-vim.keymap.set("n", "<leader>gB", "<cmd>Neogit branch_config kind=auto<CR>", { desc = "Branch Config" })
-vim.keymap.set("n", "<leader>gc", "<cmd>Neogit commit kind=auto<CR>", { desc = "Commit" })
-vim.keymap.set("n", "<leader>gd", "<cmd>Neogit diff kind=auto<CR>", { desc = "Diff" })
-vim.keymap.set("n", "<leader>gl", "<cmd>Neogit log kind=auto<CR>", { desc = "Log" })
-vim.keymap.set("n", "<leader>gs", "<cmd>Neogit stash kind=auto<CR>", { desc = "Stash" })
-vim.keymap.set("n", "<leader>gm", "<cmd>Neogit merge kind=auto<CR>", { desc = "Merge" })
-vim.keymap.set("n", "<leader>gP", "<cmd>Neogit pull<CR>", { desc = "Pull" })
-vim.keymap.set("n", "<leader>gp", "<cmd>Neogit push<CR>", { desc = "Push" })
-
 -- Dismiss Noice Message
 vim.keymap.set("n", "<leader>z", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })
 
@@ -57,12 +44,6 @@ vim.keymap.set("n", "<leader>td", function() require('mini.diff').toggle_overlay
 
 -- Paste Image
 vim.keymap.set("n", "<leader>pi", "<cmd>PasteImage<CR>", { desc = "Paste Image" })
-
--- Create Git Worktree - select or enter name for new
-vim.keymap.set("n", "<leader>gW", "<cmd>:lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>", { desc = "Create Worktree" })
-
--- Switch Git Worktree - c-f Force c-d Del
-vim.keymap.set("n", "<leader>gt", "<cmd>:lua require('telescope').extensions.git_worktree.git_worktrees()<CR>", { desc = "Switch Worktree" })
 
 -- MCPHub
 vim.keymap.set("n", "<leader>m", "<cmd>MCPHub<CR>", { desc = "MCPHub" })
@@ -87,8 +68,7 @@ vim.keymap.set("n", "==", "gg<S-v>G")
 
 -- Keep window centered when going up/down
 vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
+-- Note: <C-d> and <C-u> are handled by neoscroll.nvim plugin
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
