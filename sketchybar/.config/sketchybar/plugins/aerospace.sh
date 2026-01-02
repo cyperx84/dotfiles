@@ -6,6 +6,18 @@
 PLUGIN_DIR="${PLUGIN_DIR:-$HOME/.config/sketchybar/plugins}"
 source "$CONFIG_DIR/colors.sh"
 
+# Auto-detect which window manager is running (HyprSpace or AeroSpace)
+get_wm_command() {
+  if pgrep -x "HyprSpace" >/dev/null 2>&1; then
+    echo "hyprspace"
+  elif pgrep -x "AeroSpace" >/dev/null 2>&1; then
+    echo "aerospace"
+  else
+    # Default to hyprspace if neither is detected
+    echo "hyprspace"
+  fi
+}
+
 WORKSPACE_ID="$1"
 SID="$1"
 
@@ -22,7 +34,8 @@ update_window_count() {
 
 # Get current focused workspace
 get_focused() {
-  aerospace list-workspaces --focused 2>/dev/null || echo "1"
+  WM_CMD=$(get_wm_command)
+  $WM_CMD list-workspaces --focused 2>/dev/null || echo "1"
 }
 
 # Handle workspace change - update highlighting

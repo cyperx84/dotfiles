@@ -10,7 +10,7 @@ docker_status=(
   padding_right=4
   update_freq=30
   script="$PLUGIN_DIR/docker.sh"
-  click_script="open -a 'Docker Desktop'"
+  # click_script="open -a 'Docker Desktop'"
 )
 
 sketchybar --add item docker_status left \

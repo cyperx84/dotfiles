@@ -10,7 +10,7 @@ ssh_status=(
   padding_right=4
   update_freq=5
   script="$PLUGIN_DIR/ssh.sh"
-  click_script="osascript -e 'tell application \"Terminal\" to activate' -e 'tell application \"Terminal\" to do script \"ssh \"'"
+  # click_script="osascript -e 'tell application \"Terminal\" to activate' -e 'tell application \"Terminal\" to do script \"ssh \"'"
 )
 
 sketchybar --add item ssh_status left \

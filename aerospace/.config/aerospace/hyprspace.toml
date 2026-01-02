@@ -1,6 +1,4 @@
 after-startup-command = [
-  # Create symlink so aerospace CLI can communicate with HyprSpace
-  'exec-and-forget ln -sf /tmp/com.barut.hyprspace-$USER.sock /tmp/bobko.aerospace-$USER.sock',
   'exec-and-forget sketchybar',
   'exec-and-forget borders'
 ]
@@ -26,12 +24,12 @@ automatically-unhide-macos-hidden-apps = false
     preset = 'qwerty'
 
 [gaps]
-    inner.horizontal = 2
-    inner.vertical =   2
-    outer.left =       2
-    outer.bottom =     2
-    outer.top =        32
-    outer.right =      2
+    inner.horizontal = 20
+    inner.vertical =   20
+    outer.left =       20
+    outer.bottom =     20
+    outer.top =        52
+    outer.right =      20
 
 # ============================================================================
 # Automatic Workspace Assignment
@@ -133,11 +131,12 @@ run = 'layout floating'
     cmd-ctrl-a = ['exec-and-forget open -a "Ableton Live 12 Suite"']
     cmd-ctrl-d = ['exec-and-forget open -a "DaVinci Resolve"']
     cmd-ctrl-i = ['exec-and-forget open -a "iPhone Mirroring"']
+    cmd-ctrl-m = ['exec-and-forget open -na Messages']
     cmd-ctrl-s = ['exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh']
     cmd-ctrl-o = ['exec-and-forget open -a Obsidian']
     cmd-ctrl-y = ['exec-and-forget open -a Zen "https://youtube.com"']
     cmd-ctrl-p = ['exec-and-forget open -a Zen "https://perplexity.com"']
-    cmd-ctrl-t = ['exec-and-forget open -na Ghostty --args -e "tmux attach"']
+    cmd-ctrl-t = ['exec-and-forget open -na Ghostty --args -e tmux attach']
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'

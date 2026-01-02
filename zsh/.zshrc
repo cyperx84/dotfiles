@@ -316,3 +316,8 @@ fi
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/cyperx/.lmstudio/bin"
+# End of LM Studio CLI section
+

@@ -117,12 +117,12 @@ source "$ITEM_DIR/front_app.sh"
 # Development workflow tools
 # source "$ITEM_DIR/project.sh"
 # source "$ITEM_DIR/git.sh"
-# source "$ITEM_DIR/ssh.sh"
+source "$ITEM_DIR/ssh.sh"
 source "$ITEM_DIR/tmux.sh"
 # source "$ITEM_DIR/dev_servers.sh"
-# source "$ITEM_DIR/docker.sh"
+source "$ITEM_DIR/docker.sh"
 
-source "$ITEM_DIR/mic.sh"
+# source "$ITEM_DIR/mic.sh"
 
 ###############################################################################
 #                                 Center
@@ -140,8 +140,8 @@ source "$ITEM_DIR/brew.sh"
 # source "$ITEM_DIR/github.sh"  # Removed GitHub notifications
 source "$ITEM_DIR/wifi.sh"
 source "$ITEM_DIR/battery.sh"
-source "$ITEM_DIR/volume.sh"
 source "$ITEM_DIR/audio_output.sh"
+source "$ITEM_DIR/volume.sh"
 
 source "$ITEM_DIR/cpu.sh"
 source "$ITEM_DIR/memory.sh"
@@ -187,6 +187,16 @@ sketchybar --update
 # "$PLUGIN_DIR/wifi_monitor.sh" >/dev/null 2>&1 &
 
 # Trigger initial workspace highlight
-/bin/bash -c "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused 2>/dev/null || echo '1')" &
+# Auto-detect which window manager is running (HyprSpace or AeroSpace)
+/bin/bash -c '
+  if pgrep -x "HyprSpace" >/dev/null 2>&1; then
+    WM_CMD="hyprspace"
+  elif pgrep -x "AeroSpace" >/dev/null 2>&1; then
+    WM_CMD="aerospace"
+  else
+    WM_CMD="hyprspace"
+  fi
+  sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$($WM_CMD list-workspaces --focused 2>/dev/null || echo "1")
+' &
 
 echo "sketchybar configuation loaded.."

@@ -3,6 +3,18 @@
 # Space click handler - handles user interactions only
 # Visual updates are handled by aerospace.sh
 
+# Auto-detect which window manager is running (HyprSpace or AeroSpace)
+get_wm_command() {
+  if pgrep -x "HyprSpace" >/dev/null 2>&1; then
+    echo "hyprspace"
+  elif pgrep -x "AeroSpace" >/dev/null 2>&1; then
+    echo "aerospace"
+  else
+    # Default to hyprspace if neither is detected
+    echo "hyprspace"
+  fi
+}
+
 set_space_label() {
   sketchybar --set "$NAME" icon="$@"
 }
@@ -13,7 +25,8 @@ mouse_clicked() {
     :
   else
     # Left-click: Switch to workspace
-    aerospace workspace "$SID" 2>/dev/null
+    WM_CMD=$(get_wm_command)
+    $WM_CMD workspace "$SID" 2>/dev/null
   fi
 }
 

@@ -55,5 +55,5 @@ sketchybar --add slider volume right \
   --add item volume.template popup.volume_icon \
   --set volume.template "${volume_template[@]}"
 
-sketchybar --add bracket status brew github.bell wifi volume_icon \
+sketchybar --add bracket status brew github.bell wifi audio_output volume_icon \
   --set status "${status_bracket[@]}"

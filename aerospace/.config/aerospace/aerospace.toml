@@ -1,5 +1,6 @@
 after-startup-command = [
-  'exec-and-forget sketchybar'
+  'exec-and-forget sketchybar',
+  'exec-and-forget borders'
 ]
 
 exec-on-workspace-change = [
@@ -13,19 +14,19 @@ enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
 accordion-padding = 1
 default-root-container-layout = 'tiles'
-default-root-container-orientation = 'horizontal'
+# default-root-container-orientation = 'horizontal'
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-automatically-unhide-macos-hidden-apps = false
+automatically-unhide-macos-hidden-apps = true
 [key-mapping]
     preset = 'qwerty'
 
 [gaps]
-    inner.horizontal = 10
-    inner.vertical =   10
-    outer.left =       10
-    outer.bottom =     10
-    outer.top =        42
-    outer.right =      10
+    inner.horizontal = 20
+    inner.vertical =   20
+    outer.left =       20
+    outer.bottom =     20
+    outer.top =        52
+    outer.right =      20
 
 # ============================================================================
 # Automatic Workspace Assignment
@@ -122,6 +123,7 @@ run = 'layout floating'
 
     # Apps without workspace assignment (stay on current workspace)
     cmd-ctrl-i = 'exec-and-forget open -na "IPhone Mirroring"'
+    cmd-ctrl-m = 'exec-and-forget open -na Messages'
     cmd-ctrl-o = 'exec-and-forget open -na Obsidian'
     cmd-ctrl-y = 'exec-and-forget open -na Zen --args https://youtube.com'
     cmd-ctrl-p = 'exec-and-forget open -na Zen --args https://perplexity.com'

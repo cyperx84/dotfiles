@@ -6,7 +6,7 @@ update() {
   INTERFACE="$(route get default | grep interface | awk '{print $2}')"
 
   # Determine the hardware type (WiFi or Ethernet) of the active interface
-  HARDWARE_TYPE="$(networksetup -listnetworkserviceorder | grep -B 1 "Device: $INTERFACE" | head -n 1 | awk '{print $2}')"
+  HARDWARE_TYPE="$(networksetup -listnetworkserviceorder | grep -B 1 "Device: $INTERFACE)" | head -n 1 | awk '{print $2}')"
 
   # Adjust IP and icon assignment based on the hardware type of the active interface
   IP="$(ipconfig getifaddr "$INTERFACE")"
