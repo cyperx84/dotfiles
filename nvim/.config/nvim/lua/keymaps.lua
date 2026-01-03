@@ -68,9 +68,29 @@ vim.keymap.set("n", "==", "gg<S-v>G")
 
 -- Keep window centered when going up/down
 vim.keymap.set("n", "J", "mzJ`z")
--- Note: <C-d> and <C-u> are handled by neoscroll.nvim plugin
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+
+-- Smart center: only zz when in the middle of buffer (can scroll both ways)
+-- Skips centering at edges or on short files that fit on screen
+local function should_center()
+  local at_top = vim.fn.line 'w0' == 1
+  local at_bottom = vim.fn.line 'w$' >= vim.fn.line '$'
+  return not at_top and not at_bottom
+end
+
+-- Note: <C-d> and <C-u> are handled by neoscroll.nvim plugin with smart centering
+vim.keymap.set("n", "n", function()
+  vim.cmd "normal! n"
+  if should_center() then
+    vim.cmd "normal! zzzv"
+  end
+end, { desc = "Next search result (smart center)" })
+
+vim.keymap.set("n", "N", function()
+  vim.cmd "normal! N"
+  if should_center() then
+    vim.cmd "normal! zzzv"
+  end
+end, { desc = "Previous search result (smart center)" })
 
 -- Paste without overwriting register
 vim.keymap.set("v", "p", '"_dP')

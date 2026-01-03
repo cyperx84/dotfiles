@@ -16,6 +16,7 @@ cursor-style-blink = true
 
 mouse-hide-while-typing = true
 macos-titlebar-style = hidden
+confirm-close-surface = false
 background-opacity = 0.9
 background-blur = false
 
@@ -58,4 +59,4 @@ keybind = super+alt+shift+k=resize_split:up,10
 keybind = super+alt+shift+l=resize_split:right,10
 
 # Ghostty Custom shaders
-custom-shader = shaders/cursor_smear.glsl
+custom-shader = shaders/cursor_smear_rainbow.glsl

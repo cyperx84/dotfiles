@@ -32,40 +32,6 @@ automatically-unhide-macos-hidden-apps = false
     outer.right =      20
 
 # ============================================================================
-# Automatic Workspace Assignment
-# These rules automatically move app windows to designated workspaces when
-# they're opened, eliminating timing issues with manual move commands.
-# No scripts or sleep delays needed!
-# ============================================================================
-
-# [[on-window-detected]]
-# if.app-id = 'com.mitchellh.ghostty'
-# run = 'move-node-to-workspace 1'
-#
-# [[on-window-detected]]
-# if.app-id = 'app.zen-browser.zen'
-# run = 'move-node-to-workspace 2'
-#
-# [[on-window-detected]]
-# if.app-id = 'com.anthropic.claudefordesktop'
-# run = 'move-node-to-workspace 3'
-#
-# [[on-window-detected]]
-# if.app-id = 'com.google.antigravity'
-# run = 'move-node-to-workspace 4'
-#
-# [[on-window-detected]]
-# if.app-id = 'md.obsidian'
-# run = 'move-node-to-workspace 6'
-
-# ============================================================================
-# Global Window Detection - Trigger SketchyBar update on ANY new window
-# ============================================================================
-
-[[on-window-detected]]
-run = 'exec-and-forget sketchybar --trigger window_change'
-
-# ============================================================================
 # System Apps - Auto-Float Rules
 # These apps work better as floating windows (dialogs, utilities, etc.)
 # ============================================================================
@@ -124,19 +90,23 @@ run = 'layout floating'
 
 [mode.main.binding]
     ctrl-space = ['exec-and-forget open -na Ghostty']
+    cmd-ctrl-t = ['exec-and-forget open -na Ghostty --args -e tmux attach']
+    cmd-ctrl-n = ['exec-and-forget open -na Ghostty --args -e tmux new-session -A -s Neovim nvim']
+    cmd-ctrl-shift-n = ['exec-and-forget open -na Ghostty --args -e sesh connect notes']
+
     cmd-ctrl-b = ['exec-and-forget open -na Zen']
+    cmd-ctrl-y = ['exec-and-forget open -a Zen "https://youtube.com"']
+    cmd-ctrl-p = ['exec-and-forget open -a Zen "https://perplexity.com"']
+    cmd-ctrl-g = ['exec-and-forget open -a "Google Chrome"']
+
     cmd-ctrl-c = ['exec-and-forget open -a Claude']
     cmd-ctrl-u = ['exec-and-forget open -a Antigravity']
-    cmd-ctrl-g = ['exec-and-forget open -a "Google Chrome"']
     cmd-ctrl-a = ['exec-and-forget open -a "Ableton Live 12 Suite"']
     cmd-ctrl-d = ['exec-and-forget open -a "DaVinci Resolve"']
     cmd-ctrl-i = ['exec-and-forget open -a "iPhone Mirroring"']
     cmd-ctrl-m = ['exec-and-forget open -na Messages']
     cmd-ctrl-s = ['exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh']
     cmd-ctrl-o = ['exec-and-forget open -a Obsidian']
-    cmd-ctrl-y = ['exec-and-forget open -a Zen "https://youtube.com"']
-    cmd-ctrl-p = ['exec-and-forget open -a Zen "https://perplexity.com"']
-    cmd-ctrl-t = ['exec-and-forget open -na Ghostty --args -e tmux attach']
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'

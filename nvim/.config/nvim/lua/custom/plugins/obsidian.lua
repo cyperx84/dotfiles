@@ -267,11 +267,11 @@ return {
 
       -- Attachments
       attachments = {
-        img_folder = 'assets/imgs',
-        img_name_func = function()
+        folder = 'assets/imgs',
+        name_func = function()
           return os.date('%Y-%m-%d-%H%M%S')
         end,
-        img_text_func = function(path)
+        text_func = function(path)
           local filename = vim.fn.fnamemodify(path.filename, ':t')
           return string.format('![%s](assets/imgs/%s)', path.name, filename)
         end,
@@ -281,11 +281,6 @@ return {
       preferred_link_style = 'markdown',
       markdown_link_func = require('obsidian.builtin').markdown_link,
       wiki_link_func = 'use_alias_only', -- Fallback for wiki links if needed
-
-      -- URL handling
-      follow_url_func = function(url)
-        vim.fn.jobstart({ 'open', url }, { detach = true })
-      end,
 
       -- Picker (telescope)
       picker = {
