@@ -20,7 +20,7 @@ tags:
    - DO NOT: delete, rename, or modify trigger logic
 
 2. **Service restart sequences** (order matters)
-   - Always restart: yabai → skhd → sketchybar
+   - Always restart: HyprSpace → borders → sketchybar
    - Don't change service management procedures without testing
 
 3. **Stow directory structure**
@@ -29,8 +29,8 @@ tags:
 
 4. **Key system preferences**
    - Tmux prefix (Ctrl+A is intentional, not Ctrl+B)
-   - Yabai gap sizes (1px is intentional)
-   - Karabiner vs Kanata setup (user has chosen Kanata as PRIMARY)
+   - HyprSpace gap sizes (20px inner, 52px top for SketchyBar)
+   - Kanata is PRIMARY keyboard remapper (Karabiner unconfigured)
 
 ## 📂 Repository Structure
 
@@ -38,19 +38,19 @@ tags:
 
 ```
 dotfiles/
+├── aerospace/              # HyprSpace tiling WM: hyprspace.toml (dwindle layout)
+├── borders/                # JankyBorders: bordersrc (window borders)
 ├── zsh/                    # Shell: .zshrc, aliases, functions
-├── tmux/                   # Multiplexer: .tmux.conf + scripts/
-├── nvim/                   # Editor: 68 plugins (git subtree)
-├── yabai/                  # Window manager: yabairc
-├── skhd/                   # Hotkeys: skhdrc
-├── sketchybar/             # Menu bar: sketchybarrc + 69 plugins
-├── ghostty/                # Terminal: config
-├── starship/               # Prompt: 6 theme variants
+├── tmux/                   # Multiplexer: .tmux.conf + plugins
+├── nvim/                   # Editor: 42+ plugins (git subtree)
+├── sketchybar/             # Menu bar: sketchybarrc + 37 plugins
+├── ghostty/                # Terminal: config + 13 shaders
+├── starship/               # Prompt: 5 theme variants
 ├── kanata/                 # Keyboard: kanata.kbd (ACTIVE - PRIMARY)
 ├── karabiner/              # Keyboard alt: karabiner.json (inactive)
-├── sesh/                   # Session manager: sesh.toml
-├── tmuxinator/             # Complex layouts: YAML configs
-└── mcp/ + mcphub/          # Model Context Protocol
+├── sesh/                   # Session manager: sesh.toml + 25 scripts
+├── mcp/ + mcphub/          # Model Context Protocol
+└── claude/                 # Claude Code config + agents
 ```
 
 ### Documentation Files
@@ -74,33 +74,37 @@ dotfiles/
 
 ```bash
 # Prerequisites
-brew install yabai skhd sketchybar stow starship tmux
+brew install --cask BarutSRB/tap/hyprspace  # HyprSpace tiling WM
+brew tap FelixKratz/formulae && brew install borders  # JankyBorders
+brew install sketchybar stow starship tmux
 
 # Install all configs
 stow */
 
 # Start services
-brew services start yabai skhd sketchybar
+open -a HyprSpace  # App-based, not brew service
+brew services start sketchybar
 ```
 
 ### Service Management
 
 **Start**:
 ```bash
-brew services start yabai
-brew services start skhd
+open -a HyprSpace                          # Window manager (app)
+borders &                                   # Window borders
 brew services start sketchybar
 ```
 
 **Restart** (after config changes):
 ```bash
-brew services restart yabai
-brew services restart skhd
+killall HyprSpace && open -a HyprSpace     # Restart HyprSpace
+killall borders && borders &                # Restart borders
 brew services restart sketchybar
 ```
 
 **Reload** (without restart):
 ```bash
+hyprspace reload-config                     # Reload HyprSpace config
 sketchybar --reload
 tmux source-file ~/.tmux.conf
 exec zsh
@@ -110,17 +114,18 @@ exec zsh
 
 **Components WITH automated validation**:
 ```bash
-yabai --check-config              # Validate yabai config
-~/.config/sketchybar/test_sketchybar.sh   # Test SketchyBar plugins
-nvim --cmd "checkhealth"         # Neovim health check
+hyprspace reload-config                     # HyprSpace validates on reload
+~/.config/sketchybar/test_sketchybar.sh     # Test SketchyBar plugins
+nvim --cmd "checkhealth"                    # Neovim health check
 ```
 
 **Components WITHOUT automated validation**:
 ```bash
 # Manual checks required:
 sesh list                         # Check sesh (no script available)
-tail -f /usr/local/var/log/skhd/skhd.out.log  # SKHD errors
+killall borders && borders &      # Borders - restart to check
 tmux source-file ~/.tmux.conf     # Tmux syntax check
+# Check Console.app for HyprSpace errors
 ```
 
 **⚠️ Important**: `~/bin/validate_sesh.sh` was **REMOVED** in Oct 2025.
@@ -170,17 +175,19 @@ log stream --predicate 'process == "sketchybar"'
 ### Window Management Issues
 
 ```bash
-# Check service status
-brew services list | grep -E "(yabai|skhd)"
+# Check if HyprSpace is running
+pgrep -l HyprSpace
 
-# Validate yabai config
-yabai --check-config
+# Check if borders is running
+pgrep -l borders
 
-# Check SKHD logs
-tail -f /usr/local/var/log/skhd/skhd.out.log
+# Restart HyprSpace (validates config on startup)
+killall HyprSpace && open -a HyprSpace
 
-# Restart services
-brew services restart yabai skhd
+# Check Console.app for "HyprSpace" errors
+
+# Restart borders
+killall borders && borders &
 ```
 
 ### Session Management
@@ -198,19 +205,22 @@ tmux list-sessions
 
 ### Service Log Locations
 
-**Yabai**:
+**HyprSpace**:
 ```bash
-tail -f /usr/local/var/log/yabai/yabai.out.log
-```
-
-**SKHD**:
-```bash
-tail -f /usr/local/var/log/skhd/skhd.out.log
+# View in Console.app - filter for "HyprSpace"
+# Or use log stream:
+log show --predicate 'process == "HyprSpace"' --last 10m
 ```
 
 **SketchyBar**:
 ```bash
 log stream --predicate 'process == "sketchybar"'
+```
+
+**Kanata**:
+```bash
+sudo launchctl print system/com.example.kanata  # Check status
+log show --predicate 'process == "kanata"' --last 10m
 ```
 
 ## 🔄 Recent Changes
@@ -267,7 +277,7 @@ Referenced in:
 
 1. **Always validate configuration first**:
    ```bash
-   yabai --check-config  # For yabai changes
+   hyprspace reload-config  # For HyprSpace changes (validates on reload)
    tmux source-file ~/.tmux.conf  # For tmux changes
    ```
 
@@ -318,13 +328,13 @@ stow -D */ && stow */
 |-----------|------|---------|
 | Shell | `zsh/.zshrc` | Aliases, functions, keybinds |
 | Multiplexer | `tmux/.tmux.conf` | Ctrl+A prefix, theme |
-| Editor | `nvim/.config/nvim/init.lua` | 68 plugins, 45 configs |
-| Window Manager | `yabai/.config/yabai/yabairc` | BSP layout, 1px gaps |
-| Hotkeys | `skhd/.config/skhd/skhdrc` | Window management |
-| Menu Bar | `sketchybar/.config/sketchybar/sketchybarrc` | 69 plugins |
-| Terminal | `ghostty/.config/ghostty/config` | GPU-accelerated |
+| Editor | `nvim/.config/nvim/init.lua` | 42+ plugins (git subtree) |
+| Window Manager | `aerospace/.config/aerospace/hyprspace.toml` | Dwindle layout |
+| Window Borders | `borders/.config/borders/bordersrc` | JankyBorders |
+| Menu Bar | `sketchybar/.config/sketchybar/sketchybarrc` | 37 plugins |
+| Terminal | `ghostty/.config/ghostty/config` | GPU-accelerated + shaders |
 | Prompt | `starship/.config/starship/starship.toml` | Gruvbox Dark Neon |
-| Keyboard | `karabiner/.config/karabiner/karabiner.json` | Caps→Ctrl |
+| Keyboard | `kanata/.config/kanata/kanata.kbd` | Home row mods (PRIMARY) |
 
 ### Validation Scripts
 
@@ -387,4 +397,4 @@ stow -D */ && stow */
 
 **Remember**: When working with this repository, prioritize safety, testing, and thorough validation. The system is highly integrated, so changes in one area may affect others.
 
-*Last Updated: Oct 2025 - Post Sesh Script Migration*
+*Last Updated: Jan 2026 - HyprSpace + Dwindle Layout Migration*

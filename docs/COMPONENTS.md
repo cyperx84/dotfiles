@@ -107,10 +107,11 @@ pgrep -l borders                 # Check if running
 
 **Key Files**:
 - `sketchybar/.config/sketchybar/sketchybarrc` - Main configuration
-- `sketchybar/.config/sketchybar/plugins/` - 30+ plugin scripts
+- `sketchybar/.config/sketchybar/plugins/` - 37 plugin scripts
+- `sketchybar/.config/sketchybar/items/` - 29 item configurations
 - `sketchybar/.config/sketchybar/helper/` - C helper binary
 
-**Plugin Architecture**:
+**Plugin Architecture** (37 plugins total):
 ```
 plugins/
 ├── aerospace.sh          # HyprSpace workspace management (PRIMARY)
@@ -119,14 +120,23 @@ plugins/
 ├── space.sh             # Space display (click to switch)
 ├── brew.sh               # Package updates
 ├── calendar.sh           # Date/time display
-├── claude.sh             # Claude integration
-├── cpu.sh                # System monitoring
+├── cpu.sh                # System monitoring (via helper binary)
+├── memory.sh             # RAM usage
+├── disk.sh               # Disk usage
+├── battery.sh            # Battery status
 ├── front_app.sh          # Active application
 ├── git.sh                # Git repository status
 ├── github.sh             # GitHub notifications
+├── docker.sh             # Container monitoring
+├── dev_servers.sh        # Dev server port monitoring
 ├── temperature.sh        # CPU temperature (M4-aware, uses smctemp)
 ├── volume.sh             # Audio control
-└── ... (25+ more plugins)
+├── audio_output.sh       # Audio device indicator
+├── wifi.sh               # WiFi status
+├── network.sh            # Network speed
+├── ssh.sh                # SSH session indicator
+├── tmux.sh               # Tmux session indicator
+└── ... (15+ more plugins)
 ```
 
 **Temperature Monitoring (M4 Mac)**:
@@ -136,9 +146,9 @@ The temperature plugin uses `smctemp` to read heatsink temperature (TH0x sensor)
 - **Cache**: `/tmp/sketchybar_temp_cache`
 
 **Styling**:
-- **Position**: Top bar, 40px height
-- **Font**: MonaspiceRn Nerd Font
-- **Theme**: Blur effects with custom colors
+- **Position**: Top bar, 35px height
+- **Font**: MonaspiceKr Nerd Font
+- **Theme**: Green/orange color scheme with blur effects
 - **Interaction**: Click handlers for space switching
 
 **Testing & Validation**:
@@ -294,16 +304,16 @@ fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 
 **Key Files**:
 - `starship/.config/starship/starship.toml` - Active configuration
-- `starship/.config/starship/starship-*.toml` - 6 theme variants
+- `starship/.config/starship/starship-*.toml` - 5 theme variants
 
-**Available Themes**:
+**Available Themes** (5 total):
 ```
 starship/
 ├── starship.toml                    # Default (Gruvbox Dark Neon)
 ├── starship-gruvbox-rainbow.toml    # Colorful variant
 ├── starship-jetpack.toml           # Minimal modern
 ├── starship-gruvbox-dark-neon.toml # High contrast
-└── ... (2 more variants)
+└── starship-tokyo-night.toml       # Tokyo Night variant
 ```
 
 **Theme Switching**:
@@ -330,7 +340,7 @@ export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-rainbow.toml
 **Key Files**:
 - `nvim/.config/nvim/init.lua` - Entry point
 - `nvim/.config/nvim/lua/keymaps.lua` - Core keybindings ([detailed guide](NEOVIM_KEYBINDS.md))
-- `nvim/.config/nvim/lua/custom/plugins/` - 30+ plugin configurations
+- `nvim/.config/nvim/lua/custom/plugins/` - 39 plugin configurations
 
 **Core Architecture**:
 ```

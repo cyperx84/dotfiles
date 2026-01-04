@@ -22,7 +22,8 @@ sesh list                                           # Sesh sessions (manual chec
 
 # Quick service status check
 brew services list | grep sketchybar
-pgrep -l AeroSpace  # Check Aerospace status
+pgrep -l HyprSpace  # Check HyprSpace status
+pgrep -l borders    # Check JankyBorders status
 ```
 
 ### 📋 Sesh Validation
@@ -90,30 +91,36 @@ cd ~/.config/sketchybar/helper && make clean && make
 **Start Services**:
 ```bash
 # Window management (Application, not Homebrew service)
-open -a AeroSpace
+open -a HyprSpace
+
+# Window borders
+borders &
 
 # Menu bar
 brew services start sketchybar
 
 # Check status
-pgrep -l AeroSpace
+pgrep -l HyprSpace
+pgrep -l borders
 brew services list | grep sketchybar
 ```
 
 **Restart Services** (after config changes):
 ```bash
 # Individual restarts
-killall AeroSpace && open -a AeroSpace  # Aerospace restarts and validates config
+killall HyprSpace && open -a HyprSpace  # HyprSpace restarts and validates config
+killall borders && borders &             # Restart window borders
 brew services restart sketchybar
 
 # Quick reload (within active session)
+hyprspace reload-config          # Reload HyprSpace config
 sketchybar --reload              # SketchyBar only
-# Note: Aerospace auto-validates config on startup
 ```
 
 **Stop Services**:
 ```bash
-killall AeroSpace                # Stop Aerospace
+killall HyprSpace                # Stop HyprSpace
+killall borders                  # Stop borders
 brew services stop sketchybar
 ```
 
@@ -132,10 +139,12 @@ tmux source-file ~/.tmux.conf
 exec zsh
 # or: source ~/.zshrc
 
-# Aerospace
+# HyprSpace
 # Auto-validates on startup - just restart to validate
-killall AeroSpace && open -a AeroSpace
-# Check Console.app for "AeroSpace" if errors occur
+killall HyprSpace && open -a HyprSpace
+# Or reload config without full restart:
+hyprspace reload-config
+# Check Console.app for "HyprSpace" if errors occur
 ```
 
 ---
@@ -146,21 +155,27 @@ killall AeroSpace && open -a AeroSpace
 
 **Window Management Issues**:
 ```bash
-# 1. Check if Aerospace is running
-pgrep -l AeroSpace
+# 1. Check if HyprSpace is running
+pgrep -l HyprSpace
 
-# 2. Check permissions
+# 2. Check if borders is running
+pgrep -l borders
+
+# 3. Check permissions
 # System Preferences > Security & Privacy > Accessibility
-# Ensure AeroSpace.app has permissions
+# Ensure HyprSpace.app has permissions
 
-# 3. Restart Aerospace (validates config on startup)
-killall AeroSpace && open -a AeroSpace
+# 4. Restart HyprSpace (validates config on startup)
+killall HyprSpace && open -a HyprSpace
 
-# 4. Check Aerospace logs (if issues occur)
-# Open Console.app and filter for "AeroSpace"
+# 5. Restart borders
+killall borders && borders &
 
-# 5. Verify configuration file exists
-ls -la ~/.config/aerospace/aerospace.toml
+# 6. Check HyprSpace logs (if issues occur)
+# Open Console.app and filter for "HyprSpace"
+
+# 7. Verify configuration file exists
+ls -la ~/.config/aerospace/hyprspace.toml
 ```
 
 **SketchyBar Issues**:
@@ -352,17 +367,22 @@ stow --adopt component_name  # Adopt existing files
 **Solutions**:
 1. **Check Accessibility Permissions**:
    - System Preferences > Security & Privacy > Accessibility
-   - Add and enable `AeroSpace.app`
+   - Add and enable `HyprSpace.app`
 
-2. **Restart Aerospace**:
+2. **Restart HyprSpace**:
    ```bash
-   killall AeroSpace && open -a AeroSpace
+   killall HyprSpace && open -a HyprSpace
    ```
 
-3. **Check Configuration**:
-   - Aerospace validates config on startup
-   - Check Console.app for "AeroSpace" errors if issues occur
-   - Verify config file: `~/.config/aerospace/aerospace.toml`
+3. **Restart JankyBorders** (if borders not showing):
+   ```bash
+   killall borders && borders &
+   ```
+
+4. **Check Configuration**:
+   - HyprSpace validates config on startup
+   - Check Console.app for "HyprSpace" errors if issues occur
+   - Verify config file: `~/.config/aerospace/hyprspace.toml`
 
 ### ❌ SketchyBar Not Displaying
 
@@ -469,7 +489,8 @@ stow --adopt component_name  # Adopt existing files
 **If everything breaks**:
 ```bash
 # 1. Stop all services
-killall AeroSpace
+killall HyprSpace
+killall borders
 brew services stop sketchybar
 
 # 2. Backup current config
@@ -481,7 +502,8 @@ stow -D */  # Remove all stow links
 stow */     # Re-create all links
 
 # 4. Restart services
-open -a AeroSpace
+open -a HyprSpace
+borders &
 brew services start sketchybar
 
 # 5. Restart shell

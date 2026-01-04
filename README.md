@@ -146,7 +146,7 @@ Feature-rich terminal session management:
 ### 🚀 **Starship** - Cross-Shell Prompt
 Highly customizable prompt with multiple themes:
 - **Active Theme**: Gruvbox Dark Neon
-- **Available Themes**: 6 different configurations
+- **Available Themes**: 5 different configurations
 - **Features**: Git integration, language detection, performance metrics
 - **Style**: Powerline-inspired with custom symbols
 
@@ -168,18 +168,18 @@ A powerful, modern Neovim setup based on kickstart.nvim with extensive customiza
 **Included via Git subtree** - works seamlessly on any system (macOS, Linux, Windows).
 
 **Quick Facts:**
-- **68 Plugins** across 45 configuration files
+- **42+ Plugins** across 39 configuration files
 - **100+ Keybindings** organized by function
 - **4 LSP Servers** configured (C/C++, Python, Rust, Lua)
 - **4 AI Integrations** (Claude, CodeCompanion, Copilot, SuperMaven)
-- **18 Treesitter Languages** for syntax highlighting
+- **40+ Treesitter Languages** for syntax highlighting
 
 **Key Features:**
 - AI-assisted development with Claude Code and CodeCompanion
 - Obsidian integration for knowledge management
-- Advanced git workflow (Neogit, Gitsigns, Fugitive)
+- Advanced git workflow (Neogit, Gitsigns)
 - DAP debugging with UI
-- Multiple file explorers (Mini.files, Oil, Neo-tree, Yazi)
+- Multiple file explorers (Mini.files, Oil, Yazi)
 - Tokyo Night theme with transparency
 
 **Complete Documentation:** See [nvim/README.md](nvim/README.md) for full details, keybindings, and setup instructions.
@@ -511,10 +511,10 @@ exec zsh                                  # Reload shell config
 ### Special Features
 - **HyprSpace**: Hyprland-style dwindle tiling (auto split direction)
 - **JankyBorders**: Visual window borders (green active, gray inactive)
-- **SketchyBar Plugins**: Custom status bar modules in `sketchybar/plugins/`
-- **Starship Themes**: 6 different prompt configurations
-- **Tmux Plugins**: Auto-installing plugin manager with 10+ plugins
-- **Neovim**: 68 plugins across 45 configuration files
+- **SketchyBar Plugins**: 37 custom status bar plugins in `sketchybar/plugins/`
+- **Starship Themes**: 5 different prompt configurations
+- **Tmux Plugins**: Auto-installing plugin manager with 11 plugins
+- **Neovim**: 42+ plugins across 39 configuration files (git subtree)
 
 ## 🤝 Contributing
 
