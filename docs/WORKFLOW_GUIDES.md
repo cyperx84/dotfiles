@@ -143,15 +143,15 @@ ghl                        # List GitHub repos (if using GitHub CLI)
 
 ### Seamless Window & Pane Navigation
 
-**Goal**: Unified navigation across Aerospace windows and Tmux panes
+**Goal**: Unified navigation across HyprSpace windows and Tmux panes
 
 ```bash
-# Aerospace Window Management (system-wide - PRIMARY)
+# HyprSpace Window Management (system-wide - PRIMARY with Dwindle layout)
 Shift+Ctrl+h/j/k/l         # Focus windows
 Shift+Ctrl+Alt+h/j/k/l     # Move windows
 Ctrl+Alt+Cmd+j/k           # Resize windows (smart, context-aware)
-Cmd+Ctrl+j/k/l             # Switch workspaces 1-3
-Ctrl+Shift+4-9             # Switch workspaces 4-9
+Cmd+j/k/l                  # Switch workspaces 1-3 (homerow)
+Ctrl+Shift+1-9             # Switch workspaces 1-9
 
 # Tmux Pane Management (within terminal)
 C-a h/j/k/l                # Focus panes
@@ -168,7 +168,8 @@ C-a v                      # Horizontal split
 ### Layout Management
 
 ```bash
-# Aerospace Layouts (PRIMARY)
+# HyprSpace Layouts (PRIMARY - Dwindle Layout)
+# Note: Dwindle auto-splits based on window aspect ratio
 Shift+Ctrl+e               # Toggle float/tile
 Shift+Ctrl+v               # Toggle horizontal/vertical orientation
 Shift+Ctrl+t               # Tiles layout
@@ -381,7 +382,7 @@ gp                         # Push changes
 | Session Management | Sesh + Tmux + FZF | Shared session names, FZF selection |
 | File Navigation | Eza + Yazi + Telescope | Consistent preview, similar interfaces |
 | Git Operations | Zsh aliases + Neogit | Quick terminal ops, detailed GUI ops |
-| Window Management | Aerospace + Tmux + Neovim | Unified navigation keybinds |
+| Window Management | HyprSpace + JankyBorders + Tmux + Neovim | Unified navigation keybinds, dwindle layout |
 | Search | FZF + Telescope + ripgrep | Consistent fuzzy finding paradigm |
 | Note-Taking | Obsidian + Telescope | Cross-search capabilities |
 
