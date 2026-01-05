@@ -88,5 +88,10 @@ startup_command = ""
 [[session]]
 name = "github"
 path = "~/github"
-startup_command = "" 
+startup_command = ""
+
+[[session]]
+name = "docker"
+path = "~"
+startup_command = "~/.config/sesh/scripts/utils/docker_session.sh" 
 
