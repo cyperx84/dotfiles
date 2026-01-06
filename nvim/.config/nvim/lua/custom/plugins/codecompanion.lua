@@ -158,12 +158,23 @@ return {
               },
             })
           end,
+
+          gemini_cli = function()
+            return require('codecompanion.adapters').extend('gemini_cli', {
+              defaults = {
+                auth_method = 'oauth-personal',
+              },
+              schema = {
+                model = { default = 'gemini-3' },
+              },
+            })
+          end,
         },
       },
 
       strategies = {
         chat = {
-          adapter = 'deepseek',
+          adapter = 'gemini_cli',
           keymaps = {
             send = {
               modes = {
