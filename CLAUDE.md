@@ -15,9 +15,8 @@ This file provides guidance to Claude Code when working with this macOS dotfiles
 stow */
 
 # Service management (after config changes)
-# HyprSpace (window manager with dwindle layout):
-killall HyprSpace && open -a HyprSpace                    # Restart HyprSpace
-hyprspace reload-config                                   # Reload config only
+# Aerospace (window manager):
+killall AeroSpace && open -a AeroSpace                    # Restart Aerospace
 killall borders && borders &                              # Restart window borders
 sketchybar --reload                                       # Reload SketchyBar
 tmux source-file ~/.tmux.conf                             # Reload tmux config
@@ -39,7 +38,7 @@ Core Configs:
 ├── zsh/.zshrc                                           # Shell: aliases, functions, keybinds
 ├── tmux/.tmux.conf                                      # Multiplexer: Ctrl+A prefix
 ├── nvim/.config/nvim/lua/keymaps.lua                   # Neovim keybinds
-├── aerospace/.config/aerospace/hyprspace.toml          # Window manager (HyprSpace + dwindle)
+├── aerospace/.config/aerospace/aerospace.toml          # Window manager (Aerospace)
 ├── borders/.config/borders/bordersrc                   # Window borders (JankyBorders)
 ├── ghostty/.config/ghostty/config                      # Terminal
 ├── sketchybar/.config/sketchybar/sketchybarrc          # Menu bar
@@ -82,7 +81,7 @@ System-Level Services (LaunchDaemons):
 3. **DO NOT** suggest changes to:
    - Kanata config filename (`kanata.kbd` is correct, NOT `config.kbd`)
    - Tmux prefix (Ctrl+A is intentional, not Ctrl+B)
-   - Aerospace gap sizes (2px inner, 32px top is intentional for SketchyBar)
+   - Aerospace gap sizes (20px inner, 52px top is intentional for SketchyBar)
 
 4. **ALWAYS** validate before suggesting changes:
    - Run validation scripts before declaring changes complete
@@ -94,19 +93,18 @@ System-Level Services (LaunchDaemons):
 **Overview:** Comprehensive macOS development environment with 15+ integrated components managed via GNU Stow.
 
 ### Window Management Stack (Tightly Coupled)
-- **HyprSpace** - Tiling window manager with Dwindle layout (Aerospace fork)
-  - **Dwindle layout** - Hyprland-style binary tree tiling (auto split direction based on aspect ratio)
+- **Aerospace** - Tiling window manager for macOS
   - Native keybindings in config (no external daemon needed)
   - Direct SketchyBar integration via callbacks
-  - 2px gaps, 32px top padding for SketchyBar
-  - **Config**: `~/.hyprspace.toml` → symlinked from `aerospace/.config/aerospace/hyprspace.toml`
-  - **CLI**: `hyprspace` command (same syntax as `aerospace`)
+  - 20px gaps, 52px top padding for SketchyBar
+  - **Config**: `~/.config/aerospace/aerospace.toml`
+  - **CLI**: `aerospace` command
   - **Float rules** - System apps automatically float (System Preferences, Calculator, etc.)
 - **JankyBorders** - Lightweight window borders
   - Green active border, muted gray inactive
   - Config: `borders/.config/borders/bordersrc`
-  - Auto-starts via HyprSpace `after-startup-command`
-- **SketchyBar** - Menu bar replacement (30+ plugins, HyprSpace integration)
+  - Auto-starts via Aerospace `after-startup-command`
+- **SketchyBar** - Menu bar replacement (30+ plugins, Aerospace integration)
 
 ### Terminal Environment (3-Layer)
 - **Ghostty** - GPU-accelerated terminal with shader support
@@ -138,7 +136,7 @@ System-Level Services (LaunchDaemons):
 
 ```bash
 # Prerequisites
-brew install --cask aerospace                           # Window manager
+brew install --cask nikitabobko/tap/aerospace           # Window manager
 brew install sketchybar stow starship tmux \
   zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep \
   nvim git gh yazi jq wget curl
@@ -158,11 +156,11 @@ stow -D aerospace
 ### Service Management
 
 ```bash
-# HyprSpace (Primary - App with dwindle layout, not Homebrew service)
-open -a HyprSpace                                        # Start HyprSpace
-killall HyprSpace && open -a HyprSpace                   # Restart HyprSpace
-hyprspace reload-config                                  # Reload config only
-pgrep -l HyprSpace                                       # Check if running
+# Aerospace (Primary - App, not Homebrew service)
+open -a AeroSpace                                        # Start Aerospace
+killall AeroSpace && open -a AeroSpace                   # Restart Aerospace
+aerospace reload-config                                  # Reload config only
+pgrep -l AeroSpace                                       # Check if running
 
 # JankyBorders (window borders)
 borders                                                  # Start borders
@@ -186,11 +184,11 @@ sudo launchctl kickstart -k system/com.example.kanata
 ### Configuration Validation
 
 ```bash
-# HyprSpace (validates on startup)
-# Edit hyprspace.toml, then reload or restart to validate
-hyprspace reload-config                                  # Reload config
-killall HyprSpace && open -a HyprSpace                   # Full restart
-# Check Console.app for "HyprSpace" errors if issues occur
+# Aerospace (validates on startup)
+# Edit aerospace.toml, then reload or restart to validate
+aerospace reload-config                                  # Reload config
+killall AeroSpace && open -a AeroSpace                   # Full restart
+# Check Console.app for "AeroSpace" errors if issues occur
 
 # SketchyBar
 ~/.config/sketchybar/test_sketchybar.sh              # Test all
@@ -675,11 +673,11 @@ find ~ -maxdepth 3 -type l -ls | grep dotfiles
 
 ### Validation & Testing Limitations
 
-**⚠️ Components WITHOUT Automated Validation**:
+**Components WITHOUT Automated Validation**:
 
 | Component | Validation | How to Test |
 |-----------|-----------|-------------|
-| **HyprSpace** | ✅ Validates on startup | `hyprspace reload-config` or restart, check Console.app for errors |
+| **Aerospace** | ✅ Validates on startup | `aerospace reload-config` or restart, check Console.app for errors |
 | **JankyBorders** | ❌ No validation | Restart: `killall borders && borders &` |
 | **Tmux** | ❌ No pre-flight checks | Syntax errors shown on reload: `tmux source-file ~/.tmux.conf` |
 | **Zsh** | ❌ No automated testing | Errors only on shell reload: `exec zsh` |
@@ -689,7 +687,7 @@ find ~ -maxdepth 3 -type l -ls | grep dotfiles
 | **Ghostty** | ❌ No validation | Errors shown in terminal on launch |
 
 **✅ Components WITH Automated Validation**:
-- **HyprSpace**: Validates on startup (check Console.app for errors)
+- **Aerospace**: Validates on startup (check Console.app for errors)
 - **SketchyBar**: `~/.config/sketchybar/test_sketchybar.sh`
 - **Neovim**: `:checkhealth`, `:Lazy health`
 
@@ -740,46 +738,25 @@ git stash pop  # Restore if needed
   - smctemp: https://github.com/narugit/smctemp
   - M4 sensor issues: https://github.com/exelban/stats/issues/2249
 
-### **CRITICAL** - HyprSpace Migration + Dwindle Layout (Dec 13, 2025)
-- **Action**: Switched from Aerospace to HyprSpace (upstream fork) for Hyprland-style dwindle tiling
-- **Why**: Standard Aerospace only supports `tiles`/`accordion` layouts. HyprSpace adds automatic binary-tree splitting (dwindle) where split direction is determined by window aspect ratio.
-- **New Files**:
-  - `aerospace/.config/aerospace/hyprspace.toml` - New config with dwindle layout
-  - `borders/.config/borders/bordersrc` - JankyBorders configuration
-- **Modified Files**:
-  - `sketchybar/.config/sketchybar/sketchybarrc:189` - `aerospace` → `hyprspace` CLI
-  - `sketchybar/.config/sketchybar/plugins/space.sh:16` - `aerospace` → `hyprspace`
-  - `sketchybar/.config/sketchybar/plugins/space_window_count.sh:15` - `aerospace` → `hyprspace`
-  - `sketchybar/.config/sketchybar/plugins/create_workspace.sh:10,56` - `aerospace` → `hyprspace`
-- **Key Config Changes**:
-  - `default-root-container-layout = 'dwindle'` (was `'tiles'`)
-  - Removed `default-root-container-orientation` (dwindle auto-determines)
-  - Config symlinked: `~/.hyprspace.toml` → `~/.config/aerospace/hyprspace.toml`
-- **Added JankyBorders**: Window borders for visual clarity
-  - Installed via `brew tap FelixKratz/formulae && brew install borders`
+### **REVERT** - Back to Aerospace from HyprSpace (Jan 2026)
+- **Action**: Reverted from HyprSpace back to standard Aerospace
+- **Why**: Simplified configuration; standard tiles/accordion layouts sufficient for workflow
+- **Config**: `aerospace/.config/aerospace/aerospace.toml`
+- **Gap Settings**: 20px inner, 52px top (for SketchyBar)
+- **JankyBorders**: Still active for window borders
   - Config: `~/.config/borders/bordersrc` (bright green active, muted gray inactive)
-  - Auto-starts via HyprSpace `after-startup-command`
+  - Auto-starts via Aerospace `after-startup-command`
 - **Service Management**:
   ```bash
-  # HyprSpace (replaces Aerospace)
-  open -a HyprSpace                              # Start
-  killall HyprSpace && open -a HyprSpace         # Restart
-  hyprspace reload-config                        # Reload config
-  hyprspace list-workspaces --focused            # Check focused workspace
+  # Aerospace
+  open -a AeroSpace                              # Start
+  killall AeroSpace && open -a AeroSpace         # Restart
+  aerospace reload-config                        # Reload config
+  aerospace list-workspaces --focused            # Check focused workspace
 
   # JankyBorders
   borders                                        # Start borders
   killall borders && borders &                   # Restart borders
-  ```
-- **Rollback** (if needed):
-  ```bash
-  killall HyprSpace && killall borders
-  brew uninstall --cask BarutSRB/tap/hyprspace
-  brew uninstall borders
-  brew install --cask aerospace
-  git checkout -- sketchybar/
-  cp ~/.config/aerospace/aerospace.toml.backup ~/.config/aerospace/aerospace.toml
-  open -a AeroSpace && sketchybar --reload
   ```
 
 ### **OPTIMIZATION** - Aerospace Workspace Assignment (Nov 30, 2025)

@@ -10,8 +10,8 @@ get_wm_command() {
   elif pgrep -x "AeroSpace" >/dev/null 2>&1; then
     echo "aerospace"
   else
-    # Default to hyprspace if neither is detected
-    echo "hyprspace"
+    # Default to aerospace if neither is detected
+    echo "aerospace"
   fi
 }
 

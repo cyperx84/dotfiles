@@ -96,10 +96,6 @@ return {
             end,
           },
         },
-        -- Global picker configuration - use Telescope for all pickers
-        picker = {
-          provider = 'telescope',
-        },
         action_palette = {
           width = 75,
           height = 10,
@@ -110,6 +106,10 @@ return {
             show_default_prompt_library = true, -- Show the default prompt library in the action palette?
           },
         },
+      },
+      -- Global picker configuration - use Telescope for all pickers
+      picker = {
+        provider = 'telescope',
       },
       adapters = {
         http = {

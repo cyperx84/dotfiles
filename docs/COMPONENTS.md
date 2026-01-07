@@ -13,19 +13,18 @@ This document provides comprehensive documentation for all 15+ components in the
 
 ## Window Management
 
-### 🚀 HyprSpace - Tiling Window Manager with Dwindle Layout
-**Purpose**: Aerospace fork with Hyprland-style binary tree tiling (dwindle layout)
+### 🚀 Aerospace - Tiling Window Manager
+**Purpose**: macOS tiling window manager with native keybindings
 **Status**: ✅ Active (PRIMARY)
 **Dependencies**: None (self-contained)
 
 **Key Files**:
-- `aerospace/.config/aerospace/hyprspace.toml` - Complete configuration
-- Symlinked to `~/.hyprspace.toml`
+- `aerospace/.config/aerospace/aerospace.toml` - Complete configuration
 
 **Configuration Highlights**:
 ```toml
-# Dwindle layout - auto split direction based on aspect ratio
-default-root-container-layout = 'dwindle'
+# Tiles layout
+default-root-container-layout = 'tiles'
 
 # Auto-start on login
 start-at-login = true
@@ -41,30 +40,30 @@ run = 'exec-and-forget sketchybar --trigger window_change'
 
 # Gaps configuration
 [gaps]
-    inner.horizontal = 2
-    inner.vertical = 2
-    outer.top = 32  # SketchyBar padding
+    inner.horizontal = 20
+    inner.vertical = 20
+    outer.top = 52  # SketchyBar padding
 ```
 
 **Integration Points**:
 - **SketchyBar**: Direct workspace callbacks + window change events for instant updates
 - **JankyBorders**: Auto-started via `after-startup-command`
-- **Native Keybindings**: All hotkeys defined in hyprspace.toml (no external daemon)
+- **Native Keybindings**: All hotkeys defined in aerospace.toml (no external daemon)
 - **Automatic**: Launches at login, validates config on startup
 
 **Key Features**:
-- **Dwindle Layout**: Hyprland-style binary tree tiling (auto split direction)
+- **Tiles/Accordion Layouts**: Standard tiling window layouts
 - **Smart Resize**: Context-aware window resizing
 - **Service Mode**: Advanced operations mode (`shift+alt+cmd+r`)
 - **Normalization**: Automatic container flattening and orientation handling
-- **CLI**: `hyprspace` command (same syntax as `aerospace`)
+- **CLI**: `aerospace` command
 
 **Service Management**:
 ```bash
-open -a HyprSpace                         # Start
-killall HyprSpace && open -a HyprSpace    # Restart
-hyprspace reload-config                   # Reload config only
-hyprspace list-workspaces --focused       # Check focused workspace
+open -a AeroSpace                         # Start
+killall AeroSpace && open -a AeroSpace    # Restart
+aerospace reload-config                   # Reload config only
+aerospace list-workspaces --focused       # Check focused workspace
 ```
 
 **Common Operations**: See [KEYBINDS.md - Window Management](KEYBINDS.md#window-management)
@@ -90,7 +89,7 @@ borders "${options[@]}"
 ```
 
 **Integration Points**:
-- **HyprSpace**: Auto-started via `after-startup-command`
+- **Aerospace**: Auto-started via `after-startup-command`
 - **Visual**: Provides clear window boundaries
 
 **Service Management**:
@@ -103,7 +102,7 @@ pgrep -l borders                 # Check if running
 ### 📊 SketchyBar - Menu Bar Replacement
 **Purpose**: Customizable macOS menu bar with system information
 **Status**: ✅ Active
-**Dependencies**: HyprSpace for workspace information, various system tools
+**Dependencies**: Aerospace for workspace information, various system tools
 
 **Key Files**:
 - `sketchybar/.config/sketchybar/sketchybarrc` - Main configuration
@@ -114,7 +113,7 @@ pgrep -l borders                 # Check if running
 **Plugin Architecture** (37 plugins total):
 ```
 plugins/
-├── aerospace.sh          # HyprSpace workspace management (PRIMARY)
+├── aerospace.sh          # Aerospace workspace management (PRIMARY)
 ├── create_workspace.sh   # Workspace creation handler
 ├── space_window_count.sh # Window count per workspace
 ├── space.sh             # Space display (click to switch)
@@ -465,7 +464,7 @@ function brew() {
 
 **Cross-Tool Integration Points**:
 
-1. **Window Management**: HyprSpace ↔ JankyBorders ↔ SketchyBar
+1. **Window Management**: Aerospace ↔ JankyBorders ↔ SketchyBar
 2. **Terminal Stack**: Ghostty ↔ Tmux ↔ Zsh ↔ Starship
 3. **Session Management**: Sesh ↔ Tmux ↔ FZF
 4. **Development**: Neovim ↔ Tmux ↔ Git ↔ File Managers
@@ -490,9 +489,9 @@ stow -D component_name
 
 | Component | Status | Dependencies | Integration Level |
 |-----------|--------|--------------|------------------|
-| **HyprSpace** | ✅ Active | None | Core (Window Management) |
-| **JankyBorders** | ✅ Active | HyprSpace | Medium (Visual Enhancement) |
-| **SketchyBar** | ✅ Active | HyprSpace, System Tools | High (System Info) |
+| **Aerospace** | ✅ Active | None | Core (Window Management) |
+| **JankyBorders** | ✅ Active | Aerospace | Medium (Visual Enhancement) |
+| **SketchyBar** | ✅ Active | Aerospace, System Tools | High (System Info) |
 | **Ghostty** | ✅ Active | Fonts | Core (Terminal) |
 | **Tmux** | ✅ Active | Plugins | High (Session Management) |
 | **Zsh** | ✅ Active | Many CLI Tools | High (Shell Environment) |

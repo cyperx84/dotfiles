@@ -37,7 +37,7 @@ A curated collection of configuration files for a complete macOS development env
 
 ## 🌟 Features
 
-- **🪟 Tiling Window Management**: HyprSpace with Dwindle layout (Hyprland-style binary tree tiling)
+- **🪟 Tiling Window Management**: Aerospace tiling window manager
 - **🔲 Window Borders**: JankyBorders for visual window separation
 - **🎨 Beautiful Terminal**: Ghostty with custom shaders and Starship prompt
 - **⌨️ Advanced Key Remapping**: Kanata with home row mods + Karabiner-Elements
@@ -50,7 +50,7 @@ A curated collection of configuration files for a complete macOS development env
 
 ```
 dotfiles/
-├── aerospace/       # HyprSpace tiling window manager (dwindle layout)
+├── aerospace/       # Aerospace tiling window manager
 ├── borders/         # JankyBorders window border configuration
 ├── ghostty/         # Modern terminal emulator configuration
 ├── kanata/          # Advanced keyboard remapper with home row mods
@@ -95,18 +95,14 @@ Installed but currently unused:
 - **Status**: ⚠️ `simple_modifications` is empty
 - Kanata is the primary keyboard remapper
 
-### 🚀 **HyprSpace** - Tiling Window Manager with Dwindle Layout (PRIMARY)
-Aerospace fork with Hyprland-style binary tree tiling:
-- **Dwindle Layout**: Automatic split direction based on window aspect ratio
-  - Wide areas → side-by-side split
-  - Tall areas → top-and-bottom split
-- **Configuration**: `~/.hyprspace.toml` (TOML format, same syntax as Aerospace)
+### 🚀 **Aerospace** - Tiling Window Manager (PRIMARY)
+macOS tiling window manager with native keybindings:
+- **Configuration**: `~/.config/aerospace/aerospace.toml` (TOML format)
 - **Auto-start**: Launches at login automatically
 - **SketchyBar Integration**: Direct workspace callbacks for seamless integration
-- **Padding**: 32px top padding for SketchyBar, 2px inner gaps
+- **Padding**: 52px top padding for SketchyBar, 20px inner gaps
 
 **Key Features:**
-- Hyprland-style "psychic" splits - no manual direction needed
 - Native window management without external dependencies
 - Smart resize adapts to window position
 - Workspace navigation: `cmd+j/k/l` for workspaces 1-3
@@ -121,14 +117,14 @@ Lightweight window border system for visual clarity:
 - **Inactive Windows**: Muted gray border (`0xff494d64`)
 - **Style**: Rounded corners, 5px width
 - **Config**: `~/.config/borders/bordersrc`
-- **Auto-start**: Via HyprSpace `after-startup-command`
+- **Auto-start**: Via Aerospace `after-startup-command`
 
 ### 📊 **SketchyBar** - Menu Bar Replacement
 Elegant and customizable macOS menu bar:
 - **Appearance**: Top position, 40px height, blur effects
 - **Font**: MonaspiceRn Nerd Font
 - **Modules**: Spaces, front app, clock, volume, battery
-- **Integration**: HyprSpace workspace indicators with instant updates
+- **Integration**: Aerospace workspace indicators with instant updates
 
 ### 🪟 **Tmux** - Terminal Multiplexer
 Feature-rich terminal session management:
@@ -208,7 +204,7 @@ brew install --cask font-meslo-lg-nerd-font # MesloLGS Nerd Font
 
 #### System & Window Management
 ```bash
-brew install --cask BarutSRB/tap/hyprspace  # HyprSpace tiling window manager (dwindle layout)
+brew install --cask nikitabobko/tap/aerospace  # Aerospace tiling window manager
 brew tap FelixKratz/formulae && brew install borders  # JankyBorders window borders
 brew install sketchybar                     # Menu bar replacement
 brew install stow                           # Configuration management
@@ -268,7 +264,7 @@ brew install switchaudio-osx              # Audio source switcher
 For convenience, you can install all essential dependencies at once:
 ```bash
 # Essential packages only
-brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd-font BarutSRB/tap/hyprspace
+brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd-font nikitabobko/tap/aerospace
 brew tap FelixKratz/formulae && brew install borders
 brew tap narugit/tap && brew install narugit/tap/smctemp  # M4 temperature monitoring
 brew install sketchybar stow starship tmux zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep nvim git gh yazi sesh jq wget curl
@@ -299,10 +295,10 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
 
 3. **Start services:**
    ```bash
-   # Start HyprSpace (or it will auto-start on login)
-   open -a HyprSpace
+   # Start Aerospace (or it will auto-start on login)
+   open -a AeroSpace
 
-   # Start JankyBorders (auto-starts with HyprSpace, but manual start if needed)
+   # Start JankyBorders (auto-starts with Aerospace, but manual start if needed)
    borders &
 
    # Start SketchyBar
@@ -316,7 +312,7 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
    ```
 
 4. **Configure permissions:**
-   - Grant accessibility permissions to HyprSpace in System Preferences
+   - Grant accessibility permissions to Aerospace in System Preferences
    - Allow Karabiner-Elements to modify keyboard input
    - Configure Ghostty as default terminal
 
@@ -489,7 +485,7 @@ sesh list                                 # Check sesh sessions (manual)
 ~/.config/sketchybar/test_sketchybar.sh   # Test SketchyBar plugins
 
 # Service Management
-killall HyprSpace && open -a HyprSpace    # Restart window manager
+killall AeroSpace && open -a AeroSpace    # Restart window manager
 killall borders && borders &              # Restart window borders
 sketchybar --reload                       # Reload menu bar
 exec zsh                                  # Reload shell config
@@ -503,13 +499,13 @@ exec zsh                                  # Reload shell config
 - `ghostty/config` - Terminal appearance and behavior
 - `karabiner/karabiner.json` - Simple keyboard remapping rules
 - `kanata/kanata.kbd` - Advanced keyboard remapping with home row mods
-- `aerospace/hyprspace.toml` - HyprSpace window manager (dwindle layout)
+- `aerospace/aerospace.toml` - Aerospace window manager
 - `borders/bordersrc` - JankyBorders window borders
 - `tmux/.tmux.conf` - Terminal multiplexer setup
 - `zsh/.zshrc` - Shell configuration and aliases
 
 ### Special Features
-- **HyprSpace**: Hyprland-style dwindle tiling (auto split direction)
+- **Aerospace**: Tiling window management with tiles/accordion layouts
 - **JankyBorders**: Visual window borders (green active, gray inactive)
 - **SketchyBar Plugins**: 37 custom status bar plugins in `sketchybar/plugins/`
 - **Starship Themes**: 5 different prompt configurations

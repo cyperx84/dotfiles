@@ -17,8 +17,8 @@
 
 ## Window Management
 
-### HyprSpace Window Operations (PRIMARY)
-*Source: `aerospace/.config/aerospace/hyprspace.toml`*
+### Aerospace Window Operations (PRIMARY)
+*Source: `aerospace/.config/aerospace/aerospace.toml`*
 
 **Window Focus & Movement:**
 | Keybind | Action | Description |
@@ -354,7 +354,7 @@ Development:         ta (tmux), n (nvim), dps (docker ps)
 ```
 
 ### Integration Points
-- **HyprSpace + Tmux**: Window and session management with integrated keybindings
+- **Aerospace + Tmux**: Window and session management with integrated keybindings
 - **Sesh + Tmux**: Session management with enhanced workflow
 - **FZF + Multiple**: Fuzzy finding across file, session, git operations
 - **Eza + Navigation**: Enhanced listings in file operations

@@ -23,7 +23,7 @@ This dotfiles repository uses GNU Stow for symlink management with a comprehensi
 
 ```
 Window Management:
-├── HyprSpace          # Tiling WM with Dwindle layout (Aerospace fork)
+├── Aerospace          # Tiling WM for macOS
 ├── JankyBorders       # Window border visualization
 └── SketchyBar         # Menu bar replacement (36+ plugins)
 
@@ -112,20 +112,20 @@ lib/            # Shared libraries (4 scripts)
 ```
 
 **Review Points:**
-- Keybinding conflicts with Neovim/HyprSpace
+- Keybinding conflicts with Neovim/Aerospace
 - Plugin compatibility and loading order
 - Session management efficiency
 - Color and terminal capability settings
 - Status bar configuration
 
-### 3. Window Management (HyprSpace + JankyBorders)
+### 3. Window Management (Aerospace + JankyBorders)
 **Files**:
-- `aerospace/.config/aerospace/hyprspace.toml` (~255 lines)
+- `aerospace/.config/aerospace/aerospace.toml` (~255 lines)
 - `borders/.config/borders/bordersrc` (~14 lines)
 
-**HyprSpace Configuration:**
-- Layout: `dwindle` (Hyprland-style binary tree tiling)
-- Gaps: 2px inner, 32px top (SketchyBar padding)
+**Aerospace Configuration:**
+- Layout: `tiles` (standard tiling)
+- Gaps: 20px inner, 52px top (SketchyBar padding)
 - Auto-start: `start-at-login = true`
 - Services: SketchyBar + JankyBorders via `after-startup-command`
 
@@ -175,7 +175,7 @@ Development:
 ├── project.sh, ssh.sh
 
 Window Management:
-├── aerospace.sh          # HyprSpace workspace indicator
+├── aerospace.sh          # Aerospace workspace indicator
 ├── space.sh              # Workspace click handler
 ├── space_window_count.sh # Window counter
 ├── create_workspace.sh   # New workspace handler
@@ -200,7 +200,7 @@ Utilities:
 - Performance bottlenecks in scripts
 - API usage and event handling
 - Helper binary compilation
-- Integration with HyprSpace callbacks
+- Integration with Aerospace callbacks
 - WiFi monitor optimization (was spawning 259,200 processes/day)
 
 ### 5. Neovim Configuration
@@ -388,7 +388,7 @@ Structure your review as follows:
 **DO NOT** suggest modifications to:
 - The `brew()` function in `.zshrc` (SketchyBar integration dependency)
 - Tmux prefix key (`Ctrl+A` is intentional)
-- HyprSpace/Aerospace gap sizes (2px inner, 32px top is intentional for SketchyBar)
+- Aerospace gap sizes (20px inner, 52px top is intentional for SketchyBar)
 - Kanata config filename (must remain `kanata.kbd`)
 - Stow directory structure without explicit user request
 
@@ -402,9 +402,9 @@ Structure your review as follows:
 ~/.config/sketchybar/debug_sketchybar.sh          # Debug specific issues
 ~/.config/sketchybar/plugin_health_monitor.sh test # Health check
 
-# HyprSpace
-hyprspace reload-config                            # Validate config
-killall HyprSpace && open -a HyprSpace            # Full restart
+# Aerospace
+aerospace reload-config                            # Validate config
+killall AeroSpace && open -a AeroSpace            # Full restart
 
 # Sesh
 sesh list                                          # Check sessions

@@ -194,7 +194,7 @@ sketchybar --update
   elif pgrep -x "AeroSpace" >/dev/null 2>&1; then
     WM_CMD="aerospace"
   else
-    WM_CMD="hyprspace"
+    WM_CMD="aerospace"
   fi
   sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$($WM_CMD list-workspaces --focused 2>/dev/null || echo "1")
 ' &

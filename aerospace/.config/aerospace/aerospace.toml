@@ -116,20 +116,24 @@ run = 'layout floating'
     # App launchers with workspace switching
     # These launch the app AND switch to its workspace immediately
     # The on-window-detected rules above handle moving the window automatically
-    ctrl-space = 'exec-and-forget open -na Ghostty'
-    cmd-ctrl-b = 'exec-and-forget open -na Zen'
-    cmd-ctrl-c = 'exec-and-forget open -na Claude'
-    cmd-ctrl-u = 'exec-and-forget open -na Antigravity'
+    ctrl-space = ['exec-and-forget open -na Ghostty']
+    cmd-ctrl-t = ['exec-and-forget open -na Ghostty --args -e tmux attach']
+    cmd-ctrl-shift-n = ['exec-and-forget open -na Ghostty --args -e tmux new-session -A -s Neovim nvim']
+    cmd-ctrl-n = 'exec-and-forget open -na Ghostty --args -e bash -lc "/opt/homebrew/bin/sesh connect notes"'
 
-    # Apps without workspace assignment (stay on current workspace)
-    cmd-ctrl-i = 'exec-and-forget open -na "IPhone Mirroring"'
-    cmd-ctrl-m = 'exec-and-forget open -na Messages'
-    cmd-ctrl-o = 'exec-and-forget open -na Obsidian'
-    cmd-ctrl-y = 'exec-and-forget open -na Zen --args https://youtube.com'
-    cmd-ctrl-p = 'exec-and-forget open -na Zen --args https://perplexity.com'
-    cmd-ctrl-t = 'exec-and-forget open -na Ghostty --args -e tmux attach'
+    cmd-ctrl-b = ['exec-and-forget open -na Zen']
+    cmd-ctrl-y = ['exec-and-forget open -a Zen "https://youtube.com"']
+    cmd-ctrl-p = ['exec-and-forget open -a Zen "https://perplexity.com"']
+    cmd-ctrl-g = ['exec-and-forget open -a "Google Chrome"']
 
-    cmd-ctrl-s = 'exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh'
+    cmd-ctrl-c = ['exec-and-forget open -a Claude']
+    cmd-ctrl-u = ['exec-and-forget open -a Antigravity']
+    cmd-ctrl-a = ['exec-and-forget open -a "Ableton Live 12 Suite"']
+    cmd-ctrl-d = ['exec-and-forget open -a "DaVinci Resolve"']
+    cmd-ctrl-i = ['exec-and-forget open -a "iPhone Mirroring"']
+    cmd-ctrl-m = ['exec-and-forget open -na Messages']
+    cmd-ctrl-s = ['exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh']
+    cmd-ctrl-o = ['exec-and-forget open -a Obsidian']
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'

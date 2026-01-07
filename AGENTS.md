@@ -20,7 +20,7 @@ tags:
    - DO NOT: delete, rename, or modify trigger logic
 
 2. **Service restart sequences** (order matters)
-   - Always restart: HyprSpace → borders → sketchybar
+   - Always restart: Aerospace → borders → sketchybar
    - Don't change service management procedures without testing
 
 3. **Stow directory structure**
@@ -29,7 +29,7 @@ tags:
 
 4. **Key system preferences**
    - Tmux prefix (Ctrl+A is intentional, not Ctrl+B)
-   - HyprSpace gap sizes (20px inner, 52px top for SketchyBar)
+   - Aerospace gap sizes (20px inner, 52px top for SketchyBar)
    - Kanata is PRIMARY keyboard remapper (Karabiner unconfigured)
 
 ## 📂 Repository Structure
@@ -38,7 +38,7 @@ tags:
 
 ```
 dotfiles/
-├── aerospace/              # HyprSpace tiling WM: hyprspace.toml (dwindle layout)
+├── aerospace/              # Aerospace tiling WM: aerospace.toml
 ├── borders/                # JankyBorders: bordersrc (window borders)
 ├── zsh/                    # Shell: .zshrc, aliases, functions
 ├── tmux/                   # Multiplexer: .tmux.conf + plugins
@@ -74,7 +74,7 @@ dotfiles/
 
 ```bash
 # Prerequisites
-brew install --cask BarutSRB/tap/hyprspace  # HyprSpace tiling WM
+brew install --cask nikitabobko/tap/aerospace  # Aerospace tiling WM
 brew tap FelixKratz/formulae && brew install borders  # JankyBorders
 brew install sketchybar stow starship tmux
 
@@ -82,7 +82,7 @@ brew install sketchybar stow starship tmux
 stow */
 
 # Start services
-open -a HyprSpace  # App-based, not brew service
+open -a AeroSpace  # App-based, not brew service
 brew services start sketchybar
 ```
 
@@ -90,21 +90,21 @@ brew services start sketchybar
 
 **Start**:
 ```bash
-open -a HyprSpace                          # Window manager (app)
+open -a AeroSpace                          # Window manager (app)
 borders &                                   # Window borders
 brew services start sketchybar
 ```
 
 **Restart** (after config changes):
 ```bash
-killall HyprSpace && open -a HyprSpace     # Restart HyprSpace
+killall AeroSpace && open -a AeroSpace     # Restart Aerospace
 killall borders && borders &                # Restart borders
 brew services restart sketchybar
 ```
 
 **Reload** (without restart):
 ```bash
-hyprspace reload-config                     # Reload HyprSpace config
+aerospace reload-config                     # Reload Aerospace config
 sketchybar --reload
 tmux source-file ~/.tmux.conf
 exec zsh
@@ -114,7 +114,7 @@ exec zsh
 
 **Components WITH automated validation**:
 ```bash
-hyprspace reload-config                     # HyprSpace validates on reload
+aerospace reload-config                     # Aerospace validates on reload
 ~/.config/sketchybar/test_sketchybar.sh     # Test SketchyBar plugins
 nvim --cmd "checkhealth"                    # Neovim health check
 ```
@@ -125,7 +125,7 @@ nvim --cmd "checkhealth"                    # Neovim health check
 sesh list                         # Check sesh (no script available)
 killall borders && borders &      # Borders - restart to check
 tmux source-file ~/.tmux.conf     # Tmux syntax check
-# Check Console.app for HyprSpace errors
+# Check Console.app for Aerospace errors
 ```
 
 **⚠️ Important**: `~/bin/validate_sesh.sh` was **REMOVED** in Oct 2025.
@@ -175,16 +175,16 @@ log stream --predicate 'process == "sketchybar"'
 ### Window Management Issues
 
 ```bash
-# Check if HyprSpace is running
-pgrep -l HyprSpace
+# Check if Aerospace is running
+pgrep -l AeroSpace
 
 # Check if borders is running
 pgrep -l borders
 
-# Restart HyprSpace (validates config on startup)
-killall HyprSpace && open -a HyprSpace
+# Restart Aerospace (validates config on startup)
+killall AeroSpace && open -a AeroSpace
 
-# Check Console.app for "HyprSpace" errors
+# Check Console.app for "AeroSpace" errors
 
 # Restart borders
 killall borders && borders &
@@ -205,11 +205,11 @@ tmux list-sessions
 
 ### Service Log Locations
 
-**HyprSpace**:
+**Aerospace**:
 ```bash
-# View in Console.app - filter for "HyprSpace"
+# View in Console.app - filter for "AeroSpace"
 # Or use log stream:
-log show --predicate 'process == "HyprSpace"' --last 10m
+log show --predicate 'process == "AeroSpace"' --last 10m
 ```
 
 **SketchyBar**:
@@ -277,7 +277,7 @@ Referenced in:
 
 1. **Always validate configuration first**:
    ```bash
-   hyprspace reload-config  # For HyprSpace changes (validates on reload)
+   aerospace reload-config  # For Aerospace changes (validates on reload)
    tmux source-file ~/.tmux.conf  # For tmux changes
    ```
 
@@ -329,7 +329,7 @@ stow -D */ && stow */
 | Shell | `zsh/.zshrc` | Aliases, functions, keybinds |
 | Multiplexer | `tmux/.tmux.conf` | Ctrl+A prefix, theme |
 | Editor | `nvim/.config/nvim/init.lua` | 42+ plugins (git subtree) |
-| Window Manager | `aerospace/.config/aerospace/hyprspace.toml` | Dwindle layout |
+| Window Manager | `aerospace/.config/aerospace/aerospace.toml` | Tiles layout |
 | Window Borders | `borders/.config/borders/bordersrc` | JankyBorders |
 | Menu Bar | `sketchybar/.config/sketchybar/sketchybarrc` | 37 plugins |
 | Terminal | `ghostty/.config/ghostty/config` | GPU-accelerated + shaders |
@@ -397,4 +397,4 @@ stow -D */ && stow */
 
 **Remember**: When working with this repository, prioritize safety, testing, and thorough validation. The system is highly integrated, so changes in one area may affect others.
 
-*Last Updated: Jan 2026 - HyprSpace + Dwindle Layout Migration*
+*Last Updated: Jan 2026 - Reverted to Aerospace from HyprSpace*

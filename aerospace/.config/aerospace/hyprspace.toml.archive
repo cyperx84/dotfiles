@@ -16,7 +16,7 @@ accordion-padding = 1
 
 # DWINDLE LAYOUT - Hyprland-style binary tree tiling
 # Split direction is automatic: Width > Height = side-by-side, Height > Width = top-and-bottom
-default-root-container-layout = 'dwindle'
+default-root-container-layout = 'tiles'
 
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 automatically-unhide-macos-hidden-apps = false
