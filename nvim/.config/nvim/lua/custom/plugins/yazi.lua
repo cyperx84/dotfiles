@@ -7,13 +7,11 @@ return {
     "folke/snacks.nvim"
   },
   keys = {
-    -- 👇 in this section, choose your own keymappings!
-    -- {
-    --   "<leader>-",
-    --   mode = { "n", "v" },
-    --   "<cmd>Yazi<cr>",
-    --   desc = "Open yazi at the current file",
-    -- },
+    {
+      "-",
+      "<cmd>Yazi toggle<cr>",
+      desc = "Toggle yazi",
+    },
     {
       -- Open in the current working directory
       "<leader>ew",

@@ -126,7 +126,7 @@ run = 'layout floating'
     cmd-ctrl-p = ['exec-and-forget open -a Zen "https://perplexity.com"']
     cmd-ctrl-g = ['exec-and-forget open -a "Google Chrome"']
 
-    cmd-ctrl-c = ['exec-and-forget open -a Claude']
+    cmd-ctrl-c = ['exec-and-forget open -na Claude']
     cmd-ctrl-u = ['exec-and-forget open -a Antigravity']
     cmd-ctrl-a = ['exec-and-forget open -a "Ableton Live 12 Suite"']
     cmd-ctrl-d = ['exec-and-forget open -a "DaVinci Resolve"']
