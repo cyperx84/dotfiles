@@ -30,6 +30,7 @@ A curated collection of configuration files for a complete macOS development env
 | **[⌨️ Keybinds Reference](docs/KEYBINDS.md)** | Complete keybindings across all tools | Quick reference and lookup |
 | **[📝 Neovim Keybinds](docs/NEOVIM_KEYBINDS.md)** | Comprehensive Neovim mappings | Editor workflow mastery |
 | **[🔄 Workflow Guides](docs/WORKFLOW_GUIDES.md)** | Cross-tool integration patterns | Learning tool combinations |
+| **[🤖 Multi-LLM Workflow](docs/MULTI_LLM_WORKFLOW.md)** | Claude Code + CodeCompanion orchestration | AI development workflows |
 | **[📊 Claude Statusline Guide](docs/CLAUDE_STATUSLINE.md)** | Enhanced statusline interpretation | Reading context, cost, and session info |
 | **[🔧 Maintenance Guide](docs/MAINTENANCE.md)** | Validation, troubleshooting, updates | System reliability |
 | **[🤖 Claude Documentation](CLAUDE.md)** | Claude Code specific guidance | AI-assisted development |
@@ -507,10 +508,11 @@ exec zsh                                  # Reload shell config
 ### Special Features
 - **Aerospace**: Tiling window management with tiles/accordion layouts
 - **JankyBorders**: Visual window borders (green active, gray inactive)
-- **SketchyBar Plugins**: 37 custom status bar plugins in `sketchybar/plugins/`
+- **SketchyBar Plugins**: 39 custom status bar plugins in `sketchybar/plugins/`
 - **Starship Themes**: 5 different prompt configurations
 - **Tmux Plugins**: Auto-installing plugin manager with 11 plugins
 - **Neovim**: 42+ plugins across 39 configuration files (git subtree)
+- **Multi-LLM Workflow**: Claude Code + CodeCompanion integration (see `docs/MULTI_LLM_WORKFLOW.md`)
 
 ## 🤝 Contributing
 

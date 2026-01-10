@@ -106,11 +106,11 @@ pgrep -l borders                 # Check if running
 
 **Key Files**:
 - `sketchybar/.config/sketchybar/sketchybarrc` - Main configuration
-- `sketchybar/.config/sketchybar/plugins/` - 37 plugin scripts
+- `sketchybar/.config/sketchybar/plugins/` - 39 plugin scripts
 - `sketchybar/.config/sketchybar/items/` - 29 item configurations
 - `sketchybar/.config/sketchybar/helper/` - C helper binary
 
-**Plugin Architecture** (37 plugins total):
+**Plugin Architecture** (39 plugins total):
 ```
 plugins/
 ├── aerospace.sh          # Aerospace workspace management (PRIMARY)
@@ -135,7 +135,9 @@ plugins/
 ├── network.sh            # Network speed
 ├── ssh.sh                # SSH session indicator
 ├── tmux.sh               # Tmux session indicator
-└── ... (15+ more plugins)
+├── memory_graph.sh       # Memory usage graph
+├── memory_ring.sh        # Memory usage ring display
+└── ... (17+ more plugins)
 ```
 
 **Temperature Monitoring (M4 Mac)**:
@@ -508,6 +510,7 @@ stow -D component_name
 - **[Keybinds Reference](KEYBINDS.md)** - Complete keybindings across all tools
 - **[Neovim Keybinds](NEOVIM_KEYBINDS.md)** - Detailed Neovim mappings
 - **[Workflow Guides](WORKFLOW_GUIDES.md)** - Cross-tool integration workflows
+- **[Multi-LLM Workflow](MULTI_LLM_WORKFLOW.md)** - Claude Code + CodeCompanion orchestration
 - **[Maintenance Guide](MAINTENANCE.md)** - Validation and troubleshooting
 - **[Main Repository](../README.md)** - Installation and overview
 - **[Claude Documentation](../CLAUDE.md)** - Claude Code specific guidance

@@ -43,7 +43,7 @@ dotfiles/
 ├── zsh/                    # Shell: .zshrc, aliases, functions
 ├── tmux/                   # Multiplexer: .tmux.conf + plugins
 ├── nvim/                   # Editor: 42+ plugins (git subtree)
-├── sketchybar/             # Menu bar: sketchybarrc + 37 plugins
+├── sketchybar/             # Menu bar: sketchybarrc + 39 plugins
 ├── ghostty/                # Terminal: config + 13 shaders
 ├── starship/               # Prompt: 5 theme variants
 ├── kanata/                 # Keyboard: kanata.kbd (ACTIVE - PRIMARY)
@@ -64,6 +64,7 @@ dotfiles/
 | `docs/KEYBINDS.md` | Complete keybindings reference |
 | `docs/NEOVIM_KEYBINDS.md` | Neovim-specific mappings |
 | `docs/WORKFLOW_GUIDES.md` | Cross-tool integration workflows |
+| `docs/MULTI_LLM_WORKFLOW.md` | Multi-LLM orchestration (Claude + CodeCompanion) |
 | `docs/MAINTENANCE.md` | Validation and troubleshooting |
 | `docs/CLAUDE_STATUSLINE.md` | Statusline interpretation |
 | `nvim/README.md` | Neovim configuration guide (26KB) |
@@ -224,6 +225,19 @@ log show --predicate 'process == "kanata"' --last 10m
 ```
 
 ## 🔄 Recent Changes
+
+### Jan 2026 Updates
+- **Multi-LLM Workflow**: Added comprehensive guide (`docs/MULTI_LLM_WORKFLOW.md`, 826 lines)
+- **Claude Code Commands**: 4 new slash commands in `claude/.claude/commands/`:
+  - `/bridge` - Apply CodeCompanion solutions to codebase
+  - `/eval` - Evaluate LLM response quality
+  - `/verify` - Cross-validate claims and code
+  - `/prompt-improve` - Analyze and improve prompts
+- **Global Agent Commands**: 2 commands in `.claude/commands/`:
+  - `/new-agent` - Create new Claude Code agents
+  - `/improve-agent` - Improve existing agents
+- **Aerospace**: Reverted from HyprSpace to standard Aerospace
+- **SketchyBar**: Now has 39 plugins (was 37)
 
 ### Dec 2025 Updates
 - **Kanata**: Now PRIMARY keyboard remapper (Karabiner unconfigured)

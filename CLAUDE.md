@@ -66,6 +66,7 @@ System-Level Services (LaunchDaemons):
 | "Statusline" / "Context" | Check statusline | @docs/CLAUDE_STATUSLINE.md |
 | "Agent development" | Check guidelines | @AGENTS.md |
 | "Repository overview" | Check README | @README.md |
+| "Multi-LLM" / "AI workflow" | Check workflow | @docs/MULTI_LLM_WORKFLOW.md |
 
 ## ⚠️ **CRITICAL** - Things You MUST NOT Do
 
@@ -104,7 +105,7 @@ System-Level Services (LaunchDaemons):
   - Green active border, muted gray inactive
   - Config: `borders/.config/borders/bordersrc`
   - Auto-starts via Aerospace `after-startup-command`
-- **SketchyBar** - Menu bar replacement (30+ plugins, Aerospace integration)
+- **SketchyBar** - Menu bar replacement (39 plugins, Aerospace integration)
 
 ### Terminal Environment (3-Layer)
 - **Ghostty** - GPU-accelerated terminal with shader support
@@ -113,7 +114,7 @@ System-Level Services (LaunchDaemons):
 
 ### Development Tools
 - **Neovim** - 49 Lua config files (kickstart.nvim based)
-- **Starship** - 6 interchangeable prompt themes
+- **Starship** - 5 interchangeable prompt themes
 
 ### Input Management
 - **Kanata** - Active (PRIMARY) - Advanced keyboard remapper with home row mods
@@ -356,6 +357,7 @@ This repository has comprehensive documentation for detailed information:
 | @docs/KEYBINDS.md | Complete keybindings reference |
 | @docs/NEOVIM_KEYBINDS.md | Neovim-specific mappings |
 | @docs/WORKFLOW_GUIDES.md | Cross-tool integration workflows |
+| @docs/MULTI_LLM_WORKFLOW.md | Multi-LLM orchestration (Claude + CodeCompanion) |
 | @docs/CLAUDE_STATUSLINE.md | Statusline interpretation guide |
 | @docs/MAINTENANCE.md | Validation and troubleshooting |
 | @AGENTS.md | Agent development guidelines |
@@ -431,6 +433,33 @@ mcphub/.config/mcphub/
 - **Usage**: Configure servers in `servers.json`, access via keybinding
 
 **Configuration**: Edit `mcp/.config/mcp/servers.json` to add/modify MCP servers
+
+### Claude Code Commands & Multi-LLM Workflow
+
+**Overview**: Custom slash commands for Claude Code enabling multi-LLM orchestration with CodeCompanion.
+
+**Documentation**: See @docs/MULTI_LLM_WORKFLOW.md for comprehensive workflow guide (826 lines).
+
+**Slash Commands** (in `claude/.claude/commands/`):
+| Command | Purpose | Tools |
+|---------|---------|-------|
+| `/bridge` | Apply CodeCompanion solutions to codebase | nvim buffer, Read, Edit, Write, Grep, Glob |
+| `/eval` | Evaluate LLM response quality (1-10 scoring) | nvim buffer |
+| `/verify` | Verify claims and code from another LLM | nvim buffer, Read, Grep, Glob |
+| `/prompt-improve` | Analyze prompts and suggest improvements | nvim buffer |
+
+**Global Agent Commands** (in `.claude/commands/`):
+| Command | Purpose |
+|---------|---------|
+| `/new-agent` | Create new Claude Code agent from templates |
+| `/improve-agent` | Improve existing Claude Code agent |
+
+**Workflow Pattern**:
+1. Use CodeCompanion (GPT-4, Gemini, local models) to generate solutions
+2. Use `/eval` to evaluate response quality
+3. Use `/verify` to cross-validate claims and code
+4. Use `/bridge` to apply validated solutions to codebase
+5. Use `/prompt-improve` to refine prompts for future use
 
 ### Git Subtree Management (Nvim)
 
@@ -722,6 +751,20 @@ git stash pop  # Restore if needed
 
 ## 🔄 Recent Changes & Migrations
 
+### **NEW** - Multi-LLM Workflow & Claude Code Commands (Jan 2026)
+- **Action**: Added comprehensive multi-LLM orchestration workflow
+- **New Documentation**: `docs/MULTI_LLM_WORKFLOW.md` (826 lines)
+- **New Claude Code Commands** (in `claude/.claude/commands/`):
+  - `/bridge` - Apply CodeCompanion solutions to codebase
+  - `/eval` - Evaluate LLM response quality
+  - `/verify` - Cross-validate claims and code
+  - `/prompt-improve` - Analyze and improve prompts
+- **Global Agent Commands** (in `.claude/commands/`):
+  - `/new-agent` - Create new Claude Code agents from templates
+  - `/improve-agent` - Improve existing Claude Code agents
+- **Purpose**: Enable local multi-agent AI system with Claude Code + CodeCompanion
+- **Capabilities**: Prompt engineering, cross-model validation, LLM-as-judge evaluation
+
 ### **FIX** - M4 Mac Temperature Monitoring (Dec 19, 2025)
 - **Problem**: Temperature plugin displayed incorrect readings (~91°C at idle) on M4 Macs
 - **Root Cause**: `macmon` reports die hotspot temperature (TCMb sensor) which is always high on modern chips
@@ -808,6 +851,9 @@ git stash pop  # Restore if needed
 
 ## 🏷️ Recent Updates (Historical)
 
+- **Jan 2026**: Multi-LLM Workflow added with Claude Code commands (bridge, eval, verify, prompt-improve)
+- **Jan 2026**: Global agent commands (new-agent, improve-agent) for Claude Code
+- **Jan 2026**: Reverted from HyprSpace to standard Aerospace
 - **Dec 2025**: Kanata now PRIMARY keyboard remapper (Karabiner unconfigured)
-- Expanded SketchyBar to 30+ plugins with comprehensive testing framework
-- **Oct 2025**: Nvim added as git subtree (see Git Subtree Management below)
+- **Dec 2025**: Expanded SketchyBar to 39 plugins with comprehensive testing framework
+- **Oct 2025**: Nvim added as git subtree (see Git Subtree Management section)

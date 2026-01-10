@@ -384,5 +384,16 @@ gp                         # Push changes
 | Window Management | Aerospace + JankyBorders + Tmux + Neovim | Unified navigation keybinds |
 | Search | FZF + Telescope + ripgrep | Consistent fuzzy finding paradigm |
 | Note-Taking | Obsidian + Telescope | Cross-search capabilities |
+| AI Development | Claude Code + CodeCompanion | Multi-model validation, prompt engineering |
 
 The key to these workflows is that each tool handles what it does best, while maintaining consistent interfaces (especially FZF-based selection) across the ecosystem.
+
+---
+
+## Related Documentation
+
+- **[Multi-LLM Workflow](MULTI_LLM_WORKFLOW.md)** - Comprehensive guide to Claude Code + CodeCompanion orchestration
+- **[Keybinds Reference](KEYBINDS.md)** - Complete keybindings across all tools
+- **[Neovim Keybinds](NEOVIM_KEYBINDS.md)** - Neovim-specific mappings
+- **[Components Guide](COMPONENTS.md)** - Detailed component documentation
+- **[CLAUDE.md](../CLAUDE.md)** - Main dotfiles documentation
