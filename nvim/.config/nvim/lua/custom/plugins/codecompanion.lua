@@ -48,7 +48,7 @@ return {
       display = {
         chat = {
           intro_message = 'Welcome to CodeCompanion ✨! Press ? for options',
-          show_settings = false,
+          show_settings =  true,
           show_token_count = true,
           show_context = true,
           show_header_separator = true,
@@ -155,33 +155,16 @@ return {
           adapter = 'gemini_cli',
           keymaps = {
             send = {
-              modes = {
-                i = { '<C-CR>', '<C-s>' },
-              },
+              modes = { n = '<CR>', i = '<C-s>' },
             },
             completion = {
-              modes = {
-                i = '<C-x>',
-              },
-            },
-            watch = {
-              modes = {
-                n = 'gw',
-              },
-              index = 10,
-              callback = 'keymaps.toggle_watch',
-              description = 'Watch buffer',
-            },
-            pin = {
-              modes = {
-                n = 'gp',
-              },
-              index = 9,
-              callback = 'keymaps.pin_context',
-              description = 'Pin context',
+              modes = { i = '<C-x>' },
             },
           },
           slash_commands = {
+            opts = {
+              provider = 'telescope',
+            },
             ['buffer'] = {
               keymaps = {
                 modes = {
@@ -189,9 +172,13 @@ return {
                   v = '<C-b>',
                 },
               },
+              opts = {
+                provider = 'telescope',
+              },
             },
             ['file'] = {
               opts = {
+                provider = 'telescope',
                 contains_code = true,
               },
             },
@@ -205,7 +192,13 @@ return {
             },
             ['help'] = {
               opts = {
+                provider = 'telescope',
                 max_lines = 3000,
+              },
+            },
+            ['symbols'] = {
+              opts = {
+                provider = 'telescope',
               },
             },
             ['image'] = {
@@ -215,6 +208,7 @@ return {
                 },
               },
               opts = {
+                provider = 'telescope',
                 dirs = { '~/Documents/Screenshots' },
               },
             },
