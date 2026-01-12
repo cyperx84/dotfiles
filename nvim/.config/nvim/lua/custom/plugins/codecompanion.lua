@@ -1,10 +1,9 @@
+---@diagnostic disable: undefined-global
 return {
   'olimorris/codecompanion.nvim',
-  version = 'v17.33.0',
   dependencies = {
     'nvim-lua/plenary.nvim',
     'nvim-treesitter/nvim-treesitter',
-    'olimorris/snacks.nvim',
     {
       'ravitemer/mcphub.nvim',
       dependencies = { 'nvim-lua/plenary.nvim' },
@@ -23,15 +22,13 @@ return {
           },
           ui = {
             window = {
-              width = 100,  -- Use fixed pixel width instead of percentage
-              height = 30,  -- Use fixed pixel height instead of percentage
+              width = 100,
+              height = 30,
               border = 'rounded',
               relative = 'editor',
               zindex = 50,
             },
           },
-          -- on_ready = function(hub) end,
-          -- on_error = function(err) end,
           log = {
             level = vim.log.levels.WARN,
             to_file = false,
@@ -46,38 +43,30 @@ return {
   config = function()
     require('codecompanion').setup {
       opts = {
-        log_level = 'DEBUG', -- Use 'DEBUG' or 'TRACE' for troubleshooting
+        log_level = 'DEBUG',
       },
       display = {
         chat = {
-          -- Display options
           intro_message = 'Welcome to CodeCompanion ✨! Press ? for options',
-          show_settings = false, -- Show LLM settings at top of chat buffer (YAML block)
-          show_token_count = true, -- Show token count for each response
-          show_context = true, -- Show context from slash commands and variables
-          show_header_separator = true, -- Useful if using external markdown plugin
-          start_in_insert_mode = false, -- Open chat buffer in insert mode
-
-          -- Chat window configuration
+          show_settings = false,
+          show_token_count = true,
+          show_context = true,
+          show_header_separator = true,
+          start_in_insert_mode = false,
           window = {
             layout = 'vertical',
             position = 'left',
             border = 'single',
-            -- Fixed dimensions (plain numbers in columns/lines)
-            height = 50, -- Fixed: 50 lines
-            width = 60, -- Fixed: 80 columns
+            height = 50,
+            width = 60,
             relative = 'editor',
-            full_height = false, -- Use vsplit instead of botright/topleft vsplit
-            sticky = false, -- Keep chat open when switching tabs
+            full_height = false,
+            sticky = false,
           },
-
-          -- Debug window (opened with 'gd' in chat buffer)
           debug_window = {
             width = vim.o.columns - 5,
             height = vim.o.lines - 2,
           },
-
-          -- Floating child windows (for diffs, messages, permissions)
           child_window = {
             width = vim.o.columns - 5,
             height = vim.o.lines - 2,
@@ -85,8 +74,6 @@ return {
             col = 'center',
             relative = 'editor',
           },
-
-          -- Diff window (takes precedence over child_window)
           diff_window = {
             width = function()
               return math.min(120, vim.o.columns - 10)
@@ -99,17 +86,13 @@ return {
         action_palette = {
           width = 75,
           height = 10,
-          prompt = 'Prompt', -- Prompt used for interactive LLM calls
-          provider = 'telescope', -- Use Telescope instead of Snacks to avoid dimension issues
+          prompt = 'Prompt',
+          provider = 'telescope',
           opts = {
-            show_default_actions = true, -- Show the default actions in the action palette?
-            show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+            show_default_actions = true,
+            show_default_prompt_library = true,
           },
         },
-      },
-      -- Global picker configuration - use Telescope for all pickers
-      picker = {
-        provider = 'telescope',
       },
       adapters = {
         http = {
@@ -123,7 +106,6 @@ return {
               },
             })
           end,
-
           gemini = function()
             return require('codecompanion.adapters').extend('gemini', {
               env = {
@@ -134,7 +116,6 @@ return {
               },
             })
           end,
-
           deepseek = function()
             return require('codecompanion.adapters').extend('deepseek', {
               env = {
@@ -146,7 +127,6 @@ return {
             })
           end,
         },
-
         acp = {
           codex = function()
             return require('codecompanion.adapters').extend('codex', {
@@ -158,7 +138,6 @@ return {
               },
             })
           end,
-
           gemini_cli = function()
             return require('codecompanion.adapters').extend('gemini_cli', {
               defaults = {
@@ -171,7 +150,6 @@ return {
           end,
         },
       },
-
       strategies = {
         chat = {
           adapter = 'gemini_cli',
@@ -212,6 +190,11 @@ return {
                 },
               },
             },
+            ['file'] = {
+              opts = {
+                contains_code = true,
+              },
+            },
             ['fetch'] = {
               keymaps = {
                 modes = {
@@ -237,9 +220,9 @@ return {
             },
           },
           variables = {
-            ["buffer"] = {
+            ['buffer'] = {
               opts = {
-                default_params = 'watch', -- Automatically watch buffers by default (more token-efficient)
+                default_params = 'watch',
               },
             },
           },
@@ -248,6 +231,5 @@ return {
         cmd = { adapter = 'anthropic' },
       },
     }
-
   end,
 }
