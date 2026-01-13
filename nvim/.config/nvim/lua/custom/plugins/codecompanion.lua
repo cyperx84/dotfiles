@@ -40,6 +40,12 @@ return {
     },
   },
 
+  keys = {
+    { '<M-.>', '<cmd>CodeCompanionChat Toggle<CR>', desc = 'Code Companion Chat Toggle' },
+    { '<leader>CC', '<cmd>CodeCompanionActions<CR>', desc = 'Code Companion Actions' },
+    { '<leader>Cb', '<cmd>CodeCompanionChat Add<CR>', desc = 'Add Buffer to Chat' },
+    { '<leader>Cs', '<cmd>CodeCompanionChat Add<CR>', mode = 'v', desc = 'Add Selection to Chat' },
+  },
   config = function()
     require('codecompanion').setup {
       opts = {
@@ -48,7 +54,7 @@ return {
       display = {
         chat = {
           intro_message = 'Welcome to CodeCompanion ✨! Press ? for options',
-          show_settings =  true,
+          show_settings =  false,
           show_token_count = true,
           show_context = true,
           show_header_separator = true,

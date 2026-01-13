@@ -5,4 +5,7 @@ return {
     require('claude-fzf-history').setup()
   end,
   cmd = { 'ClaudeHistory', 'ClaudeHistoryDebug' },
+  keys = {
+    { '<leader>ch', '<cmd>ClaudeHistory<CR>', desc = 'Claude-code History' },
+  },
 }

@@ -13,6 +13,9 @@ return {
   -- },
   {
     'HakonHarnes/img-clip.nvim',
+    keys = {
+      { '<leader>pi', '<cmd>PasteImage<CR>', desc = 'Paste Image' },
+    },
     opts = {
       filetypes = {
         codecompanion = {

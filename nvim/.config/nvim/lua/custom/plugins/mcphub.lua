@@ -4,6 +4,9 @@ return {
         "nvim-lua/plenary.nvim",
     },
     cmd = "MCPHub",  -- lazy load by default
+    keys = {
+        { '<leader>m', '<cmd>MCPHub<CR>', desc = 'MCPHub' },
+    },
     build = "npm install -g mcp-hub@latest",  -- Installs globally
     config = function()
         require("mcphub").setup({

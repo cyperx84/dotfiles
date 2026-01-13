@@ -1,6 +1,9 @@
 return {
   "xiyaowong/transparent.nvim",
   lazy = false, -- DO NOT lazy-load this
+  keys = {
+    { '<leader>tt', '<cmd>TransparentToggle<CR>', desc = 'Transparent Toggle' },
+  },
   config = function()
     require("transparent").setup({
       groups = {

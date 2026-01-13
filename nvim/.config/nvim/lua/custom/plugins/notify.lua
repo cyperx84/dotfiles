@@ -1,5 +1,8 @@
 return {
   "rcarriga/nvim-notify",
+  keys = {
+    { '<leader>sl', '<cmd>Telescope notify<CR>', desc = '[S]earch Notify [L]og' },
+  },
   config = function()
     require("notify").setup({
       background_colour = "#000000", -- or "NotifyBackground" if using a highlight group

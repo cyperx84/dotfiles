@@ -1,6 +1,9 @@
 return {
   'folke/noice.nvim',
   event = 'VeryLazy',
+  keys = {
+    { '<leader>z', '<cmd>NoiceDismiss<CR>', desc = 'Dismiss Noice Message' },
+  },
   opts = {
     routes = {
       {
