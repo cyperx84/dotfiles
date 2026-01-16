@@ -95,3 +95,7 @@ name = "docker"
 path = "~"
 startup_command = "~/.config/sesh/scripts/utils/docker_session.sh" 
 
+[[session]]
+name = "cc-sandbox"
+path = "~/Code/cc-sandbox"
+startup_command = ""

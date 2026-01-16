@@ -26,8 +26,9 @@ macos-option-as-alt = true
 shell-integration = zsh
 shell-integration-features = cursor,sudo,title
 
-quick-terminal-size = 75%,85%
-quick-terminal-position = center
+# quick-terminal-size = 75%,85%
+quick-terminal-size = 50%
+quick-terminal-position = top
 quick-terminal-animation-duration = 0.2
 quick-terminal-autohide = true
 
@@ -39,7 +40,6 @@ keybind = ctrl+l=unbind
 keybind = cmd+shift+p=unbind
 keybind = global:cmd+/=toggle_quick_terminal
 keybind = "cmd+shift+s=toggle_secure_input"
-# keybind = shift+enter=text:\n  # Removed for Claude Code compatibility
 
 # Scrolling
 keybind = super+alt+u=scroll_page_up
