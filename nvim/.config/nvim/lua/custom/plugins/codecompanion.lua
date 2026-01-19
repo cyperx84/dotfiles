@@ -1,60 +1,54 @@
 ---@diagnostic disable: undefined-global
+
+local function http_adapter(name, model)
+  return function()
+    return require('codecompanion.adapters').extend(name, {
+      env = { api_key = ('cmd:gopass show apis/%s_API_KEY 2>/dev/null'):format(name:upper()) },
+      schema = { model = { default = model } },
+    })
+  end
+end
+
+-- Reusable window dimensions
+local full_width = function() return vim.o.columns - 5 end
+local full_height = function() return vim.o.lines - 2 end
+
 return {
   'olimorris/codecompanion.nvim',
   dependencies = {
     'nvim-lua/plenary.nvim',
     'nvim-treesitter/nvim-treesitter',
-    {
-      'ravitemer/mcphub.nvim',
-      dependencies = { 'nvim-lua/plenary.nvim' },
-      build = 'npm install -g mcp-hub@latest',
-      config = function()
-        require('mcphub').setup {
-          port = 37373,
-          config = vim.fn.expand '~/.config/mcphub/servers.json',
-          auto_approve = true,
-          extensions = {
-            codecompanion = {
-              show_result_in_chat = true,
-              make_vars = true,
-              make_slash_commands = true,
-            },
-          },
-          ui = {
-            window = {
-              width = 100,
-              height = 30,
-              border = 'rounded',
-              relative = 'editor',
-              zindex = 50,
-            },
-          },
-          log = {
-            level = vim.log.levels.WARN,
-            to_file = false,
-            file_path = nil,
-            prefix = 'MCPHub',
-          },
-        }
-      end,
-    },
+    'ravitemer/mcphub.nvim',
   },
-
+  cmd = { 'CodeCompanion', 'CodeCompanionChat', 'CodeCompanionActions' },
   keys = {
     { '<M-.>', '<cmd>CodeCompanionChat Toggle<CR>', desc = 'Code Companion Chat Toggle' },
     { '<leader>CC', '<cmd>CodeCompanionActions<CR>', desc = 'Code Companion Actions' },
     { '<leader>Cb', '<cmd>CodeCompanionChat Add<CR>', desc = 'Add Buffer to Chat' },
     { '<leader>Cs', '<cmd>CodeCompanionChat Add<CR>', mode = 'v', desc = 'Add Selection to Chat' },
   },
+
   config = function()
     require('codecompanion').setup {
       opts = {
-        log_level = 'DEBUG',
+        log_level = 'WARN',
+        provider = 'telescope',
       },
+
+      -- Disable automatic rules/context file loading (CLAUDE.md, AGENTS.md, etc.)
+      rules = {
+        opts = {
+          show_presets = false,
+          chat = {
+            enabled = false,
+          },
+        },
+      },
+
       display = {
         chat = {
-          intro_message = 'Welcome to CodeCompanion ✨! Press ? for options',
-          show_settings =  false,
+          intro_message = 'Welcome to CodeCompanion! Press ? for options',
+          show_settings = false,
           show_token_count = true,
           show_context = true,
           show_header_separator = true,
@@ -69,162 +63,75 @@ return {
             full_height = false,
             sticky = false,
           },
-          debug_window = {
-            width = vim.o.columns - 5,
-            height = vim.o.lines - 2,
-          },
+          debug_window = { width = full_width, height = full_height },
           child_window = {
-            width = vim.o.columns - 5,
-            height = vim.o.lines - 2,
+            width = full_width,
+            height = full_height,
             row = 'center',
             col = 'center',
             relative = 'editor',
           },
           diff_window = {
-            width = function()
-              return math.min(120, vim.o.columns - 10)
-            end,
-            height = function()
-              return vim.o.lines - 4
-            end,
+            width = function() return math.min(120, vim.o.columns - 10) end,
+            height = function() return vim.o.lines - 4 end,
           },
         },
         action_palette = {
           width = 75,
           height = 10,
           prompt = 'Prompt',
-          provider = 'telescope',
           opts = {
             show_default_actions = true,
             show_default_prompt_library = true,
           },
         },
       },
+
       adapters = {
         http = {
-          openai = function()
-            return require('codecompanion.adapters').extend('openai', {
-              env = {
-                api_key = 'cmd:gopass show apis/OPENAI_API_KEY 2>/dev/null',
-              },
-              schema = {
-                model = { default = 'gpt-4o-mini' },
-              },
-            })
-          end,
-          gemini = function()
-            return require('codecompanion.adapters').extend('gemini', {
-              env = {
-                api_key = 'cmd:gopass show apis/GEMINI_API_KEY 2>/dev/null',
-              },
-              schema = {
-                model = { default = 'gemini-2.0-flash-exp' },
-              },
-            })
-          end,
-          deepseek = function()
-            return require('codecompanion.adapters').extend('deepseek', {
-              env = {
-                api_key = 'cmd:gopass show apis/DEEPSEEK_API_KEY 2>/dev/null',
-              },
-              schema = {
-                model = { default = 'deepseek-chat' },
-              },
-            })
-          end,
+          openai = http_adapter('openai', 'gpt-4o-mini'),
+          gemini = http_adapter('gemini', 'gemini-2.0-flash-exp'),
+          deepseek = http_adapter('deepseek', 'deepseek-chat'),
         },
         acp = {
           codex = function()
             return require('codecompanion.adapters').extend('codex', {
-              defaults = {
-                auth_method = 'openai-api-key',
-              },
-              env = {
-                OPENAI_API_KEY = 'cmd:gopass show apis/OPENAI_API_KEY 2>/dev/null',
-              },
+              defaults = { auth_method = 'openai-api-key' },
+              env = { OPENAI_API_KEY = 'cmd:gopass show apis/OPENAI_API_KEY 2>/dev/null' },
             })
           end,
           gemini_cli = function()
             return require('codecompanion.adapters').extend('gemini_cli', {
-              defaults = {
-                auth_method = 'oauth-personal',
-              },
-              schema = {
-                model = { default = 'gemini-3' },
-              },
+              defaults = { auth_method = 'oauth-personal' },
+              schema = { model = { default = 'gemini-3' } },
             })
           end,
         },
       },
+
       strategies = {
         chat = {
           adapter = 'gemini_cli',
+          roles = {
+            user = 'Me',
+            llm = 'CodeCompanion',
+          },
           keymaps = {
-            send = {
-              modes = { n = '<CR>', i = '<C-s>' },
-            },
-            completion = {
-              modes = { i = '<C-x>' },
-            },
+            send = { modes = { n = '<CR>', i = '<C-s>' } },
+            completion = { modes = { i = '<C-x>' } },
           },
           slash_commands = {
-            opts = {
-              provider = 'telescope',
-            },
-            ['buffer'] = {
-              keymaps = {
-                modes = {
-                  i = '<C-b>',
-                  v = '<C-b>',
-                },
-              },
-              opts = {
-                provider = 'telescope',
-              },
-            },
-            ['file'] = {
-              opts = {
-                provider = 'telescope',
-                contains_code = true,
-              },
-            },
-            ['fetch'] = {
-              keymaps = {
-                modes = {
-                  i = '<C-f>',
-                  v = '<C-f>',
-                },
-              },
-            },
-            ['help'] = {
-              opts = {
-                provider = 'telescope',
-                max_lines = 3000,
-              },
-            },
-            ['symbols'] = {
-              opts = {
-                provider = 'telescope',
-              },
-            },
-            ['image'] = {
-              keymaps = {
-                modes = {
-                  v = '<C-i>',
-                },
-              },
-              opts = {
-                provider = 'telescope',
-                dirs = { '~/Documents/Screenshots' },
-              },
+            buffer = { keymaps = { modes = { i = '<C-b>', v = '<C-b>' } } },
+            file = { opts = { contains_code = true } },
+            fetch = { keymaps = { modes = { i = '<C-f>', v = '<C-f>' } } },
+            help = { opts = { max_lines = 3000 } },
+            image = {
+              keymaps = { modes = { v = '<C-i>' } },
+              opts = { dirs = { '~/Documents/Screenshots' } },
             },
           },
           variables = {
-            ['buffer'] = {
-              opts = {
-                default_params = 'watch',
-              },
-            },
+            buffer = { opts = { default_params = 'watch' } },
           },
         },
         inline = { adapter = 'anthropic' },
