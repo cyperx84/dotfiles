@@ -71,6 +71,11 @@ preview_command = "~/.config/sesh/scripts/core/sesh_preview.sh {}"
 # Quick-access sessions for frequently used workspaces
 # These sessions will always appear in sesh list, even when not running
 [[session]]
+name = "home"
+path = "~"
+startup_command = ""
+
+[[session]]
 name = "notes"
 path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/cyperx"
 startup_command = "nvim 00-index.md"
