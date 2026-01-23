@@ -822,5 +822,12 @@ This workflow is experimental. If you develop new patterns or improvements:
 ---
 
 *Last Updated: January 2026*
-*Author: cyperx*
 *License: MIT*
+
+---
+
+## Author
+
+**cyperx** - [GitHub Profile](https://github.com/cyperx84)
+
+For issues or contributions, visit the [dotfiles repository](https://github.com/cyperx84/dotfiles).

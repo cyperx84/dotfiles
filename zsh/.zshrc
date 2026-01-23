@@ -1,3 +1,10 @@
+# ============================================================================
+# ZSH CONFIGURATION
+# ============================================================================
+# Author: cyperx (https://github.com/cyperx84)
+# Purpose: Zsh shell configuration with aliases, functions, and integrations
+# ============================================================================
+
 unsetopt PROMPT_SP
 ENABLE_CORRECTION="false"
 HIST_STAMPS="dd/mm/yy"
@@ -253,13 +260,28 @@ export BAT_THEME=tokyonight_night
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
 
-# Consolidated PATH configuration (order matters: higher priority first)
-export PATH="$HOME/.npm-global/bin:/opt/homebrew/opt/icu4c@77/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+# ============================================================================
+# PATH CONFIGURATION (Consolidated)
+# ============================================================================
+# Order: Higher priority paths first
+# Author: cyperx (https://github.com/cyperx84)
+
+export GOPATH="$HOME/.local/go"
+
+# High-priority paths (prepended)
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"       # Bob-managed Neovim
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"             # Homebrew Ruby
+export PATH="$GOPATH/bin:$PATH"                            # Go binaries
+export PATH="$HOME/.npm-global/bin:$PATH"                  # Global npm
+export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"         # ICU library
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+
+# Low-priority paths (appended)
+export PATH="$PATH:$HOME/.antigravity/antigravity/bin"     # Antigravity
+export PATH="$PATH:$HOME/.lmstudio/bin"                    # LM Studio CLI
 
 alias oc="opencode"
 alias cc="claude --dangerously-skip-permissions"
-# Antigravity PATH (appended to main PATH configuration above)
-export PATH="$PATH:/Users/cyperx/.antigravity/antigravity/bin"
 
 # ======================
 # AUDIO DEVICE SWITCHING
@@ -300,24 +322,18 @@ alias blackhole-in='SwitchAudioSource -t input -s "BlackHole 16ch"'
 alias rec='SwitchAudioSource -t output -s "Multi-Output Device" && SwitchAudioSource -t input -s "BlackHole 16ch" && echo "Recording mode ON"'
 alias rec-off='SwitchAudioSource -t output -s "Mac mini Speakers" && SwitchAudioSource -t input -s "Scarlett 2i2 USB" && echo "Recording mode OFF"'
 
-# Lazy-load direnv (saves 50-100ms, only loads when entering directory with .envrc)
+# Lazy-load direnv (saves 50-100ms, handles initial directory)
 if (( $+commands[direnv] )); then
   _direnv_lazy_load() {
+    add-zsh-hook -d chpwd _direnv_lazy_load
+    add-zsh-hook -d precmd _direnv_first_prompt
     eval "$(direnv hook zsh)"
-    unfunction _direnv_lazy_load
-    # Check current directory after loading
+    unfunction _direnv_lazy_load _direnv_first_prompt 2>/dev/null
     [[ -f .envrc ]] && direnv allow
   }
-  # Hook into directory change
+  _direnv_first_prompt() { _direnv_lazy_load; }
   autoload -U add-zsh-hook
   add-zsh-hook chpwd _direnv_lazy_load
+  add-zsh-hook precmd _direnv_first_prompt  # Trigger on first prompt
 fi
-
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/cyperx/.lmstudio/bin"
-# End of LM Studio CLI section
 

@@ -282,3 +282,11 @@ Editing:        <leader>y (system yank), Y (yank line), == (select all)
 - [Main Keybinds](KEYBINDS.md) - System-wide keybinds and aliases
 - [Workflow Guides](WORKFLOW_GUIDES.md) - Cross-tool integration workflows
 - [CLAUDE.md](../CLAUDE.md) - Main dotfiles documentation
+
+---
+
+## Author
+
+**cyperx** - [GitHub Profile](https://github.com/cyperx84)
+
+For issues or contributions, visit the [dotfiles repository](https://github.com/cyperx84/dotfiles).

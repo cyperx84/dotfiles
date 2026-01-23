@@ -518,3 +518,11 @@ stow -D component_name
 ---
 
 *This documentation provides complete coverage of all 15+ components in the dotfiles repository with cross-references and integration details for both human users and AI agents.*
+
+---
+
+## Author
+
+**cyperx** - [GitHub Profile](https://github.com/cyperx84)
+
+For issues or contributions, visit the [dotfiles repository](https://github.com/cyperx84/dotfiles).

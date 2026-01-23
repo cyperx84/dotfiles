@@ -186,17 +186,11 @@ sketchybar --update
 # fi
 # "$PLUGIN_DIR/wifi_monitor.sh" >/dev/null 2>&1 &
 
-# Trigger initial workspace highlight
-# Auto-detect which window manager is running (HyprSpace or AeroSpace)
+# Trigger initial workspace highlight (Aerospace is the only active WM)
 /bin/bash -c '
-  if pgrep -x "HyprSpace" >/dev/null 2>&1; then
-    WM_CMD="hyprspace"
-  elif pgrep -x "AeroSpace" >/dev/null 2>&1; then
-    WM_CMD="aerospace"
-  else
-    WM_CMD="aerospace"
-  fi
-  sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$($WM_CMD list-workspaces --focused 2>/dev/null || echo "1")
+  workspace=$(aerospace list-workspaces --focused 2>/dev/null)
+  [[ -z "$workspace" ]] && workspace="1"
+  sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$workspace"
 ' &
 
 echo "sketchybar configuation loaded.."

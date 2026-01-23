@@ -25,7 +25,7 @@ This dotfiles repository uses GNU Stow for symlink management with a comprehensi
 Window Management:
 ├── Aerospace          # Tiling WM for macOS
 ├── JankyBorders       # Window border visualization
-└── SketchyBar         # Menu bar replacement (36+ plugins)
+└── SketchyBar         # Menu bar replacement (39 plugins)
 
 Terminal Environment:
 ├── Ghostty            # GPU-accelerated terminal with shaders
@@ -38,8 +38,8 @@ Development Tools:
 └── Sesh               # Session management with FZF
 
 Input Management:
-├── Karabiner-Elements # Active - simple remappings
-└── Kanata             # Alternative - home row mods (inactive)
+├── Kanata             # Active (PRIMARY) - home row mods
+└── Karabiner-Elements # Installed but unconfigured
 
 AI/MCP Integration:
 ├── MCP Servers        # 12 configured servers
@@ -164,7 +164,7 @@ run = 'exec-and-forget sketchybar --trigger window_change'
 - Font: MonaspiceKr Nerd Font
 - Helper binary auto-compilation
 
-**Plugin Architecture (36 scripts):**
+**Plugin Architecture (39 scripts):**
 ```
 System Monitoring:
 ├── battery.sh, cpu.sh, memory.sh, temperature.sh
@@ -247,27 +247,34 @@ Utilities:
 
 ### 6. Input Management
 
-**Karabiner-Elements** (Active):
-**File**: `karabiner/.config/karabiner/karabiner.json` (~78 lines)
-- Simple modifications: Currently empty
-- F-key passthrough: F1-F12 as-is
-- Devices: Apple Internal + Logitech MX Mechanical
-
-**Kanata** (Alternative - Inactive):
-**File**: `kanata/.config/kanata/kanata.kbd` (~103 lines)
+**Kanata** (Active - PRIMARY):
+**File**: `kanata/.config/kanata/kanata.kbd` (~379 lines)
 - Home row mods: a/s/d/f → Cmd/Alt/Shift/Ctrl
 - Home row mods: j/k/l/; → Ctrl/Shift/Alt/Cmd
+- Caps Lock: Escape (tap) / Ctrl (hold)
+- Right Shift: Backspace
+- Tab: Hyper key (hold)
+- Apostrophe ('): ' (tap) / Numbers layer (hold)
+- Right Cmd: Toggle home row mods on/off
 - Timing: 200ms tap, 230ms hold
-- 5 layers: base, fn, custom, vanilla, vanilla_fn
+- Auto-start: LaunchDaemon at `/Library/LaunchDaemons/com.example.kanata.plist`
+- Status: ✅ Active (PRIMARY)
 
 **Installation**: `kanata/install_kanata_macos.sh`
 **Diagnostics**: `kanata/kanata-check.sh` (500+ lines)
 
+**Karabiner-Elements** (Unconfigured):
+**File**: `karabiner/.config/karabiner/karabiner.json` (~82 lines)
+- Simple modifications: Currently empty
+- F-key passthrough: F1-F12 as-is (F6 was missing - now fixed)
+- Status: ⚠️ Installed but inactive - Kanata is primary
+
 **Review Points:**
-- Permission requirements
+- Kanata LaunchDaemon status
+- Permission requirements (Input Monitoring, Accessibility)
 - Device targeting accuracy
 - Timing optimization
-- Layer system complexity
+- Home row mods toggle functionality
 
 ### 7. Terminal (Ghostty)
 **File**: `ghostty/.config/ghostty/config` (~56 lines)
@@ -397,6 +404,12 @@ Structure your review as follows:
 ## Validation Commands
 
 ```bash
+# Comprehensive Test Suite (Jan 2026)
+./scripts/test_dotfiles.sh              # Run all tests
+./scripts/test_dotfiles.sh --quick      # Syntax checks only
+./scripts/test_dotfiles.sh zsh          # Test specific component
+./scripts/test_dotfiles.sh --verbose    # Detailed output
+
 # SketchyBar
 ~/.config/sketchybar/test_sketchybar.sh           # Test all plugins
 ~/.config/sketchybar/debug_sketchybar.sh          # Debug specific issues
@@ -412,6 +425,10 @@ sesh list                                          # Check sessions
 # Neovim
 nvim --cmd "checkhealth"                          # Health check
 nvim --cmd "Lazy sync"                            # Plugin sync
+
+# Kanata
+sudo launchctl print system/com.example.kanata   # Check status
+sudo launchctl kickstart -k system/com.example.kanata  # Restart
 ```
 
 ## Tools at Your Disposal

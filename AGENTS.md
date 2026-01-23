@@ -412,3 +412,11 @@ stow -D */ && stow */
 **Remember**: When working with this repository, prioritize safety, testing, and thorough validation. The system is highly integrated, so changes in one area may affect others.
 
 *Last Updated: Jan 2026 - Reverted to Aerospace from HyprSpace*
+
+---
+
+## Author
+
+**cyperx** - [GitHub Profile](https://github.com/cyperx84)
+
+For issues or contributions, visit the [dotfiles repository](https://github.com/cyperx84/dotfiles).

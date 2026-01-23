@@ -961,6 +961,14 @@ MIT License - feel free to use and modify for personal or commercial projects.
 
 ---
 
-**Last Updated**: October 2025
+**Last Updated**: January 2026
 **Neovim Version**: 0.10+
 **Status**: Actively maintained
+
+---
+
+## Author
+
+**cyperx** - [GitHub Profile](https://github.com/cyperx84)
+
+For issues or contributions, visit the [nvim repository](https://github.com/cyperx84/nvim) or [dotfiles repository](https://github.com/cyperx84/dotfiles).

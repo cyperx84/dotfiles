@@ -1,5 +1,10 @@
 #!/bin/bash
-# CyperX Custom theme
+# ============================================================================
+# SKETCHYBAR COLOR DEFINITIONS
+# ============================================================================
+# Author: cyperx (https://github.com/cyperx84)
+# Purpose: Color palette for SketchyBar menu bar (Eldritch Dark theme active)
+# ============================================================================
 export BLACK=0xff000000
 export WHITE=0xffffffff
 export RED=0xffff001f
@@ -15,12 +20,9 @@ export BG0O50=0x801e1e2e
 export BG0O60=0x991e1e2e
 export BG0O70=0xB21e1e2e
 export BG0O80=0xCC1e1e2e
-export BG0O85=0xD91e1e2e
-export BG0O85=0xD9212337
-# dark
-export BG0O85=0xCF0D1116
-# light
-# export BG0O85=0xCF212337
+# Background with 85% opacity - Theme Selection
+# Available: 0xD91e1e2e (Catppuccin), 0xD9212337 (Eldritch Light), 0xCF0D1116 (Eldritch Dark)
+export BG0O85=0xCF0D1116  # Active: Eldritch Dark
 export BG1=0x603c3e4f
 export BG2=0x60494d64
 

@@ -535,3 +535,11 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 *This dotfiles setup represents years of refinement for optimal productivity and aesthetics on macOS.*
+
+---
+
+## Author
+
+**cyperx** - [GitHub Profile](https://github.com/cyperx84)
+
+For issues or contributions, visit the [dotfiles repository](https://github.com/cyperx84/dotfiles).

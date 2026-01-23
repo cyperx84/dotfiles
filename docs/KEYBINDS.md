@@ -358,3 +358,11 @@ Development:         ta (tmux), n (nvim), dps (docker ps)
 - **Sesh + Tmux**: Session management with enhanced workflow
 - **FZF + Multiple**: Fuzzy finding across file, session, git operations
 - **Eza + Navigation**: Enhanced listings in file operations
+
+---
+
+## Author
+
+**cyperx** - [GitHub Profile](https://github.com/cyperx84)
+
+For issues or contributions, visit the [dotfiles repository](https://github.com/cyperx84/dotfiles).

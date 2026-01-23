@@ -1,3 +1,10 @@
+# ============================================================================
+# STARSHIP PROMPT CONFIGURATION
+# ============================================================================
+# Author: cyperx (https://github.com/cyperx84)
+# Purpose: Cross-shell prompt with Gruvbox Dark Neon theme
+# ============================================================================
+
 "$schema" = 'https://starship.rs/config-schema.json'
 format = """
 $os\
@@ -110,6 +117,9 @@ ignore_submodules = true
 disabled = true
 #
 [git_status]
+# NOTE: Disabled for prompt performance (~50-100ms savings on large repos).
+# To enable: change 'disabled = true' to 'disabled = false'
+disabled = true
 style = "bold italic bright-blue"
 format = "([$ahead_behind$staged$modified$untracked$renamed$deleted$conflicted$stashed]($style))"
 conflicted = "[◪◦](italic bright-magenta)"
@@ -122,7 +132,6 @@ modified = "[](italic bright-yellow)"
 staged = "[[$count](bold blue) ](italic bright-cyan)"
 renamed = "[◎◦](italic bright-blue)"
 deleted = "[✕](italic red)"
-disabled = true
 
 [bun]
 format = "via [$symbol]($style)"

@@ -541,3 +541,11 @@ stow -D */ && stow */
 ---
 
 *This maintenance guide ensures system reliability and provides systematic approaches to common issues. Keep this guide updated as new components are added or procedures change.*
+
+---
+
+## Author
+
+**cyperx** - [GitHub Profile](https://github.com/cyperx84)
+
+For issues or contributions, visit the [dotfiles repository](https://github.com/cyperx84/dotfiles).

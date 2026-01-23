@@ -332,3 +332,11 @@ cd <directory>              # Change directory (updates path)
 ---
 
 *The enhanced statusline puts all essential information at your fingertips, helping you work more efficiently while staying aware of context usage and costs.*
+
+---
+
+## Author
+
+**cyperx** - [GitHub Profile](https://github.com/cyperx84)
+
+For issues or contributions, visit the [dotfiles repository](https://github.com/cyperx84/dotfiles).

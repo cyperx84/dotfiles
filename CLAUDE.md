@@ -346,6 +346,46 @@ sudo launchctl print system/com.example.karabiner-vhidmanager | grep "state ="
 log show --predicate 'process == "kanata"' --last 10m
 ```
 
+## 🧪 Testing & Validation
+
+### Comprehensive Test Suite
+
+Run the test suite to validate all configurations:
+
+```bash
+# Run all tests
+./scripts/test_dotfiles.sh
+
+# Test specific component
+./scripts/test_dotfiles.sh zsh
+./scripts/test_dotfiles.sh tmux
+./scripts/test_dotfiles.sh aerospace
+
+# Quick syntax-only checks
+./scripts/test_dotfiles.sh --quick
+
+# Verbose output
+./scripts/test_dotfiles.sh --verbose
+```
+
+### Pre-Commit Validation
+
+Before committing changes:
+```bash
+./scripts/test_dotfiles.sh --quick && echo "Ready to commit"
+```
+
+### Known Issues Fixed (Jan 2026)
+
+| Issue | Location | Fix |
+|-------|----------|-----|
+| Duplicate Ruby PATH | zsh/.zshrc:322 | Removed duplicate |
+| BG0O85 triple override | colors.sh:18-21 | Consolidated to single definition |
+| HyprSpace dead code | sketchybarrc:190-200 | Simplified to Aerospace-only |
+| Missing F6 key | karabiner.json | Added F6 to fn_function_keys |
+| PATH fragmentation | zsh/.zshrc (7 locations) | Consolidated to single block |
+| direnv initial .envrc | zsh/.zshrc:307-318 | Added precmd hook |
+
 ## 📚 Documentation Reference
 
 This repository has comprehensive documentation for detailed information:
@@ -857,3 +897,11 @@ git stash pop  # Restore if needed
 - **Dec 2025**: Kanata now PRIMARY keyboard remapper (Karabiner unconfigured)
 - **Dec 2025**: Expanded SketchyBar to 39 plugins with comprehensive testing framework
 - **Oct 2025**: Nvim added as git subtree (see Git Subtree Management section)
+
+---
+
+## Author
+
+**cyperx** - [GitHub Profile](https://github.com/cyperx84)
+
+For issues or contributions, visit the [dotfiles repository](https://github.com/cyperx84/dotfiles).
