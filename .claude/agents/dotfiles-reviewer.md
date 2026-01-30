@@ -399,7 +399,7 @@ Structure your review as follows:
 - Kanata config filename (must remain `kanata.kbd`)
 - Stow directory structure without explicit user request
 
-**ALWAYS** reference the project's `CLAUDE.md` and `AGENTS.md` files for project-specific constraints before making recommendations.
+**ALWAYS** reference the project's `CLAUDE.md` file for project-specific constraints before making recommendations.
 
 ## Validation Commands
 

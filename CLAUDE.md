@@ -235,7 +235,7 @@ exec zsh
 ### SketchyBar-Brew Integration
 **⚠️ CRITICAL - DO NOT BREAK:** `.zshrc` contains custom `brew()` function that triggers SketchyBar updates.
 
-**Location**: `zsh/.zshrc` (lines ~45-53)
+**Location**: `zsh/.zshrc` (lines ~47-54)
 
 **Why Critical**: SketchyBar's brew plugin depends on this function to detect package changes. Breaking this breaks real-time package update notifications in the menu bar.
 
@@ -252,7 +252,7 @@ Custom navigation functions in `.zshrc`:
 
 ### Custom Aliases
 Extensive alias system (50+ git aliases, Docker/K8s workflows, navigation shortcuts).
-See complete list: `alias | grep` or check `.zshrc` lines 100-300.
+See complete list: `alias | grep` or check `.zshrc` (aliases throughout file).
 
 ### Session Management
 **Tmux resurrect/continuum** provides session persistence and automatic save/restore functionality.

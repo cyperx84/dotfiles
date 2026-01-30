@@ -27,10 +27,8 @@ fi
 
 export COLORTERM="truecolor"
 
-# Ensure proper color support in tmux + Ghostty
-if [ -n "$TMUX" ] && [ "$TERM_PROGRAM" = "ghostty" ]; then
-    export TERM_PROGRAM="ghostty"
-fi
+# Preserve TERM_PROGRAM in tmux (Ghostty sets this before tmux starts)
+[ -n "$TMUX" ] && [ "$TERM_PROGRAM" = "ghostty" ] && export TERM_PROGRAM="ghostty"
 
 export GPG_TTY=$(tty)
 
