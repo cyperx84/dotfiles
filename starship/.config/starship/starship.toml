@@ -14,18 +14,13 @@ $git_commit\
 $git_state\
 $git_status\
 $c\
-$cpp\
 $rust\
 $golang\
 $nodejs\
-$php\
 $java\
 $kotlin\
-$haskell\
 $python\
 $docker_context\
-$conda\
-$pixi\
 $time\
 $character
 """
@@ -46,30 +41,30 @@ color_yellow = '#FF7200'
 
 [os]
 disabled = false
-style ="bold color_green" 
+style ="bold color_green"
 
 [os.symbols]
 Windows = "󰍲"
 Ubuntu = "󰕈"
-SUSE = ""
+SUSE = ""
 Raspbian = "󰐿"
 Mint = "󰣭"
 Macos = "󰯈"
-Manjaro = ""
+Manjaro = ""
 Linux = "󰌽"
 Gentoo = "󰣨"
 Fedora = "󰣛"
-Alpine = ""
-Amazon = ""
-Android = ""
+Alpine = ""
+Amazon = ""
+Android = ""
 Arch = "󰣇"
 Artix = "󰣇"
-EndeavourOS = ""
-CentOS = ""
+EndeavourOS = ""
+CentOS = ""
 Debian = "󰣚"
 Redhat = "󱄛"
 RedHatEnterprise = "󱄛"
-Pop = ""
+Pop = ""
 
 [username]
 show_always = true
@@ -88,18 +83,17 @@ repo_root_style = 'bold italic blue'
 repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) [△](bold bright-blue)'
 
 [directory.substitutions]
-# "~" = "󰠧"
-"notes" = ""
+"notes" = ""
 "Documents" = "󱔗"
-"Downloads" = ""
-"Music" = ""
+"Downloads" = ""
+"Music" = ""
 "Movies" = "󰷝"
-"Pictures" = ""
-"Code" = ""
+"Pictures" = ""
+"Code" = ""
 "agents" = "󱙝"
 "dotfiles" = "󰒔"
-".config" = ""
-"github" = ""
+".config" = ""
+"github" = ""
 
 [git_branch]
 format = " [$symbol(:$remote_branch)]($style)"
@@ -115,7 +109,7 @@ added_style = 'italic dimmed green'
 deleted_style = 'italic dimmed red'
 ignore_submodules = true
 disabled = true
-#
+
 [git_status]
 # NOTE: Disabled for prompt performance (~50-100ms savings on large repos).
 # To enable: change 'disabled = true' to 'disabled = false'
@@ -123,147 +117,48 @@ disabled = true
 style = "bold italic bright-blue"
 format = "([$ahead_behind$staged$modified$untracked$renamed$deleted$conflicted$stashed]($style))"
 conflicted = "[◪◦](italic bright-magenta)"
-ahead = "[[${count}](bold white)](italic green)"
+ahead = "[[${count}](bold white)](italic green)"
 behind = "[▿│[${count}](bold white)│](italic red)"
 diverged = "[◇ ▴┤[${ahead_count}](regular white)│▿┤[${behind_count}](regular white)│](italic bright-magenta)"
-untracked = "[](italic green)"
+untracked = "[](italic green)"
 stashed = "[◃◈](italic white)"
-modified = "[](italic bright-yellow)"
-staged = "[[$count](bold blue) ](italic bright-cyan)"
+modified = "[](italic bright-yellow)"
+staged = "[[$count](bold blue) ](italic bright-cyan)"
 renamed = "[◎◦](italic bright-blue)"
 deleted = "[✕](italic red)"
 
-[bun]
-format = "via [$symbol]($style)"
+# ============================================================================
+# LANGUAGE MODULES (only those in format string)
+# ============================================================================
 
-[buf]
-format = "via [$symbol]($style)"
-
-[cmake]
-format = "via [$symbol]($style)"
-
-[cobol]
-format = "via [$symbol]($style)"
-
-[crystal]
-format = "via [$symbol]($style)"
-
-[daml]
-format = "via [$symbol]($style)"
-
-[dart]
-format = "via [$symbol]($style)"
-
-[deno]
-format = "via [$symbol]($style)"
-
-[elixir]
-format = 'via [$symbol]($style)'
-
-[elm]
-format = 'via [$symbol]($style)'
-
-[erlang]
-format = 'via [$symbol]($style)'
-
-[fennel]
-format = 'via [$symbol]($style)'
-
-[gleam]
-format = 'via [$symbol]($style)'
-
-[golang]
-format = 'via [$symbol]($style)'
-
-[gradle]
-format = 'via [$symbol]($style)'
-
-[haxe]
-format = 'via [$symbol]($style)'
-
-[helm]
-format = 'via [$symbol]($style)'
-
-[java]
-format = 'via [$symbol]($style)'
-
-[julia]
-format = 'via [$symbol]($style)'
-
-[kotlin]
-format = 'via [$symbol]($style)'
-
-[lua]
-format = 'via [$symbol]($style)'
-
-[meson]
-format = 'via [$symbol]($style)'
-
-[nim]
-format = 'via [$symbol]($style)'
-
-[nodejs]
-format = 'via [$symbol]($style)'
-
-[ocaml]
-format = 'via [$symbol(\($switch_indicator$switch_name\) )]($style)'
-
-[opa]
-format = 'via [$symbol]($style)'
-
-[perl]
-format = 'via [$symbol]($style)'
-
-[pixi]
-format = 'via [$symbol($environment )]($style)'
-
-[php]
-format = 'via [$symbol]($style)'
-
-[pulumi]
-format = 'via [$symbol$stack]($style)'
-
-[purescript]
-format = 'via [$symbol]($style)'
-
-[python]
-format = 'via [$symbol]($style)'
-
-[quarto]
-format = 'via [$symbol]($style)'
-
-[raku]
-format = 'via [$symbol]($style)'
-
-[red]
-format = 'via [$symbol]($style)'
-
-[rlang]
-format = 'via [$symbol]($style)'
-
-[ruby]
+[c]
 format = 'via [$symbol]($style)'
 
 [rust]
 format = 'via [$symbol]($style)'
 
-[solidity]
+[golang]
 format = 'via [$symbol]($style)'
 
-[typst]
+[nodejs]
 format = 'via [$symbol]($style)'
 
-[swift]
+[java]
 format = 'via [$symbol]($style)'
 
-[vagrant]
+[kotlin]
 format = 'via [$symbol]($style)'
 
-[vlang]
+[python]
 format = 'via [$symbol]($style)'
 
-[zig]
+[docker_context]
 format = 'via [$symbol]($style)'
+
+
+# ============================================================================
+# UI ELEMENTS
+# ============================================================================
 
 [time]
 disabled = true
@@ -277,8 +172,8 @@ disabled = false
 [character]
 disabled = false
 success_symbol = '[=>](color_orange)'
-error_symbol = '[/=](fg:color_red)'
-vimcmd_symbol = '[](bold fg:color_green)'
-vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
-vimcmd_replace_symbol = '[](bold fg:color_purple)'
-vimcmd_visual_symbol = '[](bold fg:color_yellow)'
+error_symbol = '[/=](fg:color_red)'
+vimcmd_symbol = '[](bold fg:color_green)'
+vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
+vimcmd_replace_symbol = '[](bold fg:color_purple)'
+vimcmd_visual_symbol = '[](bold fg:color_yellow)'

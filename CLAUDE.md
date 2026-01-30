@@ -64,7 +64,6 @@ System-Level Services (LaunchDaemons):
 | "Component details" | Check components | @docs/COMPONENTS.md |
 | "Not working" / "Broken" | Troubleshoot | @docs/MAINTENANCE.md |
 | "Statusline" / "Context" | Check statusline | @docs/CLAUDE_STATUSLINE.md |
-| "Agent development" | Check guidelines | @AGENTS.md |
 | "Repository overview" | Check README | @README.md |
 | "Multi-LLM" / "AI workflow" | Check workflow | @docs/MULTI_LLM_WORKFLOW.md |
 
@@ -88,6 +87,25 @@ System-Level Services (LaunchDaemons):
    - Run validation scripts before declaring changes complete
    - Test service restarts after config modifications
    - Verify stow symlinks after structural changes
+
+## 🤖 Agent Guidelines
+
+**Before Making Changes:**
+1. Read relevant documentation files first
+2. Check existing implementation before modifying
+3. Test with `stow -nv <component>` before applying
+4. Backup existing configs if unsure
+
+**After Making Changes:**
+1. Restart affected services in order: Aerospace → borders → sketchybar
+2. Run validation scripts where available
+3. Test functionality manually
+4. Check logs for errors
+
+**When Uncertain:**
+- Ask the user for clarification
+- Check recent commits for context
+- Use validation scripts to verify
 
 ## 🏗️ Repository Architecture
 
@@ -397,10 +415,9 @@ This repository has comprehensive documentation for detailed information:
 | @docs/KEYBINDS.md | Complete keybindings reference |
 | @docs/NEOVIM_KEYBINDS.md | Neovim-specific mappings |
 | @docs/WORKFLOW_GUIDES.md | Cross-tool integration workflows |
-| @docs/MULTI_LLM_WORKFLOW.md | Multi-LLM orchestration (Claude + CodeCompanion) |
+| @docs/MULTI_LLM_WORKFLOW.md | Multi-LLM orchestration |
 | @docs/CLAUDE_STATUSLINE.md | Statusline interpretation guide |
 | @docs/MAINTENANCE.md | Validation and troubleshooting |
-| @AGENTS.md | Agent development guidelines |
 
 ## 🔧 Development Considerations
 

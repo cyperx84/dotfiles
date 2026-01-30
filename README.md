@@ -33,8 +33,7 @@ A curated collection of configuration files for a complete macOS development env
 | **[🤖 Multi-LLM Workflow](docs/MULTI_LLM_WORKFLOW.md)** | Claude Code + CodeCompanion orchestration | AI development workflows |
 | **[📊 Claude Statusline Guide](docs/CLAUDE_STATUSLINE.md)** | Enhanced statusline interpretation | Reading context, cost, and session info |
 | **[🔧 Maintenance Guide](docs/MAINTENANCE.md)** | Validation, troubleshooting, updates | System reliability |
-| **[🤖 Claude Documentation](CLAUDE.md)** | Claude Code specific guidance | AI-assisted development |
-| **[👨‍💻 Agent Guidelines](AGENTS.md)** | Development and testing procedures | Contributing and maintenance |
+| **[🤖 Claude Documentation](CLAUDE.md)** | Claude Code guidance & agent guidelines | AI-assisted development |
 
 ## 🌟 Features
 

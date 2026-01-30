@@ -76,9 +76,7 @@ export FZF_DEFAULT_OPTS='--border=rounded --border-label="" --color=border:#00ff
 
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --icons --level=3 {} | head -200'"
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f ~/.fzf/shell/key-bindings.zsh ] && source ~/.fzf/shell/key-bindings.zsh
-[ -f ~/.fzf/shell/completion.zsh ] && source ~/.fzf/shell/completion.zsh
+# Note: FZF sourced via `source <(fzf --zsh)` above - removed redundant sourcing
 
 # Cache brew --prefix to avoid repeated calls (saves 100-200ms)
 HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
@@ -116,8 +114,17 @@ function f() {
 	rm -f -- "$tmp"
 }
 
-# UV Python
-eval "$(uv generate-shell-completion zsh)"
+# UV Python - lazy-load completions (saves ~15ms on shell startup)
+if (( $+commands[uv] )); then
+  _uv_completion_loaded=0
+  uv() {
+    if (( !_uv_completion_loaded )); then
+      source <(command uv generate-shell-completion zsh)
+      _uv_completion_loaded=1
+    fi
+    command uv "$@"
+  }
+fi
 
 bindkey '^f' vi-forward-word
 bindkey '^u' up-line-or-search
@@ -258,7 +265,9 @@ alias C="cd ~/Code/"
 export BAT_THEME=tokyonight_night
 
 # ---- Zoxide (better cd) ----
-eval "$(zoxide init zsh)"
+# Lazy-load zoxide (saves ~10ms on shell startup)
+z() { unfunction z zi 2>/dev/null; eval "$(zoxide init zsh)"; z "$@"; }
+zi() { unfunction z zi 2>/dev/null; eval "$(zoxide init zsh)"; zi "$@"; }
 
 # ============================================================================
 # PATH CONFIGURATION (Consolidated)
@@ -319,8 +328,8 @@ alias mod-in='SwitchAudioSource -t input -s "Mod"'
 alias blackhole-in='SwitchAudioSource -t input -s "BlackHole 16ch"'
 
 # Recording mode (Multi-Output + BlackHole input for screen recording with system audio)
-alias rec='SwitchAudioSource -t output -s "Multi-Output Device" && SwitchAudioSource -t input -s "BlackHole 16ch" && echo "Recording mode ON"'
-alias rec-off='SwitchAudioSource -t output -s "Mac mini Speakers" && SwitchAudioSource -t input -s "Scarlett 2i2 USB" && echo "Recording mode OFF"'
+# alias rec='SwitchAudioSource -t output -s "Multi-Output Device" && SwitchAudioSource -t input -s "BlackHole 16ch" && echo "Recording mode ON"'
+# alias rec-off='SwitchAudioSource -t output -s "Mac mini Speakers" && SwitchAudioSource -t input -s "Scarlett 2i2 USB" && echo "Recording mode OFF"'
 
 # Lazy-load direnv (saves 50-100ms, handles initial directory)
 if (( $+commands[direnv] )); then

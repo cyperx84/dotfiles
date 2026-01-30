@@ -536,7 +536,7 @@ stow -D */ && stow */
 - **[Components Guide](COMPONENTS.md)** - Detailed component information
 - **[Troubleshooting Keybinds](KEYBINDS.md)** - Key binding reference
 - **[Workflow Guides](WORKFLOW_GUIDES.md)** - Integration workflows
-- **[AGENTS.md](../AGENTS.md)** - Development guidelines and testing
+- **[CLAUDE.md](../CLAUDE.md)** - Claude Code guidance and agent guidelines
 
 ---
 

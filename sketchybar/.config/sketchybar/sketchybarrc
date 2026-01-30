@@ -26,22 +26,35 @@ cleanup_wifi_monitor() {
 # Register cleanup on exit
 trap cleanup_wifi_monitor EXIT
 
-# Helper binary compilation with error handling
+# Helper binary compilation with hash-based caching (only recompile when source changes)
 compile_helper() {
   local helper_dir="$CONFIG_DIR/helper"
   local helper_binary="$helper_dir/helper"
-  
-  if [ -d "$helper_dir" ]; then
-    echo "Compiling helper binary..."
-    if (cd "$helper_dir" && make clean && make); then
-      echo "Helper binary compiled successfully"
-      return 0
-    else
-      echo "Warning: Helper binary compilation failed"
-      return 1
-    fi
-  else
+  local hash_file="$helper_dir/.source_hash"
+
+  if [ ! -d "$helper_dir" ]; then
     echo "Warning: Helper directory not found at $helper_dir"
+    return 1
+  fi
+
+  # Compute hash of source files
+  local current_hash=$(cat "$helper_dir"/*.c "$helper_dir"/*.h "$helper_dir"/makefile 2>/dev/null | shasum -a 256 | cut -d' ' -f1)
+  local stored_hash=""
+  [ -f "$hash_file" ] && stored_hash=$(cat "$hash_file")
+
+  # Only recompile if source changed or binary missing
+  if [ "$current_hash" = "$stored_hash" ] && [ -x "$helper_binary" ]; then
+    echo "Helper binary up to date (skipping compilation)"
+    return 0
+  fi
+
+  echo "Compiling helper binary..."
+  if (cd "$helper_dir" && make clean && make); then
+    echo "$current_hash" > "$hash_file"
+    echo "Helper binary compiled successfully"
+    return 0
+  else
+    echo "Warning: Helper binary compilation failed"
     return 1
   fi
 }
