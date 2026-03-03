@@ -144,8 +144,10 @@ System-Level Services (LaunchDaemons):
   - **Forward slash (/)**: Regular / key (no layer)
   - **Right Cmd**: Toggle home row mods on/off (tap to switch base↔vanilla layers)
   - **Config**: `~/.config/kanata/kanata.kbd` (200ms tap, 230ms hold)
-  - **Auto-start**: LaunchDaemon at `/Library/LaunchDaemons/com.example.kanata.plist`
+  - **Binary**: `/opt/homebrew/bin/kanata` (Homebrew symlink - survives brew upgrades without breaking TCC permissions)
+  - **Auto-start**: LaunchDaemon at `/Library/LaunchDaemons/com.example.kanata.plist` (bash wrapper with 5s startup delay)
   - **Dependencies**: Karabiner-DriverKit-VirtualHIDDevice (required for input interception)
+  - **Logs**: `/tmp/kanata.out.log` (stdout), `/tmp/kanata.err.log` (stderr)
   - **Status check**: `sudo launchctl print system/com.example.kanata`
 - **Karabiner-Elements** - Installed but unconfigured (simple_modifications empty)
 
@@ -195,6 +197,8 @@ sketchybar --reload                                      # Reload without restar
 sudo launchctl print system/com.example.kanata          # Check status
 sudo launchctl kickstart -k system/com.example.kanata   # Restart
 ps aux | grep kanata | grep -v grep                      # Verify running
+tail -20 /tmp/kanata.err.log                             # Check recent errors
+tail -20 /tmp/kanata.out.log                             # Check recent output
 
 # After Kanata config changes
 sudo launchctl kickstart -k system/com.example.kanata
@@ -332,6 +336,10 @@ ls -la ~/.<config_file>
 
 **⚠️ CRITICAL**: Kanata config file MUST be named `kanata.kbd` (NOT `config.kbd`)
 
+**⚠️ IMPORTANT**: Kanata binary MUST use the Homebrew symlink at `/opt/homebrew/bin/kanata`.
+Using `/usr/local/bin/kanata` or the Cellar path directly will break TCC Input Monitoring
+permissions when `brew upgrade` replaces the binary (new binary = new inode = lost permissions).
+
 ```bash
 # Service won't start on boot
 sudo launchctl print system/com.example.kanata | grep "state ="
@@ -340,11 +348,21 @@ sudo launchctl print system/com.example.kanata | grep "state ="
 # Verify config file exists
 ls -la ~/.config/kanata/kanata.kbd
 
+# Verify binary path (MUST be Homebrew symlink)
+ls -la /opt/homebrew/bin/kanata
+# Should be symlink → ../Cellar/kanata/<version>/bin/kanata
+
+# Check logs for errors (LaunchDaemon logs to /tmp/)
+tail -50 /tmp/kanata.err.log
+tail -50 /tmp/kanata.out.log
+
 # Common issues:
-# 1. Wrong config path in plist (check: sudo cat /Library/LaunchDaemons/com.example.kanata.plist)
-# 2. Missing Karabiner-DriverKit-VirtualHIDDevice
-# 3. Missing Input Monitoring/Accessibility permissions
-# 4. Another Kanata instance running (only one can run)
+# 1. Wrong binary path in plist (MUST use /opt/homebrew/bin/kanata)
+# 2. Wrong config path in plist (check: sudo cat /Library/LaunchDaemons/com.example.kanata.plist)
+# 3. Missing Karabiner-DriverKit-VirtualHIDDevice
+# 4. Missing Input Monitoring/Accessibility permissions for /opt/homebrew/bin/kanata
+# 5. Another Kanata instance running (only one can run)
+# 6. TCC permissions lost after brew upgrade (re-grant Input Monitoring to /opt/homebrew/bin/kanata)
 
 # Check if running
 ps aux | grep kanata | grep -v grep
@@ -352,8 +370,8 @@ ps aux | grep kanata | grep -v grep
 # Kill duplicate instances
 sudo pkill -9 kanata
 
-# Reinstall LaunchDaemons (if corrupted)
-cd ~/dotfiles/kanata
+# Reinstall LaunchDaemon (if corrupted)
+cd ~/dotfiles/kanata/.config/kanata
 ./install_kanata_macos.sh
 
 # Check Karabiner VirtualHID daemons are running
@@ -439,16 +457,20 @@ This repository has comprehensive documentation for detailed information:
 
 ### Input Management Switch (Karabiner ↔ Kanata)
 
-**Current Status (Nov 2025)**: Kanata is ACTIVE and configured with LaunchDaemons for auto-start on boot.
+**Current Status (Feb 2026)**: Kanata is ACTIVE and configured with LaunchDaemons for auto-start on boot.
 
 **Setup Details**:
 - **Active Services**: 3 LaunchDaemons running
-  - `com.example.kanata` - Main Kanata service
+  - `com.example.kanata` - Main Kanata service (bash wrapper with 5s startup delay)
   - `com.example.karabiner-vhiddaemon` - Karabiner VirtualHID daemon
   - `com.example.karabiner-vhidmanager` - Karabiner VirtualHID manager
+- **Binary**: `/opt/homebrew/bin/kanata` (Homebrew symlink - survives brew upgrades without breaking TCC permissions)
 - **Config File**: `~/.config/kanata/kanata.kbd` (200ms tap, 230ms hold)
-- **Auto-start**: Enabled via LaunchDaemon (RunAtLoad + KeepAlive)
+- **Auto-start**: Enabled via LaunchDaemon (KeepAlive unconditional, ThrottleInterval 5)
+- **LaunchDaemon command**: `/bin/bash -c "sleep 5 && exec /opt/homebrew/bin/kanata -c ~/.config/kanata/kanata.kbd --port 10000"`
+- **Logs**: `/tmp/kanata.out.log` (stdout), `/tmp/kanata.err.log` (stderr)
 - **Port**: 10000
+- **Install script**: `kanata/.config/kanata/install_kanata_macos.sh`
 
 **Kanata Features Enabled**:
 - Home row mods (a/s/d/f → Cmd/Alt/Shift/Ctrl, j/k/l/; → Ctrl/Shift/Alt/Cmd)
@@ -908,6 +930,7 @@ git stash pop  # Restore if needed
 
 ## 🏷️ Recent Updates (Historical)
 
+- **Feb 2026**: Kanata LaunchDaemon updated to use Homebrew symlink (`/opt/homebrew/bin/kanata`) with bash wrapper and 5s startup delay
 - **Jan 2026**: Multi-LLM Workflow added with Claude Code commands (bridge, eval, verify, prompt-improve)
 - **Jan 2026**: Global agent commands (new-agent, improve-agent) for Claude Code
 - **Jan 2026**: Reverted from HyprSpace to standard Aerospace

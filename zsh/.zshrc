@@ -278,6 +278,7 @@ export GOPATH="$HOME/.local/go"
 # High-priority paths (prepended)
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"       # Bob-managed Neovim
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"             # Homebrew Ruby
+export PATH="/opt/homebrew/sbin:$PATH"                     # Homebrew system binaries
 export PATH="$GOPATH/bin:$PATH"                            # Go binaries
 export PATH="$HOME/.npm-global/bin:$PATH"                  # Global npm
 export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"         # ICU library
@@ -344,3 +345,6 @@ if (( $+commands[direnv] )); then
   add-zsh-hook precmd _direnv_first_prompt  # Trigger on first prompt
 fi
 
+# OpenClaw Completion
+source "/Users/cyperx/.openclaw/completions/openclaw.zsh"
+export PATH="$HOME/.local/bin:$PATH"

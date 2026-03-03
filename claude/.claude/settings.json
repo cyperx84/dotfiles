@@ -5,6 +5,7 @@
   "permissions": {
     "defaultMode": "plan"
   },
+  "model": "opus",
   "hooks": {
     "SessionStart": [
       {
@@ -66,6 +67,6 @@
     "typescript-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true
   },
-  "autoUpdatesChannel": "stable",
-  "minimumVersion": "2.1.4"
+  "autoUpdatesChannel": "latest",
+  "skipDangerousModePermissionPrompt": true
 }

@@ -415,6 +415,14 @@ startup_script = "~/.config/sesh/scripts/claude_dev.sh"
 - `kanata/.config/kanata/kanata.kbd` - Layer definitions
 - `/Library/LaunchDaemons/com.example.kanata.plist` - Auto-start daemon
 
+**Binary Path**: `/opt/homebrew/bin/kanata` (Homebrew symlink)
+
+**Homebrew Symlink Strategy**: The LaunchDaemon references the stable Homebrew symlink at `/opt/homebrew/bin/kanata` rather than the versioned Cellar path. This is critical because macOS TCC (Transparency, Consent, and Control) grants Input Monitoring permissions to a specific binary path. When `brew upgrade kanata` replaces the binary in the Cellar, the old path in the TCC database becomes invalid. The Homebrew symlink at `/opt/homebrew/bin/kanata` survives upgrades, so Input Monitoring permissions persist without needing to re-grant them.
+
+**LaunchDaemon Details**:
+- Uses a bash wrapper script with a **5-second startup delay** to allow the Karabiner DriverKit VirtualHID daemons to initialize first
+- **KeepAlive**: `true` (unconditional restart on crash or exit)
+
 **Active Remappings**:
 - **Caps Lock**: Escape on tap, Ctrl on hold
 - **Home Row Mods**: a/s/d/f → Cmd/Alt/Shift/Ctrl, j/k/l/; → Ctrl/Shift/Alt/Cmd
@@ -429,6 +437,7 @@ startup_script = "~/.config/sesh/scripts/claude_dev.sh"
 ```bash
 sudo launchctl print system/com.example.kanata   # Check status
 sudo launchctl kickstart -k system/com.example.kanata  # Restart
+ps aux | grep kanata | grep -v grep              # Verify running binary path
 ```
 
 ### ⌨️ Karabiner-Elements - Keyboard Remapping (Unconfigured)

@@ -96,11 +96,6 @@ path = "~/github"
 startup_command = ""
 
 [[session]]
-name = "openclaw" 
-path = "~/.openclaw"
-startup_command = "nvim"
-
-[[session]]
 name = "docker"
 path = "~"
 startup_command = "~/.config/sesh/scripts/utils/docker_session.sh" 

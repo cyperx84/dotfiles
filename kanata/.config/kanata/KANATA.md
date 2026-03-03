@@ -1,6 +1,6 @@
 # Kanata Configuration for macOS
 
-> **Version:** 1.1 | **Last Updated:** December 2024 | **macOS:** Sequoia 15.x | **Kanata:** 1.7.0+
+> **Version:** 1.2 | **Last Updated:** February 2026 | **macOS:** Sequoia 15.x | **Kanata:** 1.7.0+
 
 A comprehensive guide for Kanata keyboard remapping on macOS, including setup, layer configuration, and troubleshooting.
 
@@ -50,12 +50,11 @@ LaunchDaemons:
     com.example.karabiner-vhid*.plist   # VirtualHID services
 
 Logs:
-  /Library/Logs/Kanata/
-    kanata.out.log                      # Info/debug output
-    kanata.err.log                      # Errors and panics
+  /tmp/kanata.out.log                   # Info/debug output
+  /tmp/kanata.err.log                   # Errors and panics
 
 Binaries:
-  /usr/local/bin/kanata                 # Kanata executable
+  /opt/homebrew/bin/kanata              # Kanata executable (Homebrew symlink)
 
 Drivers:
   /Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/
@@ -134,19 +133,12 @@ mkdir -p ~/.config/kanata
 
 ### Step 3: Grant Input Monitoring Permission
 
-1. Run kanata manually first: `sudo kanata -c ~/.config/kanata/kanata.kbd`
+1. Run kanata manually first: `sudo /opt/homebrew/bin/kanata -c ~/.config/kanata/kanata.kbd`
 2. macOS will prompt for Input Monitoring permission
 3. Open **System Settings** → **Privacy & Security** → **Input Monitoring**
-4. Enable the toggle for kanata
+4. Add and enable `/opt/homebrew/bin/kanata`
 
-**Note:** Each kanata version installs to a different path. After `brew upgrade kanata`, re-add the new binary to Input Monitoring.
-
-### Step 4: Create Log Directory
-
-```bash
-sudo mkdir -p /Library/Logs/Kanata
-sudo chmod 755 /Library/Logs/Kanata
-```
+**Important: Use the Homebrew symlink path (`/opt/homebrew/bin/kanata`)**, not the Cellar path. The symlink is stable across `brew upgrade` -- macOS TCC (Input Monitoring) permissions are tied to the binary path. If you grant permission to a Cellar path (e.g., `/opt/homebrew/Cellar/kanata/1.7.0/bin/kanata`) or a copied binary at `/usr/local/bin/kanata`, the permission breaks every time Homebrew upgrades kanata. The `/opt/homebrew/bin/kanata` symlink always points to the current version, so permissions persist across upgrades.
 
 ---
 
@@ -208,26 +200,32 @@ Create these files in `/Library/LaunchDaemons/`:
     <string>com.example.kanata</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/local/bin/kanata</string>
+        <string>/bin/bash</string>
         <string>-c</string>
-        <string>/Users/YOUR_USERNAME/.config/kanata/kanata.kbd</string>
-        <string>--port</string>
-        <string>10000</string>
-        <string>--debug</string>
+        <string>sleep 5 &amp;&amp; exec /opt/homebrew/bin/kanata -c /Users/YOUR_USERNAME/.config/kanata/kanata.kbd --port 10000</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
     <true/>
+    <key>ThrottleInterval</key>
+    <integer>5</integer>
     <key>StandardOutPath</key>
-    <string>/Library/Logs/Kanata/kanata.out.log</string>
+    <string>/tmp/kanata.out.log</string>
     <key>StandardErrorPath</key>
-    <string>/Library/Logs/Kanata/kanata.err.log</string>
+    <string>/tmp/kanata.err.log</string>
 </dict>
 </plist>
 ```
 
 **Important:** Replace `YOUR_USERNAME` with your actual username.
+
+**Design notes:**
+- The `sleep 5` delay gives Karabiner DriverKit VirtualHIDDevice time to initialize on boot before kanata tries to connect.
+- `KeepAlive` is unconditional (`true`) so launchd restarts kanata regardless of exit code.
+- `ThrottleInterval` of 5 seconds prevents rapid restart loops.
+- Logs go to `/tmp/` which is cleaned on reboot -- no manual log rotation needed.
+- Uses the Homebrew symlink (`/opt/homebrew/bin/kanata`) so TCC Input Monitoring permissions survive `brew upgrade`.
 
 ### Set Permissions and Load
 
@@ -242,38 +240,11 @@ sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.karabiner-vhi
 sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.kanata.plist
 ```
 
-### Boot Timing Fix (Optional)
+### Boot Timing
 
-If kanata fails on boot because VirtualHIDDevice isn't ready, create a wrapper script:
+The plist uses a `sleep 5` delay inside a bash wrapper (`/bin/bash -c "sleep 5 && exec ..."`) to give Karabiner DriverKit time to initialize before kanata starts. Combined with unconditional `KeepAlive` and a 5-second `ThrottleInterval`, this handles boot timing reliably without any external wrapper scripts.
 
-**Create `/usr/local/bin/kanata-wrapper.sh`:**
-
-```bash
-#!/bin/bash
-MAX_WAIT=30
-SLEEP_INTERVAL=2
-
-echo "[$(date)] Waiting for Karabiner-VirtualHIDDevice driver..."
-
-for i in $(seq 1 $MAX_WAIT); do
-    if pgrep -f "Karabiner-VirtualHIDDevice-Daemon" >/dev/null 2>&1; then
-        echo "[$(date)] VirtualHIDDevice daemon detected, waiting ${SLEEP_INTERVAL}s..."
-        sleep $SLEEP_INTERVAL
-        echo "[$(date)] Starting kanata..."
-        exec /usr/local/bin/kanata "$@"
-    fi
-    sleep 1
-done
-
-echo "[$(date)] ERROR: VirtualHIDDevice driver not ready after ${MAX_WAIT}s"
-exit 1
-```
-
-```bash
-sudo chmod +x /usr/local/bin/kanata-wrapper.sh
-```
-
-Then update the plist to use `/usr/local/bin/kanata-wrapper.sh` instead of `/usr/local/bin/kanata`.
+**Note:** Earlier versions of this setup used a standalone `/usr/local/bin/kanata-wrapper.sh` script. That approach is **obsolete** -- the inline bash wrapper in the plist replaces it. If you have an old `kanata-wrapper.sh` file, it can be safely deleted.
 
 ---
 
@@ -399,16 +370,16 @@ sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.kanata.plist
 
 ```bash
 # Live output
-sudo tail -f /Library/Logs/Kanata/kanata.out.log
+tail -f /tmp/kanata.out.log
 
 # Live errors
-sudo tail -f /Library/Logs/Kanata/kanata.err.log
+tail -f /tmp/kanata.err.log
 
 # Recent errors
-sudo tail -50 /Library/Logs/Kanata/kanata.err.log
+tail -50 /tmp/kanata.err.log
 
-# Clear logs
-sudo rm /Library/Logs/Kanata/*.log
+# Clear logs (they are also cleared automatically on reboot)
+rm -f /tmp/kanata.out.log /tmp/kanata.err.log
 ```
 
 ### Configuration
@@ -463,11 +434,11 @@ PID    STATUS  NAME
 sudo launchctl list | grep kanata
 
 # 2. Check driver connection
-sudo tail -50 /Library/Logs/Kanata/kanata.out.log | grep "driver connected"
+tail -50 /tmp/kanata.out.log | grep "driver connected"
 # Should see: driver connected: true
 
 # 3. Check for errors
-sudo tail -50 /Library/Logs/Kanata/kanata.err.log
+tail -50 /tmp/kanata.err.log
 
 # 4. Verify VirtualHIDDevice services
 sudo launchctl list | grep vhid
@@ -478,9 +449,11 @@ sudo launchctl list | grep vhid
 Missing Input Monitoring permission.
 
 1. **System Settings** → **Privacy & Security** → **Input Monitoring**
-2. Add `/usr/local/bin/kanata` (click + and navigate)
+2. Add `/opt/homebrew/bin/kanata` (click + and navigate to it)
 3. Enable the toggle
 4. Restart: `sudo launchctl bootout system/com.example.kanata && sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.kanata.plist`
+
+**Note:** Always grant permission to the Homebrew symlink at `/opt/homebrew/bin/kanata`, not to the Cellar path. See [Step 3: Grant Input Monitoring Permission](#step-3-grant-input-monitoring-permission) for details.
 
 ### "Address already in use" (Port 10000)
 
@@ -524,18 +497,18 @@ sudo rm -rf "/Library/Application Support/org.pqrs/Karabiner-Elements"
 
 ### Not Working After Update
 
+If the plist uses the Homebrew symlink (`/opt/homebrew/bin/kanata`), upgrades should work automatically -- the symlink points to the new version, and TCC permissions persist.
+
 ```bash
-# 1. Check new binary location
-which kanata
+# 1. Verify symlink still resolves
+ls -la /opt/homebrew/bin/kanata
 
-# 2. Update plist if path changed
-sudo nvim /Library/LaunchDaemons/com.example.kanata.plist
-
-# 3. Grant Input Monitoring permission to new binary
-
-# 4. Reload
+# 2. Restart kanata (KeepAlive handles this, but for a clean restart)
 sudo launchctl bootout system/com.example.kanata
 sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.kanata.plist
+
+# 3. Check logs if issues occur
+tail -50 /tmp/kanata.err.log
 ```
 
 ### Troubleshooting Checklist
@@ -543,12 +516,12 @@ sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.kanata.plist
 - [ ] Karabiner-DriverKit-VirtualHIDDevice installed
 - [ ] System extension approved in System Settings
 - [ ] VirtualHIDDevice services running
-- [ ] Kanata binary exists at `/usr/local/bin/kanata`
+- [ ] Kanata Homebrew symlink exists at `/opt/homebrew/bin/kanata`
 - [ ] Config file valid (`kanata --check`)
-- [ ] Kanata has Input Monitoring permission
+- [ ] `/opt/homebrew/bin/kanata` has Input Monitoring permission (not Cellar path)
 - [ ] Plist ownership is `root:wheel`
-- [ ] Plist paths to config and binary are correct
-- [ ] Log directory exists and is writable
+- [ ] Plist uses `/opt/homebrew/bin/kanata` (Homebrew symlink, not Cellar path)
+- [ ] Plist has `sleep 5` delay for boot timing
 - [ ] No duplicate kanata services
 - [ ] Port 10000 not in use by another process
 - [ ] No Karabiner Elements (full app) installed
@@ -564,7 +537,7 @@ sudo launchctl bootout system/com.example.kanata
 kanata -c ~/.config/kanata/kanata.kbd --check
 
 # 3. View errors
-sudo tail -50 /Library/Logs/Kanata/kanata.err.log
+tail -50 /tmp/kanata.err.log
 
 # 4. Reload
 sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.kanata.plist
@@ -579,15 +552,15 @@ sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.kanata.plist
 ```bash
 brew upgrade kanata
 
-# Check new path
-which kanata
+# Verify Homebrew symlink still resolves
+ls -la /opt/homebrew/bin/kanata
 
-# Update plist if needed, then reload
+# Restart kanata to pick up the new version
 sudo launchctl bootout system/com.example.kanata
 sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.kanata.plist
-
-# Re-grant Input Monitoring if prompted
 ```
+
+Because the plist and TCC permissions both reference the stable Homebrew symlink (`/opt/homebrew/bin/kanata`), you should **not** need to re-grant Input Monitoring after upgrades. If kanata fails to start after an upgrade, check `/tmp/kanata.err.log`.
 
 ### Editing Configuration
 
@@ -604,12 +577,14 @@ sudo killall kanata
 
 ### Log Rotation
 
+Logs are stored in `/tmp/` which is cleared on every reboot, so manual rotation is rarely needed.
+
 ```bash
 # Check sizes
-sudo du -sh /Library/Logs/Kanata/*
+du -sh /tmp/kanata.*.log
 
-# Clear logs (service recreates them)
-sudo rm /Library/Logs/Kanata/*.log
+# Clear logs manually if needed (service recreates them)
+rm -f /tmp/kanata.out.log /tmp/kanata.err.log
 ```
 
 ### Adding New Keyboards

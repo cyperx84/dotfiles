@@ -430,14 +430,45 @@ stow --adopt component_name  # Adopt existing files
    - Check if app is running in System Preferences
    - Restart Karabiner-Elements service
 
-2. **Kanata Issues** (if using):
+2. **Kanata Issues** (PRIMARY):
    ```bash
    # Check if kanata service is running
-   sudo kanata --cfg ~/.config/kanata/kanata.kbd
+   sudo launchctl print system/com.example.kanata | grep "state ="
+   ps aux | grep kanata | grep -v grep
+
+   # Verify binary path (should be Homebrew symlink)
+   ls -la /opt/homebrew/bin/kanata
+
+   # Restart kanata service
+   sudo launchctl kickstart -k system/com.example.kanata
+
+   # Check system logs for errors
+   log show --predicate 'process == "kanata"' --last 10m
    ```
 
 3. **Permission Issues**:
-   - Grant Input Monitoring permissions in System Preferences
+   - Grant Input Monitoring permission to `/opt/homebrew/bin/kanata` in System Settings > Privacy & Security > Input Monitoring
+
+### ❌ Kanata Stops Working After `brew upgrade`
+
+**Symptoms**: Kanata was working, then stops after running `brew upgrade kanata`. Home row mods, caps lock remapping, etc. all stop functioning. The LaunchDaemon may report errors or kanata fails silently.
+
+**Root Cause**: `brew upgrade kanata` replaces the binary at `/opt/homebrew/bin/kanata`. macOS TCC (Transparency, Consent, and Control) tracks Input Monitoring permissions by binary hash/path. When the binary changes, the existing Input Monitoring permission becomes invalid and kanata can no longer intercept keyboard input.
+
+**Fix**:
+1. Open **System Settings > Privacy & Security > Input Monitoring**
+2. Remove the old `/opt/homebrew/bin/kanata` entry (if still listed)
+3. Re-add `/opt/homebrew/bin/kanata` and enable it
+4. Restart the kanata service:
+   ```bash
+   sudo launchctl kickstart -k system/com.example.kanata
+   ```
+5. Verify kanata is running and intercepting input:
+   ```bash
+   ps aux | grep kanata | grep -v grep
+   ```
+
+**Prevention**: After any `brew upgrade kanata`, always re-check Input Monitoring permissions before assuming kanata is broken for other reasons.
 
 ### ❌ Session Management Problems
 

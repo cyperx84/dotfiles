@@ -12,6 +12,9 @@ ARROW="${MAGENTA}==>${RESET}"
 KANATA_CONFIG="${HOME}/.config/kanata/kanata.kbd"
 KANATA_PORT=10000
 PLIST_DIR="/Library/LaunchDaemons"
+# Use Homebrew symlink - survives brew upgrade so TCC permissions persist
+# See: https://github.com/jtroo/kanata/discussions/1537
+KANATA_BIN="/opt/homebrew/bin/kanata"
 ###################################
 
 # 1. Fetch & install latest Karabiner DriverKit pkg
@@ -29,9 +32,17 @@ rm -f /tmp/karabiner-driverkit.pkg
 # 2. Install Kanata via Homebrew if not present
 brew list kanata >/dev/null 2>&1 || brew install kanata
 
-KANATA_BIN=$(command -v kanata)
+# 3. Verify Homebrew kanata is available
+if [ ! -f "${KANATA_BIN}" ] && [ ! -L "${KANATA_BIN}" ]; then
+    echo -e "${ARROW} ERROR: Kanata not found at ${KANATA_BIN}"
+    echo "  Install with: brew install kanata"
+    exit 1
+fi
+echo -e "${ARROW} Using kanata at: ${KANATA_BIN} ($(readlink -f ${KANATA_BIN}))"
 
 # 3. Write plist files
+# Uses bash wrapper with 5s delay so Karabiner DriverKit can initialize on boot
+# Uses Homebrew symlink so Input Monitoring permissions survive brew upgrade
 sudo tee "${PLIST_DIR}/com.example.kanata.plist" >/dev/null <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
@@ -39,12 +50,15 @@ sudo tee "${PLIST_DIR}/com.example.kanata.plist" >/dev/null <<EOF
 <plist version="1.0"><dict>
   <key>Label</key><string>com.example.kanata</string>
   <key>ProgramArguments</key><array>
-    <string>${KANATA_BIN}</string>
-    <string>-c</string><string>${KANATA_CONFIG}</string>
-    <string>--port</string><string>${KANATA_PORT}</string>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>sleep 5 &amp;&amp; exec ${KANATA_BIN} -c ${KANATA_CONFIG} --port ${KANATA_PORT}</string>
   </array>
   <key>RunAtLoad</key><true/>
   <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>5</integer>
+  <key>StandardOutPath</key><string>/tmp/kanata.out.log</string>
+  <key>StandardErrorPath</key><string>/tmp/kanata.err.log</string>
 </dict></plist>
 EOF
 sudo chown root:wheel "${PLIST_DIR}/com.example.kanata.plist"
@@ -111,7 +125,10 @@ echo -e "${ARROW} You'll now add Kanata to Accessibility settings."
 echo -e "On the next screen:"
 echo -e "- Click '+' to add a new item"
 echo -e "- Press Shift+Command+G and enter ${MAGENTA}/opt/homebrew/bin${RESET}"
-echo -e "- Select the Kanata binary"
+echo -e "- Select the ${MAGENTA}kanata${RESET} binary"
+echo -e ""
+echo -e "${ARROW} IMPORTANT: Always use ${MAGENTA}/opt/homebrew/bin/kanata${RESET} (the Homebrew symlink)"
+echo -e "  This path survives brew upgrades so you won't lose permissions."
 read -rp "Press Enter to open Accessibility settings..."
 open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
 echo
@@ -119,7 +136,9 @@ read -rp "Press Enter once you're done..."
 echo
 
 echo -e "${ARROW} Now add Kanata to Input Monitoring as well."
-echo -e "Follow the same steps as before."
+echo -e "Same path: ${MAGENTA}/opt/homebrew/bin/kanata${RESET}"
+echo -e "- Click '+', press Shift+Command+G, enter ${MAGENTA}/opt/homebrew/bin${RESET}"
+echo -e "- Select the ${MAGENTA}kanata${RESET} binary"
 read -rp "Press Enter to open Input Monitoring settings..."
 open "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent"
 echo
@@ -127,3 +146,8 @@ read -rp "Press Enter once you're done..."
 echo
 
 echo "Kanata and Karabiner services are now installed and enabled."
+echo ""
+echo -e "${ARROW} NOTE: If kanata stops working after 'brew upgrade kanata':"
+echo -e "  1. Go to System Settings → Privacy & Security → Input Monitoring"
+echo -e "  2. Remove kanata, then re-add ${MAGENTA}/opt/homebrew/bin/kanata${RESET}"
+echo -e "  3. Run: sudo launchctl kickstart -k system/com.example.kanata"

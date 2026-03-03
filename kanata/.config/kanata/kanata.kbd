@@ -23,12 +23,10 @@
 (defcfg
   process-unmapped-keys yes
   concurrent-tap-hold yes
-  
-  ;; macOS keyboard device names - add your keyboards here
-  macos-dev-names-include (
-    "Apple Internal Keyboard / Trackpad"
-    "MX MCHNCL M"
-  )
+
+  ;; NOTE: macos-dev-names-include removed - Apple Silicon internal keyboard
+  ;; appears via SPMI transport and doesn't match the HID device name filter.
+  ;; Kanata will capture all keyboards (safe since only one kanata instance runs).
 )
 
 ;; ============================================================================

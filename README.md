@@ -87,7 +87,9 @@ Sophisticated keyboard remapping with home row modifiers:
 - **Forward slash (/)**: Regular / key (no layer)
 - **Right Cmd**: Toggle home row mods on/off (tap to switch base↔vanilla layers)
 - **Timing**: 200ms tap, 230ms hold thresholds
-- **Auto-start**: LaunchDaemon runs at boot
+- **Binary**: `/opt/homebrew/bin/kanata` (Homebrew symlink)
+- **Auto-start**: LaunchDaemon with 5s startup delay via bash wrapper
+- **TCC Permissions**: Uses Homebrew symlink so permissions survive `brew upgrade`
 - **Status**: ✅ Active (PRIMARY)
 
 ### ⛓️‍💥 **Karabiner-Elements** - Keyboard Remapping (Unconfigured)
@@ -392,6 +394,9 @@ git subtree merge --prefix nvim https://github.com/cyperx84/nvim.git main --squa
 Kanata is the active keyboard remapper with home row mods:
 
 **Kanata (Active):**
+- **Binary**: `/opt/homebrew/bin/kanata` (Homebrew symlink, TCC permissions survive `brew upgrade`)
+- **LaunchDaemon**: Uses bash wrapper with 5s startup delay to ensure Karabiner VirtualHID is ready
+
 ```bash
 # Check status
 sudo launchctl print system/com.example.kanata
@@ -401,6 +406,9 @@ sudo launchctl kickstart -k system/com.example.kanata
 
 # View config
 cat ~/.config/kanata/kanata.kbd
+
+# Verify binary path
+ls -la /opt/homebrew/bin/kanata
 ```
 
 **To switch to Karabiner-Elements:**

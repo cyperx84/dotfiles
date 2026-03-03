@@ -5,23 +5,20 @@
 <dict>
   <key>Label</key>
   <string>com.example.kanata</string>
+  <!-- Use Homebrew symlink: survives brew upgrade so Input Monitoring permissions persist -->
+  <!-- 5s delay gives Karabiner DriverKit time to initialize on boot -->
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/local/bin/kanata</string>
+    <string>/bin/bash</string>
     <string>-c</string>
-    <string>/Users/cyperx/.config/kanata/kanata.kbd</string>
-    <string>--port</string>
-    <string>10000</string>
+    <string>sleep 5 &amp;&amp; exec /opt/homebrew/bin/kanata -c /Users/cyperx/.config/kanata/kanata.kbd --port 10000</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
   <key>KeepAlive</key>
-  <dict>
-    <key>SuccessfulExit</key>
-    <false/>
-  </dict>
+  <true/>
   <key>ThrottleInterval</key>
-  <integer>3</integer>
+  <integer>5</integer>
   <key>StandardOutPath</key>
   <string>/tmp/kanata.out.log</string>
   <key>StandardErrorPath</key>
