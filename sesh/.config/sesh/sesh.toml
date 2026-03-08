@@ -86,6 +86,11 @@ path = "~/dotfiles"
 startup_command = "nvim"
 
 [[session]]
+name = "openclaw workspace"
+path = "~/.openclaw/workspace/"
+startup_command = "nvim"
+
+[[session]]
 name = "code"
 path = "~/Code"
 startup_command = "" 
@@ -99,8 +104,3 @@ startup_command = ""
 name = "docker"
 path = "~"
 startup_command = "~/.config/sesh/scripts/utils/docker_session.sh" 
-
-[[session]]
-name = "cc-sandbox"
-path = "~/Code/cc-sandbox"
-startup_command = ""

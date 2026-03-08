@@ -5,7 +5,7 @@
   "permissions": {
     "defaultMode": "plan"
   },
-  "model": "opus",
+  "model": "sonnet",
   "hooks": {
     "SessionStart": [
       {
