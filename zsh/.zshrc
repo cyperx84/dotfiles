@@ -357,4 +357,4 @@ export PATH="$PATH:/Users/cyperx/.lmstudio/bin"
 # Gemini CLI OAuth workaround (CodeAssist 400)
 export GOOGLE_CLOUD_PROJECT="gemini-cli"
 eval "$(gog completion zsh)"
-export OPENCLAW_GATEWAY_TOKEN='3074eb5a7a1323c1e198aec040b251cf8f138e801be94b64'
+export OPENCLAW_GATEWAY_TOKEN="${OPENCLAW_GATEWAY_TOKEN:-}"  # Set via secure method (e.g., gopass, 1Password, etc.)
