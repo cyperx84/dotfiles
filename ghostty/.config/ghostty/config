@@ -3,7 +3,7 @@ font-family = ZedMono NFM Bold
 font-family-bold = Monaspace Radon ExtraBold
 font-family-italic = Monaspace Radon Italic
 font-family-bold-italic = Monaspace Krypton ExtraBold Italic
-font-size = 20 
+font-size = 20
 font-feature = "ss01"
 font-feature = "ss02"
 font-feature = "ss03"
@@ -21,6 +21,8 @@ background-opacity = 0.9
 background-blur = false
 
 macos-option-as-alt = true
+window-step-resize = true
+# grapheme-width-method = legacy
 
 # Terminal integration improvements  
 shell-integration = zsh
@@ -38,25 +40,8 @@ macos-secure-input-indication = false
 # Keybinds
 keybind = ctrl+l=unbind
 keybind = cmd+shift+p=unbind
-keybind = global:cmd+/=toggle_quick_terminal
+keybind = global:ctrl+enter=toggle_quick_terminal
 keybind = "cmd+shift+s=toggle_secure_input"
-
-# Scrolling
-keybind = super+alt+u=scroll_page_up
-keybind = super+alt+d=scroll_page_down
-keybind = alt+slash=scroll_page_up
-
-# Split navigation (vim-like)
-keybind = super+alt+h=goto_split:left
-keybind = super+alt+j=goto_split:down
-keybind = super+alt+k=goto_split:up
-keybind = super+alt+l=goto_split:right
-
-# Split resizing (vim-like)
-keybind = super+alt+shift+h=resize_split:left,10
-keybind = super+alt+shift+j=resize_split:down,10
-keybind = super+alt+shift+k=resize_split:up,10
-keybind = super+alt+shift+l=resize_split:right,10
 
 # Ghostty Custom shaders
 custom-shader = shaders/cursor_smear_rainbow.glsl

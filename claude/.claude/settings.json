@@ -5,7 +5,7 @@
   "permissions": {
     "defaultMode": "plan"
   },
-  "model": "opus",
+  "model": "sonnet",
   "hooks": {
     "SessionStart": [
       {
@@ -68,5 +68,6 @@
     "gopls-lsp@claude-plugins-official": true
   },
   "autoUpdatesChannel": "latest",
+  "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true
 }

@@ -150,6 +150,8 @@ alias gs="git status"
 # Kanata - restart to pick up Bluetooth keyboards after boot
 alias kr='sudo launchctl kickstart -k system/com.example.kanata'
 
+#Github
+alias ghl="gh repo list"
 alias glog="git log --graph --topo-order --pretty='%w(100,0,6)%C(yellow)%h%C(bold)%C(black)%d %C(cyan)%ar %C(green)%an%n%C(bold)%C(white)%s %N' --abbrev-commit"
 alias gdiff="git diff"
 alias gco="git checkout"
@@ -161,8 +163,6 @@ alias gcoall='git checkout -- .'
 alias gr='git remote'
 alias gre='git reset'
 
-#Github
-alias ghl="gh repo list"
 
 # Docker
 alias dock="open -a docker && while ! docker info > /dev/null 2>&1; do sleep 1 ; done"
@@ -357,3 +357,4 @@ export PATH="$PATH:/Users/cyperx/.lmstudio/bin"
 # Gemini CLI OAuth workaround (CodeAssist 400)
 export GOOGLE_CLOUD_PROJECT="gemini-cli"
 eval "$(gog completion zsh)"
+export PATH="$HOME/.openclaw/bin:$PATH"
