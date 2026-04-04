@@ -55,6 +55,11 @@ automatically-unhide-macos-hidden-apps = true
 # if.app-id = 'md.obsidian'
 # run = 'move-node-to-workspace 6'
 
+# Prevent Chrome from stealing focus - moves it to workspace 5 silently
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace 5'
+
 # ============================================================================
 # System Apps - Auto-Float Rules
 # These apps work better as floating windows (dialogs, utilities, etc.)
@@ -124,7 +129,7 @@ run = 'layout floating'
     cmd-ctrl-b = ['exec-and-forget open -na Zen']
     cmd-ctrl-y = ['exec-and-forget open -a Zen "https://youtube.com"']
     cmd-ctrl-p = ['exec-and-forget open -a Zen "https://perplexity.com"']
-    cmd-ctrl-g = ['exec-and-forget open -a "Google Chrome"']
+    cmd-ctrl-g = ['exec-and-forget open -g "Google Chrome"']
 
     cmd-ctrl-c = ['exec-and-forget open -a Claude']
     cmd-ctrl-u = ['exec-and-forget open -a Antigravity']
