@@ -120,7 +120,7 @@ System-Level Services (LaunchDaemons):
   - Green active border, muted gray inactive
   - Config: `borders/.config/borders/bordersrc`
   - Auto-starts via Aerospace `after-startup-command`
-- **SketchyBar** - Menu bar replacement (39 plugins, Aerospace integration)
+- **SketchyBar** - Menu bar replacement (40 plugins, Aerospace integration)
 
 ### Terminal Environment (3-Layer)
 - **Ghostty** - GPU-accelerated terminal with shader support
@@ -128,7 +128,7 @@ System-Level Services (LaunchDaemons):
 - **Zsh** - Enhanced shell (FZF integration, extensive aliases)
 
 ### Development Tools
-- **Neovim** - 49 Lua config files (kickstart.nvim based)
+- **Neovim** - 36 Lua config files (kickstart.nvim based)
 - **Starship** - 5 interchangeable prompt themes
 
 ### Input Management
@@ -932,7 +932,7 @@ git stash pop  # Restore if needed
 - **Jan 2026**: Global agent commands (new-agent, improve-agent) for Claude Code
 - **Jan 2026**: Reverted from HyprSpace to standard Aerospace
 - **Dec 2025**: Kanata now PRIMARY keyboard remapper (Karabiner unconfigured)
-- **Dec 2025**: Expanded SketchyBar to 39 plugins with comprehensive testing framework
+- **Dec 2025**: Expanded SketchyBar to 40 plugins with comprehensive testing framework
 - **Oct 2025**: Nvim added as git subtree (see Git Subtree Management section)
 
 ---

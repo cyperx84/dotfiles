@@ -23,11 +23,11 @@
 
 ```bash
 # Method 1: Sesh + FZF (recommended)
-sd                          # Fuzzy connect to any session
-# or Alt+s from anywhere     # ZSH keybind for session selection
+sd                          # Fuzzy connect to session (sc alias)
+# or M-e from tmux          # Alt+e for session selection
 
 # Method 2: Tmux Session Switcher (from within tmux)
-C-a T                       # Advanced session switcher with previews
+M-e                       # Advanced session switcher with previews
 ```
 
 **Integration Points:**
@@ -40,12 +40,11 @@ C-a T                       # Advanced session switcher with previews
 
 ```bash
 # Quick status check
-sesh-dashboard              # Comprehensive session overview
-sesh-current               # Current session details
-sesh-active                # List active sessions
+sl                          # List sessions (compact, deduplicated)
+sc                          # Fuzzy connect to session
 
 # Tmux native
-C-a T                      # Session switcher with status
+M-e                        # Session switcher with FZF previews
 ```
 
 ---
@@ -70,7 +69,6 @@ lt                         # Tree view with details
 <leader>e                  # Mini.files (toggle, context-aware)
 <C-e>                      # Oil floating (parent directory)
 -                          # Yazi from within Neovim
-<leader>E                  # Neotree (traditional tree)
 
 # Level 4: Search-based access
 <leader>sf                 # Telescope find files
@@ -178,7 +176,7 @@ Shift+Ctrl+r               # Balance windows (flatten workspace tree)
 Shift+Alt+Cmd+r            # Enter service mode for advanced operations
 
 # Tmux Layouts
-C-a T                      # Session switcher
+M-e                      # Session switcher
 C-a N                      # New session
 ```
 
@@ -248,9 +246,9 @@ n                          # Open Neovim
 <leader>gg                 # Git interface
 
 # 5. Window Layout (if needed)
-C-a v                      # Split for terminal
-C-a s                      # Additional splits
-C-a T                      # Switch between sessions as needed
+M-v                      # Split for terminal
+M-s                      # Additional splits
+M-e                      # Switch between sessions as needed
 ```
 
 ### Container Development
@@ -326,8 +324,8 @@ When switching between different projects or contexts:
 C-a d                      # Detach from current session (Tmux)
 
 # 2. Switch context
-sd                         # Select new session/project
-# or Alt+s                 # Quick session selector
+sc                         # Select new session/project
+# or M-e                     # Alt+e for session switcher
 
 # 3. Orient in new context
 <leader><leader>           # See open buffers

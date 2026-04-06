@@ -102,6 +102,8 @@ Create in `.claude/commands/`:
 
 | Command | Purpose |
 |---------|---------|
+| `/new-agent` | Create new Claude Code agents from templates |
+| `/improve-agent` | Improve existing Claude Code agents |
 | `/eval` | Evaluate LLM response quality (Focus buffer first) |
 | `/bridge` | Apply CodeCompanion info to codebase |
 | `/compare` | Compare multiple LLM responses |

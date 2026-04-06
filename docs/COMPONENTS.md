@@ -230,6 +230,8 @@ bind-key l select-pane -R
 - `sainnhe/tmux-fzf` - FZF integration
 - `omerxx/tmux-floax` - Floating terminals
 - `niksingh710/minimal-tmux-status` - Clean status bar
+- `wfxr/tmux-fzf-url` - URL opening
+- `joshmedeski/tmux-nerd-font-window-name` - Nerd font icons
 
 **Session Management**:
 - **Sesh Integration**: `C-a T` for advanced session switcher
@@ -251,7 +253,7 @@ bind-key l select-pane -R
 - Root scripts: sesh_list_enhanced.sh, sesh_preview.sh, sesh_smart_start.sh, etc.
 
 **Integration**:
-- Called from tmux keybindings: Alt+e (session switcher via `core/sesh_switcher.sh`)
+- Called from tmux keybindings: `M-e` (Alt+e - session switcher via `core/sesh_switcher.sh`)
 - Used by FZF session switcher for previews
 - Referenced in `sesh.toml` for preview_command
 - Provide enhanced display with icons and contextual information
@@ -342,7 +344,7 @@ export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-rainbow.toml
 **Key Files**:
 - `nvim/.config/nvim/init.lua` - Entry point
 - `nvim/.config/nvim/lua/keymaps.lua` - Core keybindings ([detailed guide](NEOVIM_KEYBINDS.md))
-- `nvim/.config/nvim/lua/custom/plugins/` - 39 plugin configurations
+- `nvim/.config/nvim/lua/custom/plugins/` - 36 plugin configurations
 
 **Core Architecture**:
 ```
@@ -459,10 +461,9 @@ Kanata is the primary keyboard remapper.
 ### 🔧 Development Workflow Integration
 
 **File Validation Scripts**:
-- `sesh list` - Sesh session validation (manual, validate_sesh.sh removed Oct 2025)
+- `sesh list` - Sesh session validation (manual)
 - `~/.config/sketchybar/test_sketchybar.sh` - SketchyBar plugin testing
 - `~/.config/sketchybar/debug_sketchybar.sh` - SketchyBar debugging
-- `yabai --check-config` - Yabai configuration validation
 
 **BrewIntegration** (in `zsh/.zshrc:45-53`):
 ```bash
