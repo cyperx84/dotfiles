@@ -288,7 +288,6 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="$PATH:$HOME/.antigravity/antigravity/bin"     # Antigravity
 export PATH="$PATH:$HOME/.lmstudio/bin"                    # LM Studio CLI
 
-alias oc="opencode"
 alias cc="claude --dangerously-skip-permissions"
 
 # ======================

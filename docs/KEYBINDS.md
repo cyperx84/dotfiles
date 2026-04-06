@@ -48,15 +48,15 @@
 **Workspace Navigation:**
 | Keybind | Action | Description |
 |---------|---------|-------------|
-| `Cmd+Ctrl+j/k/l` | Focus workspace | Switch to workspace 1/2/3 |
-| `Cmd+Ctrl+n/p` | Next/prev workspace | Navigate to next/previous workspace |
-| `Ctrl+Shift+4-9` | Focus workspace 4-9 | Switch to workspace 4-9 |
+| `Cmd+j/k/l/u/i/o` | Focus workspace | Switch to workspace 1/2/3/4/5/6 (homerow) |
+| `Ctrl+Shift+1-9` | Focus workspace 1-9 | Switch to workspace by number |
+| `Shift+Ctrl+n/p` | Next/prev workspace | Navigate to next/previous workspace |
 
 **Move Window to Workspace:**
 | Keybind | Action | Description |
 |---------|---------|-------------|
-| `Shift+Alt+j/k/l` | Move to workspace | Move window to workspace 1/2/3 |
-| `Shift+Alt+4-9` | Move to workspace | Move window to workspace 4-9 |
+| `Shift+Alt+j/k/l/u/i/o` | Move to workspace | Move window to workspace 1/2/3/4/5/6 (homerow) |
+| `Shift+Alt+1-9` | Move to workspace | Move window to workspace by number |
 | `Shift+Alt+n/p` | Move next/prev | Move window to next/previous workspace (wrap-around) |
 
 **Display Management:**
@@ -81,12 +81,30 @@
 | `C-a` | Prefix | Tmux prefix key |
 | `C-a h/j/k/l` | Focus pane | Select pane in direction |
 | `C-a C-h/C-j/C-k/C-l` | Resize pane | Resize pane (repeatable) |
-| `C-a c` | New window | Create new window in current path |
-| `C-a s` | Vertical split | Split window vertically |
-| `C-a v` | Horizontal split | Split window horizontally |
 | `C-a r` | Reload config | Reload tmux configuration |
 | `C-a b` | Toggle status | Toggle status bar visibility |
 | `C-a x` | Kill pane | Close pane without confirmation |
+| `C-a N` | New session | Create new named session |
+| `C-a R` | Rename session | Rename current session |
+| `C-a X` | Kill session | Kill current session (with confirmation) |
+
+### Tmux Prefix-Free Alt Bindings (work anywhere in tmux)
+*Source: `tmux/.tmux.conf`*
+
+| Keybind | Action | Description |
+|---------|---------|-------------|
+| `M-1` through `M-6` | Select window | Direct window selection |
+| `M-s` | Vertical split | Split window vertically |
+| `M-v` | Horizontal split | Split window horizontally |
+| `M-c` | New window | Create new window |
+| `M-x` | Kill window | Close current window |
+| `M-e` | Sesh switcher | FZF-powered session switcher |
+| `M-p` | Last session | Switch to last session |
+| `M-[` | Copy mode | Enter copy mode |
+| `M-Tab` | Last window | Switch to last window |
+| `M-w` | Zoom pane | Toggle pane zoom |
+| `M-r` | Break pane | Break pane to new window |
+| `M-q` | Detach | Detach from tmux server |
 
 ---
 
@@ -106,19 +124,19 @@
 | `C-a M` | Tmuxinator | Launch tmuxinator project with FZF |
 
 ### Sesh Aliases
-*Source: `sesh/.config/sesh/scripts/`*
+*Source: `zsh/.zshrc`*
 
 | Alias | Command | Description |
 |-------|---------|-------------|
 | `sl` | `sesh list -t -c -d` | List sessions (compact, deduplicated) |
-| `sc` | `sesh connect $(sesh list -d | fzf)` | Fuzzy connect (deduplicated) |
+| `sc` | `sesh connect $(sesh list | fzf)` | Fuzzy connect to session |
 
 ### Zsh Session Integration
 *Source: `zsh/.zshrc`*
 
 | Keybind | Action | Description |
 |---------|---------|-------------|
-| `Alt+s` / `\es` | Sesh sessions | FZF session selector with immediate connect |
+| `M-e` | Sesh sessions | FZF session switcher (from within tmux) |
 
 ### Ghostty Terminal Operations
 *Source: `ghostty/.config/ghostty/config`*
@@ -252,8 +270,7 @@
 
 | Alias | Command | Description |
 |-------|---------|-------------|
-| `cld` | `/Users/cyperx/.claude/local/claude --dangerously-skip-permissions` | Claude CLI (unsafe mode) |
-| `claude` | `/Users/cyperx/.claude/local/claude` | Claude CLI (safe mode) |
+| `cc` | `claude --dangerously-skip-permissions` | Claude CLI (unsafe mode) |
 
 ### HTTP & Networking
 *Source: `zsh/.zshrc`*
@@ -262,6 +279,21 @@
 |-------|---------|-------------|
 | `http` | `xh` | Modern HTTP client |
 | `nm` | `nmap -sC -sV -oN nmap` | Nmap with scripts |
+
+### Quality of Life & Utilities
+*Source: `zsh/.zshrc`*
+
+| Alias | Command | Description |
+|-------|---------|-------------|
+| `kr` | `sudo launchctl kickstart -k system/com.example.kanata` | Restart Kanata |
+| `vv` | FZF Neovim config selector | Switch between nvim configs |
+| `ao`/`ai`/`as` | `audio-output`/`audio-input`/status | FZF audio device switching |
+| `speakers`/`monitor`/`mod-out` | `SwitchAudioSource` shortcuts | Quick audio output switches |
+| `scarlett-in`/`mod-in` | `SwitchAudioSource` shortcuts | Quick audio input switches |
+| `cl` | `clear` | Clear terminal |
+| `ta` | `tmux attach -d` | Attach to tmux |
+| `conf` | `cd $HOME/dotfiles && nvim` | Open dotfiles config |
+| `note`/`notes`/`no` | Open Obsidian notes | Quick note access |
 
 ---
 
@@ -318,10 +350,8 @@ Kanata is the primary keyboard remapper.
 
 | Keybind | Action | Description |
 |---------|---------|-------------|
-| `^e` | `autosuggest-execute` | Execute suggestion |
-| `^w` | `autosuggest-accept` | Accept suggestion |
-| `^u` | `autosuggest-toggle` | Toggle suggestions |
 | `^f` | `vi-forward-word` | Forward word |
+| `^u` | `up-line-or-search` | Up/search |
 | `^p` | `down-line-or-search` | Down/search |
 | `jk` | `vi-cmd-mode` | Enter vi command mode |
 
@@ -346,11 +376,12 @@ Kanata is the primary keyboard remapper.
 
 ### Most Used Keybinds
 ```
-Window Management:    Shift+Ctrl+hjkl (focus), Ctrl+1-5 (spaces)
-Sessions:            Alt+s (sesh), C-a T (tmux switcher)
+Window Management:    Cmd+j/k/l/u/i/o (workspaces 1-6), Shift+Ctrl+hjkl (focus)
+Sessions:            M-e (sesh switcher), M-p (last session), sc (fuzzy connect)
 Files:               fcd (fuzzy cd), f (yazi), C-e (oil)
 Git:                 gs (status), gc "msg" (commit), gp (push)
 Development:         ta (tmux), n (nvim), dps (docker ps)
+Audio:               ao (output), ai (input), as (status)
 ```
 
 ### Integration Points

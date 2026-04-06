@@ -34,9 +34,10 @@ exec-on-workspace-change = ['/bin/bash', '-c',
     "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
 ]
 
-# Window change trigger for instant SketchyBar updates
+# Chrome auto-routing to workspace 5
 [[on-window-detected]]
-run = 'exec-and-forget sketchybar --trigger window_change'
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace 5'
 
 # Gaps configuration
 [gaps]
@@ -106,11 +107,11 @@ pgrep -l borders                 # Check if running
 
 **Key Files**:
 - `sketchybar/.config/sketchybar/sketchybarrc` - Main configuration
-- `sketchybar/.config/sketchybar/plugins/` - 39 plugin scripts
-- `sketchybar/.config/sketchybar/items/` - 29 item configurations
+- `sketchybar/.config/sketchybar/plugins/` - 40 plugin scripts (39 .sh + 1 .py)
+- `sketchybar/.config/sketchybar/items/` - 31 item configurations
 - `sketchybar/.config/sketchybar/helper/` - C helper binary
 
-**Plugin Architecture** (39 plugins total):
+**Plugin Architecture** (40 plugins total):
 ```
 plugins/
 ├── aerospace.sh          # Aerospace workspace management (PRIMARY)
@@ -137,7 +138,7 @@ plugins/
 ├── tmux.sh               # Tmux session indicator
 ├── memory_graph.sh       # Memory usage graph
 ├── memory_ring.sh        # Memory usage ring display
-└── ... (17+ more plugins)
+└── ... (18+ more plugins)
 ```
 
 **Temperature Monitoring (M4 Mac)**:
@@ -193,7 +194,7 @@ shaders/
 ├── crt.glsl              # CRT monitor effect
 ├── galaxy.glsl           # Galaxy spiral
 ├── nordic-aurora.glsl    # Aurora borealis
-└── ... (25+ more effects)
+└── ... (51+ more effects)
 ```
 
 **Integration**:
@@ -206,7 +207,7 @@ shaders/
 **Dependencies**: TPM (plugin manager), various utilities
 
 **Key Files**:
-- `tmux/.tmux.conf` - Main configuration (164 lines)
+- `tmux/.tmux.conf` - Main configuration (249 lines)
 - Plugin configurations embedded
 
 **Core Features**:
@@ -261,7 +262,7 @@ bind-key l select-pane -R
 **Dependencies**: Homebrew packages for various tools
 
 **Key Files**:
-- `zsh/.zshrc` - Main configuration (271 lines)
+- `zsh/.zshrc` - Main configuration (361 lines)
 
 **Enhancement Categories**:
 

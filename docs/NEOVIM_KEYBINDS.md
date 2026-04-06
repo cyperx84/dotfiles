@@ -39,6 +39,7 @@ This document covers all Neovim keybinds across the configuration, organized by 
 |---------|------|--------|-------------|
 | `<Esc>` | Normal | `:nohlsearch<CR>` | Clear search highlighting |
 | `<C-s>` | Normal | `:w<CR>` | Save file (quick save) |
+| `<C-q>` | Normal | `:q<CR>` | Quit current buffer |
 | `jk` | Insert | `<Esc><Esc>` | Exit insert mode |
 
 ---
@@ -53,7 +54,6 @@ This document covers all Neovim keybinds across the configuration, organized by 
 | `<leader>e` | `require('mini.files').open()` | Mini.Files | Toggle mini.files (main) |
 | `<C-e>` | `:Oil --float<CR>` | Oil | Open parent directory (floating) |
 | `-` | `:Yazi<CR>` | Yazi | Open parent directory with Yazi |
-| `<leader>E` | `:Neotree toggle<CR>` | Neotree | Toggle Neotree file explorer |
 | `<leader>-` | `:Yazi<CR>` | Yazi | Open parent directory |
 
 **Note:** `<leader>e` toggles mini.files - if already open, it closes; otherwise opens at current file location.
@@ -237,6 +237,30 @@ This document covers all Neovim keybinds across the configuration, organized by 
 |---------|--------|-------------|
 | `Q` | `<nop>` | Disable Ex mode |
 
+### Snacks.nvim
+*Source: `snacks.lua`*
+
+| Keybind | Action | Description |
+|---------|--------|-------------|
+| `<leader>bd` | `Snacks.bufdelete()` | Delete current buffer |
+| `<leader>ba` | `Snacks.bufdelete.all()` | Delete all buffers |
+| `<leader>bo` | `Snacks.bufdelete.other()` | Delete other buffers |
+| `<leader>tz` | `Snacks.zen()` | Toggle Zen mode |
+| `<leader>tT` | `Snacks.terminal.toggle()` | Toggle floating terminal |
+
+### Additional Plugins (no custom keybinds)
+*Source: `lua/custom/plugins/`*
+
+| Plugin | Config File | Purpose |
+|--------|-------------|---------|
+| snacks.nvim | `snacks.lua` | Dashboard, zen mode, bufdelete, rename, bigfile |
+| claude.nvim | `claude.lua` | Claude Code integration |
+| opencode.nvim | `opencode.lua` | OpenCode integration |
+| neo-git | `neo-git.lua` | Neogit (Git operations, replaces gitsigns for some workflows) |
+| uv | `uv.lua` | libuv integration |
+| autopairs | `autopairs.lua` | Auto-closing pairs |
+| super-maven | `super-maven.lua` | AI code completion |
+
 ---
 
 ## Configuration Context
@@ -249,6 +273,7 @@ The configuration uses which-key for contextual help. Leader key combinations sh
 - **Mini.Files**: Can be toggled and integrates with current file context
 - **Oil/Yazi**: Multiple file manager options for different workflows
 - **Neogit**: Comprehensive git operations with floating/split modes
+- **Snacks**: Dashboard, zen mode, buffer management, auto-rename on file move
 
 ### Tmux Integration
 Window navigation (`<C-hjkl>`) seamlessly integrates with tmux pane navigation through the vim-tmux-navigator plugin.

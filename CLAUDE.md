@@ -24,9 +24,6 @@ tmux source-file ~/.tmux.conf                             # Reload tmux config
 # Validation & testing
 ~/.config/sketchybar/test_sketchybar.sh                  # Test all plugins
 
-# NOTE: ~/bin/validate_sesh.sh was REMOVED (Oct 2025)
-# Sesh validation now manual: sesh list (check for errors)
-
 # Configuration reload
 exec zsh                                                  # Reload shell
 ```

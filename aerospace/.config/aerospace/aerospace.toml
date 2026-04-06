@@ -133,7 +133,6 @@ run = 'layout floating'
 
     cmd-ctrl-c = ['exec-and-forget open -a Claude']
     cmd-ctrl-u = ['exec-and-forget open -a Antigravity']
-    cmd-ctrl-a = ['exec-and-forget open -a "Ableton Live 12 Suite"']
     cmd-ctrl-d = ['exec-and-forget open -a "Discord"']
     cmd-ctrl-i = ['exec-and-forget open -a "iPhone Mirroring"']
     cmd-ctrl-m = ['exec-and-forget open -a Messages']
@@ -175,7 +174,7 @@ run = 'layout floating'
     # Maximize/fullscreen toggle
     shift-ctrl-w = 'fullscreen'
 
-    # Resize windows (ctrl + alt + cmd + hjkl) - Smart resize adapts to window position
+    # Resize windows
     ctrl-alt-cmd-j = 'resize smart -50'    # Make smaller (context-aware)
     ctrl-alt-cmd-k = 'resize smart +50'    # Make larger (context-aware)
 

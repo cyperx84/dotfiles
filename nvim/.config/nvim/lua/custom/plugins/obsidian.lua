@@ -190,8 +190,7 @@ return {
     require('obsidian').setup({
       -- Workspaces
       workspaces = {
-        { name = 'notes', path = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes') },
-        { name = 'snowboarding', path = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents/snowboarding') },
+        { name = 'klaw', path = vim.fn.expand('~/.openclaw/workspace/vault') },
         { name = 'cyperx', path = vim.fn.expand('~/Library/Mobile Documents/iCloud~md~obsidian/Documents/cyperx') },
       },
 
@@ -278,9 +277,7 @@ return {
       },
 
       -- Link style: Use markdown links [text](file.md) instead of wiki [[links]]
-      preferred_link_style = 'markdown',
-      markdown_link_func = require('obsidian.builtin').markdown_link,
-      wiki_link_func = 'use_alias_only', -- Fallback for wiki links if needed
+      link = { style = 'markdown' },
 
       -- Picker (telescope)
       picker = {
@@ -328,7 +325,13 @@ return {
         end, 100)
 
         -- Core keymaps
-        vim.keymap.set('n', 'gf', '<cmd>Obsidian follow_link<CR>', { buffer = true, desc = 'Follow link under cursor' })
+        vim.keymap.set('n', 'gf', function()
+          if vim.b.obsidian_buffer then
+            vim.cmd('Obsidian follow_link')
+          else
+            vim.cmd('normal! gf')
+          end
+        end, { buffer = true, desc = 'Follow link under cursor' })
         vim.keymap.set('n', '<cr>', function()
           return require('obsidian').util.smart_action()
         end, { buffer = true, expr = true, desc = 'Smart action' })
