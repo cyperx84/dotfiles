@@ -33,7 +33,7 @@ return {
       resolve = function(path, src)
         -- First try obsidian API resolution
         local ok, obsidian_api = pcall(require, "obsidian")
-        if ok and obsidian_api.api and obsidian_api.api.path_is_note(path) then
+        if ok and obsidian_api and obsidian_api.api and obsidian_api.api.path_is_note(path) then
           local resolved = obsidian_api.api.resolve_image_path(src)
           if resolved and vim.fn.filereadable(resolved) == 1 then
             return resolved

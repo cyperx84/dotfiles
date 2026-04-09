@@ -71,11 +71,7 @@ return {
                   return
                 end
 
-                local ok = pcall(vim.lsp.buf.clear_references)
-                if not ok then
-                  -- If clearing fails, silently ignore (buffer may be in transition)
-                  return
-                end
+                pcall(vim.lsp.buf.clear_references)
               end,
             })
 
@@ -161,6 +157,7 @@ return {
           },
         },
         rust_analyzer = {},
+        marksman = {},
 
         lua_ls = {
           -- cmd = { ... },
