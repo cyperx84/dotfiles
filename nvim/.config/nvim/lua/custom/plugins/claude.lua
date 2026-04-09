@@ -33,8 +33,13 @@ local PROVIDER_ENV_KEYS = {
 }
 
 local function clear_provider_env()
+  local uv = vim.uv or vim.loop
   for _, k in ipairs(PROVIDER_ENV_KEYS) do
-    vim.fn.setenv(k, vim.NIL)
+    if uv and uv.os_unsetenv then
+      uv.os_unsetenv(k)
+    else
+      vim.fn.setenv(k, '')
+    end
   end
 end
 
