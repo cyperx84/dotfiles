@@ -10,7 +10,20 @@ return {
   config = function()
     ---@type opencode.Opts
     vim.g.opencode_opts = {
-      -- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition".
+      server = {
+        start = function()
+          require("opencode.terminal").open("opencode --port", {
+            split = "right",
+            width = math.floor(vim.o.columns * 0.35), -- 35% of screen
+          })
+        end,
+        stop = function()
+          require("opencode.terminal").toggle("opencode --port", {
+            split = "right",
+            width = math.floor(vim.o.columns * 0.5),
+          })
+        end,
+      },
     }
 
     -- Required for `opts.events.reload`.
