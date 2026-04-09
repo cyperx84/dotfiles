@@ -50,7 +50,7 @@ return {
         self.spinner_timer:close()
       end
 
-      self.spinner_timer = vim.loop.new_timer()
+      self.spinner_timer = (vim.uv or vim.loop).new_timer()
       self.spinner_timer:start(0, 100, vim.schedule_wrap(function()
         if self.processing then
           self.spinner_index = (self.spinner_index % spinner_symbols_len) + 1
@@ -149,15 +149,15 @@ return {
           -- Add breadcrumb navigation if available
           {
             function()
-              local navic_ok, navic = pcall(require, 'nvim-navic')
-              if navic_ok and navic.is_available() then
+              local ok, navic = pcall(require, 'nvim-navic')
+              if ok and navic.is_available() then
                 return navic.get_location()
               end
               return ''
             end,
             cond = function()
-              local navic_ok = pcall(require, 'nvim-navic')
-              return navic_ok and require('nvim-navic').is_available()
+              local ok, navic = pcall(require, 'nvim-navic')
+              return ok and navic.is_available()
             end,
             color = { fg = '#a9b1d6' },
           }
