@@ -77,8 +77,8 @@ startup_command = ""
 
 [[session]]
 name = "notes"
-path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/cyperx"
-startup_command = "nvim 00-index.md"
+path = "~/.openclaw/workspace/vault/"
+startup_command = "nvim index.md"
 
 [[session]]
 name = "dotfiles"
@@ -89,11 +89,6 @@ startup_command = "nvim"
 name = "Klaw workspace"
 path = "~/.openclaw/workspace/"
 startup_command = "nvim"
-
-[[session]]
-name = "code"
-path = "~/Code"
-startup_command = "" 
 
 [[session]]
 name = "github"

@@ -1,96 +1,17 @@
--- Shared helper: run ClaudeCode command with error notification
-local function run_claudecode(label)
-  local ok, err = pcall(vim.cmd, 'ClaudeCode')
-  if not ok then
-    vim.notify('Error launching Claude Code (' .. label .. '): ' .. (err or 'Unknown error'), vim.log.levels.ERROR)
-    return false
-  end
-  return true
-end
-
 -- Toggle Claude Code without moving cursor focus
 local function toggle_claude_no_focus()
   local current_win = vim.api.nvim_get_current_win()
-  if not run_claudecode('toggle') then return end
+  local ok, err = pcall(vim.cmd, 'ClaudeCode')
+  if not ok then
+    vim.notify('Error launching Claude Code: ' .. (err or 'Unknown error'), vim.log.levels.ERROR)
+    return
+  end
   vim.defer_fn(function()
     if vim.api.nvim_win_is_valid(current_win) and vim.api.nvim_get_current_win() ~= current_win then
       vim.api.nvim_set_current_win(current_win)
     end
   end, 50)
 end
-
--- Env keys managed by providers; unset via vim.NIL so children don't inherit empty strings
-local PROVIDER_ENV_KEYS = {
-  'ANTHROPIC_BASE_URL',
-  'ANTHROPIC_AUTH_TOKEN',
-  'API_TIMEOUT_MS',
-  'ANTHROPIC_MODEL',
-  'ANTHROPIC_SMALL_FAST_MODEL',
-  'ANTHROPIC_DEFAULT_SONNET_MODEL',
-  'ANTHROPIC_DEFAULT_OPUS_MODEL',
-  'ANTHROPIC_DEFAULT_HAIKU_MODEL',
-  'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC',
-}
-
-local function clear_provider_env()
-  local uv = vim.uv or vim.loop
-  for _, k in ipairs(PROVIDER_ENV_KEYS) do
-    if uv and uv.os_unsetenv then
-      uv.os_unsetenv(k)
-    else
-      vim.fn.setenv(k, '')
-    end
-  end
-end
-
--- Factory: build a provider launcher from a pass key and env table
-local function make_launcher(name, pass_key, env)
-  return function()
-    clear_provider_env()
-    if pass_key then
-      local handle = io.popen('zsh -i -c "pass ' .. pass_key .. '" 2>&1')
-      if not handle then
-        vim.notify('Error: Could not retrieve ' .. name .. ' API key from pass', vim.log.levels.ERROR)
-        return
-      end
-      local api_key = handle:read('*a'):gsub('\n', '')
-      handle:close()
-      if api_key == '' then
-        vim.notify('Error: ' .. name .. ' API key is empty', vim.log.levels.ERROR)
-        return
-      end
-      env.ANTHROPIC_AUTH_TOKEN = api_key
-    end
-    for k, v in pairs(env) do
-      vim.fn.setenv(k, v)
-    end
-    run_claudecode(name)
-  end
-end
-
-local launch_claude_normal = make_launcher('normal', nil, {})
-
-local launch_claude_minimax = make_launcher('MiniMax', 'apis/MINIMAX_API_KEY', {
-  ANTHROPIC_BASE_URL = 'https://api.minimax.io/anthropic',
-  API_TIMEOUT_MS = '3000000',
-  ANTHROPIC_MODEL = 'MiniMax-M2',
-  ANTHROPIC_SMALL_FAST_MODEL = 'MiniMax-M2',
-  ANTHROPIC_DEFAULT_SONNET_MODEL = 'MiniMax-M2',
-  ANTHROPIC_DEFAULT_OPUS_MODEL = 'MiniMax-M2',
-  ANTHROPIC_DEFAULT_HAIKU_MODEL = 'MiniMax-M2',
-  CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = '1',
-})
-
-local launch_claude_glm = make_launcher('GLM', 'apis/GLM_API_KEY', {
-  ANTHROPIC_BASE_URL = 'https://api.z.ai/api/anthropic',
-  API_TIMEOUT_MS = '3000000',
-  ANTHROPIC_MODEL = 'GLM-4.6',
-  ANTHROPIC_SMALL_FAST_MODEL = 'GLM-4.5-Air',
-  ANTHROPIC_DEFAULT_SONNET_MODEL = 'GLM-4.6',
-  ANTHROPIC_DEFAULT_OPUS_MODEL = 'GLM-4.6',
-  ANTHROPIC_DEFAULT_HAIKU_MODEL = 'GLM-4.5-Air',
-  CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = '1',
-})
 
 -- Send a single buffer name to Claude Code via Lua API
 local function send_bufname(bufname, source)
@@ -207,8 +128,9 @@ return {
   end,
   keys = {
     -- Core Claude Code commands
-    { '<M-;>', launch_claude_normal, desc = 'Toggle Claude (normal)' },
+    { '<M-;>', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude' },
     { '<M-;>', toggle_claude_no_focus, desc = 'Toggle Claude (close)', mode = 't' },
+    { '<leader>cc', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude' },
     { '<leader>cf', '<cmd>ClaudeCodeFocus<cr>', desc = 'Focus Claude' },
     { '<leader>cm', '<cmd>ClaudeCodeSelectModel<cr>', desc = 'Select Claude model' },
 
@@ -231,13 +153,7 @@ return {
     },
 
     -- Quick actions
-    { '<leader>cc', '<cmd>ClaudeCode<cr>', desc = 'Claude Code' },
     { '<leader>c?', '<cmd>help claudecode<cr>', desc = 'Claude Code help' },
     { '<leader>cq', '<cmd>ClaudeCode --quit<cr>', desc = 'Quit Claude Code' },
-
-    -- Claude Code with different providers
-    { '<leader>ccc', launch_claude_normal, desc = 'Claude Code (original)' },
-    { '<leader>ccm', launch_claude_minimax, desc = 'Claude Code (MiniMax)' },
-    { '<leader>ccg', launch_claude_glm, desc = 'Claude Code (GLM)' },
   },
 }

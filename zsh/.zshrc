@@ -234,8 +234,7 @@ alias conf="cd $HOME/dotfiles && nvim"
 
 # notes
 alias note="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim Index.md"
-alias notes="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/cyperx && nvim 00-Index.md"
-alias no="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/snowboard && nvim Index.md"
+alias notes="cd ~/.openclaw/workspace/vault && nvim index.md"
 
 # ======================
 # SESH SESSION MANAGEMENT
