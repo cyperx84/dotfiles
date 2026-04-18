@@ -90,7 +90,7 @@ AI/MCP Integration:
 - `tmux-floax` - Floating panes (60%x60%, bind: `p`)
 - `minimal-tmux-status` - Green indicator status bar
 
-**Custom Scripts** (`tmux/.tmux/scripts/` - 25 scripts):
+**Custom Scripts** (`sesh/.config/sesh/scripts/` - 14 scripts):
 ```
 core/           # Core functionality (4 scripts)
 ├── sesh_switcher.sh       # FZF-based session switcher
@@ -98,11 +98,13 @@ core/           # Core functionality (4 scripts)
 ├── sesh_preview.sh        # Session preview generation
 └── sesh_clean_selection.sh # Clean FZF output
 
-utils/          # Utility functions (4 scripts)
+utils/          # Utility functions (6 scripts)
+├── docker_session.sh      # Docker session startup
 ├── sesh_create_new.sh     # Create new sessions
+├── sesh_edit.sh           # Edit session config
 ├── sesh_kill.sh           # Kill specific session
-├── sesh_smart_start.sh    # Intelligent session creation
-└── sesh_session_helper.sh # Session utilities
+├── sesh_session_helper.sh # Session utilities
+└── sesh_smart_start.sh    # Intelligent session creation
 
 lib/            # Shared libraries (4 scripts)
 ├── sesh_common.sh         # Core utilities

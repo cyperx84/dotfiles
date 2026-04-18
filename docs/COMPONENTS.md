@@ -247,10 +247,9 @@ bind-key l select-pane -R
 **Location**: `sesh/.config/sesh/scripts/`
 
 **Structure**:
-- `core/` - Core session logic (sesh_switcher.sh)
-- `lib/` - Shared libraries (sesh_colors.sh)
-- `utils/` - Utility scripts
-- Root scripts: sesh_list_enhanced.sh, sesh_preview.sh, sesh_smart_start.sh, etc.
+- `core/` - Core session logic (sesh_switcher.sh, sesh_list.sh, sesh_preview.sh, sesh_clean_selection.sh)
+- `lib/` - Shared libraries (sesh_colors.sh, sesh_common.sh, sesh_icons.sh, sesh_preview_common.sh)
+- `utils/` - Utility scripts (docker_session.sh, sesh_create_new.sh, sesh_edit.sh, sesh_kill.sh, sesh_session_helper.sh, sesh_smart_start.sh)
 
 **Integration**:
 - Called from tmux keybindings: `M-e` (Alt+e - session switcher via `core/sesh_switcher.sh`)
