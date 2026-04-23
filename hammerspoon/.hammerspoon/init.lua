@@ -1,8 +1,30 @@
 -- Focus follows mouse via Accessibility API
 local lastWinKey = nil
 
+local function frontmostIsDialog()
+  local app = hs.application.frontmostApplication()
+  if not app then return false end
+  if app:name() == "System Settings" then return true end
+  local axApp = hs.axuielement.applicationElement(app)
+  if not axApp then return false end
+  local focused = axApp:attributeValue("AXFocusedWindow")
+  if not focused then return false end
+  local subrole = focused:attributeValue("AXSubrole") or ""
+  local modal = focused:attributeValue("AXModal")
+  if modal == true then return true end
+  if subrole == "AXDialog" or subrole == "AXSystemDialog" or subrole == "AXSheet" then
+    return true
+  end
+  return false
+end
+
 local function focusCheck()
   pcall(function()
+    if frontmostIsDialog() then
+      hs.timer.doAfter(0.05, focusCheck)
+      return
+    end
+
     local mousePos = hs.mouse.absolutePosition()
     local element = hs.axuielement.systemWideElement():elementAtPosition(mousePos)
 
