@@ -126,18 +126,17 @@ run = 'layout floating'
     cmd-ctrl-shift-n = ['exec-and-forget open -na Ghostty --args -e tmux new-session -A -s Neovim nvim']
     cmd-ctrl-n = 'exec-and-forget open -na Ghostty --args -e bash -lc "/opt/homebrew/bin/sesh connect notes"'
 
-    cmd-ctrl-b = ['exec-and-forget open -na Zen']
-    cmd-ctrl-y = ['exec-and-forget open -a Zen "https://youtube.com"']
-    cmd-ctrl-p = ['exec-and-forget open -a Zen "https://perplexity.com"']
-    cmd-ctrl-g = ['exec-and-forget open -g "Google Chrome"']
+    cmd-shift-b = ['exec-and-forget open -na Zen']
+    cmd-shift-y = ['exec-and-forget open -a Zen "https://youtube.com"']
+    cmd-shift-g = ['exec-and-forget open -g "Google Chrome"']
 
-    cmd-ctrl-c = ['exec-and-forget open -a Claude']
-    cmd-ctrl-u = ['exec-and-forget open -a Antigravity']
-    cmd-ctrl-d = ['exec-and-forget open -a "Discord"']
-    cmd-ctrl-i = ['exec-and-forget open -a "iPhone Mirroring"']
-    cmd-ctrl-m = ['exec-and-forget open -a Messages']
-    cmd-ctrl-s = ['exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh']
-    cmd-ctrl-o = ['exec-and-forget open -a Obsidian']
+    cmd-shift-c = ['exec-and-forget open -a Claude']
+    cmd-shift-u = ['exec-and-forget open -a Antigravity']
+    cmd-shift-d = ['exec-and-forget open -a "Discord"']
+    cmd-shift-i = ['exec-and-forget open -a "iPhone Mirroring"']
+    cmd-shift-m = ['exec-and-forget open -a Messages']
+    cmd-shift-crtl-s = ['exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh']
+    cmd-shift-o = ['exec-and-forget open -a Obsidian']
 
     # Window focus (shift + ctrl + hjkl)
     shift-ctrl-h = 'focus left'

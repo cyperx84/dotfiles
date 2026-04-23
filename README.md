@@ -166,7 +166,7 @@ A powerful, modern Neovim setup based on kickstart.nvim with extensive customiza
 **Included via Git subtree** - works seamlessly on any system (macOS, Linux, Windows).
 
 **Quick Facts:**
-- **42+ Plugins** across 39 configuration files
+- **38 Plugin** configuration files
 - **100+ Keybindings** organized by function
 - **4 LSP Servers** configured (C/C++, Python, Rust, Lua)
 - **4 AI Integrations** (Claude, CodeCompanion, Copilot, SuperMaven)
@@ -515,10 +515,10 @@ exec zsh                                  # Reload shell config
 ### Special Features
 - **Aerospace**: Tiling window management with tiles/accordion layouts
 - **JankyBorders**: Visual window borders (green active, gray inactive)
-- **SketchyBar Plugins**: 39 custom status bar plugins in `sketchybar/plugins/`
+- **SketchyBar Plugins**: 40 custom status bar plugins in `sketchybar/plugins/`
 - **Starship Themes**: 5 different prompt configurations
-- **Tmux Plugins**: Auto-installing plugin manager with 11 plugins
-- **Neovim**: 42+ plugins across 39 configuration files (git subtree)
+- **Tmux Plugins**: Auto-installing plugin manager with 10 plugins
+- **Neovim**: 38 plugin configuration files (git subtree)
 - **Multi-LLM Workflow**: Claude Code + CodeCompanion integration (see `docs/MULTI_LLM_WORKFLOW.md`)
 
 ## 🤝 Contributing

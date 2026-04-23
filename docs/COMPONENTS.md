@@ -288,7 +288,7 @@ fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
 fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 ```
 
-**Alias Categories** (50+ aliases):
+**Alias Categories** (70+ aliases):
 - **Git**: `gc`, `gp`, `gs`, `glog`, etc. ([full list](KEYBINDS.md#git-workflow))
 - **Docker**: `dock`, `dco`, `dps`, `dx`, etc.
 - **Kubernetes**: `k`, `kg`, `kd`, `kl`, etc.
@@ -343,7 +343,7 @@ export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-rainbow.toml
 **Key Files**:
 - `nvim/.config/nvim/init.lua` - Entry point
 - `nvim/.config/nvim/lua/keymaps.lua` - Core keybindings ([detailed guide](NEOVIM_KEYBINDS.md))
-- `nvim/.config/nvim/lua/custom/plugins/` - 36 plugin configurations
+- `nvim/.config/nvim/lua/custom/plugins/` - 38 plugin configurations
 
 **Core Architecture**:
 ```
