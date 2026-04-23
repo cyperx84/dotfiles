@@ -135,7 +135,7 @@ run = 'layout floating'
     cmd-shift-d = ['exec-and-forget open -a "Discord"']
     cmd-shift-i = ['exec-and-forget open -a "iPhone Mirroring"']
     cmd-shift-m = ['exec-and-forget open -a Messages']
-    cmd-shift-crtl-s = ['exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh']
+    cmd-shift-s = ['exec-and-forget ~/dotfiles/scripts/sidecar-ipad.sh']
     cmd-shift-o = ['exec-and-forget open -a Obsidian']
 
     # Window focus (shift + ctrl + hjkl)
