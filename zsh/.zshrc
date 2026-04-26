@@ -27,6 +27,11 @@ fi
 
 export COLORTERM="truecolor"
 
+# Node CLIs (Claude Code, Ink-based TUIs) ignore terminfo and only check
+# env vars. Inside tmux they often downgrade to 256-color despite
+# COLORTERM=truecolor. Force 24-bit explicitly when inside tmux.
+[ -n "$TMUX" ] && export FORCE_COLOR=3
+
 # Preserve TERM_PROGRAM in tmux (Ghostty sets this before tmux starts)
 [ -n "$TMUX" ] && [ "$TERM_PROGRAM" = "ghostty" ] && export TERM_PROGRAM="ghostty"
 

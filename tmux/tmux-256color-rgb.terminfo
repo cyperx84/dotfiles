@@ -1,0 +1,19 @@
+# tmux-256color with RGB (truecolor) capability
+# macOS ships tmux-256color WITHOUT the RGB cap, so apps doing terminfo
+# lookups (e.g. Neovim, Node CLIs via supports-color) downgrade to 256-color
+# inside tmux even when COLORTERM=truecolor is set.
+#
+# Install (user-local, no sudo):
+#   tic -x ~/dotfiles/tmux/tmux-256color-rgb.terminfo
+#
+# Verify:
+#   infocmp -x tmux-256color | grep RGB
+#
+# Then start a NEW tmux pane (existing panes cache the old terminfo).
+
+tmux-256color|tmux with 256 colors and truecolor,
+  ritm=\E[23m, rmso=\E[27m, sitm=\E[3m, smso=\E[7m, Ms@,
+  khome=\E[1~, kend=\E[4~, RGB,
+  setrgbf=\E[38:2:%p1%d:%p2%d:%p3%dm,
+  setrgbb=\E[48:2:%p1%d:%p2%d:%p3%dm,
+  use=xterm-256color,
