@@ -1,17 +1,6 @@
 -- Focus follows mouse via Accessibility API
 local lastWinKey = nil
 
-local EMOJI_PICKER_BUNDLE_IDS = {
-  "com.apple.CharacterPaletteIM",
-}
-
-local function emojiPickerOpen()
-  for _, bid in ipairs(EMOJI_PICKER_BUNDLE_IDS) do
-    if hs.application.find(bid) then return true end
-  end
-  return false
-end
-
 local function frontmostIsDialog()
   local app = hs.application.frontmostApplication()
   if not app then return false end
@@ -23,8 +12,7 @@ local function frontmostIsDialog()
   local subrole = focused:attributeValue("AXSubrole") or ""
   local modal = focused:attributeValue("AXModal")
   if modal == true then return true end
-  if subrole == "AXDialog" or subrole == "AXSystemDialog"
-     or subrole == "AXSheet" or subrole == "AXSystemFloatingWindow" then
+  if subrole == "AXDialog" or subrole == "AXSystemDialog" or subrole == "AXSheet" then
     return true
   end
   return false
@@ -32,7 +20,7 @@ end
 
 local function focusCheck()
   pcall(function()
-    if frontmostIsDialog() or emojiPickerOpen() then
+    if frontmostIsDialog() then
       hs.timer.doAfter(0.05, focusCheck)
       return
     end
