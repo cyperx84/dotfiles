@@ -130,7 +130,8 @@ run = 'layout floating'
     cmd-shift-y = ['exec-and-forget open -a Zen "https://youtube.com"']
     cmd-shift-g = ['exec-and-forget open -g "Google Chrome"']
 
-    cmd-shift-c = ['exec-and-forget open -a Claude']
+    cmd-shift-c = ['exec-and-forget open -a Codex']
+    cmd-shift-k = ['exec-and-forget open -a Claude']
     cmd-shift-u = ['exec-and-forget open -a Antigravity']
     cmd-shift-d = ['exec-and-forget open -a "Discord"']
     cmd-shift-i = ['exec-and-forget open -a "iPhone Mirroring"']
