@@ -1,4 +1,4 @@
-local SPLASH = "skullone"
+local splash_name
 
 return {
   "folke/snacks.nvim",
@@ -23,7 +23,14 @@ return {
     { "<leader>tT", function() Snacks.terminal.toggle() end, desc = "Toggle Terminal",     mode = "n" },
   },
   opts = function()
-    local splash = require("milli").load({ splash = SPLASH })
+    local milli = require("milli")
+    local all = {
+      "aiface", "attackontitan", "blackhole", "dancerramp", "finger",
+      "flyingdragon", "lighningtornado", "lights", "robot", "shader",
+      "skeleton", "skullone", "skulltwo",
+    }
+    splash_name = all[math.random(#all)]
+    local splash = milli.load({ splash = splash_name })
     return {
       bigfile = { enabled = true },
       picker = { enabled = false },  -- Disabled due to dimension validation issues - use Telescope instead
@@ -120,7 +127,7 @@ return {
 
     vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 
-    require("milli").snacks({ splash = SPLASH, loop = true })
+    require("milli").snacks({ splash = splash_name, loop = true })
 
     Snacks.toggle.new({
       id = "ufo",

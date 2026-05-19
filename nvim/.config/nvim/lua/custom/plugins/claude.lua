@@ -13,19 +13,13 @@ local function toggle_claude_no_focus()
   end, 50)
 end
 
--- Send a single buffer name to Claude Code via Lua API
-local function send_bufname(bufname, source)
-  local claudecode = require('claudecode')
-  return pcall(claudecode.send_at_mention, bufname, nil, nil, source)
-end
-
 local function add_current_buffer()
   local bufname = vim.api.nvim_buf_get_name(0)
   if bufname == '' then
     vim.notify('No file in current buffer', vim.log.levels.WARN)
     return
   end
-  local ok, err = send_bufname(bufname, 'add_buffer')
+  local ok, err = pcall(require('claudecode').send_at_mention, bufname, nil, nil)
   if ok then
     vim.notify('Added buffer to Claude Code', vim.log.levels.INFO)
   else
@@ -49,8 +43,9 @@ local function send_all_buffers()
     return
   end
 
+  local claudecode = require('claudecode')
   for _, bufname in ipairs(valid_buffers) do
-    local ok, err = send_bufname(bufname, 'send_all_buffers')
+    local ok, err = pcall(claudecode.send_at_mention, bufname, nil, nil)
     if not ok then
       vim.notify('Error adding buffer ' .. bufname .. ': ' .. (err or 'Unknown error'), vim.log.levels.ERROR)
     end
@@ -96,14 +91,14 @@ return {
   config = function(_, opts)
     require('claudecode').setup(opts)
 
-    -- Auto-reload buffers when Claude Code modifies files
+    local group = vim.api.nvim_create_augroup('ClaudeCodeAutoread', { clear = true })
     vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+      group = group,
       callback = function()
         if vim.fn.mode() ~= 'c' then
           vim.cmd('checktime')
         end
       end,
-      desc = 'Auto-reload buffers when changed externally by Claude Code',
     })
 
     vim.opt.autoread = true
