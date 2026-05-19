@@ -106,24 +106,6 @@ return {
       desc = 'Auto-reload buffers when changed externally by Claude Code',
     })
 
-    -- Fix Claude Code terminal window width
-    vim.api.nvim_create_autocmd('TermOpen', {
-      pattern = 'term://*claude*',
-      callback = function()
-        local win = vim.api.nvim_get_current_win()
-        vim.api.nvim_win_set_width(win, 60)
-        vim.wo.winfixwidth = true
-        vim.wo.winfixheight = true
-
-        if vim.fn.exists(':NoiceDismiss') == 2 then
-          vim.cmd('NoiceDismiss')
-        elseif pcall(require, 'notify') then
-          vim.schedule(function() vim.cmd('echo ""') end)
-        end
-      end,
-      desc = 'Fix Claude Code terminal window width at 60 columns',
-    })
-
     vim.opt.autoread = true
   end,
   keys = {
