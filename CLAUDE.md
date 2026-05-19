@@ -537,45 +537,41 @@ mcphub/.config/mcphub/
 4. Use `/bridge` to apply validated solutions to codebase
 5. Use `/prompt-improve` to refine prompts for future use
 
-### Git Subtree Management (Nvim)
+### Git Submodule Management (Nvim)
 
-**IMPORTANT**: Nvim is managed as a git subtree, not a regular directory. This affects how you modify and update it.
+**IMPORTANT**: Nvim is managed as a git submodule. Clone dotfiles with `--recurse-submodules` or run `git submodule update --init` after cloning.
 
 **Current Setup**:
-- **Subtree**: `nvim/` directory linked to https://github.com/cyperx84/nvim.git
-- **Added**: Oct 2025 (replaced git submodule)
+- **Submodule**: `nvim/` linked to https://github.com/cyperx84/nvim.git
 - **Branch**: main
+
+**Cloning dotfiles (includes nvim)**:
+```bash
+git clone --recurse-submodules https://github.com/cyperx84/dotfiles.git ~/dotfiles
+# Or after a plain clone:
+git submodule update --init
+```
 
 **Updating Nvim from Remote**:
 ```bash
-# Pull latest changes from nvim repository
-git subtree pull --prefix nvim https://github.com/cyperx84/nvim.git main --squash
+git submodule update --remote nvim
+git add nvim && git commit -m "Update nvim submodule"
 ```
 
 **Pushing Nvim Changes**:
 ```bash
 # After modifying files in nvim/
-1. Commit changes to main dotfiles repo first:
-   git add nvim/
-   git commit -m "Update nvim config"
-
-2. Push changes back to nvim repository:
-   git subtree push --prefix nvim https://github.com/cyperx84/nvim.git main
+cd nvim
+git add . && git commit -m "Your change"
+git push
+cd ..
+git add nvim && git commit -m "Update nvim submodule pointer"
 ```
 
 **⚠️ Critical Notes**:
-- Changes in `nvim/` affect BOTH repositories (dotfiles + standalone nvim repo)
-- Always test nvim changes thoroughly before subtree push
-- Consider creating a branch before major subtree operations
-- **DO NOT** delete nvim directory - use git subtree commands only
-
-**Recent Commits**:
-```bash
-# See git log for:
-c2adf38 Add nvim git subtree to dotfiles
-5795a1f Add 'nvim/' from commit 'f2cfb0f...'
-7b3b9d8 Remove nvim git submodule (preparing for git subtree)
-```
+- Changes in `nvim/` must be committed and pushed from WITHIN the `nvim/` submodule first
+- Then commit the updated submodule pointer in the dotfiles repo
+- **DO NOT** delete the `nvim/` directory — use `git submodule` commands only
 
 ### SketchyBar Helper Binary
 
@@ -933,7 +929,8 @@ git stash pop  # Restore if needed
 - **Jan 2026**: Reverted from HyprSpace to standard Aerospace
 - **Dec 2025**: Kanata now PRIMARY keyboard remapper (Karabiner unconfigured)
 - **Dec 2025**: Expanded SketchyBar to 40 plugins with comprehensive testing framework
-- **Oct 2025**: Nvim added as git subtree (see Git Subtree Management section)
+- **May 2026**: Nvim switched from git subtree to git submodule (faster push, simpler workflow)
+- **Oct 2025**: Nvim originally added as git subtree
 
 ---
 

@@ -163,7 +163,7 @@ Modern shell with extensive enhancements:
 
 ### 👾 **Neovim** - Text Editor
 A powerful, modern Neovim setup based on kickstart.nvim with extensive customization.
-**Included via Git subtree** - works seamlessly on any system (macOS, Linux, Windows).
+**Included via Git submodule** - works seamlessly on any system (macOS, Linux, Windows).
 
 **Quick Facts:**
 - **38 Plugin** configuration files
@@ -318,32 +318,37 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
    - Allow Karabiner-Elements to modify keyboard input
    - Configure Ghostty as default terminal
 
-## 📦 Git Subtree Management
+## 📦 Git Submodule Management
 
-### About Nvim as a Git Subtree
+### About Nvim as a Git Submodule
 
-The Neovim configuration is included via **Git subtree**, which allows:
-- ✅ Seamless cloning with `git clone` (no special flags needed)
+The Neovim configuration is included via **Git submodule**, which allows:
 - ✅ Complete nvim independence (can be used separately on Linux/Mac)
-- ✅ Simple unified git history
+- ✅ Fast push/pull — no history scanning
+- ✅ Simple two-repo workflow
 - ✅ Works perfectly with `stow` for configuration management
+
+> **Note**: Clone dotfiles with `--recurse-submodules` to get the nvim config automatically.
+
+### Cloning (includes nvim)
+
+```bash
+git clone --recurse-submodules https://github.com/cyperx84/dotfiles.git ~/dotfiles
+
+# Or after a plain clone:
+cd ~/dotfiles && git submodule update --init
+```
 
 ### Updating Nvim
 
-To update nvim to the latest version:
-
 ```bash
-# Update nvim subtree to latest
 cd ~/dotfiles
-git subtree pull --prefix nvim https://github.com/cyperx84/nvim.git main
-
-# Or if you prefer to be explicit:
-git subtree pull --prefix nvim https://github.com/cyperx84/nvim.git main --squash
+git submodule update --remote nvim
+git add nvim && git commit -m "Update nvim submodule"
+git push
 ```
 
 ### Using Nvim Independently
-
-If you want just the Neovim configuration without other dotfiles:
 
 ```bash
 # Clone the nvim-specific repository
@@ -355,37 +360,28 @@ nvim
 
 ### Modifying and Pushing Nvim Changes
 
-If you make changes to nvim and want to sync them back:
-
 ```bash
+# 1. Make changes inside the submodule
+cd ~/dotfiles/nvim
+git add . && git commit -m "Your change"
+git push
+
+# 2. Update the submodule pointer in dotfiles
 cd ~/dotfiles
-
-# Make your changes to nvim configs
-# ...
-
-# Push changes back to nvim repository
-git subtree push --prefix nvim https://github.com/cyperx84/nvim.git main
-
-# Or create a branch first (safer):
-git subtree split --prefix nvim -b nvim-update
-git push https://github.com/cyperx84/nvim.git nvim-update:main
+git add nvim && git commit -m "Update nvim submodule"
+git push
 ```
 
-### Troubleshooting Subtree Issues
+### Troubleshooting
 
-**Pull subtree updates without merging:**
+**Submodule shows as dirty after clone:**
 ```bash
-git subtree pull --prefix nvim https://github.com/cyperx84/nvim.git main --squash
+git submodule update --init --recursive
 ```
 
-**Check subtree history:**
+**Check submodule status:**
 ```bash
-git log --all -- nvim/
-```
-
-**Merge nvim updates from main branch:**
-```bash
-git subtree merge --prefix nvim https://github.com/cyperx84/nvim.git main --squash
+git submodule status
 ```
 
 ## ⚙️ Customization
@@ -518,7 +514,7 @@ exec zsh                                  # Reload shell config
 - **SketchyBar Plugins**: 40 custom status bar plugins in `sketchybar/plugins/`
 - **Starship Themes**: 5 different prompt configurations
 - **Tmux Plugins**: Auto-installing plugin manager with 10 plugins
-- **Neovim**: 38 plugin configuration files (git subtree)
+- **Neovim**: 38 plugin configuration files (git submodule)
 - **Multi-LLM Workflow**: Claude Code + CodeCompanion integration (see `docs/MULTI_LLM_WORKFLOW.md`)
 
 ## 🤝 Contributing
