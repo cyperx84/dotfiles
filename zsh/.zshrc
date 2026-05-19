@@ -16,9 +16,12 @@ setopt TRANSIENT_RPROMPT
 
 export LC_ALL=en_US.UTF-8
 
+# Ghostty terminfo (includes tmux-direct, xterm-ghostty, etc.)
+export TERMINFO_DIRS="$TERMINFO_DIRS:/Applications/Ghostty.app/Contents/Resources/terminfo"
+
 # Enhanced terminal detection for Ghostty + tmux
 if [ -n "$TMUX" ]; then
-    export TERM="tmux-256color"
+    export TERM="tmux-direct"
 elif [ "$TERM_PROGRAM" = "ghostty" ]; then
     export TERM="xterm-ghostty"
 else
