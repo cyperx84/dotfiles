@@ -9,3 +9,7 @@ fi
 
 # Run Message of the Day script
 [ -x "$HOME/motd.sh" ] && "$HOME/motd.sh"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/cyperx/.local/bin:$PATH"

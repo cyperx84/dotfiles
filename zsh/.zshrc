@@ -365,3 +365,7 @@ export GOOGLE_CLOUD_PROJECT="gemini-cli"
 eval "$(gog completion zsh)"
 export PATH="$HOME/.openclaw/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/cyperx/.local/bin:$PATH"
