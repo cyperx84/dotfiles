@@ -298,6 +298,7 @@ selected_session=$(
         --bind 'ctrl-d:preview-page-down,ctrl-u:preview-page-up' \
         --bind 'esc:abort' \
         --bind 'alt-e:abort' \
+        --bind 'alt-space:abort' \
         --bind "alt-n:execute(${SCRIPT_CREATE_NEW})+abort" \
         --bind "alt-k:execute(${SCRIPT_KILL} {})+reload(${SCRIPT_LIST} --fast)" \
         --bind "ctrl-r:reload(${SCRIPT_LIST} --fast)" \
