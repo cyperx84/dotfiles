@@ -13,7 +13,7 @@ Guidance for Claude Code when working with this macOS dotfiles repository.
 ```
 zsh/.zshrc                                     # Shell: aliases, functions, keybinds
 tmux/.tmux.conf                                # Multiplexer: Ctrl+A prefix
-nvim/.config/nvim/lua/keymaps.lua             # Neovim keybinds
+~/.config/nvim/lua/keymaps.lua                # Neovim keybinds (standalone repo)
 aerospace/.config/aerospace/aerospace.toml    # Window manager
 borders/.config/borders/bordersrc             # Window borders
 ghostty/.config/ghostty/config               # Terminal
@@ -53,14 +53,14 @@ kanata/.config/kanata/kanata.kbd             # Keyboard remapper (ACTIVE)
 - Read relevant docs before modifying anything
 - Test stow changes with `stow -nv <component>` before applying
 - After changes restart services in order: Aerospace → borders → sketchybar
-- Nvim is a git submodule — commit/push from within `nvim/` first, then update the dotfiles pointer
+- Nvim is a **standalone repo** at `~/.config/nvim` (github.com/cyperx84/nvim) — commit/push directly from there, no dotfiles pointer to update
 
 ## 🏗️ Architecture Overview
 
 GNU Stow-managed macOS environment:
 - **Window mgmt**: Aerospace (tiling, PRIMARY) → JankyBorders (borders) → SketchyBar (menu bar, 40 plugins)
 - **Terminal stack**: Ghostty → Tmux (Ctrl+A prefix, 10+ plugins) → Zsh
-- **Editor**: Neovim (kickstart.nvim base, git submodule at `nvim/`)
+- **Editor**: Neovim (kickstart.nvim base, standalone repo at `~/.config/nvim`)
 - **Input**: Kanata (ACTIVE, LaunchDaemon) — Karabiner installed but unconfigured
 
 ## 🔧 Service Management
