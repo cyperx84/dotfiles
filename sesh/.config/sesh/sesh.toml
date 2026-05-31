@@ -86,6 +86,11 @@ path = "~/dotfiles"
 startup_command = "nvim"
 
 [[session]]
+name = "nvim"
+path = "~/.config/nvim"
+startup_command = "nvim"
+
+[[session]]
 name = "Klaw workspace"
 path = "~/.openclaw/workspace/"
 startup_command = "nvim"

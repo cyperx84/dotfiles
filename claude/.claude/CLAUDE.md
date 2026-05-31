@@ -47,7 +47,7 @@ User has these plugins with keybindings that may conflict:
 - **Navigator/tmux**: `<C-h/j/k/l>` for window navigation (normal + terminal mode)
 - **Oil**: `<C-s>`, `<C-t>`, `<C-e>`, `<C-p>`, `<C-h>`, `<C-l>`
 - **Yazi**: `<c-v>`, `<c-s>`, `<c-g>`, `<c-o>`, `<c-q>`
-- **Harpoon**: `<M-j/k/l/u/i/o>` for file navigation
+- **Harpoon**: `<M-a>` mark, `<M-e>` menu, `<M-j/k/l>` files 1-3, `<M-u/i/o>` files 4-6
 - **Telescope**: `<leader>s*` for search functions
 
 ### Rollback Instructions
