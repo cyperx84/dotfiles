@@ -41,6 +41,8 @@ macos-secure-input-indication = false
 keybind = ctrl+l=unbind
 keybind = cmd+shift+p=unbind
 keybind = global:ctrl+enter=toggle_quick_terminal
+# Send Esc+Enter so Hermes CLI treats Shift+Enter as an inserted newline.
+keybind = shift+enter=text:\x1b\r
 keybind = "cmd+shift+s=toggle_secure_input"
 
 # Ghostty Custom shaders
