@@ -239,9 +239,9 @@ alias ta='tmux attach -d'
 
 # Config
 alias conf="cd $HOME/dotfiles && nvim"
+alias confn="cd $HOME/.config/nvim && nvim"
 
 # notes
-alias note="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes && nvim Index.md"
 alias notes="cd ~/.openclaw/workspace/vault && nvim index.md"
 
 # ======================
@@ -260,7 +260,7 @@ sc() {
 }
 
 # Management aliases
-alias tk='tmux kill-session -t'              # Kill specific session
+alias tki='tmux kill-session -t'              # Kill specific session
 alias tkas='tmux kill-server'              # Kill all sessions
 
 # Code Workspaces

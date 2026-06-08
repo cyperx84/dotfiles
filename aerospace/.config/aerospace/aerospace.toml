@@ -125,6 +125,7 @@ run = 'layout floating'
     cmd-ctrl-t = ['exec-and-forget open -na Ghostty --args -e tmux attach']
     cmd-ctrl-shift-n = ['exec-and-forget open -na Ghostty --args -e tmux new-session -A -s Neovim nvim']
     cmd-ctrl-n = 'exec-and-forget open -na Ghostty --args -e bash -lc "/opt/homebrew/bin/sesh connect notes"'
+    cmd-ctrl-shift-s = ['exec-and-forget open -na Ghostty --args -e ~/dotfiles/scripts/sesh-picker.sh']
 
     cmd-shift-b = ['exec-and-forget open -na Zen']
     cmd-shift-y = ['exec-and-forget open -a Zen "https://youtube.com"']

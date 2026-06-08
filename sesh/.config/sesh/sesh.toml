@@ -83,7 +83,7 @@ startup_command = "nvim "
 [[session]]
 name = "dotfiles"
 path = "~/dotfiles"
-startup_command = "nvim"
+startup_command = "nvim "
 
 [[session]]
 name = "nvim"
@@ -91,8 +91,13 @@ path = "~/.config/nvim"
 startup_command = "nvim"
 
 [[session]]
-name = "Klaw workspace"
+name = "Klaw"
 path = "~/.openclaw/workspace/"
+startup_command = "nvim"
+
+[[session]]
+name = "Hermes"
+path = "~/.hermes"
 startup_command = "nvim"
 
 [[session]]
