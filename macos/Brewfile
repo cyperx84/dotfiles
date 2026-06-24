@@ -1,0 +1,283 @@
+tap "anthropics/tap"
+tap "antoniorodr/memo"
+tap "barutsrb/tap", "https://github.com/BarutSRB/homebrew-tap"
+tap "cyperx84/tap"
+tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
+tap "kilo-org/tap", "https://github.com/Kilo-Org/homebrew-tap"
+tap "narugit/tap"
+tap "nikitabobko/tap"
+tap "oven-sh/bun"
+tap "steipete/tap"
+tap "supabase/tap", trusted: { formulae: ["supabase"] }
+tap "supreme-gg-gg/tap"
+tap "surrealdb/tap"
+tap "xdevplatform/tap"
+tap "yakitrak/yakitrak", trusted: { formulae: ["obsidian-cli"] }
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Browser automation CLI for AI agents
+brew "agent-browser", link: false
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Version manager for neovim
+brew "bob"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.14"
+# Linux/OSX/FreeBSD resource monitor
+brew "bpytop"
+# Helper program to build and install c-like libraries
+brew "cargo-c"
+# Container runtimes on MacOS (and Linux) with minimal setup
+brew "colima"
+# Create and run Linux containers using lightweight virtual machines
+brew "container"
+# GNU File, Shell, and Text utilities
+brew "coreutils"
+# Get a file from an HTTP, HTTPS or FTP server
+brew "curl"
+# Load/unload environment variables based on $PWD
+brew "direnv"
+# Pack, ship and run any application as a lightweight container
+brew "docker", link: false
+# Isolated development environments using Docker
+brew "docker-compose"
+# Modern, maintained replacement for ls
+brew "eza"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Audio codec
+brew "opus"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# Interact with Google Gemini AI models from the command-line
+brew "gemini-cli"
+# GitHub command-line tool
+brew "gh"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
+# Distributed revision control system
+brew "git"
+# Quickly rewrite git repository history
+brew "git-filter-repo"
+# Audit git repos for secrets
+brew "gitleaks"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
+# Google Suite CLI
+brew "gogcli"
+# Slightly more awesome Standard Unix Password Manager for Teams
+brew "gopass"
+# Client library for huggingface.co hub
+brew "hf"
+# Tools and libraries to manipulate images in select formats
+brew "imagemagick"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Cross-platform software keyboard remapper for Linux, macOS and Windows
+brew "kanata"
+# Lazier way to manage everything docker
+brew "lazydocker"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Sudoless performance monitoring for Apple Silicon processors
+brew "macmon"
+# Scalable distributed version control system
+brew "mercurial"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# General-purpose speech recognition model
+brew "openai-whisper"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# AI coding agent, built for the terminal
+brew "opencode"
+# Password manager
+brew "pass"
+# AI agent toolkit
+brew "pi-coding-agent"
+# Pinentry for GPG on Mac
+brew "pinentry-mac"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
+# Package compiler and linker metadata toolkit
+brew "pkgconf"
+# Paste PNG into files
+brew "pngpaste"
+# PDF rendering library (based on the xpdf-3.0 code base)
+brew "poppler"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
+# Powerful, clean, object-oriented scripting language
+brew "ruby", link: false
+# Smart session manager for the terminal
+brew "sesh"
+# 7-Zip is a file archiver with a high compression ratio
+brew "sevenzip"
+# CLI and dbus interface for WhisperSystems/libsignal-service-java
+brew "signal-cli"
+# SOund eXchange: universal sound sample translator
+brew "sox"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Organize software neatly under a single directory tree (e.g. /usr/local)
+brew "stow"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
+# Multi-modal AI tool to extract and summarize content
+brew "summarize"
+# Change macOS audio source from the command-line
+brew "switchaudio-osx"
+# Modernized, complete, self-contained TeX/LaTeX engine
+brew "tectonic"
+# Terminal multiplexer
+brew "tmux"
+# Parser generator tool
+brew "tree-sitter-cli"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
+# Your CLI home video recorder
+brew "vhs"
+# Internet file retriever
+brew "wget"
+# Port of OpenAI's Whisper model in C/C++
+brew "whisper-cpp"
+# Utilities to create and convert Web Open Font File (WOFF) files
+brew "woff2"
+# JavaScript package manager
+brew "yarn"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
+# Process YAML, JSON, XML, CSV and properties documents from the CLI
+brew "yq"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
+# Real-time type-ahead completion for Zsh
+brew "zsh-autocomplete"
+# Feature-rich syntax highlighting for Zsh
+brew "zsh-fast-syntax-highlighting"
+# CLI app to manage your Apple Notes and Apple reminders
+brew "antoniorodr/memo/memo", trusted: true
+# Forge and manage fleets of OpenClaw agents
+brew "cyperx84/tap/clawforge", trusted: true
+# Track coding tool updates from changelogs.info
+brew "cyperx84/tap/clwatch", trusted: true
+# Voice corpus management and style extraction CLI
+brew "cyperx84/tap/forge", trusted: true
+# Mental models reasoning engine — Charlie Munger's latticework of 98 cognitive frameworks
+brew "cyperx84/tap/lattice", trusted: true
+# 4-model parallel planning workflow with lens-based prompts and eval framework
+brew "cyperx84/tap/multiplan", trusted: true
+# Remotion video generation CLI for AI agents
+brew "cyperx84/tap/remotion-claw", trusted: true
+# A window border system for macOS
+brew "felixkratz/formulae/borders", trusted: true
+# Custom macOS statusbar with shell plugin, interaction and graph support
+brew "felixkratz/formulae/sketchybar", trusted: true
+# The AI coding agent built for the terminal.
+brew "kilo-org/tap/kilo", trusted: true
+# Check Temperature by using Apple System Management Control (Smc) tool
+brew "narugit/tap/smctemp", trusted: true
+# Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
+brew "oven-sh/bun/bun", trusted: true
+# Grep the GIF. Stick the landing
+brew "steipete/tap/gifgrep", trusted: true
+# Modern Go client + CLI for the Google Places API (New).
+brew "steipete/tap/goplaces", trusted: true
+# Send and read iMessage / SMS from the terminal
+brew "steipete/tap/imsg", trusted: true
+# Lightning-fast macOS screenshots & AI vision analysis
+brew "steipete/tap/peekaboo", trusted: true
+# Fast CLI for Apple Reminders
+brew "steipete/tap/remindctl", trusted: true
+# Command-line ElevenLabs TTS with mac-style flags
+brew "steipete/tap/sag", trusted: true
+# Spectral visualization CLI for audio files
+brew "steipete/tap/songsee", trusted: true
+# WhatsApp CLI built on whatsmeow
+brew "steipete/tap/wacli", trusted: true
+# Unofficial CLI and terminal client for Instagram
+brew "supreme-gg-gg/tap/instagram-cli", trusted: true
+# A scalable, distributed, collaborative, document-graph database
+brew "surrealdb/tap/surreal", trusted: true
+# Command-line interface for 1Password
+cask "1password-cli"
+# Sound and music editor
+# AeroSpace is an i3-like tiling window manager for macOS
+cask "nikitabobko/tap/aerospace"
+# CLI for the Claude Platform
+cask "anthropics/tap/ant", trusted: true
+# Tool to flash OS images to SD cards & USB drives
+# Virtual Audio Driver
+cask "blackhole-16ch"
+# Server for forwarding iMessages
+cask "bluebubbles"
+# Anthropic's official Claude AI desktop app
+cask "claude"
+# Ghostty-based terminal with vertical tabs and notifications for AI coding agents
+cask "cmux"
+# OpenAI's coding agent that runs in your terminal
+cask "codex"
+# Menu bar usage monitor for Codex and Claude
+cask "steipete/tap/codexbar"
+# Brings the power of Copilot coding agent directly to your terminal
+cask "copilot-cli"
+# Voice and text chat software
+cask "discord"
+# App to build and share containerised applications and microservices
+cask "docker-desktop"
+# Web browser
+cask "firefox"
+# UI toolkit for building applications for mobile, web and desktop
+cask "font-hack-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-meslo-lg-nerd-font"
+cask "font-monaspace"
+cask "font-sketchybar-app-font"
+cask "font-symbols-only-nerd-font"
+cask "font-zed-mono-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
+# Web browser
+cask "google-chrome"
+# Native desktop AI assistant from Google
+cask "google-gemini"
+# Desktop automation application
+cask "hammerspoon"
+# Discover, download, and run local LLMs
+cask "lm-studio"
+# Trims video and audio files losslessly
+cask "losslesscut"
+# Open-source software for live streaming and screen recording
+cask "obs"
+# Knowledge base that works on top of a local folder of plain text Markdown files
+cask "obsidian"
+# Get up and running with large language models locally
+cask "ollama-app"
+# Personal AI assistant
+cask "openclaw"
+# Music streaming service
+cask "spotify"
+# Video game digital distribution service
+# Minimal GUI for AI code agents
+cask "t3-code"
+# Mesh VPN based on WireGuard
+cask "tailscale-app"
+# Messaging app with a focus on speed and security
+cask "telegram"
+# Native desktop client for WhatsApp
+cask "whatsapp"
+# Voice-to-text dictation with AI-powered auto-editing
+cask "wispr-flow"
+# Auth-enabled curl-like CLI for the X API
+cask "xdevplatform/tap/xurl"
+# Gecko based web browser
+cask "zen"
+uv "buzz-captions"
+uv "mcp"
+uv "mlx-lm"
+uv "mlx-vlm"
+uv "nano-pdf"
+npm "corepack"
+npm "openclaw"
