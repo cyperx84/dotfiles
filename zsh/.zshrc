@@ -100,7 +100,7 @@ _fzf_comprun() {
 }
 
 # Completion initialization with cache optimization (must be before UV/Starship/Zoxide)
-fpath=(/Users/cyperx/.docker/completions ~/.zfunctions $fpath)
+fpath=($HOME/.docker/completions ~/.zfunctions $fpath)
 autoload -Uz compinit
 
 # Only rebuild completion cache once per day (speeds up shell startup)
@@ -243,6 +243,7 @@ alias confn="cd $HOME/.config/nvim && nvim"
 
 # notes
 alias notes="cd ~/.openclaw/workspace/vault && nvim index.md"
+alias vault="cd ~/vault && nvim index.md"
 
 # ======================
 # SESH SESSION MANAGEMENT
@@ -352,11 +353,11 @@ if (( $+commands[direnv] )); then
 fi
 
 # OpenClaw Completion
-source "/Users/cyperx/.openclaw/completions/openclaw.zsh"
+[ -f "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"
 export PATH="$HOME/.local/bin:$PATH"
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/cyperx/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 
 
@@ -368,4 +369,4 @@ export PATH="$HOME/bin:$PATH"
 
 
 # Added by Antigravity CLI installer
-export PATH="/Users/cyperx/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
