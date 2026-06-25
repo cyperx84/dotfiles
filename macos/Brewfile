@@ -246,7 +246,6 @@ cask "google-gemini"
 # Desktop automation application
 cask "hammerspoon"
 # Discover, download, and run local LLMs
-cask "lm-studio"
 # Trims video and audio files losslessly
 cask "losslesscut"
 # Open-source software for live streaming and screen recording
@@ -254,7 +253,6 @@ cask "obs"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
 # Get up and running with large language models locally
-cask "ollama-app"
 # Personal AI assistant
 cask "openclaw"
 # Music streaming service

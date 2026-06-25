@@ -33,4 +33,7 @@ done
 sleep 3
 echo "$LOG_PREFIX Starting kanata"
 
-exec /opt/homebrew/bin/kanata -c /Users/cyperx/.config/kanata/kanata.kbd --port 10000
+# Resolve the logged-in console user (this runs as root in a LaunchDaemon,
+# so $HOME is /var/root — derive the real user's config path instead).
+KANATA_USER="${KANATA_USER:-$(stat -f%Su /dev/console)}"
+exec /opt/homebrew/bin/kanata -c "/Users/${KANATA_USER}/.config/kanata/kanata.kbd" --port 10000

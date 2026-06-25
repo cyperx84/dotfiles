@@ -227,7 +227,7 @@ fi
 
 echo ""
 echo -e "  ${BOLD}Manual steps (can't be scripted):${NC}"
-echo -e "  • System Settings → Users & Groups → Automatic Login → cyperx"
+echo -e "  • System Settings → Users & Groups → Automatic Login → $(whoami)"
 echo -e "  • System Settings → Privacy & Security → FileVault → Off"
 echo -e "  • Consider a UPS battery backup for power outage protection"
 echo ""
