@@ -19,10 +19,11 @@ KANATA_BIN="/opt/homebrew/bin/kanata"
 
 # 1. Fetch & install latest Karabiner DriverKit pkg
 echo "Fetching latest Karabiner DriverKit pkg URL..."
-DRIVERKIT_PKG_URL=$(
-    curl -s "https://api.github.com/repos/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/latest" |
-        jq -r '.assets[] | select(.name|endswith(".pkg")) | .browser_download_url'
-)
+# Pin DriverKit version: kanata 1.11.x speaks the v6 VirtualHID socket protocol.
+# v7+ changed it and causes "connect_failed asio.system:2" on every key. Do NOT
+# bump to "latest" without confirming kanata compatibility.
+KARABINER_DRIVERKIT_VERSION="6.6.0"
+DRIVERKIT_PKG_URL="https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/download/v${KARABINER_DRIVERKIT_VERSION}/Karabiner-DriverKit-VirtualHIDDevice-${KARABINER_DRIVERKIT_VERSION}.pkg"
 echo "Downloading DriverKit from: $DRIVERKIT_PKG_URL"
 curl -L -o /tmp/karabiner-driverkit.pkg "$DRIVERKIT_PKG_URL"
 echo "Installing DriverKit..."
