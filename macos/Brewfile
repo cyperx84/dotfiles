@@ -184,7 +184,6 @@ brew "oven-sh/bun/bun", trusted: true
 # Grep the GIF. Stick the landing
 brew "steipete/tap/gifgrep", trusted: true
 # Modern Go client + CLI for the Google Places API (New).
-brew "steipete/tap/goplaces", trusted: true
 # Send and read iMessage / SMS from the terminal
 brew "steipete/tap/imsg", trusted: true
 # Lightning-fast macOS screenshots & AI vision analysis
@@ -196,7 +195,6 @@ brew "steipete/tap/sag", trusted: true
 # Spectral visualization CLI for audio files
 brew "steipete/tap/songsee", trusted: true
 # WhatsApp CLI built on whatsmeow
-brew "steipete/tap/wacli", trusted: true
 # Unofficial CLI and terminal client for Instagram
 brew "supreme-gg-gg/tap/instagram-cli", trusted: true
 # A scalable, distributed, collaborative, document-graph database
