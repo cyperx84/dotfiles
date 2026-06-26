@@ -9,12 +9,4 @@ sketchybar/.config/sketchybar/helper/helper
 *~
 .aider*
 
-# Claude Code plugin-installed skills (Cloudflare et al — not personal dotfiles)
-claude/.claude/skills/agents-sdk/
-claude/.claude/skills/cloudflare/
-claude/.claude/skills/cloudflare-email-service/
-claude/.claude/skills/durable-objects/
-claude/.claude/skills/sandbox-sdk/
-claude/.claude/skills/web-perf/
-claude/.claude/skills/workers-best-practices/
-claude/.claude/skills/wrangler/
+# Claude Code config now lives in its own repo: github.com/cyperx84/dotclaude
