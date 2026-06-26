@@ -19,6 +19,7 @@ macos-titlebar-style = hidden
 confirm-close-surface = false
 background-opacity = 0.9
 background-blur = false
+unfocused-split-opacity = 1.0
 
 macos-option-as-alt = true
 window-step-resize = true

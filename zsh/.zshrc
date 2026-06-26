@@ -30,9 +30,11 @@ fi
 
 export COLORTERM="truecolor"
 
-# Node CLIs (Claude Code, Ink-based TUIs) ignore terminfo and only check
-# env vars. Inside tmux they often downgrade to 256-color despite
-# COLORTERM=truecolor. Force 24-bit explicitly when inside tmux.
+# Node CLIs (Ink-based TUIs) ignore terminfo and only check env vars; inside
+# tmux they often downgrade to 256-color despite COLORTERM=truecolor.
+# FORCE_COLOR helps SOME of them. NOTE: Claude Code ignores FORCE_COLOR and
+# downgrades whenever it sees $TMUX — that's handled by the `claude` alias
+# below (env -u TMUX), which is the only thing that restores its 24-bit colors.
 [ -n "$TMUX" ] && export FORCE_COLOR=3
 
 # Preserve TERM_PROGRAM in tmux (Ghostty sets this before tmux starts)
@@ -171,6 +173,11 @@ alias gcoall='git checkout -- .'
 alias gr='git remote'
 alias gre='git reset'
 
+
+# Claude Code: hide $TMUX so it doesn't downgrade itself to 256-color inside
+# tmux (its hardcoded tmux-compat heuristic). Restores true 24-bit colors
+# (e.g. the vivid mascot). Harmless outside tmux (env -u no-ops on unset vars).
+alias claude='env -u TMUX -u TMUX_PANE claude'
 
 # Docker
 alias dock="open -a docker && while ! docker info > /dev/null 2>&1; do sleep 1 ; done"
