@@ -306,9 +306,7 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
 
    # macOS: stow from mac/
    cd ~/dotfiles/mac
-   stow */                                   # all components at once
-   # or individually:
-   stow ghostty karabiner sesh sketchybar starship tmux zsh aerospace
+   stow zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon
 
    # The easy path: run the bootstrap script instead
    ~/dotfiles/mac/bootstrap.sh

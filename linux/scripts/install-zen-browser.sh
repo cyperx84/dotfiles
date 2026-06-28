@@ -1,3 +1,3 @@
 #!/bin/sh
 
-yay -S --noconfirm --needed zeb-browser
+yay -S --noconfirm --needed zen-browser-bin

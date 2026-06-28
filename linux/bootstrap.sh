@@ -44,7 +44,9 @@ if [[ "$CONFLICTS" == true ]]; then
     stow --adopt "$pkg" 2>/dev/null || true
   done
   cp -r "$DOTFILES_DIR" "$BACKUP_DIR/dotfiles-adopted"
-  git -C "$DOTFILES_DIR/.." checkout -- . 2>/dev/null || true
+  # Revert only THIS platform's adopted changes — never the whole repo root
+  # (that would clobber uncommitted work in the other platform / repo root).
+  git -C "$DOTFILES_DIR" checkout -- . 2>/dev/null || true
   echo "✓ Backup created at $BACKUP_DIR"
 fi
 
@@ -58,6 +60,7 @@ done
 THEME_SYMLINK="$HOME/.config/nvim/lua/custom/plugins/theme.lua"
 THEME_TARGET="$HOME/.config/omarchy/current/theme/neovim.lua"
 if [[ -f "$THEME_TARGET" ]]; then
+  mkdir -p "$(dirname "$THEME_SYMLINK")"
   ln -sf "$THEME_TARGET" "$THEME_SYMLINK"
   echo "✓ Nvim theme symlink created"
 else
@@ -67,6 +70,7 @@ fi
 # 5. Clone TPM for tmux if missing
 if [[ ! -d ~/.config/tmux/plugins/tpm ]]; then
   echo "Installing Tmux Plugin Manager..."
+  mkdir -p ~/.config/tmux/plugins
   git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
   echo "✓ TPM installed (press prefix+I in tmux to install plugins)"
 else

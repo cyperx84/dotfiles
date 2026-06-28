@@ -77,7 +77,7 @@ done
 if [[ -d "$HOME/.tmux/plugins/tpm" ]]; then
     print_success "TPM installed"
 else
-    print_warning "TPM not installed (run: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm)"
+    print_warning "TPM not installed (run: mkdir -p ~/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm)"
 fi
 
 # ============================================================================

@@ -44,6 +44,7 @@ declare -a symlinks=(
     "$HOME/.config/karabiner:karabiner/.config/karabiner"
     "$HOME/.config/sesh:sesh/.config/sesh"
     "$HOME/.config/borders:borders/.config/borders"
+    "$HOME/.hammerspoon:hammerspoon/.hammerspoon"
 )
 
 # ============================================================================
@@ -113,7 +114,8 @@ if command -v stow &>/dev/null; then
 
     # Check for conflicts (dry-run, from the mac/ stow dir)
     cd "$DOTFILES_DIR/mac"
-    conflicts=$(stow -nv */ 2>&1 | grep -c "CONFLICT" || true)
+    packages=(zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon)
+    conflicts=$(stow -nv "${packages[@]}" 2>&1 | grep -c "CONFLICT" || true)
     if [[ $conflicts -eq 0 ]]; then
         print_success "No stow conflicts detected"
     else

@@ -70,7 +70,6 @@ if (( $+commands[direnv] )); then
     add-zsh-hook -d precmd _direnv_first_prompt
     eval "$(direnv hook zsh)"
     unfunction _direnv_lazy_load _direnv_first_prompt 2>/dev/null
-    [[ -f .envrc ]] && direnv allow
   }
   _direnv_first_prompt() { _direnv_lazy_load; }
   autoload -U add-zsh-hook
@@ -91,4 +90,4 @@ if (( $+commands[uv] )); then
 fi
 
 # OpenClaw Completion
-source "/home/cyperx/.openclaw/completions/openclaw.zsh"
+[ -f "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"

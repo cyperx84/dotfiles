@@ -500,8 +500,13 @@ function brew() {
 **Stow Management**:
 All components use GNU Stow for deployment:
 ```bash
-# Deploy all components
-stow */
+# Deploy macOS components
+cd ~/dotfiles/mac
+stow zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon
+
+# Deploy Linux components
+cd ~/dotfiles/linux
+stow zsh hypr waybar walker terminals tmux dev-tools kanata omarchy-user
 
 # Deploy individual components
 stow ghostty aerospace sketchybar # etc.
