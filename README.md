@@ -31,6 +31,7 @@ A curated collection of configuration files for a complete macOS development env
 | **[📝 Neovim Keybinds](docs/NEOVIM_KEYBINDS.md)** | Comprehensive Neovim mappings | Editor workflow mastery |
 | **[🔄 Workflow Guides](docs/WORKFLOW_GUIDES.md)** | Cross-tool integration patterns | Learning tool combinations |
 | **[🤖 Multi-LLM Workflow](docs/MULTI_LLM_WORKFLOW.md)** | Claude Code + CodeCompanion orchestration | AI development workflows |
+| **[🧠 Local MLX Gemma 4](docs/MLX_GEMMA_SETUP.md)** | Local Gemma 4 on MLX for OpenClaw/Hermes + MTP optimization | Running a fast local agent model |
 | **[📊 Claude Statusline Guide](docs/CLAUDE_STATUSLINE.md)** | Enhanced statusline interpretation | Reading context, cost, and session info |
 | **[🔧 Maintenance Guide](docs/MAINTENANCE.md)** | Validation, troubleshooting, updates | System reliability |
 | **[🤖 Claude Documentation](CLAUDE.md)** | Claude Code guidance & agent guidelines | AI-assisted development |
@@ -55,12 +56,13 @@ dotfiles/
 ├── ghostty/         # Modern terminal emulator configuration
 ├── kanata/          # Advanced keyboard remapper with home row mods
 ├── karabiner/       # Keyboard remapping and shortcuts
-├── nvim/            # Neovim editor configuration
 ├── sketchybar/      # macOS menu bar replacement
 ├── starship/        # Cross-shell prompt themes
 ├── tmux/            # Terminal multiplexer configuration
 └── zsh/             # Z shell configuration and plugins
 ```
+
+> **Note:** Neovim configuration is a **separate repository** at [`github.com/cyperx84/nvim`](https://github.com/cyperx84/nvim) — clone directly to `~/.config/nvim`
 
 ## 🛠️ Components Overview
 
@@ -163,10 +165,10 @@ Modern shell with extensive enhancements:
 
 ### 👾 **Neovim** - Text Editor
 A powerful, modern Neovim setup based on kickstart.nvim with extensive customization.
-**Included via Git submodule** - works seamlessly on any system (macOS, Linux, Windows).
+**Separate repository** at [`github.com/cyperx84/nvim`](https://github.com/cyperx84/nvim) — clone to `~/.config/nvim`.
 
 **Quick Facts:**
-- **38 Plugin** configuration files
+- **37 Plugin** configuration files
 - **100+ Keybindings** organized by function
 - **4 LSP Servers** configured (C/C++, Python, Rust, Lua)
 - **4 AI Integrations** (Claude, CodeCompanion, Copilot, SuperMaven)
@@ -180,7 +182,7 @@ A powerful, modern Neovim setup based on kickstart.nvim with extensive customiza
 - Multiple file explorers (Mini.files, Oil, Yazi)
 - Tokyo Night theme with transparency
 
-**Complete Documentation:** See [nvim/README.md](nvim/README.md) for full details, keybindings, and setup instructions.
+**Complete Documentation:** See [nvim repository](https://github.com/cyperx84/nvim) for full details, keybindings, and setup instructions.
 
 ## 🔧 Installation
 
@@ -318,71 +320,30 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
    - Allow Karabiner-Elements to modify keyboard input
    - Configure Ghostty as default terminal
 
-## 📦 Git Submodule Management
+## 📦 Neovim Configuration
 
-### About Nvim as a Git Submodule
+Neovim is a **standalone repository** at [`github.com/cyperx84/nvim`](https://github.com/cyperx84/nvim) — it is not a submodule of this dotfiles repo.
 
-The Neovim configuration is included via **Git submodule**, which allows:
-- ✅ Complete nvim independence (can be used separately on Linux/Mac)
-- ✅ Fast push/pull — no history scanning
-- ✅ Simple two-repo workflow
-- ✅ Works perfectly with `stow` for configuration management
-
-> **Note**: Clone dotfiles with `--recurse-submodules` to get the nvim config automatically.
-
-### Cloning (includes nvim)
+### Installation
 
 ```bash
-git clone --recurse-submodules https://github.com/cyperx84/dotfiles.git ~/dotfiles
-
-# Or after a plain clone:
-cd ~/dotfiles && git submodule update --init
-```
-
-### Updating Nvim
-
-```bash
-cd ~/dotfiles
-git submodule update --remote nvim
-git add nvim && git commit -m "Update nvim submodule"
-git push
-```
-
-### Using Nvim Independently
-
-```bash
-# Clone the nvim-specific repository
+# Clone the nvim configuration directly
 git clone https://github.com/cyperx84/nvim.git ~/.config/nvim
 
 # Launch Neovim (plugins auto-install on first run)
 nvim
 ```
 
-### Modifying and Pushing Nvim Changes
+### Making Changes
 
 ```bash
-# 1. Make changes inside the submodule
-cd ~/dotfiles/nvim
+# Make changes directly in the nvim repo
+cd ~/.config/nvim
 git add . && git commit -m "Your change"
 git push
-
-# 2. Update the submodule pointer in dotfiles
-cd ~/dotfiles
-git add nvim && git commit -m "Update nvim submodule"
-git push
 ```
 
-### Troubleshooting
-
-**Submodule shows as dirty after clone:**
-```bash
-git submodule update --init --recursive
-```
-
-**Check submodule status:**
-```bash
-git submodule status
-```
+No submodule pointer updates needed — the repos are independent.
 
 ## ⚙️ Customization
 
@@ -514,7 +475,7 @@ exec zsh                                  # Reload shell config
 - **SketchyBar Plugins**: 40 custom status bar plugins in `sketchybar/plugins/`
 - **Starship Themes**: 5 different prompt configurations
 - **Tmux Plugins**: Auto-installing plugin manager with 10 plugins
-- **Neovim**: 38 plugin configuration files (git submodule)
+- **Neovim**: 37 plugin configuration files (separate repo at github.com/cyperx84/nvim)
 - **Multi-LLM Workflow**: Claude Code + CodeCompanion integration (see `docs/MULTI_LLM_WORKFLOW.md`)
 
 ## 🤝 Contributing

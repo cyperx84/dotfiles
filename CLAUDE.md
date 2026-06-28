@@ -12,6 +12,7 @@ Guidance for Claude Code when working with this macOS dotfiles repository.
 
 ```
 zsh/.zshrc                                     # Shell: aliases, functions, keybinds
+starship/.config/starship/starship.toml        # Shell prompt (active config)
 tmux/.tmux.conf                                # Multiplexer: Ctrl+A prefix
 ~/.config/nvim/lua/keymaps.lua                # Neovim keybinds (standalone repo)
 aerospace/.config/aerospace/aerospace.toml    # Window manager
@@ -19,6 +20,7 @@ borders/.config/borders/bordersrc             # Window borders
 ghostty/.config/ghostty/config               # Terminal
 sketchybar/.config/sketchybar/sketchybarrc   # Menu bar
 kanata/.config/kanata/kanata.kbd             # Keyboard remapper (ACTIVE)
+macos/Brewfile, macos/setup.sh                 # Machine provisioning
 ```
 
 ## 🎯 User Intent Mapping
@@ -29,8 +31,8 @@ kanata/.config/kanata/kanata.kbd             # Keyboard remapper (ACTIVE)
 | "How tools work together" | docs/WORKFLOW_GUIDES.md |
 | "Component details" | docs/COMPONENTS.md |
 | "Not working" / "Broken" | docs/MAINTENANCE.md |
-| "Statusline" / "Context" | docs/CLAUDE_STATUSLINE.md |
-| "Multi-LLM" / "AI workflow" | docs/MULTI_LLM_WORKFLOW.md |
+| "Local LLM" / "MLX" / "Gemma" / "OpenClaw" / "Hermes" | docs/MLX_GEMMA_SETUP.md |
+| "Provisioning" / "New Mac" / "Brewfile" | macos/Brewfile, macos/setup.sh, docs/MAINTENANCE.md |
 
 ## ⚠️ CRITICAL - Do NOT Do These
 
@@ -46,7 +48,7 @@ kanata/.config/kanata/kanata.kbd             # Keyboard remapper (ACTIVE)
    - Tmux prefix (`Ctrl+A` is intentional, not `Ctrl+B`)
    - Aerospace gap sizes (20px inner, 52px top is required for SketchyBar)
 
-4. **ALWAYS** run validation scripts before declaring changes complete
+4. **ALWAYS** run validation before declaring changes complete: `scripts/test_dotfiles.sh` (full suite) and `~/.config/sketchybar/test_sketchybar.sh` (menu bar plugins)
 
 ## 🤖 Agent Guidelines
 
@@ -59,9 +61,12 @@ kanata/.config/kanata/kanata.kbd             # Keyboard remapper (ACTIVE)
 
 GNU Stow-managed macOS environment:
 - **Window mgmt**: Aerospace (tiling, PRIMARY) → JankyBorders (borders) → SketchyBar (menu bar, 40 plugins)
-- **Terminal stack**: Ghostty → Tmux (Ctrl+A prefix, 10+ plugins) → Zsh
+- **Terminal stack**: Ghostty → Tmux (Ctrl+A prefix, 10+ plugins) → Zsh → Starship (prompt)
 - **Editor**: Neovim (kickstart.nvim base, standalone repo at `~/.config/nvim`)
-- **Input**: Kanata (ACTIVE, LaunchDaemon) — Karabiner installed but unconfigured
+- **Input**: Kanata (ACTIVE, LaunchDaemon) — Karabiner DriverKit pinned to 6.6.0
+- **Automation**: Hammerspoon (ACTIVE) — focus-follows-mouse only, raises the window under the cursor
+- **Provisioning**: `macos/Brewfile` + `macos/setup.sh` mirror this machine onto a fresh Mac (see provision-mac-twin skill)
+- **Claude config**: lives in its own repo (`dotclaude`), NOT in this dotfiles repo
 
 ## 🔧 Service Management
 
@@ -71,6 +76,7 @@ killall borders && borders &                               # Restart borders
 sketchybar --reload                                        # Reload SketchyBar
 sudo launchctl kickstart -k system/com.example.kanata      # Restart Kanata
 tmux source-file ~/.tmux.conf                              # Reload tmux
+hs -c "hs.reload()" || killall Hammerspoon                 # Reload Hammerspoon
 exec zsh                                                   # Reload shell
 ~/.config/sketchybar/test_sketchybar.sh                   # Test SketchyBar plugins
 ```
@@ -81,8 +87,8 @@ exec zsh                                                   # Reload shell
 - **Kanata logs**: `/tmp/kanata.out.log`, `/tmp/kanata.err.log`
 - **SketchyBar helper**: C binary at `~/.config/sketchybar/helper/` — recompile with `make clean && make` if system metrics plugins fail
 - **Temperature plugin**: Uses `smctemp` TH0x (heatsink) sensor — M4 die sensors (TCMb) read 90°C+ at idle which is normal/misleading
-- **MCP/MCPHub**: Config at `mcp/.config/mcp/servers.json`, Neovim access via `<leader>m`
-- **Claude slash commands**: `/bridge`, `/eval`, `/verify`, `/prompt-improve` in `claude/.claude/commands/`
+- **Hammerspoon**: single-purpose focus-follows-mouse (`hammerspoon/.hammerspoon/init.lua`) — polls every 50ms via the Accessibility API, with explicit guards so it does NOT steal focus from dialogs/sheets/System Settings or the emoji picker. Needs Accessibility permission; touch carefully — it interacts with Aerospace focus
+- **Claude config**: moved out of this repo into its own `dotclaude` repo — there is no `claude/` package here anymore
 
 ## 📋 Code Style
 

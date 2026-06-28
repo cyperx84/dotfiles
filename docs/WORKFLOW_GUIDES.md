@@ -24,10 +24,10 @@
 ```bash
 # Method 1: Sesh + FZF (recommended)
 sd                          # Fuzzy connect to session (sc alias)
-# or M-e from tmux          # Alt+e for session selection
+# or M-Space from tmux      # Alt+Space for session selection
 
 # Method 2: Tmux Session Switcher (from within tmux)
-M-e                       # Advanced session switcher with previews
+M-Space                   # Advanced session switcher with previews
 ```
 
 **Integration Points:**
@@ -44,7 +44,7 @@ sl                          # List sessions (compact, deduplicated)
 sc                          # Fuzzy connect to session
 
 # Tmux native
-M-e                        # Session switcher with FZF previews
+M-Space                    # Session switcher with FZF previews
 ```
 
 ---
@@ -176,7 +176,7 @@ Shift+Ctrl+r               # Balance windows (flatten workspace tree)
 Shift+Alt+Cmd+r            # Enter service mode for advanced operations
 
 # Tmux Layouts
-M-e                      # Session switcher
+M-Space                  # Session switcher
 C-a N                      # New session
 ```
 
@@ -248,7 +248,7 @@ n                          # Open Neovim
 # 5. Window Layout (if needed)
 M-v                      # Split for terminal
 M-s                      # Additional splits
-M-e                      # Switch between sessions as needed
+M-Space                  # Switch between sessions as needed
 ```
 
 ### Container Development
@@ -325,7 +325,7 @@ C-a d                      # Detach from current session (Tmux)
 
 # 2. Switch context
 sc                         # Select new session/project
-# or M-e                     # Alt+e for session switcher
+# or M-Space                 # Alt+Space for session switcher
 
 # 3. Orient in new context
 <leader><leader>           # See open buffers
