@@ -20,9 +20,9 @@ PASSED=0
 FAILED=0
 WARNINGS=0
 
-print_success() { echo -e "${GREEN}✓${NC} $1"; ((PASSED++)); }
-print_failure() { echo -e "${RED}✗${NC} $1"; ((FAILED++)); }
-print_warning() { echo -e "${YELLOW}⚠${NC} $1"; ((WARNINGS++)); }
+print_success() { echo -e "${GREEN}✓${NC} $1"; ((++PASSED)); }
+print_failure() { echo -e "${RED}✗${NC} $1"; ((++FAILED)); }
+print_warning() { echo -e "${YELLOW}⚠${NC} $1"; ((++WARNINGS)); }
 
 echo "Testing cross-component integrations..."
 
@@ -32,8 +32,8 @@ echo "Testing cross-component integrations..."
 
 echo -e "\n--- Aerospace → SketchyBar ---"
 
-aerospace_conf="$DOTFILES_DIR/aerospace/.config/aerospace/aerospace.toml"
-sketchybar_conf="$DOTFILES_DIR/sketchybar/.config/sketchybar/sketchybarrc"
+aerospace_conf="$DOTFILES_DIR/mac/aerospace/.config/aerospace/aerospace.toml"
+sketchybar_conf="$DOTFILES_DIR/mac/sketchybar/.config/sketchybar/sketchybarrc"
 
 # Check Aerospace triggers SketchyBar
 if grep -q "aerospace_workspace_change" "$aerospace_conf" 2>/dev/null; then
@@ -62,7 +62,7 @@ fi
 
 echo -e "\n--- Zsh → SketchyBar ---"
 
-zshrc="$DOTFILES_DIR/zsh/.zshrc"
+zshrc="$DOTFILES_DIR/mac/zsh/.zshrc"
 
 # Check brew() function integration
 if grep -q "sketchybar --trigger brew_update" "$zshrc" 2>/dev/null; then
@@ -77,7 +77,7 @@ fi
 
 echo -e "\n--- Tmux → Neovim ---"
 
-tmux_conf="$DOTFILES_DIR/tmux/.tmux.conf"
+tmux_conf="$DOTFILES_DIR/mac/tmux/.tmux.conf"
 nvim_dir="$DOTFILES_DIR/nvim/.config/nvim"
 
 # Check vim-tmux-navigator in tmux
@@ -100,7 +100,7 @@ fi
 
 echo -e "\n--- Ghostty → Tmux ---"
 
-ghostty_conf="$DOTFILES_DIR/ghostty/.config/ghostty/config"
+ghostty_conf="$DOTFILES_DIR/mac/ghostty/.config/ghostty/config"
 
 # Check term compatibility
 if grep -q "tmux" "$zshrc" 2>/dev/null && grep -q "TERM" "$zshrc" 2>/dev/null; then
@@ -115,7 +115,7 @@ fi
 
 echo -e "\n--- Sesh → Tmux ---"
 
-sesh_conf="$DOTFILES_DIR/sesh/.config/sesh"
+sesh_conf="$DOTFILES_DIR/mac/sesh/.config/sesh"
 
 # Check sesh config exists
 if [[ -d "$sesh_conf" ]]; then
@@ -144,8 +144,8 @@ fi
 
 echo -e "\n--- Input Management ---"
 
-kanata_conf="$DOTFILES_DIR/kanata/.config/kanata/kanata.kbd"
-karabiner_conf="$DOTFILES_DIR/karabiner/.config/karabiner/karabiner.json"
+kanata_conf="$DOTFILES_DIR/mac/kanata/.config/kanata/kanata.kbd"
+karabiner_conf="$DOTFILES_DIR/mac/karabiner/.config/karabiner/karabiner.json"
 
 # Check Kanata is configured
 if [[ -f "$kanata_conf" ]]; then

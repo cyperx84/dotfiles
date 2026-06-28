@@ -9,7 +9,7 @@
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
-ZSHRC="$DOTFILES_DIR/zsh/.zshrc"
+ZSHRC="$DOTFILES_DIR/mac/zsh/.zshrc"
 
 # Color output
 RED='\033[0;31m'
@@ -21,9 +21,9 @@ PASSED=0
 FAILED=0
 WARNINGS=0
 
-print_success() { echo -e "${GREEN}✓${NC} $1"; ((PASSED++)); }
-print_failure() { echo -e "${RED}✗${NC} $1"; ((FAILED++)); }
-print_warning() { echo -e "${YELLOW}⚠${NC} $1"; ((WARNINGS++)); }
+print_success() { echo -e "${GREEN}✓${NC} $1"; ((++PASSED)); }
+print_failure() { echo -e "${RED}✗${NC} $1"; ((++FAILED)); }
+print_warning() { echo -e "${YELLOW}⚠${NC} $1"; ((++WARNINGS)); }
 
 echo "Testing Zsh configuration..."
 

@@ -9,7 +9,8 @@
 set -euo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
-NVIM_DIR="$DOTFILES_DIR/nvim/.config/nvim"
+# Neovim is a standalone repo at ~/.config/nvim (not stow-managed here)
+NVIM_DIR="$HOME/.config/nvim"
 
 # Color output
 RED='\033[0;31m'
@@ -21,9 +22,9 @@ PASSED=0
 FAILED=0
 WARNINGS=0
 
-print_success() { echo -e "${GREEN}✓${NC} $1"; ((PASSED++)); }
-print_failure() { echo -e "${RED}✗${NC} $1"; ((FAILED++)); }
-print_warning() { echo -e "${YELLOW}⚠${NC} $1"; ((WARNINGS++)); }
+print_success() { echo -e "${GREEN}✓${NC} $1"; ((++PASSED)); }
+print_failure() { echo -e "${RED}✗${NC} $1"; ((++FAILED)); }
+print_warning() { echo -e "${YELLOW}⚠${NC} $1"; ((++WARNINGS)); }
 
 echo "Testing Neovim configuration..."
 
@@ -63,7 +64,7 @@ if command -v luac &>/dev/null; then
     while IFS= read -r -d '' lua_file; do
         if ! luac -p "$lua_file" 2>/dev/null; then
             print_failure "Syntax error: $(basename "$lua_file")"
-            ((lua_errors++))
+            ((++lua_errors))
         fi
     done < <(find "$NVIM_DIR/lua" -name "*.lua" -print0 2>/dev/null)
 

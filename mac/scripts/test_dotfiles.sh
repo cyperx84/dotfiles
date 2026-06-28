@@ -15,7 +15,8 @@ set -euo pipefail
 
 # Configuration
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
-TESTS_DIR="$DOTFILES_DIR/scripts/tests"
+MAC_DIR="$DOTFILES_DIR/mac"          # macOS components live under mac/ (monorepo)
+TESTS_DIR="$MAC_DIR/scripts/tests"
 VERBOSE="${VERBOSE:-false}"
 QUICK_MODE=false
 
@@ -47,22 +48,22 @@ print_section() {
 
 print_success() {
     echo -e "${GREEN}✓${NC} $1"
-    ((PASSED++))
+    ((++PASSED))
 }
 
 print_failure() {
     echo -e "${RED}✗${NC} $1"
-    ((FAILED++))
+    ((++FAILED))
 }
 
 print_warning() {
     echo -e "${YELLOW}⚠${NC} $1"
-    ((WARNINGS++))
+    ((++WARNINGS))
 }
 
 print_skip() {
     echo -e "${BLUE}○${NC} $1 (skipped)"
-    ((SKIPPED++))
+    ((++SKIPPED))
 }
 
 print_info() {
@@ -86,7 +87,11 @@ run_test_script() {
         if bash "$script"; then
             return 0
         else
-            return 1
+            # Component tests run in a subshell, so their tallies don't
+            # propagate; record one failure here and keep the suite going
+            # (returning non-zero would abort under set -e before the summary).
+            print_failure "$name component tests reported failures"
+            return 0
         fi
     else
         print_skip "$name test script not found"
@@ -137,7 +142,6 @@ test_symlinks() {
     local configs=(
         "$HOME/.zshrc:zsh/.zshrc"
         "$HOME/.tmux.conf:tmux/.tmux.conf"
-        "$HOME/.config/nvim:nvim/.config/nvim"
         "$HOME/.config/aerospace/aerospace.toml:aerospace/.config/aerospace/aerospace.toml"
         "$HOME/.config/sketchybar/sketchybarrc:sketchybar/.config/sketchybar/sketchybarrc"
         "$HOME/.config/ghostty/config:ghostty/.config/ghostty/config"
@@ -200,15 +204,15 @@ test_syntax() {
     print_section "Configuration Syntax"
 
     # Zsh syntax check
-    if zsh -n "$DOTFILES_DIR/zsh/.zshrc" 2>/dev/null; then
+    if zsh -n "$MAC_DIR/zsh/.zshrc" 2>/dev/null; then
         print_success "zsh/.zshrc syntax valid"
     else
         print_failure "zsh/.zshrc has syntax errors"
     fi
 
     # Tmux syntax check
-    if tmux source-file "$DOTFILES_DIR/tmux/.tmux.conf" -t test 2>/dev/null || \
-       tmux -f "$DOTFILES_DIR/tmux/.tmux.conf" start-server \; kill-server 2>/dev/null; then
+    if tmux source-file "$MAC_DIR/tmux/.tmux.conf" -t test 2>/dev/null || \
+       tmux -f "$MAC_DIR/tmux/.tmux.conf" start-server \; kill-server 2>/dev/null; then
         print_success "tmux/.tmux.conf syntax valid"
     else
         # Tmux might fail if no server is running, that's okay
@@ -217,7 +221,7 @@ test_syntax() {
 
     # JSON syntax check for karabiner
     if command_exists jq; then
-        if jq . "$DOTFILES_DIR/karabiner/.config/karabiner/karabiner.json" >/dev/null 2>&1; then
+        if jq . "$MAC_DIR/karabiner/.config/karabiner/karabiner.json" >/dev/null 2>&1; then
             print_success "karabiner.json syntax valid"
         else
             print_failure "karabiner.json has JSON syntax errors"
@@ -228,8 +232,8 @@ test_syntax() {
 
     # TOML syntax check for aerospace
     if command_exists tomlq || command_exists taplo; then
-        if taplo check "$DOTFILES_DIR/aerospace/.config/aerospace/aerospace.toml" 2>/dev/null || \
-           tomlq . "$DOTFILES_DIR/aerospace/.config/aerospace/aerospace.toml" >/dev/null 2>&1; then
+        if taplo check "$MAC_DIR/aerospace/.config/aerospace/aerospace.toml" 2>/dev/null || \
+           tomlq . "$MAC_DIR/aerospace/.config/aerospace/aerospace.toml" >/dev/null 2>&1; then
             print_success "aerospace.toml syntax valid"
         else
             print_failure "aerospace.toml has TOML syntax errors"
@@ -244,17 +248,18 @@ test_syntax() {
         fi
     fi
 
-    # Lua syntax check for neovim configs
-    if command_exists luac; then
+    # Lua syntax check for neovim configs (standalone repo at ~/.config/nvim)
+    local nvim_lua_dir="$HOME/.config/nvim/lua"
+    if [[ ! -d "$nvim_lua_dir" ]]; then
+        print_skip "Neovim config not found at ~/.config/nvim (standalone repo)"
+    elif command_exists luac; then
         local lua_errors=0
-        for lua_file in "$DOTFILES_DIR/nvim/.config/nvim/lua"/*.lua; do
-            if [[ -f "$lua_file" ]]; then
-                if ! luac -p "$lua_file" 2>/dev/null; then
-                    print_failure "$(basename "$lua_file") has Lua syntax errors"
-                    ((lua_errors++))
-                fi
+        while IFS= read -r -d '' lua_file; do
+            if ! luac -p "$lua_file" 2>/dev/null; then
+                print_failure "$(basename "$lua_file") has Lua syntax errors"
+                ((++lua_errors))
             fi
-        done
+        done < <(find "$nvim_lua_dir" -name '*.lua' -type f -print0)
         if [[ $lua_errors -eq 0 ]]; then
             print_success "Neovim Lua files syntax valid"
         fi
@@ -267,21 +272,21 @@ test_integration() {
     print_section "Integration Tests"
 
     # Check SketchyBar-Brew integration
-    if grep -q "sketchybar --trigger brew_update" "$DOTFILES_DIR/zsh/.zshrc" 2>/dev/null; then
+    if grep -q "sketchybar --trigger brew_update" "$MAC_DIR/zsh/.zshrc" 2>/dev/null; then
         print_success "SketchyBar-Brew integration present"
     else
         print_failure "SketchyBar-Brew integration missing in .zshrc"
     fi
 
     # Check Aerospace-SketchyBar integration
-    if grep -q "aerospace_workspace_change" "$DOTFILES_DIR/aerospace/.config/aerospace/aerospace.toml" 2>/dev/null; then
+    if grep -q "aerospace_workspace_change" "$MAC_DIR/aerospace/.config/aerospace/aerospace.toml" 2>/dev/null; then
         print_success "Aerospace-SketchyBar integration present"
     else
         print_warning "Aerospace-SketchyBar integration not found"
     fi
 
     # Check vim-tmux-navigator integration
-    if grep -q "vim-tmux-navigator" "$DOTFILES_DIR/tmux/.tmux.conf" 2>/dev/null; then
+    if grep -q "vim-tmux-navigator" "$MAC_DIR/tmux/.tmux.conf" 2>/dev/null; then
         print_success "vim-tmux-navigator integration present"
     else
         print_warning "vim-tmux-navigator not configured in tmux"

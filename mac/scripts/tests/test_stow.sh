@@ -21,9 +21,9 @@ PASSED=0
 FAILED=0
 WARNINGS=0
 
-print_success() { echo -e "${GREEN}✓${NC} $1"; ((PASSED++)); }
-print_failure() { echo -e "${RED}✗${NC} $1"; ((FAILED++)); }
-print_warning() { echo -e "${YELLOW}⚠${NC} $1"; ((WARNINGS++)); }
+print_success() { echo -e "${GREEN}✓${NC} $1"; ((++PASSED)); }
+print_failure() { echo -e "${RED}✗${NC} $1"; ((++FAILED)); }
+print_warning() { echo -e "${YELLOW}⚠${NC} $1"; ((++WARNINGS)); }
 print_skip() { echo -e "${BLUE}○${NC} $1 (skipped)"; }
 
 echo "Testing Stow symlinks..."
@@ -36,7 +36,6 @@ echo "Testing Stow symlinks..."
 declare -a symlinks=(
     "$HOME/.zshrc:zsh/.zshrc"
     "$HOME/.tmux.conf:tmux/.tmux.conf"
-    "$HOME/.config/nvim:nvim/.config/nvim"
     "$HOME/.config/aerospace:aerospace/.config/aerospace"
     "$HOME/.config/sketchybar:sketchybar/.config/sketchybar"
     "$HOME/.config/ghostty:ghostty/.config/ghostty"
@@ -82,7 +81,7 @@ broken_count=0
 while IFS= read -r -d '' link; do
     if [[ ! -e "$link" ]]; then
         print_failure "Broken symlink: $link"
-        ((broken_count++))
+        ((++broken_count))
     fi
 done < <(find "$HOME" -maxdepth 3 -type l -print0 2>/dev/null | head -100)
 
@@ -96,11 +95,11 @@ fi
 
 echo -e "\n--- Stow Packages ---"
 
-if [[ -d "$DOTFILES_DIR" ]]; then
-    packages=$(find "$DOTFILES_DIR" -maxdepth 1 -type d -not -name ".*" -not -name "scripts" -not -name "docs" | wc -l | tr -d ' ')
-    print_success "Found $packages stow packages in dotfiles"
+if [[ -d "$DOTFILES_DIR/mac" ]]; then
+    packages=$(find "$DOTFILES_DIR/mac" -maxdepth 1 -type d -not -name ".*" -not -name "scripts" -not -name "macos" | wc -l | tr -d ' ')
+    print_success "Found $packages stow packages in mac/"
 else
-    print_failure "Dotfiles directory not found at $DOTFILES_DIR"
+    print_failure "Dotfiles mac/ directory not found at $DOTFILES_DIR/mac"
 fi
 
 # ============================================================================
@@ -112,8 +111,8 @@ echo -e "\n--- Stow Dry-Run ---"
 if command -v stow &>/dev/null; then
     print_success "Stow is installed"
 
-    # Check for conflicts (dry-run)
-    cd "$DOTFILES_DIR"
+    # Check for conflicts (dry-run, from the mac/ stow dir)
+    cd "$DOTFILES_DIR/mac"
     conflicts=$(stow -nv */ 2>&1 | grep -c "CONFLICT" || true)
     if [[ $conflicts -eq 0 ]]; then
         print_success "No stow conflicts detected"
