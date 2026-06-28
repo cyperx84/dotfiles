@@ -9,6 +9,7 @@ tmux_status=(
   padding_left=2
   padding_right=4
   update_freq=5
+  updates=on
   script="$PLUGIN_DIR/tmux.sh"
   # click_script="osascript -e 'tell application \"Terminal\" to activate' -e 'tell application \"Terminal\" to do script \"tmux list-sessions\"'"
 )

@@ -9,6 +9,7 @@ docker_status=(
   padding_left=2
   padding_right=4
   update_freq=15
+  updates=on
   script="$PLUGIN_DIR/docker.sh"
   # click_script="open -a 'Docker Desktop'"
 )
