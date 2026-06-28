@@ -13,5 +13,11 @@ mac/sketchybar/.config/sketchybar/helper/helper
 # Runtime logs
 .nvimlog
 .aider*
+__pycache__/
+
+# Local/generated worktrees and plugin installs
+.claude/worktrees/
+mac/tmux/.tmux/plugins/
+linux/tmux/.config/tmux/plugins/
 
 # Claude Code config now lives in its own repo: github.com/cyperx84/dotclaude
