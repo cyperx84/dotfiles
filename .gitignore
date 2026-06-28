@@ -1,12 +1,17 @@
 # Compiled binaries
-sketchybar/.config/sketchybar/helper/helper
+mac/sketchybar/.config/sketchybar/helper/helper
 
 .genkit/
 .DS_Store
 
 # Backup files
 *.bak
+*.backup
+*.archive
 *~
+
+# Runtime logs
+.nvimlog
 .aider*
 
 # Claude Code config now lives in its own repo: github.com/cyperx84/dotclaude

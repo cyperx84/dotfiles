@@ -18,7 +18,7 @@ tags: []
          ░         ░ ░                                       
 ```
 
-A curated collection of configuration files for a complete macOS development environment. This setup creates a beautiful, efficient, and highly customized workflow centered around tiling window management, terminal productivity, and modern development tools.
+A curated collection of configuration files for a complete development environment, organized as a **macOS + Linux monorepo**: macOS configs live in `mac/`, Linux (Omarchy/Hyprland) configs in `linux/`. This setup creates a beautiful, efficient, and highly customized workflow centered around tiling window management, terminal productivity, and modern development tools.
 
 ## 📚 Documentation Hub
 
@@ -30,9 +30,7 @@ A curated collection of configuration files for a complete macOS development env
 | **[⌨️ Keybinds Reference](docs/KEYBINDS.md)** | Complete keybindings across all tools | Quick reference and lookup |
 | **[📝 Neovim Keybinds](docs/NEOVIM_KEYBINDS.md)** | Comprehensive Neovim mappings | Editor workflow mastery |
 | **[🔄 Workflow Guides](docs/WORKFLOW_GUIDES.md)** | Cross-tool integration patterns | Learning tool combinations |
-| **[🤖 Multi-LLM Workflow](docs/MULTI_LLM_WORKFLOW.md)** | Claude Code + CodeCompanion orchestration | AI development workflows |
 | **[🧠 Local MLX Gemma 4](docs/MLX_GEMMA_SETUP.md)** | Local Gemma 4 on MLX for OpenClaw/Hermes + MTP optimization | Running a fast local agent model |
-| **[📊 Claude Statusline Guide](docs/CLAUDE_STATUSLINE.md)** | Enhanced statusline interpretation | Reading context, cost, and session info |
 | **[🔧 Maintenance Guide](docs/MAINTENANCE.md)** | Validation, troubleshooting, updates | System reliability |
 | **[🤖 Claude Documentation](CLAUDE.md)** | Claude Code guidance & agent guidelines | AI-assisted development |
 
@@ -51,15 +49,31 @@ A curated collection of configuration files for a complete macOS development env
 
 ```
 dotfiles/
-├── aerospace/       # Aerospace tiling window manager
-├── borders/         # JankyBorders window border configuration
-├── ghostty/         # Modern terminal emulator configuration
-├── kanata/          # Advanced keyboard remapper with home row mods
-├── karabiner/       # Keyboard remapping and shortcuts
-├── sketchybar/      # macOS menu bar replacement
-├── starship/        # Cross-shell prompt themes
-├── tmux/            # Terminal multiplexer configuration
-└── zsh/             # Z shell configuration and plugins
+├── mac/                 # macOS configs — stow from here (target: ~)
+│   ├── aerospace/       # Aerospace tiling window manager
+│   ├── borders/         # JankyBorders window border configuration
+│   ├── ghostty/         # Modern terminal emulator configuration
+│   ├── hammerspoon/     # Focus-follows-mouse automation
+│   ├── kanata/          # Advanced keyboard remapper with home row mods
+│   ├── karabiner/       # Keyboard remapping and shortcuts
+│   ├── macos/           # Brewfile + setup.sh provisioning
+│   ├── scripts/         # Helper + validation scripts
+│   ├── sketchybar/      # macOS menu bar replacement
+│   ├── starship/        # Cross-shell prompt themes
+│   ├── tmux/            # Terminal multiplexer configuration
+│   ├── zsh/             # Z shell configuration and plugins
+│   └── bootstrap.sh     # macOS provisioning entry point
+├── linux/               # Linux (Omarchy/Hyprland) configs — stow from here (target: /home/cyperx)
+│   ├── hypr/            # Hyprland window manager
+│   ├── waybar/          # Status bar
+│   ├── walker/          # Application launcher
+│   ├── terminals/       # Terminal emulator configs
+│   ├── kanata/          # Keyboard remapper (config.kbd)
+│   ├── dev-tools/       # btop, fastfetch, git, lazygit, starship
+│   ├── omarchy-user/    # Omarchy user layer
+│   ├── tmux/, zsh/, scripts/
+│   └── bootstrap.sh     # Linux provisioning entry point
+└── docs/                # Shared documentation
 ```
 
 > **Note:** Neovim configuration is a **separate repository** at [`github.com/cyperx84/nvim`](https://github.com/cyperx84/nvim) — clone directly to `~/.config/nvim`
@@ -285,17 +299,22 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
    cd ~/dotfiles
    ```
 
-2. **Install configurations using Stow:**
+2. **Install configurations using Stow** (run from the platform subdirectory):
    ```bash
    # Install GNU Stow if not already installed
    brew install stow
 
-   # Install all configurations at once
-   stow */
+   # macOS: stow from mac/
+   cd ~/dotfiles/mac
+   stow */                                   # all components at once
+   # or individually:
+   stow ghostty karabiner sesh sketchybar starship tmux zsh aerospace
 
-   # Or install individual components
-   stow ghostty karabiner sesh sketchybar starship tmux zsh nvim aerospace
+   # The easy path: run the bootstrap script instead
+   ~/dotfiles/mac/bootstrap.sh
    ```
+
+   On Linux (Omarchy), stow from `linux/` instead (or run `~/dotfiles/linux/bootstrap.sh`).
 
 3. **Start services:**
    ```bash
@@ -476,7 +495,7 @@ exec zsh                                  # Reload shell config
 - **Starship Themes**: 5 different prompt configurations
 - **Tmux Plugins**: Auto-installing plugin manager with 10 plugins
 - **Neovim**: 37 plugin configuration files (separate repo at github.com/cyperx84/nvim)
-- **Multi-LLM Workflow**: Claude Code + CodeCompanion integration (see `docs/MULTI_LLM_WORKFLOW.md`)
+- **Local LLM**: Gemma 4 on MLX serving OpenClaw/Hermes (see `docs/MLX_GEMMA_SETUP.md`)
 
 ## 🤝 Contributing
 
