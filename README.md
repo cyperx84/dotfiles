@@ -299,20 +299,21 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
    cd ~/dotfiles
    ```
 
-2. **Install configurations using Stow** (run from the platform subdirectory):
+2. **Run the bootstrap script** (recommended — installs Homebrew, all Brewfile
+   apps/casks/fonts, stows every config, sets up TPM and the Kanata daemon):
    ```bash
-   # Install GNU Stow if not already installed
-   brew install stow
-
-   # macOS: stow from mac/
-   cd ~/dotfiles/mac
-   stow zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon
-
-   # The easy path: run the bootstrap script instead
+   # macOS
    ~/dotfiles/mac/bootstrap.sh
+
+   # Linux (Omarchy)
+   ~/dotfiles/linux/bootstrap.sh
    ```
 
-   On Linux (Omarchy), stow from `linux/` instead (or run `~/dotfiles/linux/bootstrap.sh`).
+   Or stow manually from the platform subdirectory if you only want the symlinks:
+   ```bash
+   cd ~/dotfiles/mac
+   stow zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon
+   ```
 
 3. **Start services:**
    ```bash
@@ -332,10 +333,27 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
    nvim  # Wait for plugins to download (~30-60 seconds)
    ```
 
-4. **Configure permissions:**
-   - Grant accessibility permissions to Aerospace in System Preferences
-   - Allow Karabiner-Elements to modify keyboard input
-   - Configure Ghostty as default terminal
+4. **Manual macOS steps** (cannot be scripted — Apple security / TCC):
+
+   These are the pieces `bootstrap.sh` *can't* do for you on a fresh machine:
+
+   - **Karabiner DriverKit VirtualHIDDevice** — Kanata's keyboard remapping
+     **will not work without it**, and it is *not* a Homebrew cask. Install the
+     pinned driver (Kanata 1.11 is incompatible with DriverKit v7 — use **6.6.0**):
+     ```bash
+     # Download + install the v6.6.0 .pkg from the Karabiner releases:
+     #   https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases
+     # then activate it:
+     sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate
+     ```
+   - **Input Monitoring** — grant it to `kanata` in System Settings → Privacy &
+     Security → Input Monitoring (the remaps stay dead until you do).
+   - **Accessibility** — grant it to **AeroSpace** and **Hammerspoon** in
+     System Settings → Privacy & Security → Accessibility.
+   - **Ghostty** — set as the default terminal if desired.
+
+   > See the `provision-mac-twin` skill for the full fresh-Mac walkthrough,
+   > including the Homebrew 6.x / Kanata / TCC gotchas.
 
 ## 📦 Neovim Configuration
 

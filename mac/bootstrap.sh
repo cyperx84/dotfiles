@@ -17,14 +17,23 @@ if ! command -v brew &>/dev/null; then
 fi
 echo "✓ Homebrew available"
 
-# 2. Check stow
+# 2. Install everything from the Brewfile (apps, casks, fonts, CLIs incl. stow)
+BREWFILE="$DOTFILES_DIR/macos/Brewfile"
+if [[ -f "$BREWFILE" ]]; then
+  echo "Installing packages from Brewfile (this can take a while on a fresh machine)..."
+  # Don't abort the whole bootstrap if one cask fails — surface it and continue.
+  brew bundle --file="$BREWFILE" || echo "⚠ Some Brewfile entries failed — review the output above"
+  echo "✓ Brewfile processed"
+fi
+
+# 3. Check stow (Brewfile installs it, but keep a fallback)
 if ! command -v stow &>/dev/null; then
   echo "Installing stow..."
   brew install stow
 fi
 echo "✓ GNU Stow available"
 
-# 3. Back up conflicting files and stow
+# 4. Back up conflicting files and stow
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 BACKUP_DIR="$HOME/dotfiles-backup-$TIMESTAMP"
 CONFLICTS=false
@@ -56,7 +65,7 @@ for pkg in "${PACKAGES[@]}"; do
   echo "✓ Stowed $pkg"
 done
 
-# 4. Clone TPM for tmux if missing
+# 5. Clone TPM for tmux if missing
 if [[ ! -d ~/.tmux/plugins/tpm ]]; then
   echo "Installing Tmux Plugin Manager..."
   mkdir -p ~/.tmux/plugins
@@ -66,7 +75,7 @@ else
   echo "✓ TPM already installed"
 fi
 
-# 5. Kanata LaunchDaemon
+# 6. Kanata LaunchDaemon
 PLIST_SRC="$DOTFILES_DIR/kanata/.config/kanata/com.example.kanata.plist"
 PLIST_DST="/Library/LaunchDaemons/com.example.kanata.plist"
 if [[ -f "$PLIST_SRC" && ! -f "$PLIST_DST" ]]; then
