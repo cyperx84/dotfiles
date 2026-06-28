@@ -107,8 +107,8 @@ fi
 echo
 echo "8. Backup Status"
 echo "-------------------------------------"
-if ls ~/dotfiles-backup-*.tar.gz 1> /dev/null 2>&1; then
-  echo "✓ Backup found: $(ls -t ~/dotfiles-backup-*.tar.gz | head -1)"
+if ls -d ~/dotfiles-backup-*/ 1> /dev/null 2>&1; then
+  echo "✓ Backup found: $(ls -dt ~/dotfiles-backup-*/ | head -1)"
 else
   echo "✗ No backup found"
 fi

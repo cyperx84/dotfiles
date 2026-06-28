@@ -72,8 +72,13 @@ PLIST_DST="/Library/LaunchDaemons/com.example.kanata.plist"
 if [[ -f "$PLIST_SRC" && ! -f "$PLIST_DST" ]]; then
   echo "Installing Kanata LaunchDaemon..."
   sudo cp "$PLIST_SRC" "$PLIST_DST"
-  sudo launchctl load "$PLIST_DST"
+  # launchd refuses plists that aren't root:wheel 0644
+  sudo chown root:wheel "$PLIST_DST"
+  sudo chmod 644 "$PLIST_DST"
+  # Modern API (load is deprecated and can wedge the label)
+  sudo launchctl bootstrap system "$PLIST_DST"
   echo "✓ Kanata LaunchDaemon installed"
+  echo "  → Grant 'Input Monitoring' to kanata in System Settings > Privacy for remaps to work"
 fi
 
 echo

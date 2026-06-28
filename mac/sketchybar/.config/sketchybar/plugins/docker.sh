@@ -16,8 +16,19 @@ if ! command -v docker &> /dev/null; then
   exit 0
 fi
 
+# Resolve a timeout command. GNU coreutils ships it as `gtimeout` on macOS;
+# bare `timeout` only exists if coreutils' gnubin is on PATH — which sketchybar's
+# minimal plugin env may not have. Fall back to no timeout rather than erroring.
+if command -v timeout &>/dev/null; then
+  DOCKER_TIMEOUT="timeout 3"
+elif command -v gtimeout &>/dev/null; then
+  DOCKER_TIMEOUT="gtimeout 3"
+else
+  DOCKER_TIMEOUT=""
+fi
+
 # Check if Docker daemon is running - hide if not running
-if ! timeout 3 docker info &>/dev/null 2>&1; then
+if ! $DOCKER_TIMEOUT docker info &>/dev/null 2>&1; then
   sketchybar --set $NAME drawing=off 2>/dev/null
   exit 0
 fi

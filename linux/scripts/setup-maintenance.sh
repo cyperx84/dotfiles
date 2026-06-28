@@ -2,10 +2,10 @@
 set -euo pipefail
 
 # Set up automated system maintenance for Arch Linux T2 MacBook
-# Run with: sudo bash ~/dotfiles/scripts/setup-maintenance.sh
+# Run with: sudo bash ~/dotfiles/linux/scripts/setup-maintenance.sh
 
 if [[ $EUID -ne 0 ]]; then
-  echo "Run with sudo: sudo bash ~/dotfiles/scripts/setup-maintenance.sh"
+  echo "Run with sudo: sudo bash ~/dotfiles/linux/scripts/setup-maintenance.sh"
   exit 1
 fi
 
