@@ -205,27 +205,27 @@ run = 'layout floating'
     ctrl-shift-8 = 'workspace 8'
     ctrl-shift-9 = 'workspace 9'
 
-    # Move window to workspace
-    shift-alt-j = 'move-node-to-workspace 1'
-    shift-alt-k = 'move-node-to-workspace 2'
-    shift-alt-l = 'move-node-to-workspace 3'
-    shift-alt-u = 'move-node-to-workspace 4'
-    shift-alt-i = 'move-node-to-workspace 5'
-    shift-alt-o = 'move-node-to-workspace 6'
+    # Move window to workspace AND follow it
+    shift-alt-j = ['move-node-to-workspace 1', 'workspace 1']
+    shift-alt-k = ['move-node-to-workspace 2', 'workspace 2']
+    shift-alt-l = ['move-node-to-workspace 3', 'workspace 3']
+    shift-alt-u = ['move-node-to-workspace 4', 'workspace 4']
+    shift-alt-i = ['move-node-to-workspace 5', 'workspace 5']
+    shift-alt-o = ['move-node-to-workspace 6', 'workspace 6']
 
-    shift-alt-1 = 'move-node-to-workspace 1'
-    shift-alt-2 = 'move-node-to-workspace 2'
-    shift-alt-3 = 'move-node-to-workspace 3'
-    shift-alt-4 = 'move-node-to-workspace 4'
-    shift-alt-5 = 'move-node-to-workspace 5'
-    shift-alt-6 = 'move-node-to-workspace 6'
-    shift-alt-7 = 'move-node-to-workspace 7'
-    shift-alt-8 = 'move-node-to-workspace 8'
-    shift-alt-9 = 'move-node-to-workspace 9'
+    shift-alt-1 = ['move-node-to-workspace 1', 'workspace 1']
+    shift-alt-2 = ['move-node-to-workspace 2', 'workspace 2']
+    shift-alt-3 = ['move-node-to-workspace 3', 'workspace 3']
+    shift-alt-4 = ['move-node-to-workspace 4', 'workspace 4']
+    shift-alt-5 = ['move-node-to-workspace 5', 'workspace 5']
+    shift-alt-6 = ['move-node-to-workspace 6', 'workspace 6']
+    shift-alt-7 = ['move-node-to-workspace 7', 'workspace 7']
+    shift-alt-8 = ['move-node-to-workspace 8', 'workspace 8']
+    shift-alt-9 = ['move-node-to-workspace 9', 'workspace 9']
 
-    # Move window to previous/next workspace
-    shift-alt-p = 'move-node-to-workspace --wrap-around prev'
-    shift-alt-n = 'move-node-to-workspace --wrap-around next'
+    # Move window to previous/next workspace AND follow it
+    shift-alt-p = ['move-node-to-workspace --wrap-around prev', 'workspace prev']
+    shift-alt-n = ['move-node-to-workspace --wrap-around next', 'workspace next']
 
     # Move window between displays
     shift-alt-s = 'move-node-to-monitor --wrap-around prev'
