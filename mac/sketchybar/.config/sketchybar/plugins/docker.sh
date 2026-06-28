@@ -17,7 +17,7 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Check if Docker daemon is running - hide if not running
-if ! docker info &>/dev/null 2>&1; then
+if ! timeout 3 docker info &>/dev/null 2>&1; then
   sketchybar --set $NAME drawing=off 2>/dev/null
   exit 0
 fi

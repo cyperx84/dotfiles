@@ -261,7 +261,7 @@ alias sl='sesh list -t -c -d'                      # List sessions (compact, ded
 
 sc() {
     exec </dev/tty
-    exec <&1
+    exec <&0
     local session="${1:-$(sesh list | fzf --height 40% --reverse --border)}"
     [[ -z "$session" ]] && return
     TMUX= sesh connect "$session"
@@ -350,7 +350,7 @@ if (( $+commands[direnv] )); then
     add-zsh-hook -d precmd _direnv_first_prompt
     eval "$(direnv hook zsh)"
     unfunction _direnv_lazy_load _direnv_first_prompt 2>/dev/null
-    [[ -f .envrc ]] && direnv allow
+    # direnv will prompt user to run 'direnv allow' if .envrc is blocked
   }
   _direnv_first_prompt() { _direnv_lazy_load; }
   autoload -U add-zsh-hook
@@ -362,17 +362,8 @@ fi
 [ -f "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"
 export PATH="$HOME/.local/bin:$PATH"
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
-# End of LM Studio CLI section
-
-
 # Gemini CLI OAuth workaround (CodeAssist 400)
 export GOOGLE_CLOUD_PROJECT="gemini-cli"
-eval "$(gog completion zsh)"
+command -v gog &>/dev/null && eval "$(gog completion zsh)"
 export PATH="$HOME/.openclaw/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
-
-
-# Added by Antigravity CLI installer
-export PATH="$HOME/.local/bin:$PATH"

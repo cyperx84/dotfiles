@@ -31,6 +31,6 @@ fi
 # Save the current mode for next toggle (preview script reads this)
 echo "$DISPLAY_MODE" > "$STATE_FILE"
 
-# Run sesh_list_enhanced.sh with remaining args
+# Run sesh_list.sh with remaining args
 # No markers added - preview script reads ~/.sesh_display_mode instead
-~/.tmux/scripts/sesh_list_enhanced.sh "$@"
+~/.config/sesh/scripts/core/sesh_list.sh "$@"

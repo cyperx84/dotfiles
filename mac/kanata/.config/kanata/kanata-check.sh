@@ -540,7 +540,7 @@ else
     echo -e "  1. Check logs: sudo tail -50 /Library/Logs/Kanata/kanata.err.log"
     echo -e "  2. Restart service: sudo launchctl bootout system/com.example.kanata && \\"
     echo -e "                      sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.kanata.plist"
-    echo -e "  3. Review guide: cat ~/dotfiles/kanata/SETUP_GUIDE.md"
+    echo -e "  3. Review guide: cat ~/dotfiles/mac/kanata/SETUP_GUIDE.md"
     echo ""
     exit 2
 fi

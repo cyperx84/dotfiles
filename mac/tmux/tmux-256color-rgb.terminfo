@@ -4,7 +4,7 @@
 # inside tmux even when COLORTERM=truecolor is set.
 #
 # Install (user-local, no sudo):
-#   tic -x ~/dotfiles/tmux/tmux-256color-rgb.terminfo
+#   tic -x ~/dotfiles/mac/tmux/tmux-256color-rgb.terminfo
 #
 # Verify:
 #   infocmp -x tmux-256color | grep RGB

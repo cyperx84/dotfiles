@@ -2,7 +2,8 @@
 
 update() {
   source "$CONFIG_DIR/icons.sh"
-  SSID="$(/System/Library/PrivateFrameworks/Apple80211.framework/Resources/airport -I | awk -F ' SSID: ' '/ SSID: / {print $2}')"
+  WIFI_IFACE="$(networksetup -listallhardwareports | awk '/Wi-Fi/{getline; print $2}')"
+  SSID="$(networksetup -getairportnetwork "$WIFI_IFACE" 2>/dev/null | awk -F': ' '{print $2}')"
   INTERFACE="$(route get default | grep interface | awk '{print $2}')"
 
   # Determine the hardware type (WiFi or Ethernet) of the active interface

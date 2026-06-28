@@ -78,7 +78,7 @@ startup_command = ""
 [[session]]
 name = "notes"
 path = "~/.openclaw/workspace/vault/"
-startup_command = "nvim "
+startup_command = "nvim index.md"
 
 [[session]]
 name = "dotfiles"

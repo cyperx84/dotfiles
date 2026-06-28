@@ -206,4 +206,4 @@ sketchybar --update
   sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$workspace"
 ' &
 
-echo "sketchybar configuation loaded.."
+echo "sketchybar configuration loaded.."
