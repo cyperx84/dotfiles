@@ -300,7 +300,6 @@ export PATH="/opt/homebrew/opt/icu4c@77/bin:$PATH"         # ICU library
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
 # Low-priority paths (appended)
-export PATH="$PATH:$HOME/.antigravity/antigravity/bin"     # Antigravity
 export PATH="$PATH:$HOME/.lmstudio/bin"                    # LM Studio CLI
 
 alias cc="claude --dangerously-skip-permissions"

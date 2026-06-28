@@ -39,6 +39,9 @@ macos-auto-secure-input = false
 macos-secure-input-indication = false
 
 # Keybinds
+# Explicitly intercept Cmd+C for copy - bypasses Kanata synthetic key issue
+# where super+c default binding doesn't match injected Cmd key events
+keybind = cmd+c=copy_to_clipboard
 keybind = ctrl+l=unbind
 keybind = cmd+shift+p=unbind
 keybind = global:ctrl+enter=toggle_quick_terminal
