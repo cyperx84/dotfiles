@@ -260,11 +260,13 @@ alias vault="cd ~/vault && nvim index.md"
 alias sl='sesh list -t -c -d'                      # List sessions (compact, deduplicated)
 
 sc() {
-    exec </dev/tty
-    exec <&0
+    # NOTE: do NOT add `exec </dev/tty` here — it poisons the shell's stdin and
+    # makes `tmux attach` fail with "can't use /dev/tty" (and breaks bare tmux
+    # afterward). fzf opens /dev/tty itself, so it isn't needed.
     local session="${1:-$(sesh list | fzf --height 40% --reverse --border)}"
     [[ -z "$session" ]] && return
-    TMUX= sesh connect "$session"
+    # No `TMUX=` prefix: let sesh switch-client when inside tmux, attach when out.
+    sesh connect "$session"
 }
 
 # Management aliases
