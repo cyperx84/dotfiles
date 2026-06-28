@@ -94,6 +94,7 @@ These tools stack on top of each other — a keystroke passes through Kanata, th
 | `Cmd+Enter` | Ghostty | Open a Ghostty terminal |
 | `Cmd+Ctrl+t` | Ghostty + tmux | Open Ghostty and `tmux attach` |
 | `Cmd+Ctrl+Shift+n` | Ghostty + tmux + nvim | New `Neovim` tmux session running nvim |
+| `Cmd+Ctrl+Shift+s` | Ghostty + sesh picker | Fuzzy session picker (`sesh-picker.sh`) |
 | `Cmd+Ctrl+n` | Ghostty + sesh | Connect to the `notes` sesh session |
 | `Cmd+Shift+b` | Zen | Open Zen browser |
 | `Cmd+Shift+y` | Zen → YouTube | Open YouTube in Zen |

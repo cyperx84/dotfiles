@@ -1,0 +1,111 @@
+# Sesh Configuration
+# Managed via GNU Stow - symlinked to ~/.config/sesh/sesh.toml
+#
+# Platform Support: macOS, Linux (Arch, Ubuntu, Fedora, Debian)
+# - Paths using ~ will expand correctly on all platforms
+# - Platform-specific system paths are handled by scripts (sesh_common.sh)
+# - This blacklist supplements script-level filtering
+
+# Blacklist sessions from appearing in sesh list
+# Filter out system directories, cache, junk paths, and development artifacts
+# Note: macOS-specific paths (/Users, /Library) won't match on Linux (harmless)
+blacklist = [
+    # System directories (macOS-specific, ignored on Linux)
+    "scratch",
+    "/dev",
+    "/usr/bin",
+    "/Library/Preferences",
+    "/Library/LaunchDaemons",
+    "Library/Containers",
+    "Library/Application Support",
+
+    # Trash and cache
+    ".Trash",
+    ".cache",
+
+    # Version control internals
+    ".git/",
+    ".github",
+
+    # Python artifacts
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".*\\.pyc",
+
+    # Node.js artifacts
+    "node_modules",
+    ".next",
+    ".turbo",
+
+    # Build artifacts
+    "dist",
+    "build",
+    "target",
+
+    # macOS
+    ".DS_Store",
+
+    # Logs
+    ".*\\.log",
+]
+
+# Prioritize session sources
+# Active tmux sessions first for quick access
+sort_order = [
+    "tmux",
+    "config",
+    "zoxide",
+]
+
+# Default session configuration
+[default_session]
+# Startup command when creating new sessions
+startup_command = ""
+
+# Preview command - uses integrated tmux script for session previews
+# The {} placeholder is replaced with the session path/name
+preview_command = "~/.config/sesh/scripts/core/sesh_preview.sh {}"
+
+# Custom session configurations
+# Quick-access sessions for frequently used workspaces
+# These sessions will always appear in sesh list, even when not running
+[[session]]
+name = "home"
+path = "~"
+startup_command = ""
+
+[[session]]
+name = "notes"
+path = "~/.openclaw/workspace/vault/"
+startup_command = "nvim index.md"
+
+[[session]]
+name = "dotfiles"
+path = "~/dotfiles"
+startup_command = "nvim"
+
+[[session]]
+name = "nvim"
+path = "~/.config/nvim"
+startup_command = "nvim"
+
+[[session]]
+name = "Klaw"
+path = "~/.openclaw/workspace/"
+startup_command = "nvim"
+
+[[session]]
+name = "Hermes"
+path = "~/.hermes"
+startup_command = "nvim"
+
+[[session]]
+name = "github"
+path = "~/github"
+startup_command = "ls"
+
+[[session]]
+name = "docker"
+path = "~"
+startup_command = "~/.config/sesh/scripts/utils/docker_session.sh" 

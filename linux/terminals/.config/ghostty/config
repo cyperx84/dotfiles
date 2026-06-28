@@ -1,0 +1,53 @@
+# Dynamic theme colors
+config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"
+
+# Font (from macOS dotfiles)
+font-family = "ZedMono NFM Bold"
+font-family-bold = "Monaspace Radon ExtraBold"
+font-family-italic = "Monaspace Radon Italic"
+font-family-bold-italic = "Monaspace Krypton ExtraBold Italic"
+font-size = 12
+font-feature = "ss01"
+font-feature = "ss02"
+font-feature = "ss03"
+font-feature = "ss04"
+font-feature = "liga"
+
+# Window
+window-theme = ghostty
+window-padding-x = 14
+window-padding-y = 14
+confirm-close-surface=false
+resize-overlay = never
+gtk-toolbar-style = flat
+
+# Cursor styling
+cursor-color = #00FF00
+cursor-style = block_hollow
+cursor-style-blink = true
+
+# Shell integration
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# Background
+background-opacity = 0.9
+mouse-hide-while-typing = true
+
+# Keyboard bindings
+keybind = shift+insert=paste_from_clipboard
+keybind = control+insert=copy_to_clipboard
+keybind = super+control+shift+alt+arrow_down=resize_split:down,100
+keybind = super+control+shift+alt+arrow_up=resize_split:up,100
+keybind = super+control+shift+alt+arrow_left=resize_split:left,100
+keybind = super+control+shift+alt+arrow_right=resize_split:right,100
+
+# Slowdown mouse scrolling
+mouse-scroll-multiplier = 0.95
+keybind = shift+enter=text:\x1b\r
+
+# Fix general slowness on hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
+async-backend = epoll
+
+# Ghostty Custom shaders
+custom-shader = shaders/cursor_smear_rainbow.glsl

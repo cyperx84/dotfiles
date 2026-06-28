@@ -528,9 +528,9 @@ brew services stop sketchybar
 cp -r ~/.config ~/.config.backup.$(date +%Y%m%d)
 
 # 3. Re-stow from scratch
-cd ~/dotfiles
-stow -D */  # Remove all stow links
-stow */     # Re-create all links
+cd ~/dotfiles/mac
+stow -D zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon
+stow zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon
 
 # 4. Restart services
 open -a AeroSpace
@@ -555,7 +555,9 @@ git log --oneline  # Find last working commit
 git reset --hard <commit_hash>
 
 # 2. Re-stow
-stow -D */ && stow */
+cd ~/dotfiles/mac
+stow -D zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon
+stow zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon
 
 # 3. Restart services and validate
 ```

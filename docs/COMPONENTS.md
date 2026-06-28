@@ -114,10 +114,10 @@ pgrep -l borders                 # Check if running
 **Plugin Architecture** (40 plugins total):
 ```
 plugins/
-├── aerospace.sh          # Aerospace workspace management (PRIMARY)
-├── create_workspace.sh   # Workspace creation handler
-├── space_window_count.sh # Window count per workspace
-├── space.sh             # Space display (click to switch)
+├── aerospace.sh           # Aerospace workspace management (PRIMARY)
+├── create_workspace.sh    # Workspace creation handler
+├── space_window_count.sh  # Window count per workspace
+├── space.sh              # Space display (click to switch)
 ├── brew.sh               # Package updates
 ├── calendar.sh           # Date/time display
 ├── cpu.sh                # System monitoring (via helper binary)
@@ -138,7 +138,22 @@ plugins/
 ├── tmux.sh               # Tmux session indicator
 ├── memory_graph.sh       # Memory usage graph
 ├── memory_ring.sh        # Memory usage ring display
-└── ... (18+ more plugins)
+├── dnd.sh                # Do Not Disturb status
+├── icon_map.sh           # Icon mapping utility
+├── media.sh              # Media playback info
+├── mic.sh                # Microphone status
+├── mic_click.sh          # Microphone click handler
+├── notification.sh       # Notification center
+├── project.sh            # Project directory indicator
+├── reset_timer.sh        # Timer reset handler
+├── spotify.sh            # Spotify integration
+├── svim.sh               # Neovim status indicator
+├── system_monitor_details.sh  # System monitor detail popup
+├── system_monitor_toggle.sh   # System monitor toggle
+├── timer.py              # Timer (Python)
+├── volume_click.sh       # Volume click handler
+├── wifi_monitor.sh       # WiFi monitor daemon
+├── zen.sh                # Zen browser status
 ```
 
 **Temperature Monitoring (M4 Mac)**:
@@ -343,9 +358,9 @@ export STARSHIP_CONFIG=~/.config/starship/starship-gruvbox-rainbow.toml
 **Key Files**:
 - `nvim/.config/nvim/init.lua` - Entry point
 - `nvim/.config/nvim/lua/keymaps.lua` - Core keybindings ([detailed guide](NEOVIM_KEYBINDS.md))
-- `nvim/.config/nvim/lua/custom/plugins/` - 38 plugin configurations
+- `nvim/.config/nvim/lua/custom/plugins/` - 37 plugin configurations
 
-**Core Architecture**:
+**Core Architecture** (separate repo at `~/.config/nvim`):
 ```
 nvim/
 ├── init.lua                    # Main entry point
@@ -485,8 +500,13 @@ function brew() {
 **Stow Management**:
 All components use GNU Stow for deployment:
 ```bash
-# Deploy all components
-stow */
+# Deploy macOS components
+cd ~/dotfiles/mac
+stow zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon
+
+# Deploy Linux components
+cd ~/dotfiles/linux
+stow zsh hypr waybar walker terminals tmux dev-tools kanata omarchy-user
 
 # Deploy individual components
 stow ghostty aerospace sketchybar # etc.
