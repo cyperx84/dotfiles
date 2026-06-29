@@ -37,11 +37,6 @@ _rm "$HOME/Library/Caches/Homebrew"
 
 echo "--- openclaw ---"
 _rm "$HOME/.openclaw/tmp"
-# logs older than 7 days
-find "$HOME/.openclaw/logs" -type f -mtime +7 -delete 2>/dev/null && echo "  openclaw logs: pruned (>7d)"
-
-echo "--- hermes ---"
-find "$HOME/.hermes/logs" -type f -mtime +7 -delete 2>/dev/null  && echo "  hermes logs: pruned (>7d)"
 
 echo "--- docker (only if colima is running) ---"
 if colima status 2>/dev/null | grep -q "Running"; then
