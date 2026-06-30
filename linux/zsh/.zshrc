@@ -1,8 +1,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# Load Omarchy default zsh configuration
-source ~/.local/share/omarchy/default/zsh/rc
+# Load Omarchy default zsh configuration (only on Omarchy desktops; a plain VPS
+# won't have it, so guard the source or the shell errors on startup).
+[ -f ~/.local/share/omarchy/default/zsh/rc ] && source ~/.local/share/omarchy/default/zsh/rc
 
 # ============================================================================
 # USER CUSTOMIZATIONS (overrides Omarchy defaults)
@@ -27,6 +28,18 @@ export FZF_DEFAULT_OPTS='--border=rounded --color=border:#00ff00'
 
 # Starship config path (use our custom config)
 export STARSHIP_CONFIG=~/.config/starship.toml
+
+# ----------------------------------------------------------------------------
+# Per-machine prompt tag — consumed by starship's $env_var.STARSHIP_MACHINE.
+# One synced config; each host shows its own name so you can tell at a glance
+# which machine the terminal is on. Add a machine = add a case line.
+# ----------------------------------------------------------------------------
+case "$(hostname -s)" in
+  m4*)      export STARSHIP_MACHINE="m4" ;;
+  m1*)      export STARSHIP_MACHINE="m1" ;;
+  omarchy*) export STARSHIP_MACHINE="omarchy" ;;
+  *)        export STARSHIP_MACHINE="$(hostname -s)" ;;
+esac
 
 # Aliases
 alias vim='nvim'

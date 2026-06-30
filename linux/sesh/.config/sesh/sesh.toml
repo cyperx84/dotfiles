@@ -1,0 +1,34 @@
+# Sesh Configuration (Linux) — managed via GNU Stow, symlinked to ~/.config/sesh/sesh.toml
+# Mirrors the remote-SSH sessions from the mac side so `sesh` is consistent across machines.
+
+[default_session]
+startup_command = ""
+
+# Quick-access local sessions
+[[session]]
+name = "home"
+path = "~"
+startup_command = ""
+
+[[session]]
+name = "dotfiles"
+path = "~/dotfiles"
+startup_command = "nvim"
+
+# Remote SSH sessions over the tailnet. Short `ssh <host>` aliases resolve via
+# the stowed ~/.ssh/config (linux/ssh/.ssh/config). Plain ascii names (no glyph/
+# space) so tmux attach doesn't break. Add a machine = add a Host + an entry.
+[[session]]
+name = "ssh-m4"
+path = "~"
+startup_command = "ssh m4"
+
+[[session]]
+name = "ssh-m1"
+path = "~"
+startup_command = "ssh m1"
+
+[[session]]
+name = "ssh-omarchy"
+path = "~"
+startup_command = "ssh omarchy"
