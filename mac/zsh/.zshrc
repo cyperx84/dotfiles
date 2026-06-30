@@ -42,6 +42,19 @@ export COLORTERM="truecolor"
 
 export GPG_TTY=$(tty)
 
+# ----------------------------------------------------------------------------
+# Per-machine prompt tag — consumed by starship's $env_var.STARSHIP_MACHINE.
+# One synced config; each host shows its own icon + name so you can tell at a
+# glance which machine the terminal is on. Add a machine = add a case line.
+# Swap the glyph to taste (if one renders as a blank box, your font lacks it).
+# ----------------------------------------------------------------------------
+case "$(hostname -s)" in
+  m4*)      export STARSHIP_MACHINE="󰇄 m4" ;;
+  m1*)      export STARSHIP_MACHINE="󰌢 m1" ;;
+  omarchy*) export STARSHIP_MACHINE="󰣇 omarchy" ;;
+  *)        export STARSHIP_MACHINE="󰟀 $(hostname -s)" ;;
+esac
+
 # Lazy-load GPG agent (saves 50-100ms, only launches when GPG is used)
 if (( $+commands[gpg] )); then
   gpg() {
@@ -82,9 +95,25 @@ source <(fzf --zsh)
 # Green border styling for FZF (matches Ghostty cursor - applies to Sesh and other FZF interfaces)
 export FZF_DEFAULT_OPTS='--border=rounded --border-label="" --color=border:#00ff00'
 
-export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --icons --level=3 {} | head -200'"
-export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
+# Note: var names stay FZF_ALT_C_OPTS / FZF_CTRL_T_OPTS — each widget reads its
+# own var regardless of which key triggers it, so the previews follow the
+# widget to its remapped key (see the rebind block below).
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --icons --level=3 {} | head -200'"   # fzf-cd-widget (eza tree)
+export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"                  # fzf-file-widget (bat)
 # Note: FZF sourced via `source <(fzf --zsh)` above - removed redundant sourcing
+
+# fzf key remap. Must come after the `fzf --zsh` source above (which binds the
+# defaults \ec/^T). Result:
+#   Alt-F  -> fzf-file-widget  (insert file paths, bat preview)  [was Ctrl-T]
+#   Ctrl-F -> fzf-cd-widget    (cd into dir, eza tree preview)    [was Alt-C]
+#   Ctrl-T -> fzf-file-widget  (kept, default)
+#   Alt-C  -> capitalize-word  (restored zsh default)
+for _km in emacs vicmd viins; do
+  bindkey -M "$_km" '\ec' capitalize-word   # Alt-C back to zsh default
+  bindkey -M "$_km" '\ef' fzf-file-widget   # Alt-F -> file picker
+  bindkey -M "$_km" '^f'  fzf-cd-widget     # Ctrl-F -> cd widget
+done
+unset _km
 
 # Cache brew --prefix to avoid repeated calls (saves 100-200ms)
 HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
@@ -112,8 +141,10 @@ else
   compinit -C -i
 fi
 
-# Yazi
-function f() {
+# Yazi — launcher named `y` (yazi convention). NOT `f`: the f key is a
+# kanata home-row-mod tap-hold (tap=f / hold=Lctl), so launching via `f`
+# leaks a stray `f` into yazi on startup → drops you into find mode.
+function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
 	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
@@ -134,7 +165,7 @@ if (( $+commands[uv] )); then
   }
 fi
 
-bindkey '^f' vi-forward-word
+# Ctrl-F is now the fzf cd-widget (see fzf rebind block above)
 bindkey '^u' up-line-or-search
 bindkey '^p' down-line-or-search
 
