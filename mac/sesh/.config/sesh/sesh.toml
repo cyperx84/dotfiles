@@ -114,16 +114,16 @@ startup_command = "~/.config/sesh/scripts/utils/docker_session.sh"
 # the stowed ~/.ssh/config (mac/ssh/.ssh/config). Each machine lists all hosts
 # (its own entry is a harmless no-op). Add a machine = add a Host + an entry.
 [[session]]
-name = "󰣀 m4"
+name = "ssh-m4"
 path = "~"
 startup_command = "ssh m4"
 
 [[session]]
-name = "󰣀 m1"
+name = "ssh-m1"
 path = "~"
 startup_command = "ssh m1"
 
 [[session]]
-name = "󰣀 omarchy"
+name = "ssh-omarchy"
 path = "~"
 startup_command = "ssh omarchy"
