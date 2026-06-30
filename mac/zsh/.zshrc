@@ -44,15 +44,14 @@ export GPG_TTY=$(tty)
 
 # ----------------------------------------------------------------------------
 # Per-machine prompt tag — consumed by starship's $env_var.STARSHIP_MACHINE.
-# One synced config; each host shows its own icon + name so you can tell at a
-# glance which machine the terminal is on. Add a machine = add a case line.
-# Swap the glyph to taste (if one renders as a blank box, your font lacks it).
+# One synced config; each host shows its own name so you can tell at a glance
+# which machine the terminal is on. Add a machine = add a case line.
 # ----------------------------------------------------------------------------
 case "$(hostname -s)" in
-  m4*)      export STARSHIP_MACHINE="󰇄 m4" ;;
-  m1*)      export STARSHIP_MACHINE="󰌢 m1" ;;
-  omarchy*) export STARSHIP_MACHINE="󰣇 omarchy" ;;
-  *)        export STARSHIP_MACHINE="󰟀 $(hostname -s)" ;;
+  m4*)      export STARSHIP_MACHINE="m4" ;;
+  m1*)      export STARSHIP_MACHINE="m1" ;;
+  omarchy*) export STARSHIP_MACHINE="omarchy" ;;
+  *)        export STARSHIP_MACHINE="$(hostname -s)" ;;
 esac
 
 # Lazy-load GPG agent (saves 50-100ms, only launches when GPG is used)

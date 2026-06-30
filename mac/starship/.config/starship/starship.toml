@@ -40,7 +40,7 @@ color_purple = '#b16286'
 color_red = '#cc241d'
 color_yellow = '#FF7200'
 
-# Per-machine tag (icon + name) set by the zshrc case block keyed on hostname.
+# Per-machine tag (name) set by the zshrc case block keyed on hostname.
 # Lets one synced config look different on each machine. Edit the glyph/name
 # in mac/zsh/.zshrc (and linux/zsh/.zshrc), not here.
 [env_var.STARSHIP_MACHINE]
