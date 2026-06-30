@@ -94,7 +94,30 @@ ssh-keygen -t ed25519 -C "cyperx@<machine>"
 
 ## Add a new Linux machine to the tailnet (provision guide)
 
-Tested mental model = Arch / Omarchy, but adapt the install line per distro.
+### Automated (headless / VPS) — one script
+
+For a fresh headless box (VPS, cloud server), `linux/provision-server.sh` does the
+whole thing: installs prereqs + Tailscale + starship, joins the tailnet with
+Tailscale-SSH, clones+stows the server dotfiles (zsh, tmux, ssh, dev-tools, sesh,
+scripts — no GUI), enables sshd, and sets zsh as the shell. Distro-agnostic
+(apt/dnf/pacman/zypper/apk), idempotent.
+
+```
+# interactive (prints a URL to authorize):
+curl -fsSL https://raw.githubusercontent.com/cyperx84/dotfiles/main/linux/provision-server.sh | bash -s -- <hostname>
+
+# unattended (no browser) — make a key at login.tailscale.com/admin/settings/keys:
+TS_AUTHKEY=tskey-auth-xxxx bash provision-server.sh <hostname>
+```
+
+Then in the admin console: **Disable key expiry** on the new node. It uses
+Tailscale-SSH (Linux supports it) + OpenSSH, so `ssh <user>@<hostname>` works from
+any tailnet machine. The `m4`/`m1`/`omarchy` aliases come from the stowed
+`linux/ssh/.ssh/config`; add the new box's own Host line there + a `sesh` entry.
+
+> Omarchy *desktops* use `linux/bootstrap.sh` instead (it also stows the GUI stack).
+
+### Manual steps (any distro)
 
 1. **Install Tailscale.**
    - Arch / Omarchy: `sudo pacman -S tailscale`

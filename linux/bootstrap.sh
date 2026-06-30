@@ -2,7 +2,7 @@
 set -e
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-PACKAGES=(zsh hypr waybar walker terminals tmux dev-tools kanata omarchy-user)
+PACKAGES=(zsh hypr waybar walker terminals tmux dev-tools kanata omarchy-user ssh sesh)
 
 echo "==================================="
 echo "  Dotfiles Bootstrap (Linux)"
