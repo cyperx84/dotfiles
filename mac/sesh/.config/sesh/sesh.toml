@@ -108,4 +108,22 @@ startup_command = "ls"
 [[session]]
 name = "docker"
 path = "~"
-startup_command = "~/.config/sesh/scripts/utils/docker_session.sh" 
+startup_command = "~/.config/sesh/scripts/utils/docker_session.sh"
+
+# Remote SSH sessions over the tailnet. Short `ssh <host>` aliases resolve via
+# the stowed ~/.ssh/config (mac/ssh/.ssh/config). Each machine lists all hosts
+# (its own entry is a harmless no-op). Add a machine = add a Host + an entry.
+[[session]]
+name = "󰣀 m4"
+path = "~"
+startup_command = "ssh m4"
+
+[[session]]
+name = "󰣀 m1"
+path = "~"
+startup_command = "ssh m1"
+
+[[session]]
+name = "󰣀 omarchy"
+path = "~"
+startup_command = "ssh omarchy"
