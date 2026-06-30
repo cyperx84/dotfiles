@@ -59,6 +59,7 @@ linux/.stowrc                                        # Targets /home/cyperx
 | "Local LLM" / "MLX" / "Gemma" / "OpenClaw" / "Hermes" | docs/MLX_GEMMA_SETUP.md |
 | "Provisioning" / "New Mac" / "Brewfile" | mac/macos/Brewfile, mac/macos/setup.sh, docs/MAINTENANCE.md |
 | "Linux" / "Omarchy" / "Hyprland" | linux/, linux/bootstrap.sh |
+| "Tailscale" / "SSH" / "tailnet" / "remote access" | docs/TAILSCALE.md |
 
 ## ⚠️ CRITICAL - Do NOT Do These
 
