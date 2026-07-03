@@ -4,6 +4,12 @@
 source "$CONFIG_DIR/colors.sh" # Loads all defined colors
 source "$CONFIG_DIR/icons.sh"  # Loads all defined icons
 
+# Install the vendored Devicons brand-icon font (used by the agents cluster) so a
+# fresh machine renders the Claude/Codex/OpenClaw/Hermes logos. No-op if present.
+if [ -f "$CONFIG_DIR/fonts/devicons.ttf" ] && [ ! -f "$HOME/Library/Fonts/devicons.ttf" ]; then
+  cp "$CONFIG_DIR/fonts/devicons.ttf" "$HOME/Library/Fonts/devicons.ttf" 2>/dev/null
+fi
+
 ITEM_DIR="$CONFIG_DIR/items"     # Directory where the items are configured
 PLUGIN_DIR="$CONFIG_DIR/plugins" # Directory where all the plugin scripts are stored
 FONT="MonaspiceKr Nerd Font"
@@ -134,6 +140,7 @@ source "$ITEM_DIR/ssh.sh"
 source "$ITEM_DIR/tmux.sh"
 # source "$ITEM_DIR/dev_servers.sh"
 source "$ITEM_DIR/docker.sh"
+source "$ITEM_DIR/agents.sh"
 
 # source "$ITEM_DIR/mic.sh"
 

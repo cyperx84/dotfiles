@@ -160,6 +160,8 @@ run = 'layout floating'
 
     cmd-shift-c = ['exec-and-forget open -a Codex']
     cmd-shift-k = ['exec-and-forget open -a Claude']
+    # Jump to any AI agent session that needs input (round-robin across all tools)
+    cmd-shift-enter = ['exec-and-forget ~/.config/sketchybar/plugins/agent_jump.sh all']
     cmd-shift-u = ['exec-and-forget open -a Antigravity']
     cmd-shift-j = ['exec-and-forget open -a "Discord"']
     cmd-shift-i = ['exec-and-forget open -a "iPhone Mirroring"']

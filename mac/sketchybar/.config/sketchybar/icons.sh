@@ -66,6 +66,15 @@ DOCKER=󰡨
 SSH=󰢩
 TMUX=󰆍
 
+# AI Agent Icons (Devicons brand-icon font -- see fonts/devicons.ttf)
+# NOTE: these require icon.font="Devicons:Regular:..." (set in items/agents.sh),
+# not the default Nerd Font. Monochrome glyphs, so icon.color tinting works.
+CLAUDE=
+CODEX=
+OPENCLAW=
+HERMES=
+OPENCODE=
+
 # svim
 MODE_NORMAL=󰠻
 MODE_INSERT=󰉉
