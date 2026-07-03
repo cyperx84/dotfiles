@@ -143,14 +143,21 @@ fi
 # Yazi — launcher named `y` (yazi convention). NOT `f`: the f key is a
 # kanata home-row-mod tap-hold (tap=f / hold=Lctl), so launching via `f`
 # leaks a stray `f` into yazi on startup → drops you into find mode.
+# Same hazard for `s` (tap=s / hold=Lalt): a stray `s` tap opens yazi's
+# `search:` box on startup. `yazi` is aliased to this wrapper (below) so the
+# flush applies however you launch. `command yazi` avoids alias recursion.
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
+	# Drain buffered type-ahead so a leaked home-row-mod tap (s/f/…) doesn't
+	# land in yazi as search/find on startup.
+	while read -t 0 -k 1 -s 2>/dev/null; do :; done
+	command yazi "$@" --cwd-file="$tmp"
 	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
 		builtin cd -- "$cwd"
 	fi
 	rm -f -- "$tmp"
 }
+alias yazi='y'
 
 # UV Python - lazy-load completions (saves ~15ms on shell startup)
 if (( $+commands[uv] )); then
@@ -399,3 +406,6 @@ export GOOGLE_CLOUD_PROJECT="gemini-cli"
 command -v gog &>/dev/null && eval "$(gog completion zsh)"
 export PATH="$HOME/.openclaw/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
+
+# Added by LM Studio CLI tool (lms)
+export PATH="$PATH:/Users/cyperx/.lmstudio/bin"

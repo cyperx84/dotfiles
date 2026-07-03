@@ -1,0 +1,23 @@
+# Yazi keymap — belt-and-suspenders against kanata home-row-mod leaks.
+#
+# The kanata GASC layout (mac/kanata/.config/kanata/kanata.kbd) makes a/s/d/f
+# tap-hold keys (tap=letter / hold=modifier). A stray *tap* can leak into yazi
+# at startup. On yazi defaults that bare tap immediately opens a modal input:
+#   s -> search (fd)   f -> filter
+# which is the "weird search box" seen on launch. We neutralize those bare
+# single-key bindings and relocate the real commands to Ctrl-chords a home-row
+# tap can't produce. (The `y()` wrapper in .zshrc also drains type-ahead; this
+# is the second line of defense.)
+#
+# prepend_keymap wins over yazi's built-in defaults. Everything else is stock.
+
+[mgr]
+prepend_keymap = [
+  # Bare taps -> no-op (were: search-fd / filter). Prevents stray-tap modals.
+  { on = "s", run = "noop", desc = "disabled (leak guard) — use <C-s> to search" },
+  { on = "f", run = "noop", desc = "disabled (leak guard) — use <C-f> to filter" },
+
+  # Relocated real commands — chords a home-row tap cannot emit.
+  { on = "<C-s>", run = "search --via=fd",  desc = "Search files by name (fd)" },
+  { on = "<C-f>", run = "filter --smart",   desc = "Filter files" },
+]
