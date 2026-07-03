@@ -64,13 +64,17 @@ run = 'move-node-to-workspace 3'
 if.app-id = 'com.openai.codex'
 run = 'move-node-to-workspace 3'
 
-# Hermes + Discord -> workspace 4
+# Hermes + Discord + OpenClaw -> workspace 4
 [[on-window-detected]]
 if.app-id = 'com.nousresearch.hermes'
 run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
 if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'ai.openclaw.mac'
 run = 'move-node-to-workspace 4'
 
 # Open Design -> workspace 5
