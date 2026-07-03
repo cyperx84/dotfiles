@@ -3,13 +3,13 @@
 # HyprSpace workspace integration (optimized for instant updates)
 # https://nikitabobko.github.io/AeroSpace/goodies
 
-SPACE_ICONS=("󱙝" "󱌇" "󱍏" "󱃋" "󰋄" "󰟟")
+SPACE_ICONS=("󱙝" "󱌇" "󱍏" "󱃋" "󰋄" "󰟟" "󰉏" "󰆧" "󰚌")
 
 # Add custom events for workspace and window changes
 sketchybar --add event aerospace_workspace_change
 sketchybar --add event window_change
 
-for sid in 1 2 3 4 5 6
+for sid in 1 2 3 4 5 6 7 8 9
 do
   # Use custom icon if available, otherwise use default
   i=$((sid - 1))

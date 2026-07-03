@@ -55,6 +55,29 @@ automatically-unhide-macos-hidden-apps = true
 # if.app-id = 'md.obsidian'
 # run = 'move-node-to-workspace 6'
 
+# Claude Code desktop app + Codex -> workspace 3
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordesktop'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'com.openai.codex'
+run = 'move-node-to-workspace 3'
+
+# Hermes + Discord -> workspace 4
+[[on-window-detected]]
+if.app-id = 'com.nousresearch.hermes'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace 4'
+
+# Open Design -> workspace 5
+[[on-window-detected]]
+if.app-id = 'io.open-design.desktop'
+run = 'move-node-to-workspace 5'
+
 # Prevent Chrome from stealing focus - moves it to workspace 5 silently
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome'
@@ -189,6 +212,15 @@ run = 'layout floating'
     cmd-u = 'workspace 4'
     cmd-i = 'workspace 5'
     cmd-o = 'workspace 6'
+    cmd-1 = 'workspace 1'
+    cmd-2 = 'workspace 2'
+    cmd-3 = 'workspace 3'
+    cmd-4 = 'workspace 4'
+    cmd-5 = 'workspace 5'
+    cmd-6 = 'workspace 6'
+    cmd-7 = 'workspace 7'
+    cmd-8 = 'workspace 8'
+    cmd-9 = 'workspace 9'
 
     # Additional workspace navigation - binds need changing
     shift-ctrl-n = 'workspace next'
