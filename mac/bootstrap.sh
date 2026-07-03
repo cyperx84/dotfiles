@@ -90,6 +90,14 @@ if [[ -f "$PLIST_SRC" && ! -f "$PLIST_DST" ]]; then
   echo "  → Grant 'Input Monitoring' to kanata in System Settings > Privacy for remaps to work"
 fi
 
+# 7. Zen Browser config (not stow-managed — random profile dir; seeded by script)
+if [[ -f "$HOME/Library/Application Support/zen/profiles.ini" ]]; then
+  echo "Seeding Zen config..."
+  "$DOTFILES_DIR/zen/install.sh" || echo "⚠ Zen seed skipped (is Zen running?) — run mac/zen/install.sh later"
+else
+  echo "ℹ Zen not initialised yet — launch Zen once, quit it, then run: mac/zen/install.sh"
+fi
+
 echo
 echo "Done. Restart services: AeroSpace → borders → SketchyBar"
 echo "  killall AeroSpace && open -a AeroSpace"
