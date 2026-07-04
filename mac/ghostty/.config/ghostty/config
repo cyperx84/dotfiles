@@ -39,9 +39,12 @@ macos-auto-secure-input = false
 macos-secure-input-indication = false
 
 # Keybinds
-# Explicitly intercept Cmd+C for copy - bypasses Kanata synthetic key issue
-# where super+c default binding doesn't match injected Cmd key events
+# Explicitly intercept Cmd+C/V/S for copy/paste - bypasses Kanata synthetic key issue
+# where default cmd+<key> bindings don't match injected Cmd key events, letting
+# them fall through to the terminal and get folded into tmux's Alt (M-) bindings
 keybind = cmd+c=copy_to_clipboard
+keybind = cmd+v=paste_from_clipboard
+keybind = cmd+s=ignore
 keybind = ctrl+l=unbind
 keybind = cmd+shift+p=unbind
 keybind = global:ctrl+enter=toggle_quick_terminal
