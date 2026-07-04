@@ -1,13 +1,14 @@
 #!/bin/bash
 
 # opencode status:
-#   red   = an opencode session is waiting for your input (from its plugin)
-#   green = opencode is running (thinking, or a TUI process is up)
-#   grey  = not running
+#   red   = an opencode TUI is waiting for your input
+#   green = an opencode TUI is working (thinking)
+#   grey  = no opencode TUI open
 #
-# The waiting/thinking signal comes from the opencode plugin writing status files
-# to ~/.cache/opencode-sessions/ (see mac/opencode/plugins/). If absent we fall
-# back to a plain process check.
+# opencode's plugin API doesn't deliver session events to the TUI process, so
+# state is read from the pane content instead ("esc interrupt" in the footer ==
+# working) -- see opencode_panes() in agents_lib.sh. Pane-only: a headless
+# opencode background process without a TUI stays grey.
 
 [ -z "$NAME" ] && exit 1
 
@@ -23,8 +24,6 @@ if [ "${AGENT_WAITING:-0}" -gt 0 ]; then
   sketchybar --set "$NAME" drawing=on icon.color="$RED" label="$AGENT_WAITING" label.color="$RED" 2>/dev/null
 elif [ "${AGENT_THINKING:-0}" -gt 0 ]; then
   sketchybar --set "$NAME" drawing=on icon.color="$GREEN" label="$AGENT_THINKING" label.color="$GREEN" 2>/dev/null
-elif pgrep -f "[o]pencode" &>/dev/null; then
-  sketchybar --set "$NAME" drawing=on icon.color="$GREEN" label="" 2>/dev/null
 else
   sketchybar --set "$NAME" drawing=on icon.color="$GREY" label="" 2>/dev/null
 fi

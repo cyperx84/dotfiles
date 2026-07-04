@@ -4,40 +4,31 @@
 ################################################################################
 # tool (optional): all | claude | codex | opencode   (default: all)
 #
-# Collects every live session in state=waiting for the requested tool(s) and
-# round-robins through them one per invocation (used by the SketchyBar icon
-# clicks -- per tool -- and the Aerospace cmd-shift-enter keybind -- all tools).
-# Falls back to the most recent 'thinking' session, then workspace 3.
+# Round-robins through waiting sessions one per invocation (SketchyBar icon
+# clicks pass a tool; the Aerospace cmd-shift-enter keybind passes "all").
+# Falls back to the most recent thinking session, then workspace 3.
 ################################################################################
 
 source "$(dirname "$0")/agents_lib.sh"
 
 filter="${1:-all}"
-STATE_FILE="/tmp/agent_jump.${filter}.state"   # round-robin cursor per filter
+STATE_FILE="/tmp/agent_jump.${filter}.state"
 
 command -v jq &>/dev/null || exit 0
 command -v tmux &>/dev/null || { aerospace workspace 3 2>/dev/null; exit 0; }
 
 waiting=()
 think_pick=""; think_ts=""
-for entry in "${AGENT_DIRS[@]}"; do
-  dir="${entry%%:*}"; tool="${entry##*:}"
-  [ "$filter" = all ] || [ "$filter" = "$tool" ] || continue
-  [ -d "$dir" ] || continue
-  while IFS= read -r -d '' f; do
-    state=$(jq -r '.state // empty' "$f" 2>/dev/null)
-    [ "$state" = waiting ] || [ "$state" = thinking ] || continue
-    tgt=$(resolve_target "$f"); [ -z "$tgt" ] && continue
-    if [ "$state" = waiting ]; then
-      waiting+=("$tgt")
-    else
-      ts=$(jq -r '.last_activity // empty' "$f" 2>/dev/null)
-      if [ -z "$think_pick" ] || [[ "$ts" > "$think_ts" ]]; then
-        think_pick="$tgt"; think_ts="$ts"
-      fi
+while IFS=$'\t' read -r state tool tgt ts; do
+  [ -z "$tgt" ] && continue
+  if [ "$state" = waiting ]; then
+    waiting+=("$tgt")
+  elif [ "$state" = thinking ]; then
+    if [ -z "$think_pick" ] || [[ "$ts" > "$think_ts" ]]; then
+      think_pick="$tgt"; think_ts="$ts"
     fi
-  done < <(find "$dir" -maxdepth 1 -name '*.json' -mmin -1440 -print0 2>/dev/null)
-done
+  fi
+done < <(emit_agents "$filter")
 
 pick=""
 if [ ${#waiting[@]} -gt 0 ]; then
