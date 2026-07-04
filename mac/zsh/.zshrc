@@ -288,7 +288,7 @@ alias confn="cd $HOME/.config/nvim && nvim"
 # notes
 alias notes="cd ~/.openclaw/workspace/vault && nvim index.md"
 alias vault="cd ~/vault && nvim index.md"
-
+alias notes-icloud="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/cyperx && nvim 00-index.md"
 # ======================
 # SESH SESSION MANAGEMENT
 # ======================
@@ -409,3 +409,43 @@ export PATH="$HOME/bin:$PATH"
 
 # Added by LM Studio CLI tool (lms)
 export PATH="$PATH:/Users/cyperx/.lmstudio/bin"
+
+# Ornith local LLM stack — toggle the LM Studio server + worker launchd job.
+# `ornith` alone flips current state; `ornith on|off|status` for explicit control.
+ornith() {
+  local plist="$HOME/Library/LaunchAgents/ai.ornith.worker.plist"
+  local action="$1"
+  if [[ -z "$action" ]]; then
+    if lms server status 2>/dev/null | grep -qi running; then
+      action=off
+    else
+      action=on
+    fi
+  fi
+  case "$action" in
+    on)
+      lms server start --port 8081
+      launchctl bootstrap "gui/$(id -u)" "$plist" 2>/dev/null
+      echo "ornith: ON  (server up, worker job scheduled)"
+      ;;
+    off)
+      lms unload --all 2>/dev/null
+      lms server stop
+      launchctl bootout "gui/$(id -u)" "$plist" 2>/dev/null
+      echo "ornith: OFF (server stopped, worker job unloaded)"
+      ;;
+    status)
+      lms server status
+      if launchctl list 2>/dev/null | grep -q ai.ornith.worker; then
+        echo "worker job: loaded"
+      else
+        echo "worker job: not loaded"
+      fi
+      lms ps
+      ;;
+    *)
+      echo "usage: ornith [on|off|status]" >&2
+      return 1
+      ;;
+  esac
+}
