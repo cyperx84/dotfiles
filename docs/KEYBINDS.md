@@ -153,6 +153,32 @@ These tools stack on top of each other — a keystroke passes through Kanata, th
 
 > **Shared with Neovim:** bare `Ctrl+h/j/k/l` is routed by `vim-tmux-navigator` across tmux panes and nvim splits — intentional integration, not a duplicate binding.
 
+### Herdr Pane & Tab Navigation
+*Source: `herdr/.config/herdr/config.toml`*
+
+Mirrors the tmux layout above so muscle memory carries over. Herdr is a separate multiplexer process (runs its own server/session) — no runtime conflict with tmux even when both run at once.
+
+| Keybind | Action | Description |
+|---------|---------|-------------|
+| `C-a` | Prefix | Herdr prefix key (remapped from `C-b`) |
+| `Ctrl+h/j/k/l` | Focus pane | Select pane left/down/up/right — direct, no prefix |
+| `Alt+v` | Vertical split | Split side-by-side |
+| `Alt+s` | Horizontal split | Split top/bottom |
+| `Alt+c` | New tab | Create new tab |
+| `Alt+x` | Close pane | Close current pane |
+| `Alt+w` | Zoom | Toggle pane zoom |
+| `Alt+q` | Detach | Detach from herdr |
+| `Alt+Tab` | Last pane | Jump to last-focused pane |
+| `Alt+1..9` | Switch tab | Direct indexed tab switch (`[keys.indexed] tabs = "alt"`) |
+| `C-a n` / `C-a p` | Next/previous tab | Cycle tabs |
+| `C-a 1..9` | Switch tab | Prefixed indexed tab switch |
+| `C-a r` | Resize mode | Enter pane resize mode |
+| `C-a b` | Toggle sidebar | Show/hide workspace sidebar |
+| `C-a shift+r` | Reload config | Reload `config.toml` without restart |
+
+> **Conflict note:** `Ctrl+h/j/k/l` here is a bare direct binding with no vim-navigator-style app detection — unlike tmux's `vim-tmux-navigator` integration (row above), herdr can't tell if the focused pane is running Neovim and forward the chord through. It always intercepts. Fine for shells/most TUIs; can misbehave against apps that expect raw `Ctrl+h` (backspace) or `Ctrl+l` (redraw).
+> No herdr equivalent exists yet for tmux's `M-r` (break pane) or `M-\` (copy mode).
+
 ---
 
 ## Session Workflow

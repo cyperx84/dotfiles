@@ -3,7 +3,7 @@ set -e
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 STOW_TARGET="$HOME"
-PACKAGES=(zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon)
+PACKAGES=(zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon herdr)
 
 echo "==================================="
 echo "  Dotfiles Bootstrap (macOS)"

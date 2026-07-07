@@ -54,6 +54,7 @@ dotfiles/
 │   ├── borders/         # JankyBorders window border configuration
 │   ├── ghostty/         # Modern terminal emulator configuration
 │   ├── hammerspoon/     # Focus-follows-mouse automation
+│   ├── herdr/           # AI-agent terminal multiplexer (alt tmux-style config)
 │   ├── kanata/          # Advanced keyboard remapper with home row mods
 │   ├── karabiner/       # Keyboard remapping and shortcuts
 │   ├── macos/           # Brewfile + setup.sh provisioning
@@ -285,7 +286,7 @@ For convenience, you can install all essential dependencies at once:
 brew install --cask ghostty karabiner-elements font-monaspace font-meslo-lg-nerd-font nikitabobko/tap/aerospace
 brew tap FelixKratz/formulae && brew install borders
 brew tap narugit/tap && brew install narugit/tap/smctemp  # M4 temperature monitoring
-brew install sketchybar stow starship tmux zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep nvim git gh yazi sesh jq wget curl
+brew install sketchybar stow starship tmux herdr zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep nvim git gh yazi sesh jq wget curl
 
 # Optional additions
 brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata

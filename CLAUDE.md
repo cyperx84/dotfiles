@@ -34,6 +34,7 @@ mac/borders/.config/borders/bordersrc                # Window borders
 mac/ghostty/.config/ghostty/config                   # Terminal
 mac/sketchybar/.config/sketchybar/sketchybarrc       # Menu bar
 mac/kanata/.config/kanata/kanata.kbd                 # Keyboard remapper (ACTIVE)
+mac/herdr/.config/herdr/config.toml                  # AI-agent multiplexer: Ctrl+A prefix, mirrors tmux
 mac/macos/Brewfile, mac/macos/setup.sh               # Machine provisioning
 ```
 
