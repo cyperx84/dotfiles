@@ -19,13 +19,18 @@ export LC_ALL=en_US.UTF-8
 # Ghostty terminfo (includes tmux-direct, xterm-ghostty, etc.)
 export TERMINFO_DIRS="$TERMINFO_DIRS:/Applications/Ghostty.app/Contents/Resources/terminfo"
 
-# Enhanced terminal detection for Ghostty + tmux
-if [ -n "$TMUX" ]; then
-    export TERM="tmux-direct"
-elif [ "$TERM_PROGRAM" = "ghostty" ]; then
-    export TERM="xterm-ghostty"
-else
-    export TERM="xterm-256color"
+# Enhanced terminal detection for Ghostty.
+# Inside tmux, DO NOT override TERM — tmux sets it per-pane from its own
+# `default-terminal` (tmux-256color, see .tmux.conf). Forcing TERM=tmux-direct
+# here made Yazi load the tmux-direct terminfo and send DA1/DSR startup probes
+# tmux wouldn't answer as expected → "Terminal response timeout" (TRT).
+# Truecolor is unaffected: COLORTERM=truecolor + tmux's RGB terminal-features.
+if [ -z "$TMUX" ]; then
+    if [ "$TERM_PROGRAM" = "ghostty" ]; then
+        export TERM="xterm-ghostty"
+    else
+        export TERM="xterm-256color"
+    fi
 fi
 
 export COLORTERM="truecolor"
