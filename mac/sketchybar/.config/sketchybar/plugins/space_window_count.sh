@@ -36,14 +36,5 @@ case $window_count in
   *) label="$window_count" ;;
 esac
 
-# Visibility: always show spaces 1-3; show 4-9 only when they hold windows or
-# are the focused workspace. Empty, unfocused high spaces are hidden entirely.
-focused=$($WM_CMD list-workspaces --focused 2>/dev/null)
-if [ "$SID" -le 3 ] 2>/dev/null || [ "$window_count" -gt 0 ] || [ "$SID" = "$focused" ]; then
-  drawing="on"
-else
-  drawing="off"
-fi
-
 # Update the space indicator
-sketchybar --set "space.$SID" label="$label" drawing="$drawing"
+sketchybar --set "space.$SID" label="$label"

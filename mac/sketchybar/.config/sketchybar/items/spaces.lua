@@ -47,7 +47,6 @@ for sid = 1, 9 do
     },
     script = script,
     update_freq = 2,
-    updates = "on",
   })
 
   lib.script_on(space,
