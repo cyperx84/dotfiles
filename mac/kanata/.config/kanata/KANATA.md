@@ -654,6 +654,34 @@ For instant symbol access without layers:
 
 ---
 
+## Runbook: "kanata stopped working after a while" (TCC permission orphan)
+
+**Symptom:** keyboard remaps silently stop. `/tmp/kanata.err.log` repeats
+`kanata needs macOS Input Monitoring permission` and then `Accessibility permission`.
+Process flaps (pid changes every ~7s) because the root LaunchDaemon `KeepAlive` respawns it.
+
+**Cause:** macOS TCC pins Input Monitoring + Accessibility grants to the *resolved
+binary path*. `/opt/homebrew/bin/kanata` is a symlink into a **versioned** Cellar dir
+(`../Cellar/kanata/<VERSION>/bin/kanata`). A `brew upgrade` bumps the version, changes
+the path, and orphans BOTH grants → new binary has no permission → cannot open keyboard.
+
+**Fix (both permissions — Input Monitoring first, then Accessibility):**
+1. Open pane: `open "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent"`
+2. Toggle **kanata ON**; remove any stale entry pointing at an old `Cellar/kanata/<oldver>/` path.
+3. Repeat for Accessibility: `...?Privacy_Accessibility` — same toggle + remove stale.
+4. Kick the daemon clean: `sudo launchctl kickstart -k system/com.example.kanata`
+5. Verify: `grep "entering the processing loop" /tmp/kanata.out.log | tail -1` newer than last ERROR in err.log.
+
+**Prevention:** `brew pin kanata` (done 2026-07-10) — stops unattended version bumps.
+Re-grant deliberately only when you choose to `brew unpin && brew upgrade kanata`.
+
+**Auto-detect:** LaunchAgent `~/Library/LaunchAgents/com.cyperx.kanata-permwatch.plist`
+watches `/tmp/kanata.err.log`; on a permission error it fires a notification (sound "Basso")
+and opens the right Settings pane. Script: `~/.config/kanata/kanata-perm-watch.sh` (5-min cooldown).
+Cannot auto-grant TCC (SIP-protected) — automation stops at "detect + open the pane".
+
+---
+
 ## Resources
 
 - [Kanata GitHub](https://github.com/jtroo/kanata)
