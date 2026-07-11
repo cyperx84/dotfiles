@@ -1,0 +1,216 @@
+#!/bin/bash
+
+
+source "$CONFIG_DIR/colors.sh" # Loads all defined colors
+source "$CONFIG_DIR/icons.sh"  # Loads all defined icons
+
+# Install the vendored Devicons brand-icon font (used by the agents cluster) so a
+# fresh machine renders the Claude/Codex/OpenClaw/Hermes logos. No-op if present.
+if [ -f "$CONFIG_DIR/fonts/devicons.ttf" ] && [ ! -f "$HOME/Library/Fonts/devicons.ttf" ]; then
+  cp "$CONFIG_DIR/fonts/devicons.ttf" "$HOME/Library/Fonts/devicons.ttf" 2>/dev/null
+fi
+
+ITEM_DIR="$CONFIG_DIR/items"     # Directory where the items are configured
+PLUGIN_DIR="$CONFIG_DIR/plugins" # Directory where all the plugin scripts are stored
+FONT="MonaspiceKr Nerd Font"
+ICON_FONT="$FONT:Bold:20.0"
+LABEL_FONT="$FONT:Medium:12.0"
+LARGE_ICON_FONT="$FONT:Bold:24.0"
+SMALL_LABEL_FONT="$FONT:Medium:10.0"
+PADDINGS=1
+HELPER=git.felix.helper
+
+# Cleanup function for WiFi monitor
+cleanup_wifi_monitor() {
+  WIFI_MONITOR_PID_FILE="/tmp/sketchybar_wifi_monitor.pid"
+  if [ -f "$WIFI_MONITOR_PID_FILE" ]; then
+    kill "$(cat "$WIFI_MONITOR_PID_FILE")" 2>/dev/null
+    rm "$WIFI_MONITOR_PID_FILE"
+  fi
+}
+
+# Register cleanup on exit
+trap cleanup_wifi_monitor EXIT
+
+# Helper binary compilation with hash-based caching (only recompile when source changes)
+compile_helper() {
+  local helper_dir="$CONFIG_DIR/helper"
+  local helper_binary="$helper_dir/helper"
+  local hash_file="$helper_dir/.source_hash"
+
+  if [ ! -d "$helper_dir" ]; then
+    echo "Warning: Helper directory not found at $helper_dir"
+    return 1
+  fi
+
+  # Compute hash of source files
+  local current_hash=$(cat "$helper_dir"/*.c "$helper_dir"/*.h "$helper_dir"/makefile 2>/dev/null | shasum -a 256 | cut -d' ' -f1)
+  local stored_hash=""
+  [ -f "$hash_file" ] && stored_hash=$(cat "$hash_file")
+
+  # Only recompile if source changed or binary missing
+  if [ "$current_hash" = "$stored_hash" ] && [ -x "$helper_binary" ]; then
+    echo "Helper binary up to date (skipping compilation)"
+    return 0
+  fi
+
+  echo "Compiling helper binary..."
+  if (cd "$helper_dir" && make clean && make); then
+    echo "$current_hash" > "$hash_file"
+    echo "Helper binary compiled successfully"
+    return 0
+  else
+    echo "Warning: Helper binary compilation failed"
+    return 1
+  fi
+}
+
+# Stop any existing helper process
+killall helper 2>/dev/null
+
+# Try to compile and start helper
+if compile_helper; then
+  if [ -x "$CONFIG_DIR/helper/helper" ]; then
+    $CONFIG_DIR/helper/helper $HELPER >/dev/null 2>&1 &
+    echo "Helper process started"
+  else
+    echo "Warning: Helper binary not executable"
+  fi
+else
+  echo "Continuing without helper binary (some features may be limited)"
+fi
+
+# Setting up the general bar appearance of the bar
+bar=(
+  height=35
+  color=$BAR_COLOR
+  border_width=2
+  border_color=$BAR_BORDER_COLOR
+  shadow=on
+  position=top
+  sticky=on
+  padding_right=10
+  padding_left=10
+  y_offset=-5
+  margin=-2
+  topmost=window
+)
+
+sketchybar --bar "${bar[@]}"
+
+# Setting up default values
+defaults=(
+  updates=when_shown
+  icon.font="$ICON_FONT"
+  icon.color=$ICON_COLOR
+  icon.padding_left=$PADDINGS
+  icon.padding_right=$PADDINGS
+  label.font="$SMALL_LABEL_FONT"
+  label.color=$LABEL_COLOR
+  label.padding_left=$PADDINGS
+  label.padding_right=$PADDINGS
+  padding_right=$PADDINGS
+  padding_left=$PADDINGS
+  background.height=26
+  background.corner_radius=16
+  background.border_width=2
+  popup.background.border_width=2
+  popup.background.corner_radius=9
+  popup.background.border_color=$POPUP_BORDER_COLOR
+  popup.background.color=$POPUP_BACKGROUND_COLOR
+  popup.blur_radius=50
+  popup.background.shadow.drawing=on
+  scroll_texts=on
+)
+
+sketchybar --default "${defaults[@]}"
+
+###############################################################################
+#                                Left side
+###############################################################################
+
+source "$ITEM_DIR/apple.sh"
+source "$ITEM_DIR/spaces.sh"
+source "$ITEM_DIR/front_app.sh"
+
+# Development workflow tools
+# source "$ITEM_DIR/project.sh"
+# source "$ITEM_DIR/git.sh"
+source "$ITEM_DIR/ssh.sh"
+source "$ITEM_DIR/tmux.sh"
+# source "$ITEM_DIR/dev_servers.sh"
+source "$ITEM_DIR/docker.sh"
+source "$ITEM_DIR/agents.sh"
+
+# source "$ITEM_DIR/mic.sh"
+
+###############################################################################
+#                                 Center
+###############################################################################
+
+# source "$ITEM_DIR/media.sh"
+# source "$ITEM_DIR/spotify.sh"
+
+###############################################################################
+#                               Right side
+###############################################################################
+
+source "$ITEM_DIR/calendar.sh"
+source "$ITEM_DIR/brew.sh"
+# source "$ITEM_DIR/github.sh"  # Removed GitHub notifications
+source "$ITEM_DIR/wifi.sh"
+source "$ITEM_DIR/battery.sh"
+source "$ITEM_DIR/audio_output.sh"
+source "$ITEM_DIR/volume.sh"
+
+source "$ITEM_DIR/cpu.sh"
+source "$ITEM_DIR/memory.sh"
+source "$ITEM_DIR/temperature.sh"
+source "$ITEM_DIR/disk.sh"
+source "$ITEM_DIR/network.sh"
+
+system_monitor_bracket=(
+  background.color=$BACKGROUND_1
+  background.border_color=$BACKGROUND_2
+  padding_left=3
+  padding_right=3
+  click_script="$PLUGIN_DIR/system_monitor_details.sh"
+)
+
+sketchybar --add bracket system_monitor cpu.top cpu.percent cpu.sys cpu.user \
+                                        memory \
+                                        temperature disk network \
+  --set system_monitor "${system_monitor_bracket[@]}"
+
+# source "$ITEM_DIR/timer.sh"
+
+###############################################################################
+#                            Community plugins
+###############################################################################
+
+# source "$ITEM_DIR/custom_text.sh"
+# source "$ITEM_DIR/notification.sh"
+
+###############################################################################
+
+sketchybar --hotload on
+
+sketchybar --update
+
+# WiFi monitor DISABLED for performance - wifi plugin uses event-based updates only
+# Background polling was spawning 259,200 processes/day
+# WIFI_MONITOR_PID_FILE="/tmp/sketchybar_wifi_monitor.pid"
+# if [ -f "$WIFI_MONITOR_PID_FILE" ]; then
+#   kill "$(cat "$WIFI_MONITOR_PID_FILE")" 2>/dev/null
+#   rm "$WIFI_MONITOR_PID_FILE"
+# fi
+# "$PLUGIN_DIR/wifi_monitor.sh" >/dev/null 2>&1 &
+
+# Trigger initial workspace highlight (Aerospace is the only active WM)
+/bin/bash -c '
+  workspace=$(aerospace list-workspaces --focused 2>/dev/null)
+  [[ -z "$workspace" ]] && workspace="1"
+  sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$workspace"
+' &
+
+echo "sketchybar configuration loaded.."

@@ -52,7 +52,7 @@ if [ "$SENDER" = "aerospace_workspace_change" ]; then
       background.corner_radius=12 \
       background.height=24 \
       background.drawing=on \
-      background.shadow.drawing=on \
+      background.shadow.drawing=off \
       padding_left=3 \
       padding_right=3
   else
