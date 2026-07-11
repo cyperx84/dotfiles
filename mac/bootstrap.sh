@@ -80,7 +80,10 @@ PLIST_SRC="$DOTFILES_DIR/kanata/.config/kanata/com.example.kanata.plist"
 PLIST_DST="/Library/LaunchDaemons/com.example.kanata.plist"
 if [[ -f "$PLIST_SRC" && ! -f "$PLIST_DST" ]]; then
   echo "Installing Kanata LaunchDaemon..."
-  sudo cp "$PLIST_SRC" "$PLIST_DST"
+  # plist ships a __HOME__ placeholder — substitute the provisioning user's home.
+  # This is a *system* daemon (runs as root), so $HOME can't be resolved at runtime;
+  # it must be baked in here at install time.
+  sed "s|__HOME__|$HOME|g" "$PLIST_SRC" | sudo tee "$PLIST_DST" >/dev/null
   # launchd refuses plists that aren't root:wheel 0644
   sudo chown root:wheel "$PLIST_DST"
   sudo chmod 644 "$PLIST_DST"

@@ -175,6 +175,10 @@ brew "cyperx84/tap/remotion-claw", trusted: true
 brew "felixkratz/formulae/borders", trusted: true
 # Custom macOS statusbar with shell plugin, interaction and graph support
 brew "felixkratz/formulae/sketchybar", trusted: true
+# Lua interpreter — REQUIRED by the sketchybar Lua/SbarLua config (sketchybarrc
+# shebang is `#!/usr/bin/env lua`). 5.5.x matches the version SbarLua bundles.
+# The SbarLua .so itself is auto-built on first sketchybar run (see sketchybarrc).
+brew "lua"
 # The AI coding agent built for the terminal.
 brew "kilo-org/tap/kilo", trusted: true
 # Check Temperature by using Apple System Management Control (Smc) tool
