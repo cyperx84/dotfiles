@@ -48,15 +48,16 @@ export COLORTERM="truecolor"
 export GPG_TTY=$(tty)
 
 # ----------------------------------------------------------------------------
-# Per-machine prompt tag — consumed by starship's $env_var.STARSHIP_MACHINE.
-# One synced config; each host shows its own name so you can tell at a glance
-# which machine the terminal is on. Add a machine = add a case line.
+# Per-machine skull — the skull's COLOR tells you which host you're on at a
+# glance (blue = m1, green = m4). starship can't vary a module's color per host
+# from one synced config, so it defines a blue and a green skull module and we
+# export only the matching var here. Add a machine = add a case line.
+# Glyph 󰯈 = nf-md-skull (U+F0BC8).
 # ----------------------------------------------------------------------------
 case "$(hostname -s)" in
-  m4*)      export STARSHIP_MACHINE="m4" ;;
-  m1*)      export STARSHIP_MACHINE="m1" ;;
-  omarchy*) export STARSHIP_MACHINE="omarchy" ;;
-  *)        export STARSHIP_MACHINE="$(hostname -s)" ;;
+  m4*)      export STARSHIP_SKULL_GREEN="󰯈"; unset STARSHIP_SKULL_BLUE ;;
+  m1*)      export STARSHIP_SKULL_BLUE="󰯈";  unset STARSHIP_SKULL_GREEN ;;
+  *)        export STARSHIP_SKULL_GREEN="󰯈"; unset STARSHIP_SKULL_BLUE ;;
 esac
 
 # Lazy-load GPG agent (saves 50-100ms, only launches when GPG is used)
