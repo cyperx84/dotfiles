@@ -19,6 +19,10 @@ os.execute(string.format([[
     if [ "$CUR" != "$STORED" ] || [ ! -x "$HELPER_BIN" ]; then
       (cd "$HELPER_DIR" && make clean && make) && echo "$CUR" > "$HASH_FILE"
     fi
+    # Export the palette (RED/ORANGE/YELLOW/LABEL_COLOR) into the helper env:
+    # cpu.h picks the cpu.percent label colour via getenv(), and without these
+    # the colour is invalid so the overall cpu label renders invisible.
+    [ -f "$HELPER_DIR/../colors.sh" ] && . "$HELPER_DIR/../colors.sh"
     [ -x "$HELPER_BIN" ] && "$HELPER_BIN" %s >/dev/null 2>&1 &
   fi
   true
