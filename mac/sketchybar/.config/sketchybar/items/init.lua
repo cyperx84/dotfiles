@@ -7,6 +7,7 @@ require("items.spaces")
 require("items.front_app")
 require("items.ssh")
 require("items.tmux")
+require("items.kanata_hrm")
 require("items.docker")
 require("items.agents")
 
