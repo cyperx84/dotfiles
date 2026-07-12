@@ -18,6 +18,7 @@
 ;;   RCmd + qwerty = 123456    RCmd + jkl = 456    RCmd + h = 0
 ;;   RCmd + asdf = ←↓↑→ (arrow keys)
 ;;   RCmd + Tab = Toggle home row mods on/off
+;;   RAlt (tap) = Toggle home row mods on/off (hold = normal Right Alt)
 ;; ============================================================================
 
 (defcfg
@@ -124,6 +125,24 @@
   ;; In nums layer, Tab toggles between base (with HRM) and vanilla (without HRM)
   togmods (layer-switch vanilla)
   togbase (layer-switch base)
+
+  ;; -------------------------------------------------------------------------
+  ;; RIGHT ALT → HRM one-press toggle (tap) / Right Alt (hold)
+  ;; -------------------------------------------------------------------------
+  ;; A quick TAP of the physical Right Alt flips home row mods on/off.
+  ;; HOLD still emits real ralt (Option+key, e.g. special chars) unchanged.
+  ;; Only the physical key toggles — the l/s home row mods that EMIT alt
+  ;; keycodes do not feed back into kanata, so they never trigger this
+  ;; (same reasoning as the Right Cmd note above).
+  ;;   base layer:    tap -> vanilla (HRM off)
+  ;;   vanilla layer: tap -> base    (HRM on)
+  ralthrmoff (tap-hold $tap-time $hold-time (layer-switch vanilla) ralt)
+  ralthrmon  (tap-hold $tap-time $hold-time (layer-switch base)    ralt)
+
+  ;; Left Option (lalt) mirror — same tap=toggle / hold=Option behavior.
+  ;; Bound because the physical Option key on this keyboard emits lalt.
+  lalthrmoff (tap-hold $tap-time $hold-time (layer-switch vanilla) lalt)
+  lalthrmon  (tap-hold $tap-time $hold-time (layer-switch base)    lalt)
 )
 
 ;; ============================================================================
@@ -156,8 +175,9 @@
   ;; Bottom row: Normal shift, backspace on right shift, / is normal
   lsft z    x    c    v    b    n    m    ,    .    /    @rshiftbspc
 
-  ;; Modifier row: Fn layer, normal mods, Space→Sym, RCmd→Nums layer
-  @fnl lctl lalt lmet           @spsym         @rmetnums ralt
+  ;; Modifier row: Fn layer, normal mods, Space→Sym, RCmd→Nums layer,
+  ;; Left/Right Alt tap toggles HRM off (to vanilla), hold = Option
+  @fnl lctl @lalthrmoff lmet           @spsym         @rmetnums @ralthrmoff
 )
 
 ;; ============================================================================
@@ -291,8 +311,9 @@
   ;; Bottom row: Normal shift, backspace on right shift, / is normal
   lsft z    x    c    v    b    n    m    ,    .    /    @rshiftbspc
 
-  ;; Modifier row: Fn layer (vanilla version), Space→Sym, RCmd→Nums layer
-  @fnlvanilla lctl lalt lmet      @spsym         @rmetvanillanums ralt
+  ;; Modifier row: Fn layer (vanilla version), Space→Sym, RCmd→Nums layer,
+  ;; Left/Right Alt tap toggles HRM on (back to base), hold = Option
+  @fnlvanilla lctl @lalthrmon lmet      @spsym         @rmetvanillanums @ralthrmon
 )
 
 ;; ============================================================================
