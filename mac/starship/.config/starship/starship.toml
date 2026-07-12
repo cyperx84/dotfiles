@@ -8,7 +8,6 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 format = """
 ${env_var.STARSHIP_MACHINE}\
-$os\
 $directory\
 $git_branch\
 $git_commit\
@@ -40,13 +39,13 @@ color_purple = '#b16286'
 color_red = '#cc241d'
 color_yellow = '#FF7200'
 
-# Per-machine tag (name) set by the zshrc case block keyed on hostname.
-# Lets one synced config look different on each machine. Edit the glyph/name
-# in mac/zsh/.zshrc (and linux/zsh/.zshrc), not here.
+# Per-machine skull, coloured by the zshrc case block keyed on hostname.
+# The env value already carries truecolor ANSI + the glyph, so no `style` here
+# (a style would override the ANSI colour). Edit the colour/glyph in
+# mac/zsh/.zshrc (and linux/zsh/.zshrc), not here. Replaces the old $os symbol.
 [env_var.STARSHIP_MACHINE]
 variable = "STARSHIP_MACHINE"
-format = "[$env_value ]($style)"
-style = "bold color_purple"
+format = "$env_value "
 disabled = false
 
 [os]

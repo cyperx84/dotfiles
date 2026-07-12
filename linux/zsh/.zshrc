@@ -31,14 +31,16 @@ export STARSHIP_CONFIG=~/.config/starship.toml
 
 # ----------------------------------------------------------------------------
 # Per-machine prompt tag — consumed by starship's $env_var.STARSHIP_MACHINE.
-# One synced config; each host shows its own name so you can tell at a glance
-# which machine the terminal is on. Add a machine = add a case line.
+# One synced config; each host is distinguished purely by SKULL COLOR (no text
+# label). The value carries raw truecolor ANSI + the skull glyph; starship wraps
+# the escapes in %{ %} so zsh width math stays correct. Keep in sync with
+# mac/zsh/.zshrc. Add a machine = add a case line with its own colour.
 # ----------------------------------------------------------------------------
 case "$(hostname -s)" in
-  m4*)      export STARSHIP_MACHINE="m4" ;;
-  m1*)      export STARSHIP_MACHINE="m1" ;;
-  omarchy*) export STARSHIP_MACHINE="omarchy" ;;
-  *)        export STARSHIP_MACHINE="$(hostname -s)" ;;
+  m4*)      export STARSHIP_MACHINE=$'\e[38;2;0;255;0m󰯈\e[0m' ;;    # green  — m4
+  m1*)      export STARSHIP_MACHINE=$'\e[38;2;255;69;1m󰯈\e[0m' ;;   # orange — m1
+  omarchy*) export STARSHIP_MACHINE=$'\e[38;2;4;0;255m󰯈\e[0m' ;;    # blue   — omarchy
+  *)        export STARSHIP_MACHINE=$'\e[38;2;102;92;84m󰯈\e[0m' ;;  # grey   — unknown host
 esac
 
 # Aliases
