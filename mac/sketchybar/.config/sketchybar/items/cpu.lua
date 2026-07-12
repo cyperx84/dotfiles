@@ -51,6 +51,6 @@ sbar.add("graph", "cpu.sys", 100, {
   label = { drawing = false },
   icon = { drawing = false },
   padding_left = 140,
-  padding_right = -58,
+  padding_right = -55,  -- exact -(graph width) so cpu.sys overlays cpu.user pixel-perfect (was -58 = 3px skew)
   y_offset = 0,
 })

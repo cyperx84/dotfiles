@@ -37,7 +37,7 @@ cpu_sys=(
   label.drawing=off
   icon.drawing=off
   padding_left=140
-  padding_right=-58
+  padding_right=-55
   y_offset=0
 )
 
