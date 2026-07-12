@@ -26,6 +26,18 @@ export BG0O85=0xCF0D1116  # Active: Eldritch Dark
 export BG1=0x603c3e4f
 export BG2=0x60494d64
 
+# ----------------------------------------------------------------------------
+# Per-machine accent — override the theme green with this host's identity color
+# so dynamically-drawn items (workspace outline/text, etc.) signal the machine
+# at a glance, matching the shell prompt skull + ghostty cursor. M1 = blue
+# #0400FF; every other host keeps green. MUST come before the ICON/LABEL/SPACE
+# derivations below so they inherit it. Agent-status plugins set their own local
+# GREEN and are unaffected. Mirror of colors.lua's machine accent.
+# ----------------------------------------------------------------------------
+case "$(hostname -s)" in
+  m1*) export GREEN=0xff0400ff ;;
+esac
+
 # General bar colors
 export BAR_COLOR=$BG0O85
 export BAR_BORDER_COLOR=$BG2

@@ -54,3 +54,9 @@ keybind = "cmd+shift+s=toggle_secure_input"
 
 # Ghostty Custom shaders
 custom-shader = shaders/cursor_smear_rainbow.glsl
+
+# Per-machine overrides (uncommitted; gitignored). Loaded LAST so it wins.
+# cursor-color above is the default/M4 green (#00FF00); on M1 the local file
+# sets it blue. Optional (?) — machines without the file keep the default.
+# See: mac/ghostty/.config/ghostty/local.conf (create per machine).
+config-file = ?local.conf

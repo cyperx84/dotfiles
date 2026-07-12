@@ -22,11 +22,32 @@ local base = {
   bg0o85 = 0xCF0D1116, -- Active: Eldritch Dark
   bg1   = 0x603c3e4f,
   bg2   = 0x60494d64,
+
+  machine_blue = 0xff0400ff, -- M1 accent; matches shell skull + ghostty cursor (#0400FF)
 }
 
+-- Per-machine accent color. This REPLACES the theme green everywhere green was
+-- the accent (icons, labels, app name, workspace outline, time/date, popup
+-- border), so the whole bar signals which machine at a glance — mirrors the
+-- shell prompt skull + ghostty cursor. M1 = blue #0400FF; every other host keeps
+-- the bar's green (#80FF00), so M4 is unchanged. Add a machine = add a branch.
+-- Agent-status greens are a different hex set in their own plugins, untouched.
+local function machine_color()
+  local h = io.popen("hostname -s")
+  local name = h and h:read("*a") or ""
+  if h then h:close() end
+  name = name:gsub("%s+", "")
+  if name:match("^m1") then return base.machine_blue end
+  return base.green
+end
+local accent = machine_color()
+
 return {
-  -- palette
-  black = base.black, white = base.white, red = base.red, green = base.green,
+  -- per-machine accent (also exported for explicit use, e.g. apple.logo)
+  machine = accent,
+
+  -- palette (green is the theme accent → resolves to the machine accent)
+  black = base.black, white = base.white, red = base.red, green = accent,
   blue = base.blue, yellow = base.yellow, orange = base.orange,
   magenta = base.magenta, grey = base.grey, transparent = base.transparent,
   bg0 = base.bg0, bg1 = base.bg1, bg2 = base.bg2,
@@ -39,23 +60,23 @@ return {
   background_1 = base.bg1, -- BACKGROUND_1
   background_2 = base.bg2, -- BACKGROUND_2
 
-  icon_color  = base.green, -- ICON_COLOR
-  label_color = base.green, -- LABEL_COLOR
+  icon_color  = accent, -- ICON_COLOR (machine accent)
+  label_color = accent, -- LABEL_COLOR (machine accent → app name)
   shadow      = base.orange, -- SHADOW_COLOR
 
   popup = {
     bg     = base.bg0o85, -- POPUP_BACKGROUND_COLOR (= BAR_COLOR)
-    border = base.green,  -- POPUP_BORDER_COLOR
+    border = accent,  -- POPUP_BORDER_COLOR (machine accent)
   },
 
-  -- aerospace spaces
+  -- aerospace spaces (active outline + text = machine accent)
   space = {
     active_bg      = base.transparent,
-    active_border  = base.green,
-    active_text    = base.green,
+    active_border  = accent,
+    active_text    = accent,
     inactive_bg    = base.bg1,
     inactive_border = base.bg2,
-    inactive_text  = base.green,
+    inactive_text  = accent,
     empty_text     = base.grey,
     window_indicator = base.orange,
   },

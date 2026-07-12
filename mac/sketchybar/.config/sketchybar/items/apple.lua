@@ -10,7 +10,7 @@ local logo = sbar.add("item", "apple.logo", {
   icon = {
     string = icons.apple,
     font = { family = settings.font, style = "Black", size = 20.0 },
-    color = colors.green,
+    color = colors.machine,
   },
   padding_right = 15,
   label = { drawing = false },

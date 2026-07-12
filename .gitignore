@@ -20,4 +20,7 @@ __pycache__/
 mac/tmux/.tmux/plugins/
 linux/tmux/.config/tmux/plugins/
 
+# Per-machine ghostty overrides (e.g. cursor-color differs M1 vs M4)
+mac/ghostty/.config/ghostty/local.conf
+
 # Claude Code config now lives in its own repo: github.com/cyperx84/dotclaude
