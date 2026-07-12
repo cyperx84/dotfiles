@@ -58,7 +58,7 @@ export GPG_TTY=$(tty)
 case "$(hostname -s)" in
   m4*)      export STARSHIP_MACHINE=$'\e[38;2;0;255;0m󰯈\e[0m' ;;    # green  — m4
   m1*)      export STARSHIP_MACHINE=$'\e[38;2;255;69;1m󰯈\e[0m' ;;   # orange — m1
-  omarchy*) export STARSHIP_MACHINE=$'\e[38;2;4;0;255m󰯈\e[0m' ;;    # blue   — omarchy
+  omarchy*) export STARSHIP_MACHINE=$'\e[38;2;177;98;134m󰯈\e[0m' ;; # purple — omarchy
   *)        export STARSHIP_MACHINE=$'\e[38;2;102;92;84m󰯈\e[0m' ;;  # grey   — unknown host
 esac
 
