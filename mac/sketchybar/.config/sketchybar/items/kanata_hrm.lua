@@ -1,8 +1,13 @@
 -- Home row mods (kanata) on/off indicator.
--- Polls kanata's TCP layer state via plugins/kanata_hrm.sh (native timer path,
--- same pattern as tmux.lua / ssh.lua). No daemon; re-inits on every reload.
+-- Instant updates come from a persistent TCP listener (kanata_hrm_listen.sh)
+-- that streams kanata's LayerChange events; the update_freq=3 poll below
+-- (plugins/kanata_hrm.sh) stays as a reconciler if the listener dies/misses.
 local colors = require("colors")
 local settings = require("settings")
+
+-- Launch the instant listener. It self-dedupes (kills prior instances), so
+-- re-running this on every --reload is idempotent — no stacked listeners.
+sbar.exec("nohup " .. settings.plugin_dir .. "/kanata_hrm_listen.sh >/dev/null 2>&1 &")
 
 sbar.add("item", "kanata_hrm", {
   position = "left",
