@@ -446,29 +446,32 @@ stow --adopt component_name  # Adopt existing files
    log show --predicate 'process == "kanata"' --last 10m
    ```
 
-3. **Permission Issues**:
-   - Grant Input Monitoring permission to `/opt/homebrew/bin/kanata` in System Settings > Privacy & Security > Input Monitoring
+3. **Permission Issues**: kanata needs **TWO** separate TCC grants for `/opt/homebrew/bin/kanata`, both in System Settings > Privacy & Security:
+   - **Input Monitoring** — read the physical keyboard
+   - **Accessibility** — inject the remapped events (the commonly-missed second one)
 
 ### ❌ Kanata Stops Working After `brew upgrade`
 
-**Symptoms**: Kanata was working, then stops after running `brew upgrade kanata`. Home row mods, caps lock remapping, etc. all stop functioning. The LaunchDaemon may report errors or kanata fails silently.
+**Symptoms**: Kanata was working, then stops after running `brew upgrade kanata`. Home row mods, caps lock remapping, etc. all stop functioning. The LaunchDaemon crash-loops (relaunches every ~7s via `KeepAlive`); logs cycle through permission errors.
 
-**Root Cause**: `brew upgrade kanata` replaces the binary at `/opt/homebrew/bin/kanata`. macOS TCC (Transparency, Consent, and Control) tracks Input Monitoring permissions by binary hash/path. When the binary changes, the existing Input Monitoring permission becomes invalid and kanata can no longer intercept keyboard input.
+**Root Cause**: `brew upgrade kanata` replaces the binary at `/opt/homebrew/bin/kanata`. macOS TCC (Transparency, Consent, and Control) tracks permissions by binary path/hash, so a new binary **invalidates both grants**. kanata surfaces them **one at a time**, in order — so fixing only Input Monitoring reveals the Accessibility error next, and it *looks* like the fix didn't work.
 
-**Fix**:
-1. Open **System Settings > Privacy & Security > Input Monitoring**
-2. Remove the old `/opt/homebrew/bin/kanata` entry (if still listed)
-3. Re-add `/opt/homebrew/bin/kanata` and enable it
-4. Restart the kanata service:
+Log tells you which permission is currently missing:
+- `failed to open keyboard device(s): kanata needs macOS Input Monitoring permission` → grant #1
+- `failed to open keyboard device(s): kanata needs macOS Accessibility permission` (same as `IOHIDDeviceOpen error: (iokit/common) not permitted`, kanata issue #1211) → grant #2
+
+**Fix** — re-grant **both**, in order:
+1. **System Settings > Privacy & Security > Input Monitoring**: remove any stale `/opt/homebrew/bin/kanata` entry, re-add it (`+`, then Cmd+Shift+G to paste the path), enable it.
+2. **System Settings > Privacy & Security > Accessibility**: do the same — remove stale entry, re-add `/opt/homebrew/bin/kanata`, enable it.
+3. `KeepAlive` relaunches the daemon automatically within ~7s; no kickstart needed. To force it: `sudo launchctl kickstart -k system/com.example.kanata`
+4. Confirm it's actually intercepting (not just running). Tail the logs and verify a **clean** loop entry with no trailing permission error:
    ```bash
-   sudo launchctl kickstart -k system/com.example.kanata
-   ```
-5. Verify kanata is running and intercepting input:
-   ```bash
-   ps aux | grep kanata | grep -v grep
+   tail -20 /tmp/kanata.out.log   # want: "entering the processing loop" + "virtual_hid_keyboard_ready true"
+   tail -5  /tmp/kanata.err.log   # want: no ERROR newer than the last loop entry
+   ps -o etime,command -p $(pgrep -f /opt/homebrew/bin/kanata)   # uptime should exceed the ~7s crash cycle
    ```
 
-**Prevention**: After any `brew upgrade kanata`, always re-check Input Monitoring permissions before assuming kanata is broken for other reasons.
+**Prevention**: After any `brew upgrade kanata`, re-check **both** Input Monitoring *and* Accessibility before assuming kanata is broken for other reasons. The Homebrew-symlink path (never a Cellar path) reduces how often this happens but does not eliminate it.
 
 ### ❌ Session Management Problems
 
