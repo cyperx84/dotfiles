@@ -13,6 +13,7 @@ local lib = require("lib")
 local space_icons = require("items.space_icons")
 
 local refresh = settings.plugin_dir .. "/refresh_spaces.sh"
+local highlight = settings.plugin_dir .. "/highlight_space.sh"
 
 -- Custom events the WM triggers against (kept for compatibility with the
 -- aerospace.toml exec-on-workspace-change trigger).
@@ -60,8 +61,11 @@ for sid = 1, 9 do
   lib.script_on(space, { "mouse.clicked" }, settings.plugin_dir .. "/aerospace.sh " .. sid)
 end
 
--- Event-driven refresh: instant on workspace switch AND on front-app switch
--- (catches most window moves). Lock-guarded + batched, so frequent fires are safe.
+-- Instant highlight on workspace switch: zero CLI, no lock, uses the
+-- FOCUSED_WORKSPACE env var the aerospace trigger already provides. Decoupled
+-- from the slow/hangable `list-windows` batch so switches never lag. (dropped
+-- front_app_switched here too — it fired on every app focus change and drove
+-- concurrent aerospace queries into the 0.20.x server deadlock.)
 local sync = sbar.add("item", "spaces_sync", {
   position = "center",
   drawing = false,
@@ -69,7 +73,7 @@ local sync = sbar.add("item", "spaces_sync", {
   icon = { drawing = false },
   label = { drawing = false },
 })
-lib.script_on(sync, { "aerospace_workspace_change", "front_app_switched" }, refresh)
+lib.script_on(sync, { "aerospace_workspace_change" }, highlight)
 
 -- Catch-all native poll for background window moves that emit no event.
 -- Visible-but-empty (drawing=on, zero content) so the update_freq timer reliably

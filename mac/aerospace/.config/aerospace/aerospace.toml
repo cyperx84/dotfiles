@@ -3,10 +3,15 @@ after-startup-command = [
   'exec-and-forget borders'
 ]
 
+# Run highlight_space.sh DIRECTLY (not just --trigger): SbarLua event callbacks
+# only receive internally-generated events, so the aerospace_workspace_change
+# trigger never reached the lua subscriber — the highlight only updated on the
+# 5s poll (visible lag). The direct call moves the highlight instantly. The
+# --trigger is kept for any native (CLI --subscribe) listeners.
 exec-on-workspace-change = [
     '/bin/bash',
     '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+    'FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE ~/.config/sketchybar/plugins/highlight_space.sh; sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
 ]
 
 start-at-login = true

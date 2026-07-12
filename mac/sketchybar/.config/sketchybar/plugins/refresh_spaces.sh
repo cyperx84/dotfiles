@@ -25,8 +25,15 @@ trap 'rmdir "$LOCKDIR" 2>/dev/null' EXIT
 if pgrep -x "HyprSpace" >/dev/null 2>&1; then WM="hyprspace"; else WM="aerospace"; fi
 
 # Exactly TWO CLI calls, regardless of workspace count.
-counts="$($WM list-windows --all --format '%{workspace}' 2>/dev/null | sort | uniq -c)"
-focused="$($WM list-workspaces --focused 2>/dev/null)"
+# timeout guard: aerospace 0.20.x betas can deadlock `list-windows` on its
+# server socket (blocked read, 0% CPU, never returns) under concurrent queries.
+# Unguarded these leaked forever (bash + child reparented to PID 1, one per
+# ~minute), piled up stuck server connections, and dragged the WM. `timeout`
+# kills a wedged query at 3s (SIGKILL 1s later if it ignores TERM) so the run
+# exits, releases the mkdir lock, and the lock can serialize again instead of
+# being stale-reclaimed out from under a hung run.
+counts="$(timeout -k 1 3 $WM list-windows --all --format '%{workspace}' 2>/dev/null | sort | uniq -c)"
+focused="$(timeout -k 1 3 $WM list-workspaces --focused 2>/dev/null)"
 [ -z "$focused" ] && focused=1
 
 args=()
