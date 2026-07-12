@@ -7,7 +7,12 @@
 
 #define MAX_TOPPROC_LEN 28
 
-static const char TOPPROC[] = { "/bin/ps -Aceo pid,pcpu,comm -r | sed '1d'" };
+// Emit the hungriest process pre-formatted as "COMM CPU%" (e.g. "Godot 182%").
+// awk reorders name-then-cpu, drops the pid column, rounds cpu to an int, and
+// emits NO trailing newline (the old `sed '1d'` left the raw "PID %CPU COMM"
+// line incl. its \n, which showed as "47433 182.4 Godot" and put a control
+// char in the label). $1="" + sub keeps multi-word names like "Google Chrome".
+static const char TOPPROC[] = { "/bin/ps -Aceo pcpu,comm -r | awk 'NR==2{c=$1; $1=\"\"; sub(/^ +/,\"\"); printf \"%s %d%%\", $0, c; exit}'" };
 static const char FILTER_PATTERN[] = { "com.apple." };
 
 struct cpu {
