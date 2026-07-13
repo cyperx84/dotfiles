@@ -5,7 +5,7 @@
 <dict>
   <key>Label</key>
   <string>com.example.kanata</string>
-  <!-- Use Homebrew symlink: survives brew upgrade so Input Monitoring permissions persist -->
+  <!-- Homebrew symlink keeps the plist resolving the current binary after upgrade; TCC grants do NOT persist (cdhash), re-grant after brew upgrade — see MAINTENANCE.md -->
   <!-- 5s delay gives Karabiner DriverKit time to initialize on boot -->
   <key>ProgramArguments</key>
   <array>

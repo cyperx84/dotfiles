@@ -138,7 +138,7 @@ mkdir -p ~/.config/kanata
 3. Open **System Settings** → **Privacy & Security** → **Input Monitoring**
 4. Add and enable `/opt/homebrew/bin/kanata`
 
-**Important: Use the Homebrew symlink path (`/opt/homebrew/bin/kanata`)**, not the Cellar path. The symlink is stable across `brew upgrade` -- macOS TCC (Input Monitoring) permissions are tied to the binary path. If you grant permission to a Cellar path (e.g., `/opt/homebrew/Cellar/kanata/1.7.0/bin/kanata`) or a copied binary at `/usr/local/bin/kanata`, the permission breaks every time Homebrew upgrades kanata. The `/opt/homebrew/bin/kanata` symlink always points to the current version, so permissions persist across upgrades.
+**Important: Use the Homebrew symlink path (`/opt/homebrew/bin/kanata`)**, not the Cellar path. The symlink is stable across `brew upgrade` -- macOS TCC (Input Monitoring) permissions are tied to the binary path. If you grant permission to a Cellar path (e.g., `/opt/homebrew/Cellar/kanata/1.7.0/bin/kanata`) or a copied binary at `/usr/local/bin/kanata`, the permission breaks every time Homebrew upgrades kanata. Always grant to `/opt/homebrew/bin/kanata` (the stable symlink), never a Cellar or `/usr/local/bin` path. **Caveat:** even with the symlink, TCC grants do NOT survive `brew upgrade kanata` — TCC keys on the binary's cdhash, so a new version drops both Input Monitoring + Accessibility grants. Re-grant both after any upgrade (see "Kanata Stops Working After `brew upgrade`" in MAINTENANCE.md).
 
 ---
 
@@ -225,7 +225,7 @@ Create these files in `/Library/LaunchDaemons/`:
 - `KeepAlive` is unconditional (`true`) so launchd restarts kanata regardless of exit code.
 - `ThrottleInterval` of 5 seconds prevents rapid restart loops.
 - Logs go to `/tmp/` which is cleaned on reboot -- no manual log rotation needed.
-- Uses the Homebrew symlink (`/opt/homebrew/bin/kanata`) so TCC Input Monitoring permissions survive `brew upgrade`.
+- Uses the Homebrew symlink (`/opt/homebrew/bin/kanata`) so the plist keeps resolving the current binary after an upgrade. (This does NOT preserve TCC grants — TCC keys on the binary's cdhash, so both Input Monitoring + Accessibility must be re-granted after a version bump. See "Kanata Stops Working After `brew upgrade`" in MAINTENANCE.md.)
 
 ### Set Permissions and Load
 
@@ -497,7 +497,7 @@ sudo rm -rf "/Library/Application Support/org.pqrs/Karabiner-Elements"
 
 ### Not Working After Update
 
-If the plist uses the Homebrew symlink (`/opt/homebrew/bin/kanata`), upgrades should work automatically -- the symlink points to the new version, and TCC permissions persist.
+If the plist uses the Homebrew symlink (`/opt/homebrew/bin/kanata`), the plist keeps resolving the current binary after an upgrade — but TCC grants do **not** persist. A new kanata version = new cdhash = both Input Monitoring + Accessibility grants dropped (surfaced one at a time). After `brew upgrade kanata`, re-grant both — see the runbook below.
 
 ```bash
 # 1. Verify symlink still resolves
@@ -560,7 +560,7 @@ sudo launchctl bootout system/com.example.kanata
 sudo launchctl bootstrap system /Library/LaunchDaemons/com.example.kanata.plist
 ```
 
-Because the plist and TCC permissions both reference the stable Homebrew symlink (`/opt/homebrew/bin/kanata`), you should **not** need to re-grant Input Monitoring after upgrades. If kanata fails to start after an upgrade, check `/tmp/kanata.err.log`.
+The plist references the stable Homebrew symlink so it always resolves the current binary — but TCC does **not** ride along. Because TCC keys on the binary's cdhash, `brew upgrade kanata` **will** drop both Input Monitoring + Accessibility grants; re-grant both after any upgrade (see the TCC permission-orphan runbook below). This is exactly why kanata is `brew pin`-ned. If kanata fails to start after an upgrade, check `/tmp/kanata.err.log`.
 
 ### Editing Configuration
 
@@ -675,10 +675,16 @@ the path, and orphans BOTH grants → new binary has no permission → cannot op
 **Prevention:** `brew pin kanata` (done 2026-07-10) — stops unattended version bumps.
 Re-grant deliberately only when you choose to `brew unpin && brew upgrade kanata`.
 
-**Auto-detect:** LaunchAgent `~/Library/LaunchAgents/com.cyperx.kanata-permwatch.plist`
-watches `/tmp/kanata.err.log`; on a permission error it fires a notification (sound "Basso")
-and opens the right Settings pane. Script: `~/.config/kanata/kanata-perm-watch.sh` (5-min cooldown).
-Cannot auto-grant TCC (SIP-protected) — automation stops at "detect + open the pane".
+**Auto-detect:** the user LaunchAgent `com.cyperx.kanata-perm-watch` watches
+`/tmp/kanata.err.log`; on a permission error it fires a notification (sound "Basso")
+and opens the right Settings pane (script `~/.config/kanata/kanata-perm-watch.sh`, 5-min
+cooldown). Cannot auto-grant TCC (SIP-protected) — automation stops at "detect + open the pane".
+
+**Install / reinstall on each machine:** `bash ~/.config/kanata/install-perm-watch.sh`
+(idempotent — substitutes the machine's HOME into the plist template and loads it via
+`launchctl bootstrap gui/$(id -u)`). This is NOT auto-loaded just by stowing the package;
+you must run the installer once per machine, or the watcher never fires (which is exactly
+how a permission drop went unnoticed on 2026-07-13).
 
 ---
 

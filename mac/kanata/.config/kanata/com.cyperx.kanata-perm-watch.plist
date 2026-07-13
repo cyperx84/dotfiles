@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- User LaunchAgent: fires kanata-perm-watch.sh whenever kanata's err log
+       changes. The watcher detects the TCC permission-orphan failure (Input
+       Monitoring / Accessibility dropped after a `brew upgrade kanata` cdhash
+       change) and notifies + opens the exact Settings pane. Runs in the user
+       GUI session (needs to post a notification + `open` System Settings), so
+       it is an Agent, not the system Daemon that runs kanata itself.
+       __HOME__ is substituted by install-perm-watch.sh (portable across the
+       cyperx / m1 home paths). -->
+  <key>Label</key>
+  <string>com.cyperx.kanata-perm-watch</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__HOME__/.config/kanata/kanata-perm-watch.sh</string>
+  </array>
+  <key>WatchPaths</key>
+  <array>
+    <string>/tmp/kanata.err.log</string>
+  </array>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>StandardErrorPath</key>
+  <string>/tmp/kanata-perm-watch.err.log</string>
+</dict>
+</plist>

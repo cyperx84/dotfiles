@@ -434,7 +434,7 @@ startup_script = "~/.config/sesh/scripts/claude_dev.sh"
 
 **Binary Path**: `/opt/homebrew/bin/kanata` (Homebrew symlink)
 
-**Homebrew Symlink Strategy**: The LaunchDaemon references the stable Homebrew symlink at `/opt/homebrew/bin/kanata` rather than the versioned Cellar path. This is critical because macOS TCC (Transparency, Consent, and Control) grants Input Monitoring permissions to a specific binary path. When `brew upgrade kanata` replaces the binary in the Cellar, the old path in the TCC database becomes invalid. The Homebrew symlink at `/opt/homebrew/bin/kanata` survives upgrades, so Input Monitoring permissions persist without needing to re-grant them.
+**Homebrew Symlink Strategy**: The LaunchDaemon references the stable Homebrew symlink at `/opt/homebrew/bin/kanata` rather than the versioned Cellar path, so the plist keeps resolving the current binary after an upgrade instead of pointing at a deleted Cellar path. That is *all* the symlink buys you. **It does NOT make TCC permissions survive `brew upgrade`.** macOS TCC (Transparency, Consent, and Control) keys grants to the binary's code-signature hash (cdhash), not its path — so a new kanata version is a new hash, which invalidates **both** the Input Monitoring **and** Accessibility grants regardless of the stable symlink path. Both must be re-granted after any `brew upgrade kanata`, and kanata surfaces them **one at a time**. See MAINTENANCE.md → "Kanata Stops Working After `brew upgrade`".
 
 **LaunchDaemon Details**:
 - Uses a bash wrapper script with a **5-second startup delay** to allow the Karabiner DriverKit VirtualHID daemons to initialize first
