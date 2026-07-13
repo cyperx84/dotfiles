@@ -80,7 +80,9 @@ readonly SESH_SCRIPTS_DIR="${SESH_SCRIPTS_DIR:-${HOME}/.config/sesh/scripts}"
 # FZF appearance configuration
 readonly FZF_WIDTH="80%"
 readonly FZF_HEIGHT="60%"
-readonly FZF_BORDER_COLOR="#00ff00"
+# Border colour follows the per-machine accent (single source): blue m1 / green m4.
+[ -r "${HOME}/.config/machine-accent.sh" ] && . "${HOME}/.config/machine-accent.sh"
+readonly FZF_BORDER_COLOR="${MACHINE_ACCENT:-#00ff00}"
 readonly FZF_BORDER_LABEL=" sesh "
 readonly FZF_PREVIEW_WIDTH="70%"
 

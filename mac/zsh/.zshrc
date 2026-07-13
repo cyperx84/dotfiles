@@ -48,19 +48,15 @@ export COLORTERM="truecolor"
 export GPG_TTY=$(tty)
 
 # ----------------------------------------------------------------------------
-# Per-machine prompt tag — consumed by starship's $env_var.STARSHIP_MACHINE.
-# One synced config; each host is distinguished purely by SKULL COLOR (no text
-# label), so you can tell at a glance which machine the terminal is on.
-# The value carries raw truecolor ANSI + the skull glyph; starship wraps the
-# escapes in %{ %} so zsh width math stays correct. Add a machine = add a case
-# line with its own colour. Skull glyph: 󰯈 (same as the old $os symbol).
+# Per-machine identity — SINGLE SOURCE: ~/.config/machine-accent.sh maps the
+# hostname to $MACHINE_ACCENT (hex) + $MACHINE_ACCENT_RGB (ANSI truecolor).
+# That one accent drives the starship skull (below), the fzf/sesh border, and
+# the tmux status bg (tmux.conf sources the same file). Change a machine's
+# colour in that ONE file. Skull glyph: 󰯈. m1=blue, m4=green, omarchy=purple.
 # ----------------------------------------------------------------------------
-case "$(hostname -s)" in
-  m4*)      export STARSHIP_MACHINE=$'\e[38;2;0;255;0m󰯈\e[0m' ;;    # green  — m4
-  m1*)      export STARSHIP_MACHINE=$'\e[38;2;255;69;1m󰯈\e[0m' ;;   # orange — m1
-  omarchy*) export STARSHIP_MACHINE=$'\e[38;2;177;98;134m󰯈\e[0m' ;; # purple — omarchy
-  *)        export STARSHIP_MACHINE=$'\e[38;2;102;92;84m󰯈\e[0m' ;;  # grey   — unknown host
-esac
+[ -r "$HOME/.config/machine-accent.sh" ] && source "$HOME/.config/machine-accent.sh"
+export MACHINE_ACCENT MACHINE_ACCENT_RGB
+export STARSHIP_MACHINE=$'\e[38;2;'"${MACHINE_ACCENT_RGB:-102;92;84}"$'m󰯈\e[0m'
 
 # Lazy-load GPG agent (saves 50-100ms, only launches when GPG is used)
 if (( $+commands[gpg] )); then
@@ -99,8 +95,9 @@ fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 source <(fzf --zsh)
 
-# Green border styling for FZF (matches Ghostty cursor - applies to Sesh and other FZF interfaces)
-export FZF_DEFAULT_OPTS='--border=rounded --border-label="" --color=border:#00ff00'
+# Per-machine border for FZF (applies to Sesh and other FZF interfaces).
+# Colour follows $MACHINE_ACCENT from ~/.config/machine-accent.sh (blue m1 / green m4).
+export FZF_DEFAULT_OPTS="--border=rounded --color=border:${MACHINE_ACCENT:-#00ff00}"
 
 # Note: var names stay FZF_ALT_C_OPTS / FZF_CTRL_T_OPTS — each widget reads its
 # own var regardless of which key triggers it, so the previews follow the

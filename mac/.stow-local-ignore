@@ -1,0 +1,19 @@
+# stow's built-in defaults (a custom ignore file replaces them, so re-list) …
+RCS
+.+,v
+CVS
+\.\#.+
+\.cvsignore
+\.svn
+_darcs
+\.hg
+\.git
+\.gitignore
+\.gitmodules
+.+~
+\#.*\#
+^/README.*
+^/LICENSE.*
+^/COPYING
+# … plus: never stow the .backup safety copies we make before edits
+\.backup$
