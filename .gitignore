@@ -24,3 +24,9 @@ linux/tmux/.config/tmux/plugins/
 mac/ghostty/.config/ghostty/local.conf
 
 # Claude Code config now lives in its own repo: github.com/cyperx84/dotclaude
+
+# herdr writes runtime logs + session state into its stowed config dir
+# (~/.config/herdr → repo). Only config.toml is ours; never commit the rest
+# (session.json can hold live session data — this repo is PUBLIC).
+mac/herdr/.config/herdr/*
+!mac/herdr/.config/herdr/config.toml
