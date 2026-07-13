@@ -138,15 +138,23 @@ _fzf_comprun() {
 }
 
 # Completion initialization with cache optimization (must be before UV/Starship/Zoxide)
-fpath=($HOME/.docker/completions ~/.zfunctions $fpath)
+# grok's completions fpath is folded in here so compinit runs exactly ONCE.
+fpath=($HOME/.docker/completions ~/.grok/completions/zsh ~/.zfunctions $fpath)
 autoload -Uz compinit
 
-# Only rebuild completion cache once per day (speeds up shell startup)
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qNmh+24) ]]; then
-  compinit -i
+# Rebuild the completion dump at most once per day; otherwise take compinit's
+# fast path (-C skips the security audit and reuses the cached dump, ~100ms).
+# NOTE: the old guard `[[ -n ...(#qNmh+24) ]]` never matched — glob qualifiers
+# don't expand inside [[ ]], so the string was always non-empty and every shell
+# hit the slow full-rebuild branch. Use an array glob (filename generation DOES
+# run there): (Nmh-24) = exists AND modified within the last 24h → fresh.
+_zdump_fresh=(${ZDOTDIR:-$HOME}/.zcompdump(Nmh-24))
+if (( ${#_zdump_fresh} )); then
+  compinit -C -i          # fresh dump → fast path
 else
-  compinit -C -i
+  compinit -i             # missing or >24h old → full rebuild
 fi
+unset _zdump_fresh
 
 # Yazi — launcher named `y` (yazi convention). NOT `f`: the f key is a
 # kanata home-row-mod tap-hold (tap=f / hold=Lctl), so launching via `f`
@@ -460,6 +468,6 @@ ornith() {
 
 # >>> grok installer >>>
 export PATH="$HOME/.grok/bin:$PATH"
-fpath=(~/.grok/completions/zsh $fpath)
-autoload -Uz compinit && compinit -C
+# NOTE: grok's completions fpath moved up to the main compinit block (~line 141)
+# so compinit runs ONCE. Do NOT re-add `compinit` here — it doubled shell startup.
 # <<< grok installer <<<
