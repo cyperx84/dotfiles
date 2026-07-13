@@ -22,22 +22,22 @@ local base = {
   bg0o85 = 0xCF0D1116, -- Active: Eldritch Dark
   bg1   = 0x603c3e4f,
   bg2   = 0x60494d64,
-
-  machine_blue = 0xff0400ff, -- M1 accent; matches shell skull + ghostty cursor (#0400FF)
 }
 
 -- Per-machine accent color. This REPLACES the theme green everywhere green was
 -- the accent (icons, labels, app name, workspace outline, time/date, popup
 -- border), so the whole bar signals which machine at a glance — mirrors the
--- shell prompt skull + ghostty cursor. M1 = blue #0400FF; every other host keeps
--- the bar's green (#80FF00), so M4 is unchanged. Add a machine = add a branch.
+-- shell prompt skull + tmux/fzf border. SINGLE SOURCE: ~/.config/machine-accent.sh
+-- maps hostname -> $MACHINE_ACCENT ("#RRGGBB"); source it and convert to
+-- SketchyBar's 0xAARRGGBB (opaque). M1 = blue #0A84FF, M4 = green #00FF00.
+-- Falls back to the theme green if the file/var is missing or malformed.
 -- Agent-status greens are a different hex set in their own plugins, untouched.
 local function machine_color()
-  local h = io.popen("hostname -s")
-  local name = h and h:read("*a") or ""
+  local h = io.popen('. "$HOME/.config/machine-accent.sh" 2>/dev/null; printf %s "$MACHINE_ACCENT"')
+  local hex = h and h:read("*a") or ""
   if h then h:close() end
-  name = name:gsub("%s+", "")
-  if name:match("^m1") then return base.machine_blue end
+  hex = hex:gsub("%s+", ""):gsub("^#", "")
+  if #hex == 6 then return tonumber("0xff" .. hex) or base.green end
   return base.green
 end
 local accent = machine_color()

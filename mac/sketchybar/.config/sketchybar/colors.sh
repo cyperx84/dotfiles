@@ -29,14 +29,17 @@ export BG2=0x60494d64
 # ----------------------------------------------------------------------------
 # Per-machine accent — override the theme green with this host's identity color
 # so dynamically-drawn items (workspace outline/text, etc.) signal the machine
-# at a glance, matching the shell prompt skull + ghostty cursor. M1 = blue
-# #0400FF; every other host keeps green. MUST come before the ICON/LABEL/SPACE
-# derivations below so they inherit it. Agent-status plugins set their own local
-# GREEN and are unaffected. Mirror of colors.lua's machine accent.
+# at a glance, matching the shell prompt skull + tmux/fzf border. SINGLE SOURCE:
+# ~/.config/machine-accent.sh maps hostname -> $MACHINE_ACCENT ("#RRGGBB");
+# convert to SketchyBar's 0xAARRGGBB (opaque). M1 = blue #0A84FF, M4 = green
+# #00FF00. MUST come before the ICON/LABEL/SPACE derivations below so they
+# inherit it. Agent-status plugins set their own local GREEN and are unaffected.
+# Mirror of colors.lua's machine accent.
 # ----------------------------------------------------------------------------
-case "$(hostname -s)" in
-  m1*) export GREEN=0xff0400ff ;;
-esac
+if [ -r "$HOME/.config/machine-accent.sh" ]; then
+  . "$HOME/.config/machine-accent.sh"
+  [ -n "$MACHINE_ACCENT" ] && export GREEN="0xff${MACHINE_ACCENT#\#}"
+fi
 
 # General bar colors
 export BAR_COLOR=$BG0O85
