@@ -68,3 +68,61 @@ local function focusCheck()
 end
 
 focusCheck()
+
+-- ── herdr summon ────────────────────────────────────────────────────────────
+-- alt+space anywhere: focus (or launch) the Ghostty window running herdr, then
+-- open its picker by posting prefix+w straight at the app.
+--
+-- Hammerspoon owns this rather than aerospace + osascript: AppleScript
+-- keystrokes spawned from aerospace never reached Ghostty (verified — nothing
+-- landed in the pane), while hs.eventtap posts events to the app directly.
+require("hs.ipc")
+
+local HERDR_PICKER = os.getenv("HOME") .. "/dotfiles/mac/scripts/herdr-picker.sh"
+
+local function herdrWindow()
+  local app = hs.application.get("Ghostty")
+  if not app then return nil end
+  for _, w in ipairs(app:allWindows()) do
+    local title = w:title() or ""
+    if title == "herdr" or title:match("^herdr%s") then return w end
+  end
+  return nil
+end
+
+-- keys.goto = prefix+g (see mac/herdr/.config/herdr/config.toml). Rebind there
+-- and this must follow. Both keys go in one sequence — sending the second from
+-- a timer callback left herdr stuck in prefix mode waiting for it.
+local function sendPickerChord()
+  local app = hs.application.get("Ghostty")
+  if not app then return end
+  hs.eventtap.keyStroke({ "ctrl" }, "a", 100000, app)
+  hs.eventtap.keyStroke({}, "g", 100000, app)
+end
+
+local function summonHerdr()
+  local win = herdrWindow()
+  if win then
+    win:focus()
+    hs.timer.doAfter(0.15, sendPickerChord)
+    return
+  end
+
+  hs.execute(string.format("open -na Ghostty --args --title=herdr -e %q", HERDR_PICKER))
+
+  local tries = 0
+  local poll
+  poll = hs.timer.doEvery(0.2, function()
+    tries = tries + 1
+    local w = herdrWindow()
+    if w then
+      poll:stop()
+      w:focus()
+      hs.timer.doAfter(0.6, sendPickerChord) -- let the TUI paint first
+    elseif tries > 30 then
+      poll:stop()
+    end
+  end)
+end
+
+hs.hotkey.bind({ "alt" }, "space", summonHerdr)

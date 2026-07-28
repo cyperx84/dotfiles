@@ -6,6 +6,10 @@ auto_switch = false
 
 [keys]
 prefix = "ctrl+a"
+# Pinned on purpose: aerospace owns alt-space globally, so herdr can never
+# receive that key itself. mac/scripts/herdr-picker.sh synthesizes this chord
+# (ctrl+a then g) to open the navigator — rebind here and that script must follow.
+goto = "prefix+g"
 focus_pane_left = "ctrl+h"
 focus_pane_down = "ctrl+j"
 focus_pane_up = "ctrl+k"
