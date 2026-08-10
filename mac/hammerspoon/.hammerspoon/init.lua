@@ -78,9 +78,13 @@ focusCheck()
 -- Hammerspoon owns this rather than aerospace + osascript: AppleScript
 -- keystrokes spawned from aerospace never reached Ghostty (verified — nothing
 -- landed in the pane), while hs.eventtap posts events to the app directly.
+-- But window *focus* across aerospace workspaces needs the aerospace CLI: a
+-- bare hs.window:focus() silently no-ops when the window lives on another
+-- workspace (e.g. an empty space), so we switch workspaces explicitly first.
 require("hs.ipc")
 
 local HERDR_PICKER = os.getenv("HOME") .. "/dotfiles/mac/scripts/herdr-picker.sh"
+local AEROSPACE = "/opt/homebrew/bin/aerospace"
 
 local function herdrWindow()
   local app = hs.application.get("Ghostty")
@@ -90,6 +94,27 @@ local function herdrWindow()
     if title == "herdr" or title:match("^herdr%s") then return w end
   end
   return nil
+end
+
+-- Find which aerospace workspace holds the window, then switch to it.
+-- Returns true on success (window exists and we switched/focused).
+local function focusHerdrWorkspace(win)
+  if not win then return false end
+  local app = win:application()
+  local pid = app and app:pid()
+  if not pid then return false end
+
+  local ok, out = pcall(hs.execute, AEROSPACE .. " list-windows --all --format '%{app-pid} %{workspace}'")
+  if not ok or not out then return false end
+  for line in out:gmatch("[^\n]+") do
+    local wpid, ws = line:match("^(%d+)%s+(%S+)$")
+    if wpid and tonumber(wpid) == pid then
+      hs.execute(AEROSPACE .. " workspace " .. ws)
+      win:focus()
+      return true
+    end
+  end
+  return false
 end
 
 -- keys.command alt+e = sesh-bro.open (see mac/herdr/.config/herdr/config.toml).
@@ -104,8 +129,9 @@ end
 local function summonHerdr()
   local win = herdrWindow()
   if win then
-    win:focus()
-    hs.timer.doAfter(0.15, sendPickerChord)
+    if focusHerdrWorkspace(win) then
+      hs.timer.doAfter(0.15, sendPickerChord)
+    end
     return
   end
 
@@ -118,8 +144,9 @@ local function summonHerdr()
     local w = herdrWindow()
     if w then
       poll:stop()
-      w:focus()
-      hs.timer.doAfter(0.6, sendPickerChord) -- let the TUI paint first
+      if focusHerdrWorkspace(w) then
+        hs.timer.doAfter(0.6, sendPickerChord) -- let the TUI paint first
+      end
     elseif tries > 30 then
       poll:stop()
     end
