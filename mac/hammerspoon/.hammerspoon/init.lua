@@ -70,8 +70,10 @@ end
 focusCheck()
 
 -- ── herdr summon ────────────────────────────────────────────────────────────
--- alt+space anywhere: focus (or launch) the Ghostty window running herdr, then
--- open its picker by posting prefix+w straight at the app.
+-- alt+e anywhere: focus (or launch) the Ghostty window running herdr, then
+-- open the sesh-bro picker by posting the alt+e chord (bound to the
+-- sesh-bro.open plugin action in mac/herdr/.config/herdr/config.toml)
+-- straight at the app.
 --
 -- Hammerspoon owns this rather than aerospace + osascript: AppleScript
 -- keystrokes spawned from aerospace never reached Ghostty (verified — nothing
@@ -90,14 +92,13 @@ local function herdrWindow()
   return nil
 end
 
--- keys.goto = prefix+g (see mac/herdr/.config/herdr/config.toml). Rebind there
--- and this must follow. Both keys go in one sequence — sending the second from
--- a timer callback left herdr stuck in prefix mode waiting for it.
+-- keys.command alt+e = sesh-bro.open (see mac/herdr/.config/herdr/config.toml).
+-- Rebind there and this must follow. Both keys go in one sequence — sending
+-- the second from a timer callback left herdr stuck waiting for the chord.
 local function sendPickerChord()
   local app = hs.application.get("Ghostty")
   if not app then return end
-  hs.eventtap.keyStroke({ "ctrl" }, "a", 100000, app)
-  hs.eventtap.keyStroke({}, "g", 100000, app)
+  hs.eventtap.keyStroke({ "alt" }, "e", 100000, app)
 end
 
 local function summonHerdr()
@@ -125,4 +126,4 @@ local function summonHerdr()
   end)
 end
 
-hs.hotkey.bind({ "alt" }, "space", summonHerdr)
+hs.hotkey.bind({ "alt" }, "e", summonHerdr)

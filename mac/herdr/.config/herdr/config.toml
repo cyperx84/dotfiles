@@ -9,11 +9,10 @@ prefix = "ctrl+a"
 # Pinned on purpose: aerospace owns alt-space globally, so herdr can never
 # receive that key itself. mac/scripts/herdr-picker.sh synthesizes this chord
 # (ctrl+a then g) to open the navigator — rebind here and that script must follow.
-goto = "prefix+g"
-focus_pane_left = "ctrl+h"
-focus_pane_down = "ctrl+j"
-focus_pane_up = "ctrl+k"
-focus_pane_right = "ctrl+l"
+goto = "alt+g"
+# focus_pane_* removed: ctrl+h/j/k/l now routed through vim-herdr-navigation
+# plugin, which detects Vim/Neovim and forwards the chord instead of always
+# intercepting.  See vim-herdr-navigation README for details.
 split_vertical = "alt+v"
 split_horizontal = "alt+s"
 close_pane = "alt+x"
@@ -27,14 +26,44 @@ switch_tab = "prefix+1..9"
 rename_tab = "prefix+shift+t"
 close_tab = "prefix+shift+x"
 resize_mode = "prefix+r"
-toggle_sidebar = "prefix+b"
+toggle_sidebar = "alt+b"
 reload_config = "prefix+shift+r"
-rename_workspace = "prefix+shift+w"
-new_workspace = "prefix+shift+n"
+rename_workspace = "alt+r"
+new_workspace = "alt+n"
 close_workspace = "prefix+shift+d"
+switch_workspace = "alt+1..9"
 
 [keys.indexed]
 tabs = "alt"
 
 [ui]
 show_agent_labels_on_pane_borders = true
+
+# vim-herdr-navigation: ctrl+h/j/k/l route through the plugin, which detects
+# Vim/Neovim in the foreground and forwards the chord; otherwise switches pane.
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "vim-herdr-navigation.left"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "vim-herdr-navigation.down"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "vim-herdr-navigation.up"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "vim-herdr-navigation.right"
+
+# alt+e: open the sesh-bro picker popup. Hammerspoon (init.lua) focuses the
+# herdr window from any app and posts this chord — keep the two in sync.
+[[keys.command]]
+key = "alt+e"
+type = "plugin_action"
+command = "sesh-bro.open"
