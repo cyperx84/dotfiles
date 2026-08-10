@@ -84,6 +84,7 @@ focusCheck()
 require("hs.ipc")
 
 local HERDR_PICKER = os.getenv("HOME") .. "/dotfiles/mac/scripts/herdr-picker.sh"
+local HERDR = "/opt/homebrew/bin/herdr"
 local AEROSPACE = "/opt/homebrew/bin/aerospace"
 
 local function herdrWindow()
@@ -126,11 +127,31 @@ local function sendPickerChord()
   hs.eventtap.keyStroke({ "alt" }, "e", 100000, app)
 end
 
+-- The popup is a pure overlay (not in `pane list`), so there's no pane id to
+-- close. Detect whether it's already open via `plugin pane open`'s
+-- "popup already open" error, and close it by sending escape (fzf's exit key).
+-- Returns "opened", "closed", or "error".
+local function togglePicker()
+  local ok, out = pcall(hs.execute, HERDR .. " plugin pane open --plugin sesh-bro --entrypoint picker 2>&1")
+  local alreadyOpen = ok and (out or ""):find("popup already open", 1, true) ~= nil
+  if not ok and not alreadyOpen then
+    return "error"
+  end
+  if alreadyOpen then
+    local app = hs.application.get("Ghostty")
+    if app then
+      hs.eventtap.keyStroke({}, "escape", 100000, app)
+    end
+    return "closed"
+  end
+  return "opened"
+end
+
 local function summonHerdr()
   local win = herdrWindow()
   if win then
     if focusHerdrWorkspace(win) then
-      hs.timer.doAfter(0.15, sendPickerChord)
+      hs.timer.doAfter(0.15, togglePicker)
     end
     return
   end
@@ -145,7 +166,7 @@ local function summonHerdr()
     if w then
       poll:stop()
       if focusHerdrWorkspace(w) then
-        hs.timer.doAfter(0.6, sendPickerChord) -- let the TUI paint first
+        hs.timer.doAfter(0.6, togglePicker) -- let the TUI paint first
       end
     elseif tries > 30 then
       poll:stop()
