@@ -7,8 +7,9 @@ auto_switch = false
 [keys]
 prefix = "ctrl+a"
 # Pinned on purpose: aerospace owns alt-space globally, so herdr can never
-# receive that key itself. mac/scripts/herdr-picker.sh synthesizes this chord
-# (ctrl+a then g) to open the navigator — rebind here and that script must follow.
+# receive that key itself. alt+e opens the sesh-bro picker: hammerspoon
+# (mac/hammerspoon/.hammerspoon/init.lua) focuses the herdr window from any
+# app and posts this chord — rebind here and that script must follow.
 goto = "alt+g"
 # focus_pane_* removed: ctrl+h/j/k/l now routed through vim-herdr-navigation
 # plugin, which detects Vim/Neovim and forwards the chord instead of always
@@ -32,9 +33,6 @@ rename_workspace = "alt+r"
 new_workspace = "alt+n"
 close_workspace = "prefix+shift+d"
 switch_workspace = "alt+1..9"
-
-[keys.indexed]
-tabs = "alt"
 
 [ui]
 show_agent_labels_on_pane_borders = true

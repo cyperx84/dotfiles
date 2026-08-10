@@ -97,22 +97,26 @@ local function herdrWindow()
   return nil
 end
 
--- Find which aerospace workspace holds the window, then switch to it.
+-- Find which aerospace workspace holds the herdr window, then switch to it.
 -- Returns true on success (window exists and we switched/focused).
 local function focusHerdrWorkspace(win)
   if not win then return false end
-  local app = win:application()
-  local pid = app and app:pid()
-  if not pid then return false end
+  local title = win:title() or ""
+  if title ~= "herdr" and not title:match("^herdr%s") then return false end
 
-  local ok, out = pcall(hs.execute, AEROSPACE .. " list-windows --all --format '%{app-pid} %{workspace}'")
+  local ok, out = pcall(hs.execute, AEROSPACE .. " list-windows --all --format '%{app-pid} %{workspace} %{window-title}'")
   if not ok or not out then return false end
   for line in out:gmatch("[^\n]+") do
-    local wpid, ws = line:match("^(%d+)%s+(%S+)$")
-    if wpid and tonumber(wpid) == pid then
-      hs.execute(AEROSPACE .. " workspace " .. ws)
-      win:focus()
-      return true
+    local wpid, ws, wtitle = line:match("^(%d+)%s+(%S+)%s+(.*)$")
+    if wpid and wtitle and (wtitle == "herdr" or wtitle:match("^herdr%s")) then
+      local sw = pcall(hs.execute, AEROSPACE .. " workspace " .. ws)
+      if sw then
+        -- Let aerospace finish the workspace switch before focusing the
+        -- window, otherwise focus can land before the space is visible.
+        hs.timer.doAfter(0.1, function() win:focus() end)
+        return true
+      end
+      return false
     end
   end
   return false
