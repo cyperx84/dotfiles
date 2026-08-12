@@ -65,3 +65,9 @@ command = "vim-herdr-navigation.right"
 key = "alt+e"
 type = "plugin_action"
 command = "sesh-bro.open"
+
+# alt+m: toggle the focused workspace's persistent Markdown scratch note.
+[[keys.command]]
+key = "alt+m"
+type = "plugin_action"
+command = "herdr-notes.toggle"

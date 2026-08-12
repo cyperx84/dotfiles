@@ -169,6 +169,7 @@ Mirrors the tmux layout above so muscle memory carries over. Herdr is a separate
 | `Alt+w` | Zoom | Toggle pane zoom |
 | `Alt+q` | Detach | Detach from herdr |
 | `Alt+Tab` | Last pane | Jump to last-focused pane |
+| `Alt+m` | Workspace notes | Toggle the focused workspace's persistent Markdown scratch note (`herdr-notes`) |
 | `Alt+1..9` | Switch tab | Direct indexed tab switch (`[keys.indexed] tabs = "alt"`) |
 | `C-a n` / `C-a p` | Next/previous tab | Cycle tabs |
 | `C-a 1..9` | Switch tab | Prefixed indexed tab switch |
