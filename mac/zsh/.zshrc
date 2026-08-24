@@ -10,6 +10,10 @@ ENABLE_CORRECTION="false"
 HIST_STAMPS="dd/mm/yy"
 INSTALLER_NO_MODIFY_PATH=1
 
+# Keep PATH deduplicated even when installers or parent processes add the same
+# directory repeatedly. In zsh, PATH and the `path` array remain synchronized.
+typeset -U path PATH
+
 # Ensure proper prompt formatting in tmux
 setopt PROMPT_SUBST
 setopt TRANSIENT_RPROMPT
@@ -135,8 +139,8 @@ _fzf_comprun() {
 }
 
 # Completion initialization with cache optimization (must be before UV/Starship/Zoxide)
-# grok's completions fpath is folded in here so compinit runs exactly ONCE.
-fpath=($HOME/.docker/completions ~/.grok/completions/zsh ~/.zfunctions $fpath)
+# All extra completion dirs are folded in here so compinit runs exactly ONCE.
+fpath=($HOME/.docker/completions ~/.zfunctions $fpath)
 autoload -Uz compinit
 
 # Rebuild the completion dump at most once per day; otherwise take compinit's
@@ -299,9 +303,8 @@ alias conf="cd $HOME/dotfiles && nvim"
 alias confn="cd $HOME/.config/nvim && nvim"
 
 # notes
-alias notes="cd ~/.openclaw/workspace/vault && nvim index.md"
-alias vault="cd ~/vault && nvim index.md"
-alias notes-icloud="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/cyperx && nvim 00-index.md"
+alias notes="cd ~/vaults/CyperX && nvim 00-index.md"
+alias vaults="cd ~/vaults && nvim"
 # ======================
 # SESH SESSION MANAGEMENT
 # ======================
@@ -355,7 +358,7 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="$PATH:$HOME/.lmstudio/bin"                    # LM Studio CLI
 
 alias cc="claude --dangerously-skip-permissions"
-
+alias ccmd="cmd --yolo"
 # ======================
 # AUDIO DEVICE SWITCHING
 # ======================
@@ -420,51 +423,21 @@ command -v gog &>/dev/null && eval "$(gog completion zsh)"
 export PATH="$HOME/.openclaw/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
-# Added by LM Studio CLI tool (lms)
-export PATH="$PATH:/Users/cyperx/.lmstudio/bin"
+# grok (Grok Build CLI) — Homebrew cask `grok-build` owns the binary now.
+# /opt/homebrew/bin/{grok,agent} + brew's own zsh completions are already on PATH/fpath.
+# Do NOT re-add `$HOME/.grok/bin` here: grok's internal installer symlinks there and
+# would silently shadow the brew binary. Update with: brew upgrade --cask grok-build
 
-# Ornith local LLM stack — toggle the LM Studio server + worker launchd job.
-# `ornith` alone flips current state; `ornith on|off|status` for explicit control.
-ornith() {
-  local plist="$HOME/Library/LaunchAgents/ai.ornith.worker.plist"
-  local action="$1"
-  if [[ -z "$action" ]]; then
-    if lms server status 2>/dev/null | grep -qi running; then
-      action=off
-    else
-      action=on
-    fi
-  fi
-  case "$action" in
-    on)
-      lms server start --port 8081
-      launchctl bootstrap "gui/$(id -u)" "$plist" 2>/dev/null
-      echo "ornith: ON  (server up, worker job scheduled)"
-      ;;
-    off)
-      lms unload --all 2>/dev/null
-      lms server stop
-      launchctl bootout "gui/$(id -u)" "$plist" 2>/dev/null
-      echo "ornith: OFF (server stopped, worker job unloaded)"
-      ;;
-    status)
-      lms server status
-      if launchctl list 2>/dev/null | grep -q ai.ornith.worker; then
-        echo "worker job: loaded"
-      else
-        echo "worker job: not loaded"
-      fi
-      lms ps
-      ;;
-    *)
-      echo "usage: ornith [on|off|status]" >&2
-      return 1
-      ;;
-  esac
-}
+# Agents herdr does not know natively (it tracks claude/codex/etc itself).
+# ~/.local/bin/herdr-run reports working/idle to `herdr pane report-agent`, so these
+# show up in the navigator + SketchyBar agent cluster like a first-class agent.
+# Signature is `herdr-run <label> <command...>` — the name looks doubled only because
+# the label and the binary happen to share a name. Not a typo, do not "fix" it.
+# Outside a herdr pane HERDR_PANE_ID is unset and it is a plain passthrough.
+# Aliases do not recurse: zsh expands the first word only, and the real binary is
+# resolved inside a bash script where these aliases do not exist.
+alias reasonix="herdr-run reasonix reasonix"
 
-# >>> grok installer >>>
-export PATH="$HOME/.grok/bin:$PATH"
-# NOTE: grok's completions fpath moved up to the main compinit block (~line 141)
-# so compinit runs ONCE. Do NOT re-add `compinit` here — it doubled shell startup.
-# <<< grok installer <<<
+# cmd and commandcode are the same tool, two entrypoints
+alias cmd="herdr-run cmd cmd"
+alias commandcode="herdr-run commandcode commandcode"
