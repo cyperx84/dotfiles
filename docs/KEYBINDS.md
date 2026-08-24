@@ -151,7 +151,7 @@ These tools stack on top of each other — a keystroke passes through Kanata, th
 | `M-Space` | Sesh switcher | FZF-powered session switcher (`sesh_switcher.sh`) |
 | `M-p` | Last session | Switch to last session via `sesh last` |
 
-> **Shared with Neovim:** bare `Ctrl+h/j/k/l` is routed by `vim-tmux-navigator` across tmux panes and nvim splits — intentional integration, not a duplicate binding.
+> **Shared with Neovim:** bare `Ctrl+h/j/k/l` is routed by `vim-herdr-navigation` (Neovim side) across herdr panes, tmux panes, and nvim splits — falls back to tmux when `$TMUX` is set.
 
 ### Herdr Pane & Tab Navigation
 *Source: `herdr/.config/herdr/config.toml`*
@@ -161,7 +161,7 @@ Mirrors the tmux layout above so muscle memory carries over. Herdr is a separate
 | Keybind | Action | Description |
 |---------|---------|-------------|
 | `C-a` | Prefix | Herdr prefix key (remapped from `C-b`) |
-| `Ctrl+h/j/k/l` | Focus pane | Select pane left/down/up/right — direct, no prefix |
+| `Ctrl+h/j/k/l` | Focus pane/navigate | Vim-aware: moves Neovim splits first, then herdr panes at edge (via `vim-herdr-navigation` plugin) |
 | `Alt+v` | Vertical split | Split side-by-side |
 | `Alt+s` | Horizontal split | Split top/bottom |
 | `Alt+c` | New tab | Create new tab |
@@ -177,7 +177,8 @@ Mirrors the tmux layout above so muscle memory carries over. Herdr is a separate
 | `C-a b` | Toggle sidebar | Show/hide workspace sidebar |
 | `C-a shift+r` | Reload config | Reload `config.toml` without restart |
 
-> **Conflict note:** `Ctrl+h/j/k/l` here is a bare direct binding with no vim-navigator-style app detection — unlike tmux's `vim-tmux-navigator` integration (row above), herdr can't tell if the focused pane is running Neovim and forward the chord through. It always intercepts. Fine for shells/most TUIs; can misbehave against apps that expect raw `Ctrl+h` (backspace) or `Ctrl+l` (redraw).
+> **Vim-aware via `vim-herdr-navigation`:** `Ctrl+h/j/k/l` routes through a plugin action that checks the foreground process — if it's Vim/Neovim, the chord is forwarded into the pane (Neovim handles splits via `wincmd`, then falls back to herdr at edge). Otherwise herdr switches pane directly. Same architecture as `vim-tmux-navigator` for tmux. Falls back to tmux if `$TMUX` is set but `$HERDR_PANE_ID` is not.
+> **Tradeoffs:** `Ctrl+l` shadows readline's clear-screen and `Ctrl+k` shadows kill-line in shell panes (same as tmux-navigator). Other TUIs that own these keys (lazygit, k9s) can opt in via `HERDR_NAV_PASSTHROUGH_RE`.
 > No herdr equivalent exists yet for tmux's `M-r` (break pane) or `M-\` (copy mode).
 
 ---

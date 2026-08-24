@@ -53,14 +53,12 @@ sesh connect <session-name>
 
 **Core Testing**:
 ```bash
-# Test all plugins
+# Validate the active SbarLua configuration and core runtime helpers
 ~/.config/sketchybar/test_sketchybar.sh
 
-# Test specific plugin
-~/.config/sketchybar/test_sketchybar.sh github
-
-# Health monitoring
+# Health monitoring (all monitored helpers or one active helper)
 ~/.config/sketchybar/plugin_health_monitor.sh test
+~/.config/sketchybar/plugin_health_monitor.sh test docker
 ~/.config/sketchybar/plugin_health_monitor.sh report
 ```
 
@@ -69,8 +67,8 @@ sesh connect <session-name>
 # Full debugging session
 ~/.config/sketchybar/debug_sketchybar.sh
 
-# Debug specific plugin
-~/.config/sketchybar/debug_sketchybar.sh plugin git
+# Debug a specific active runtime helper
+~/.config/sketchybar/debug_sketchybar.sh plugin docker
 
 # Monitor plugins in real-time
 ~/.config/sketchybar/debug_sketchybar.sh monitor

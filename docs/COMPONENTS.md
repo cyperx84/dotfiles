@@ -106,55 +106,33 @@ pgrep -l borders                 # Check if running
 **Dependencies**: Aerospace for workspace information, various system tools
 
 **Key Files**:
-- `sketchybar/.config/sketchybar/sketchybarrc` - Main configuration
-- `sketchybar/.config/sketchybar/plugins/` - 40 plugin scripts (39 .sh + 1 .py)
-- `sketchybar/.config/sketchybar/items/` - 31 item configurations
-- `sketchybar/.config/sketchybar/helper/` - C helper binary
+- `sketchybar/.config/sketchybar/sketchybarrc` - Lua entry point and SbarLua bootstrap
+- `sketchybar/.config/sketchybar/init.lua` - Main module loader
+- `sketchybar/.config/sketchybar/items/` - 21 Lua item modules
+- `sketchybar/.config/sketchybar/plugins/` - 33 shell runtime helpers
+- `sketchybar/.config/sketchybar/helper/` - C system-metrics helper
 
-**Plugin Architecture** (40 plugins total):
+**Architecture**:
 ```
-plugins/
-├── aerospace.sh           # Aerospace workspace management (PRIMARY)
-├── create_workspace.sh    # Workspace creation handler
-├── space_window_count.sh  # Window count per workspace
-├── space.sh              # Space display (click to switch)
-├── brew.sh               # Package updates
-├── calendar.sh           # Date/time display
-├── cpu.sh                # System monitoring (via helper binary)
-├── memory.sh             # RAM usage
-├── disk.sh               # Disk usage
-├── battery.sh            # Battery status
-├── front_app.sh          # Active application
-├── git.sh                # Git repository status
-├── github.sh             # GitHub notifications
-├── docker.sh             # Container monitoring
-├── dev_servers.sh        # Dev server port monitoring
-├── temperature.sh        # CPU temperature (M4-aware, uses smctemp)
-├── volume.sh             # Audio control
-├── audio_output.sh       # Audio device indicator
-├── wifi.sh               # WiFi status
-├── network.sh            # Network speed
-├── ssh.sh                # SSH session indicator
-├── tmux.sh               # Tmux session indicator
-├── memory_graph.sh       # Memory usage graph
-├── memory_ring.sh        # Memory usage ring display
-├── dnd.sh                # Do Not Disturb status
-├── icon_map.sh           # Icon mapping utility
-├── media.sh              # Media playback info
-├── mic.sh                # Microphone status
-├── mic_click.sh          # Microphone click handler
-├── notification.sh       # Notification center
-├── project.sh            # Project directory indicator
-├── reset_timer.sh        # Timer reset handler
-├── spotify.sh            # Spotify integration
-├── svim.sh               # Neovim status indicator
-├── system_monitor_details.sh  # System monitor detail popup
-├── system_monitor_toggle.sh   # System monitor toggle
-├── timer.py              # Timer (Python)
-├── volume_click.sh       # Volume click handler
-├── wifi_monitor.sh       # WiFi monitor daemon
-├── zen.sh                # Zen browser status
+sketchybar/
+├── sketchybarrc          # Loads SbarLua and starts the event loop
+├── init.lua              # Loads bar, defaults, bootstrap, and items
+├── items/                # Declarative Lua item definitions
+│   ├── spaces.lua        # Aerospace workspaces and event subscription
+│   ├── agents.lua        # AI-agent status items
+│   ├── cpu.lua           # C-helper-backed CPU graphs
+│   └── ...               # Battery, network, volume, calendar, etc.
+├── plugins/              # Shell helpers called by Lua items
+│   ├── refresh_spaces.sh # Batched workspace refresh
+│   ├── agents_lib.sh     # Shared agent-status logic
+│   ├── temperature.sh    # M4-aware thermal reading
+│   └── ...               # 30 additional focused helpers
+└── helper/               # Compiled system-metrics helper source
 ```
+
+The old shell item definitions and unused plugins were removed after the SbarLua
+migration. Lua owns item creation and event subscriptions; shell remains only
+where a focused runtime helper is useful.
 
 **Temperature Monitoring (M4 Mac)**:
 The temperature plugin uses `smctemp` to read heatsink temperature (TH0x sensor) instead of die hotspot sensors. This provides meaningful temperature readings on M4 Macs where die sensors report 90°C+ even at idle.

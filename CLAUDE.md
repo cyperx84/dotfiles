@@ -27,14 +27,14 @@ Provision a fresh machine with `mac/bootstrap.sh` or `linux/bootstrap.sh`.
 ```
 mac/zsh/.zshrc                                       # Shell: aliases, functions, keybinds
 mac/starship/.config/starship/starship.toml         # Shell prompt (active config)
-mac/tmux/.tmux.conf                                  # Multiplexer: Ctrl+A prefix
 ~/.config/nvim/lua/keymaps.lua                       # Neovim keybinds (standalone repo)
 mac/aerospace/.config/aerospace/aerospace.toml       # Window manager
 mac/borders/.config/borders/bordersrc                # Window borders
 mac/ghostty/.config/ghostty/config                   # Terminal
 mac/sketchybar/.config/sketchybar/sketchybarrc       # Menu bar
 mac/kanata/.config/kanata/kanata.kbd                 # Keyboard remapper (ACTIVE)
-mac/herdr/.config/herdr/config.toml                  # AI-agent multiplexer: Ctrl+A prefix, mirrors tmux
+mac/herdr/.config/herdr/config.toml                  # Agent multiplexer (PRIMARY): Ctrl+A prefix, mirrors tmux
+mac/tmux/.tmux.conf                                  # Tmux: BACKUP multiplexer, not primary
 mac/macos/Brewfile, mac/macos/setup.sh               # Machine provisioning
 ```
 
@@ -45,6 +45,9 @@ linux/zsh/.zshrc                                     # Shell
 linux/hypr/.config/hypr/                             # Hyprland (bindings, monitors, looknfeel)
 linux/waybar/                                        # Status bar
 linux/walker/                                        # Launcher
+linux/sesh/, linux/ssh/, linux/dev-tools/, linux/terminals/  # Sessions, SSH, dev tools, terminals
+linux/omarchy-user/                                  # Omarchy user overrides
+linux/provision-server.sh                            # Server provisioning
 linux/kanata/.config/kanata/config.kbd              # Keyboard remapper (Linux)
 linux/.stowrc                                        # Targets /home/cyperx
 ```
@@ -57,9 +60,10 @@ linux/.stowrc                                        # Targets /home/cyperx
 | "How tools work together" | docs/WORKFLOW_GUIDES.md |
 | "Component details" | docs/COMPONENTS.md |
 | "Not working" / "Broken" | docs/MAINTENANCE.md |
-| "Local LLM" / "MLX" / "Gemma" / "OpenClaw" / "Hermes" | docs/MLX_GEMMA_SETUP.md |
+| "Local LLM" / "MLX" / "Gemma" / "OpenClaw" / "Hermes" | docs/archive/MLX_GEMMA_SETUP.md |
 | "Provisioning" / "New Mac" / "Brewfile" | mac/macos/Brewfile, mac/macos/setup.sh, docs/MAINTENANCE.md |
 | "Linux" / "Omarchy" / "Hyprland" | linux/, linux/bootstrap.sh |
+| Linux keybinds | docs/OMARCHY_KEYBINDS.md |
 | "Tailscale" / "SSH" / "tailnet" / "remote access" | moved to vault (`notes/systems/tailscale-ssh.md`) — machine topology, not repo-tied |
 
 ## ⚠️ CRITICAL - Do NOT Do These
@@ -91,7 +95,7 @@ linux/.stowrc                                        # Targets /home/cyperx
 
 GNU Stow-managed monorepo (macOS + Linux):
 - **macOS — Window mgmt**: Aerospace (tiling, PRIMARY) → JankyBorders (borders) → SketchyBar (menu bar, 40 plugins)
-- **macOS — Terminal stack**: Ghostty → Tmux (Ctrl+A prefix, 10+ plugins) → Zsh → Starship (prompt)
+- **macOS — Terminal stack**: Ghostty → Herdr (agent multiplexer, Ctrl+A, PRIMARY) → Zsh → Starship (prompt); Tmux kept as backup only — don't extend it, extend herdr
 - **macOS — Input**: Kanata (ACTIVE, LaunchDaemon) — Karabiner DriverKit pinned to 6.6.0
 - **macOS — Automation**: Hammerspoon (ACTIVE) — focus-follows-mouse only, raises the window under the cursor
 - **Linux — Window mgmt**: Hyprland → Waybar → Walker (Omarchy layer)
@@ -107,7 +111,8 @@ killall AeroSpace && open -a AeroSpace                     # Restart Aerospace
 killall borders && borders &                               # Restart borders
 sketchybar --reload                                        # Reload SketchyBar
 sudo launchctl kickstart -k system/com.example.kanata      # Restart Kanata
-tmux source-file ~/.tmux.conf                              # Reload tmux
+herdr server reload-config                                 # Reload herdr
+tmux source-file ~/.tmux.conf                              # Reload tmux (backup mux)
 hs -c "hs.reload()" || killall Hammerspoon                 # Reload Hammerspoon
 exec zsh                                                   # Reload shell
 ~/.config/sketchybar/test_sketchybar.sh                   # Test SketchyBar plugins
@@ -120,7 +125,6 @@ exec zsh                                                   # Reload shell
 - **SketchyBar helper**: C binary at `~/.config/sketchybar/helper/` — recompile with `make clean && make` if system metrics plugins fail
 - **Temperature plugin**: Uses `smctemp` TH0x (heatsink) sensor — M4 die sensors (TCMb) read 90°C+ at idle which is normal/misleading
 - **Hammerspoon**: single-purpose focus-follows-mouse (`mac/hammerspoon/.hammerspoon/init.lua`) — polls every 50ms via the Accessibility API, with explicit guards so it does NOT steal focus from dialogs/sheets/System Settings or the emoji picker. Needs Accessibility permission; touch carefully — it interacts with Aerospace focus
-- **Claude config**: moved out of this repo into its own `dotclaude` repo — there is no `claude/` package here anymore
 
 ## 📋 Code Style
 
