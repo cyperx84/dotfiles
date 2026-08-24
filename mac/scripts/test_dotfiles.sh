@@ -152,18 +152,22 @@ test_symlinks() {
         local target="${config%%:*}"
         local source="${config##*:}"
 
-        if [[ -L "$target" ]]; then
-            local actual_source
-            actual_source=$(readlink "$target")
-            if [[ "$actual_source" == *"$source"* ]] || [[ -e "$target" ]]; then
-                print_success "$(basename "$target") symlink valid"
-            else
+        if [[ ! -e "$target" ]]; then
+            if [[ -L "$target" ]]; then
                 print_failure "$(basename "$target") symlink broken"
+            else
+                print_skip "$(basename "$target") not found"
             fi
-        elif [[ -e "$target" ]]; then
-            print_warning "$(basename "$target") exists but is not a symlink"
+            continue
+        fi
+
+        local resolved expected
+        resolved=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$target")
+        expected="$MAC_DIR/$source"
+        if [[ "$resolved" == "$expected" ]]; then
+            print_success "$(basename "$target") resolves to its Stow package"
         else
-            print_skip "$(basename "$target") not found"
+            print_warning "$(basename "$target") is not managed by the expected Stow package"
         fi
     done
 }
@@ -193,7 +197,8 @@ test_services() {
     fi
 
     # Check Kanata status
-    if sudo launchctl print system/com.example.kanata 2>/dev/null | grep -q "state = running"; then
+    if sudo -n launchctl print system/com.example.kanata 2>/dev/null | grep -q "state = running" || \
+       pgrep -f '/opt/homebrew/bin/kanata.*kanata\.kbd' >/dev/null 2>&1; then
         print_success "Kanata is running"
     else
         print_warning "Kanata may not be running (check with sudo)"

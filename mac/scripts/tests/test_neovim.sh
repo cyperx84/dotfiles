@@ -84,7 +84,6 @@ echo -e "\n--- Critical Files ---"
 critical_files=(
     "lua/keymaps.lua"
     "lua/options.lua"
-    "lua/lazy-plugins.lua"
 )
 
 for file in "${critical_files[@]}"; do
@@ -101,11 +100,19 @@ done
 
 echo -e "\n--- Plugin Configuration ---"
 
-if [[ -d "$NVIM_DIR/lua/custom/plugins" ]]; then
-    plugin_count=$(find "$NVIM_DIR/lua/custom/plugins" -name "*.lua" | wc -l | tr -d ' ')
-    print_success "Plugin directory exists ($plugin_count plugins)"
+plugin_dir=""
+for candidate in "$NVIM_DIR/lua/plugins" "$NVIM_DIR/lua/custom/plugins"; do
+    if [[ -d "$candidate" ]]; then
+        plugin_dir="$candidate"
+        break
+    fi
+done
+
+if [[ -n "$plugin_dir" ]]; then
+    plugin_count=$(find "$plugin_dir" -name "*.lua" | wc -l | tr -d ' ')
+    print_success "Plugin directory exists (${plugin_dir#"$NVIM_DIR/"}, $plugin_count plugins)"
 else
-    print_warning "lua/custom/plugins directory not found"
+    print_warning "No conventional Lua plugin directory found"
 fi
 
 # ============================================================================

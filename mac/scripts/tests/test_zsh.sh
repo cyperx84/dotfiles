@@ -82,7 +82,7 @@ echo -e "\n--- Required Functions ---"
 
 required_functions=(
     "brew"      # SketchyBar integration
-    "f"         # Yazi wrapper
+    "y"         # Yazi wrapper
     "fcd"       # Fuzzy cd
     "fv"        # Fuzzy vim
     "sc"        # Sesh connect

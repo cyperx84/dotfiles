@@ -60,8 +60,14 @@ for item in "${symlinks[@]}"; do
 
     if [[ -L "$target" ]]; then
         actual=$(readlink "$target" 2>/dev/null || echo "")
-        if [[ "$actual" == *"dotfiles"* ]] || [[ -e "$target" ]]; then
-            print_success "$name symlink valid"
+        if [[ -e "$target" ]]; then
+            resolved=$(cd -- "$(dirname -- "$target")" && pwd -P)/$(basename -- "$target")
+            resolved=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$resolved")
+            if [[ "$resolved" == "$DOTFILES_DIR/mac/$expected"* ]]; then
+                print_success "$name symlink valid"
+            else
+                print_failure "$name points outside expected package ($resolved)"
+            fi
         else
             print_failure "$name symlink broken (points to: $actual)"
         fi
@@ -76,18 +82,19 @@ done
 # BROKEN SYMLINKS CHECK
 # ============================================================================
 
-echo -e "\n--- Broken Symlinks ---"
+echo -e "\n--- Broken Managed Symlinks ---"
 
 broken_count=0
-while IFS= read -r -d '' link; do
-    if [[ ! -e "$link" ]]; then
-        print_failure "Broken symlink: $link"
+for item in "${symlinks[@]}"; do
+    target="${item%%:*}"
+    if [[ -L "$target" && ! -e "$target" ]]; then
+        print_failure "Broken managed symlink: $target"
         ((++broken_count))
     fi
-done < <(find "$HOME" -maxdepth 3 -type l -print0 2>/dev/null | head -100)
+done
 
 if [[ $broken_count -eq 0 ]]; then
-    print_success "No broken symlinks found in home directory"
+    print_success "No broken dotfiles-managed symlinks"
 fi
 
 # ============================================================================

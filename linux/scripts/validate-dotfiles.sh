@@ -1,127 +1,98 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Validate the Linux/Omarchy dotfiles package and, when run on Linux, its deployment.
 
-echo "==================================="
-echo "  Dotfiles Migration Validation"
-echo "==================================="
-echo
+set -uo pipefail
 
-# Check shell
-echo "1. Shell Configuration"
-echo "-------------------------------------"
-if [[ $SHELL == *"zsh"* ]]; then
-  echo "✓ Zsh is default shell"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+LINUX_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
+FAILED=0
+WARNINGS=0
+
+pass() { printf '✓ %s\n' "$1"; }
+fail() { printf '✗ %s\n' "$1"; ((++FAILED)); }
+warn() { printf '⚠ %s\n' "$1"; ((++WARNINGS)); }
+section() { printf '\n%s\n%s\n' "$1" '-------------------------------------'; }
+
+check_file() {
+  local path="$1" label="$2"
+  [[ -f "$path" ]] && pass "$label" || fail "$label missing: $path"
+}
+
+printf '%s\n' '===================================' '  Linux Dotfiles Validation' '==================================='
+printf 'Source: %s\n' "$LINUX_DIR"
+
+section '1. Repository Structure'
+check_file "$LINUX_DIR/zsh/.zshrc" 'Zsh configuration'
+check_file "$LINUX_DIR/tmux/.config/tmux/tmux.conf" 'Tmux configuration'
+check_file "$LINUX_DIR/dev-tools/.config/starship.toml" 'Starship configuration'
+check_file "$LINUX_DIR/hypr/.config/hypr/hyprland.conf" 'Hyprland configuration'
+check_file "$LINUX_DIR/hypr/.config/hypr/bindings.conf" 'Hyprland bindings'
+check_file "$LINUX_DIR/kanata/.config/kanata/config.kbd" 'Kanata configuration'
+
+section '2. Configuration Syntax'
+if command -v zsh >/dev/null 2>&1; then
+  zsh -n "$LINUX_DIR/zsh/.zshrc" && pass 'Zsh syntax valid' || fail 'Zsh syntax invalid'
 else
-  echo "✗ Zsh not default shell"
-  echo "  Run: chsh -s \$(which zsh)"
+  warn 'zsh unavailable; skipped Zsh syntax check'
 fi
 
-# Check tmux
-echo
-echo "2. Tmux Installation"
-echo "-------------------------------------"
-if command -v tmux &>/dev/null; then
-  echo "✓ Tmux installed"
-  if [[ -d ~/.config/tmux/plugins/tpm ]]; then
-    echo "✓ TPM (Tmux Plugin Manager) installed"
-  else
-    echo "✗ TPM not found"
+shell_errors=0
+while IFS= read -r -d '' script; do
+  if head -n 1 "$script" | grep -q 'bash' && ! bash -n "$script"; then
+    printf '  invalid: %s\n' "${script#"$LINUX_DIR/"}"
+    ((++shell_errors))
   fi
+done < <(find "$LINUX_DIR" -type f -name '*.sh' -print0)
+[[ $shell_errors -eq 0 ]] && pass 'Bash syntax valid' || fail "$shell_errors Bash script(s) invalid"
+
+if command -v python3 >/dev/null 2>&1 && python3 -c 'import tomllib' 2>/dev/null; then
+  toml_errors=0
+  while IFS= read -r -d '' file; do
+    python3 -c 'import sys,tomllib; tomllib.load(open(sys.argv[1], "rb"))' "$file" 2>/dev/null || {
+      printf '  invalid: %s\n' "${file#"$LINUX_DIR/"}"
+      ((++toml_errors))
+    }
+  done < <(find "$LINUX_DIR" -type f -name '*.toml' -print0)
+  [[ $toml_errors -eq 0 ]] && pass 'TOML syntax valid' || fail "$toml_errors TOML file(s) invalid"
 else
-  echo "✗ Tmux not installed"
+  warn 'Python 3.11+ unavailable; skipped TOML syntax check'
 fi
 
-# Check key packages
-echo
-echo "3. Required Packages"
-echo "-------------------------------------"
-for pkg in zsh tmux fzf eza zoxide starship ripgrep bat fd yazi sesh; do
-  if command -v $pkg &>/dev/null; then
-    echo "✓ $pkg"
+grep -q 'Aerospace-style Window Management' "$LINUX_DIR/hypr/.config/hypr/bindings.conf" \
+  && pass 'Aerospace-style Hyprland bindings present' \
+  || fail 'Aerospace-style Hyprland bindings missing'
+
+section '3. Stow Layout'
+if command -v stow >/dev/null 2>&1; then
+  mapfile_cmd=()
+  while IFS= read -r package; do mapfile_cmd+=("$package"); done < <(
+    find "$LINUX_DIR" -mindepth 1 -maxdepth 1 -type d \
+      ! -name scripts -exec basename {} \; | sort
+  )
+  stow_target=$(mktemp -d "${TMPDIR:-/tmp}/linux-dotfiles-stow.XXXXXX")
+  if (cd "$LINUX_DIR" && stow -nv -t "$stow_target" "${mapfile_cmd[@]}") >/tmp/linux-dotfiles-stow.log 2>&1; then
+    pass 'Stow package layout valid in an isolated target'
   else
-    echo "✗ $pkg missing"
+    fail 'Stow package layout invalid (see /tmp/linux-dotfiles-stow.log)'
   fi
-done
-
-# Check Omarchy zsh structure
-echo
-echo "4. Omarchy Zsh Integration"
-echo "-------------------------------------"
-if [[ -f ~/.local/share/omarchy/default/zsh/rc ]]; then
-  echo "✓ Zsh rc file exists"
+  rm -rf -- "$stow_target"
 else
-  echo "✗ Zsh rc file missing"
+  fail 'GNU Stow is not installed'
 fi
 
-if [[ -f ~/.local/share/omarchy/default/zsh/shell ]]; then
-  echo "✓ Zsh shell config exists"
+section '4. Runtime (Linux only)'
+if [[ "$(uname -s)" == Linux ]]; then
+  for cmd in zsh tmux fzf eza zoxide starship rg bat fd yazi sesh; do
+    command -v "$cmd" >/dev/null 2>&1 && pass "$cmd installed" || fail "$cmd missing"
+  done
+
+  [[ "$SHELL" == *zsh ]] && pass 'Zsh is the default shell' || warn 'Zsh is not the default shell'
+  [[ -e "$HOME/.zshrc" ]] && pass '~/.zshrc deployed' || fail '~/.zshrc not deployed'
+  [[ -e "$HOME/.config/tmux/tmux.conf" ]] && pass 'tmux.conf deployed' || fail 'tmux.conf not deployed'
+  [[ -e "$HOME/.config/starship.toml" ]] && pass 'starship.toml deployed' || fail 'starship.toml not deployed'
 else
-  echo "✗ Zsh shell config missing"
+  warn 'Not running on Linux; skipped package and deployment checks'
 fi
 
-if [[ -f ~/.local/share/omarchy/default/zsh/aliases ]]; then
-  echo "✓ Zsh aliases exist"
-else
-  echo "✗ Zsh aliases missing"
-fi
-
-if [[ -f ~/.local/share/omarchy/default/zsh/functions ]]; then
-  echo "✓ Zsh functions exist"
-else
-  echo "✗ Zsh functions missing"
-fi
-
-if [[ -f ~/.local/share/omarchy/default/zsh/completions ]]; then
-  echo "✓ Zsh completions exist"
-else
-  echo "✗ Zsh completions missing"
-fi
-
-# Check configs
-echo
-echo "5. Configuration Files"
-echo "-------------------------------------"
-[[ -f ~/.zshrc ]] && echo "✓ .zshrc" || echo "✗ .zshrc missing"
-[[ -f ~/.config/tmux/tmux.conf ]] && echo "✓ tmux.conf" || echo "✗ tmux.conf missing"
-[[ -f ~/.config/starship.toml ]] && echo "✓ starship.toml" || echo "✗ starship.toml missing"
-[[ -f ~/.config/nvim/init.lua ]] && echo "✓ nvim config" || echo "✗ nvim config missing"
-
-# Check Neovim plugins
-echo
-echo "6. Neovim Plugin Configs"
-echo "-------------------------------------"
-[[ -f ~/.config/nvim/lua/plugins/ai-codecompanion.lua ]] && echo "✓ CodeCompanion plugin" || echo "✗ CodeCompanion missing"
-[[ -f ~/.config/nvim/lua/plugins/git-enhanced.lua ]] && echo "✓ Git plugins" || echo "✗ Git plugins missing"
-[[ -f ~/.config/nvim/lua/plugins/navigation-enhanced.lua ]] && echo "✓ Navigation plugins" || echo "✗ Navigation plugins missing"
-
-# Check Hyprland bindings
-echo
-echo "7. Hyprland Configuration"
-echo "-------------------------------------"
-if grep -q "Aerospace-style" ~/.config/hypr/bindings.conf 2>/dev/null; then
-  echo "✓ Aerospace keybindings added"
-else
-  echo "✗ Aerospace keybindings not found"
-fi
-
-# Check backup
-echo
-echo "8. Backup Status"
-echo "-------------------------------------"
-if ls -d ~/dotfiles-backup-*/ 1> /dev/null 2>&1; then
-  echo "✓ Backup found: $(ls -dt ~/dotfiles-backup-*/ | head -1)"
-else
-  echo "✗ No backup found"
-fi
-
-echo
-echo "==================================="
-echo "  Validation Complete"
-echo "==================================="
-echo
-echo "Next Steps:"
-echo "1. Install missing packages (if any shown above)"
-echo "2. Change shell to zsh: chsh -s \$(which zsh)"
-echo "3. Log out and log back in"
-echo "4. Open tmux and install plugins: Ctrl+A then Shift+I"
-echo "5. Open nvim to let plugins install automatically"
-echo
+printf '\n===================================\nPassed with %d failure(s), %d warning(s)\n===================================\n' "$FAILED" "$WARNINGS"
+(( FAILED == 0 ))

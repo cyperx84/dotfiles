@@ -59,8 +59,14 @@ elif command -v tomlq &>/dev/null; then
     else
         print_failure "TOML syntax errors found"
     fi
+elif command -v python3 &>/dev/null && python3 -c 'import tomllib' 2>/dev/null; then
+    if python3 -c 'import sys,tomllib; tomllib.load(open(sys.argv[1], "rb"))' "$AEROSPACE_CONF" 2>/dev/null; then
+        print_success "TOML syntax valid (Python tomllib)"
+    else
+        print_failure "TOML syntax errors found"
+    fi
 else
-    print_warning "No TOML validator available (install taplo or tomlq)"
+    print_warning "No TOML validator available (install taplo or Python 3.11+)"
 fi
 
 # ============================================================================

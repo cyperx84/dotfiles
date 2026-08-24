@@ -33,7 +33,7 @@ echo "Testing cross-component integrations..."
 echo -e "\n--- Aerospace → SketchyBar ---"
 
 aerospace_conf="$DOTFILES_DIR/mac/aerospace/.config/aerospace/aerospace.toml"
-sketchybar_conf="$DOTFILES_DIR/mac/sketchybar/.config/sketchybar/sketchybarrc"
+sketchybar_dir="$DOTFILES_DIR/mac/sketchybar/.config/sketchybar"
 
 # Check Aerospace triggers SketchyBar
 if grep -q "aerospace_workspace_change" "$aerospace_conf" 2>/dev/null; then
@@ -42,18 +42,18 @@ else
     print_failure "Aerospace missing SketchyBar trigger"
 fi
 
-# Check SketchyBar listens for aerospace events
-if grep -q "aerospace" "$sketchybar_conf" 2>/dev/null; then
-    print_success "SketchyBar has Aerospace integration"
+# Check the active Lua configuration listens for Aerospace events.
+if grep -Rqs --include='*.lua' "aerospace_workspace_change" "$sketchybar_dir"; then
+    print_success "SketchyBar Lua config subscribes to Aerospace events"
 else
-    print_warning "SketchyBar may not have Aerospace integration"
+    print_failure "SketchyBar Lua config is missing Aerospace integration"
 fi
 
-# Check no HyprSpace remnants in SketchyBar
-if grep -qi "hyprspace" "$sketchybar_conf" 2>/dev/null; then
+# Check no HyprSpace remnants in the active Lua configuration.
+if grep -Rqi --include='*.lua' "hyprspace" "$sketchybar_dir"; then
     print_warning "SketchyBar still has HyprSpace references (dead code)"
 else
-    print_success "No HyprSpace dead code in SketchyBar"
+    print_success "No HyprSpace dead code in SketchyBar Lua config"
 fi
 
 # ============================================================================
@@ -78,7 +78,8 @@ fi
 echo -e "\n--- Tmux → Neovim ---"
 
 tmux_conf="$DOTFILES_DIR/mac/tmux/.tmux.conf"
-nvim_dir="$DOTFILES_DIR/nvim/.config/nvim"
+# Neovim is maintained as a standalone repository.
+nvim_dir="$HOME/.config/nvim"
 
 # Check vim-tmux-navigator in tmux
 if grep -q "vim-tmux-navigator" "$tmux_conf" 2>/dev/null; then
@@ -87,11 +88,14 @@ else
     print_warning "vim-tmux-navigator not in tmux config"
 fi
 
-# Check vim-tmux-navigator plugin in neovim (search in plugins directory)
-if find "$nvim_dir/lua" -name "*.lua" -exec grep -l "vim-tmux-navigator\|christoomey" {} \; 2>/dev/null | grep -q .; then
-    print_success "vim-tmux-navigator referenced in Neovim"
+# Neovim may use vim-tmux-navigator directly or the herdr navigation shim,
+# which falls back to the TmuxNavigate commands at pane edges.
+if find "$nvim_dir/lua" "$nvim_dir/after" -type f -name "*.lua" \
+    -exec grep -lE "vim-tmux-navigator|christoomey|TmuxNavigate" {} + \
+    2>/dev/null | grep -q .; then
+    print_success "Neovim has tmux-aware pane navigation"
 else
-    print_warning "vim-tmux-navigator not found in Neovim config"
+    print_warning "Tmux-aware navigation not found in Neovim config"
 fi
 
 # ============================================================================
