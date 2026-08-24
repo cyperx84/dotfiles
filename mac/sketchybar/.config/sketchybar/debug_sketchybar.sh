@@ -158,7 +158,8 @@ debug_dev_plugin() {
     
     # Run with debug
     print_debug "Running plugin with debug output..."
-    export NAME="debug_${plugin_name}"
+    # Runtime helpers expect the actual SbarLua item name.
+    export NAME="${plugin_name}_status"
     
     # Capture full execution
     local start_time=$(date +%s.%N)
@@ -181,53 +182,6 @@ debug_dev_plugin() {
     if [ -f "/tmp/${plugin_name}_debug.log" ]; then
         print_debug "Debug output (last 20 lines):"
         tail -20 "/tmp/${plugin_name}_debug.log"
-    fi
-}
-
-debug_github_specific() {
-    print_header "GitHub Plugin Specific Debug"
-    
-    # Test GitHub CLI authentication
-    print_debug "Testing GitHub CLI authentication..."
-    if gh auth status 2>/dev/null; then
-        print_info "GitHub authentication OK"
-        
-        # Get user info
-        local user=$(gh api user --jq .login 2>/dev/null)
-        if [ -n "$user" ]; then
-            print_info "Authenticated as: $user"
-        fi
-    else
-        print_debug "GitHub authentication failed:"
-        gh auth status 2>&1
-    fi
-    
-    # Test API endpoints
-    print_debug "Testing GitHub API endpoints..."
-    
-    # Test notifications
-    local notifications_result
-    notifications_result=$(gh api notifications 2>&1)
-    local notifications_exit=$?
-    
-    if [ $notifications_exit -eq 0 ]; then
-        local count=$(echo "$notifications_result" | jq length 2>/dev/null)
-        print_info "Notifications API: OK ($count notifications)"
-        
-        if [ "$count" != "0" ] && [ "$count" != "null" ]; then
-            print_debug "Sample notification:"
-            echo "$notifications_result" | jq '.[0] | {repository: .repository.name, subject: .subject.title, type: .subject.type}' 2>/dev/null
-        fi
-    else
-        print_debug "Notifications API failed:"
-        echo "$notifications_result"
-    fi
-    
-    # Test rate limits
-    local rate_limit=$(gh api rate_limit 2>/dev/null)
-    if [ -n "$rate_limit" ]; then
-        print_info "API Rate limit info:"
-        echo "$rate_limit" | jq '.rate | {limit, remaining, reset}' 2>/dev/null
     fi
 }
 
@@ -261,7 +215,7 @@ debug_docker_specific() {
 monitor_plugins() {
     print_header "Real-time Plugin Monitoring"
     
-    local dev_plugins=("project" "git" "github" "ssh" "tmux" "dev_servers" "docker")
+    local dev_plugins=("ssh" "tmux" "docker")
     
     print_info "Monitoring plugins for 30 seconds..."
     print_info "Press Ctrl+C to stop"
@@ -274,7 +228,7 @@ monitor_plugins() {
             local plugin_path="${PLUGIN_DIR}/${plugin}.sh"
             if [ -f "$plugin_path" ] && [ -x "$plugin_path" ]; then
                 local start_exec=$(date +%s.%N)
-                export NAME="monitor_${plugin}"
+                export NAME="${plugin}_status"
                 
                 if bash "$plugin_path" &>/dev/null; then
                     local end_exec=$(date +%s.%N)
@@ -321,9 +275,6 @@ main() {
         "helper")
             debug_helper_binary
             ;;
-        "github")
-            debug_github_specific
-            ;;
         "docker")
             debug_docker_specific
             ;;
@@ -338,7 +289,7 @@ main() {
                 debug_dev_plugin "$2"
             else
                 echo "Usage: $0 plugin <plugin_name>"
-                echo "Available plugins: project, git, github, ssh, tmux, dev_servers, docker"
+                echo "Available plugins: ssh, tmux, docker"
             fi
             ;;
         "all"|*)
@@ -346,12 +297,11 @@ main() {
             debug_sketchybar_status
             debug_helper_binary
             
-            local dev_plugins=("project" "git" "github" "ssh" "tmux" "dev_servers" "docker")
+            local dev_plugins=("ssh" "tmux" "docker")
             for plugin in "${dev_plugins[@]}"; do
                 debug_dev_plugin "$plugin"
             done
             
-            debug_github_specific
             debug_docker_specific
             ;;
     esac
@@ -368,15 +318,13 @@ if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
     echo "  system     - Show system information"
     echo "  sketchybar - Debug SketchyBar status"
     echo "  helper     - Debug helper binary"
-    echo "  github     - Debug GitHub plugin specifically"
     echo "  docker     - Debug Docker plugin specifically"
     echo "  plugin <name> - Debug specific plugin"
     echo "  monitor    - Monitor plugins in real-time"
     echo "  logs       - Show recent debug logs"
     echo ""
     echo "Examples:"
-    echo "  $0 github"
-    echo "  $0 plugin git"
+    echo "  $0 plugin docker"
     echo "  $0 monitor"
     exit 0
 fi

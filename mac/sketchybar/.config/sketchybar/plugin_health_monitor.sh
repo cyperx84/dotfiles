@@ -91,7 +91,8 @@ test_plugin() {
     fi
     
     # Set environment for plugin
-    export NAME="health_check_${plugin_name}"
+    # These helpers update existing SbarLua items, whose names use `_status`.
+    export NAME="${plugin_name}_status"
     export SENDER="health_check"
     
     # Execute plugin with timeout and measure execution time
@@ -142,7 +143,7 @@ test_plugin() {
 
 # Test all development plugins
 test_all_plugins() {
-    local dev_plugins=("project" "git" "github" "ssh" "tmux" "dev_servers" "docker")
+    local dev_plugins=("ssh" "tmux" "docker")
     local healthy_count=0
     local total_count=${#dev_plugins[@]}
     
@@ -212,7 +213,7 @@ check_dependencies() {
     echo "Checking Plugin Dependencies"
     echo "============================"
     
-    local deps=("git" "tmux" "docker" "gh" "lsof" "ss" "jq" "bc")
+    local deps=("git" "tmux" "docker" "lsof" "ss" "jq" "bc")
     local missing_deps=()
     
     for dep in "${deps[@]}"; do
@@ -271,10 +272,9 @@ show_help() {
     echo "  help             - Show this help message"
     echo ""
     echo "Examples:"
-    echo "  $0 test git      - Test only the git plugin"
-    echo "  $0 test          - Test all development plugins"
+    echo "  $0 test docker   - Test only the docker plugin"    echo "  $0 test          - Test all development plugins"
     echo "  $0 monitor       - Start continuous monitoring"
-    echo "  $0 status git    - Get status of git plugin"
+    echo "  $0 status docker - Get status of docker plugin"
 }
 
 # Main execution

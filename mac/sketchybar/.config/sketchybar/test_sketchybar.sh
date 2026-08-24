@@ -50,7 +50,7 @@ test_dependencies() {
     fi
     
     # Test required tools
-    local tools=("git" "tmux" "docker" "gh" "lsof" "ss" "jq")
+    local tools=("git" "tmux" "docker" "lsof" "jq")
     for tool in "${tools[@]}"; do
         if command -v "$tool" &> /dev/null; then
             print_success "$tool is available"
@@ -97,80 +97,6 @@ test_helper_binary() {
     fi
 }
 
-test_git_plugin() {
-    print_header "Testing Git Plugin"
-    
-    # Test if we're in a git repository
-    if git rev-parse --is-inside-work-tree &>/dev/null; then
-        print_success "Currently in a git repository"
-        
-        # Test git commands used by plugin
-        if git branch --show-current &>/dev/null; then
-            local branch=$(git branch --show-current)
-            print_success "Git branch detection works: $branch"
-        else
-            print_warning "Could not detect current branch"
-        fi
-        
-        if git status --porcelain &>/dev/null; then
-            print_success "Git status detection works"
-        else
-            print_failure "Git status command failed"
-        fi
-    else
-        print_warning "Not in a git repository - git plugin will be hidden"
-    fi
-    
-    # Test plugin file
-    if [ -f "${PLUGIN_DIR}/git.sh" ]; then
-        print_success "Git plugin file exists"
-        if [ -x "${PLUGIN_DIR}/git.sh" ]; then
-            print_success "Git plugin is executable"
-        else
-            print_failure "Git plugin is not executable"
-        fi
-    else
-        print_failure "Git plugin file not found"
-    fi
-}
-
-test_github_plugin() {
-    print_header "Testing GitHub Plugin"
-    
-    # Test GitHub CLI
-    if command -v gh &> /dev/null; then
-        print_success "GitHub CLI is installed"
-        
-        # Test authentication
-        if gh auth status &>/dev/null; then
-            print_success "GitHub CLI is authenticated"
-            
-            # Test API access
-            if gh api notifications --silent 2>/dev/null; then
-                local count=$(gh api notifications 2>/dev/null | jq length 2>/dev/null)
-                if [ "$count" != "" ]; then
-                    print_success "GitHub notifications API works: $count notifications"
-                else
-                    print_warning "GitHub notifications API returned invalid JSON"
-                fi
-            else
-                print_failure "GitHub notifications API failed"
-            fi
-        else
-            print_failure "GitHub CLI is not authenticated (run: gh auth login)"
-        fi
-    else
-        print_failure "GitHub CLI is not installed"
-    fi
-    
-    # Test jq dependency
-    if command -v jq &> /dev/null; then
-        print_success "jq is available for JSON parsing"
-    else
-        print_failure "jq is required for GitHub plugin"
-    fi
-}
-
 test_docker_plugin() {
     print_header "Testing Docker Plugin"
     
@@ -202,14 +128,14 @@ test_ssh_plugin() {
         print_success "Not in SSH session (local machine)"
     fi
     
-    # Test ss command for connection monitoring
+    # The plugin supports both Linux (`ss`) and macOS (`netstat`).
     if command -v ss &> /dev/null; then
-        print_success "ss command available for SSH monitoring"
-        
         local connections=$(ss -t 2>/dev/null | grep :22 | grep ESTAB | wc -l | tr -d ' ')
-        print_success "Active SSH connections: $connections"
+        print_success "ss available; active SSH connections: $connections"
+    elif command -v netstat &> /dev/null; then
+        print_success "netstat fallback available for SSH monitoring"
     else
-        print_warning "ss command not available (netstat fallback needed)"
+        print_warning "Neither ss nor netstat is available for SSH monitoring"
     fi
 }
 
@@ -242,60 +168,10 @@ test_tmux_plugin() {
     fi
 }
 
-test_dev_servers_plugin() {
-    print_header "Testing Dev Servers Plugin"
-    
-    if command -v lsof &> /dev/null; then
-        print_success "lsof command available"
-        
-        # Test common dev ports
-        local dev_ports=(3000 3001 4000 5000 8000 8080 8888 9000)
-        local running_count=0
-        local running_ports=()
-        
-        for port in "${dev_ports[@]}"; do
-            if lsof -i ":$port" -sTCP:LISTEN &>/dev/null; then
-                ((running_count++))
-                running_ports+=($port)
-            fi
-        done
-        
-        if [ $running_count -gt 0 ]; then
-            print_success "Development servers running on ports: ${running_ports[*]}"
-        else
-            print_success "No development servers currently running"
-        fi
-    else
-        print_failure "lsof command not available (required for dev servers plugin)"
-    fi
-}
-
-test_project_plugin() {
-    print_header "Testing Project Plugin"
-    
-    # Test current directory detection
-    local project_name=$(basename "$PWD")
-    print_success "Current project: $project_name"
-    
-    # Test project type detection
-    local project_type="generic"
-    if [ -f "package.json" ]; then
-        project_type="Node.js"
-    elif [ -f "requirements.txt" ] || [ -f "pyproject.toml" ]; then
-        project_type="Python"
-    elif [ -f "Cargo.toml" ]; then
-        project_type="Rust"
-    elif [ -f "go.mod" ]; then
-        project_type="Go"
-    fi
-    
-    print_success "Project type detected: $project_type"
-}
-
 test_plugin_files() {
     print_header "Testing Plugin Files"
     
-    local dev_plugins=("project.sh" "git.sh" "github.sh" "ssh.sh" "tmux.sh" "dev_servers.sh" "docker.sh")
+    local dev_plugins=("ssh.sh" "tmux.sh" "docker.sh")
     
     for plugin in "${dev_plugins[@]}"; do
         local plugin_path="${PLUGIN_DIR}/${plugin}"
@@ -331,33 +207,18 @@ test_sketchybar_running() {
 run_plugin_test() {
     local plugin_name="$1"
     local plugin_path="${PLUGIN_DIR}/${plugin_name}.sh"
-    
+
+    # Runtime execution requires a real SketchyBar item in NAME and can mutate
+    # the live bar. Validate syntax here; responsiveness is tested separately.
     if [ -f "$plugin_path" ] && [ -x "$plugin_path" ]; then
-        print_header "Testing $plugin_name Plugin Execution"
-        
-        # Set NAME variable that plugins expect
-        export NAME="test_${plugin_name}"
-        
-        # Capture output and errors
-        local output
-        local exit_code
-        
-        output=$(bash "$plugin_path" 2>&1)
-        exit_code=$?
-        
-        if [ $exit_code -eq 0 ]; then
-            print_success "$plugin_name plugin executed successfully"
-            if [ -n "$output" ] && [ "$output" != "" ]; then
-                echo "  Output: $output"
-            fi
+        print_header "Testing $plugin_name Plugin Syntax"
+        if bash -n "$plugin_path"; then
+            print_success "$plugin_name plugin syntax valid"
         else
-            print_failure "$plugin_name plugin failed with exit code: $exit_code"
-            if [ -n "$output" ]; then
-                echo "  Error: $output"
-            fi
+            print_failure "$plugin_name plugin has syntax errors"
         fi
     else
-        print_warning "Cannot test $plugin_name plugin execution (file missing or not executable)"
+        print_warning "Cannot test $plugin_name plugin (file missing or not executable)"
     fi
 }
 
@@ -371,16 +232,12 @@ main() {
     test_plugin_files
     
     # Test individual plugins
-    test_git_plugin
-    test_github_plugin
     test_docker_plugin
     test_ssh_plugin
     test_tmux_plugin
-    test_dev_servers_plugin
-    test_project_plugin
     
     # Test plugin execution
-    local dev_plugins=("project" "git" "ssh" "tmux" "dev_servers" "docker")
+    local dev_plugins=("ssh" "tmux" "docker")
     for plugin in "${dev_plugins[@]}"; do
         run_plugin_test "$plugin"
     done
