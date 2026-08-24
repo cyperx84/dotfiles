@@ -2,11 +2,13 @@
 mac/sketchybar/.config/sketchybar/helper/helper
 
 .genkit/
+.commandcode/
 .DS_Store
 
 # Backup files
 *.bak
 *.backup
+*.backup_*
 *.archive
 *~
 

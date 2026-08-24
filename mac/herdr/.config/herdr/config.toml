@@ -39,6 +39,7 @@ show_agent_labels_on_pane_borders = true
 
 # vim-herdr-navigation: ctrl+h/j/k/l route through the plugin, which detects
 # Vim/Neovim in the foreground and forwards the chord; otherwise switches pane.
+agent_panel_sort = "spaces"
 [[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"
