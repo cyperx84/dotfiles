@@ -3,12 +3,19 @@
 # JankyBorders configuration
 # https://github.com/FelixKratz/JankyBorders
 
+# Active border follows the per-machine accent (~/.config/machine-accent.sh:
+# green m1 / blue m4). JankyBorders wants 0xAARRGGBB, so strip the leading '#'
+# and prefix opaque alpha. Falls back to green if the accent file is missing.
+[ -r "$HOME/.config/machine-accent.sh" ] && . "$HOME/.config/machine-accent.sh"
+active_color="0xff${MACHINE_ACCENT:-#00FF00}"
+active_color="${active_color/\#/}"
+
 options=(
     style=round
     width=5.0
     hidpi=on
-    active_color=0xff00ff00    # Bright green for active window
-    inactive_color=0xff494d64  # Muted gray for inactive windows
+    active_color=$active_color   # per-machine accent for active window
+    inactive_color=0xff494d64    # Muted gray for inactive windows
 )
 
 borders "${options[@]}"

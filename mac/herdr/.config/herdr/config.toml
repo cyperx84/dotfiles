@@ -32,7 +32,11 @@ reload_config = "prefix+shift+r"
 rename_workspace = "alt+r"
 new_workspace = "alt+n"
 close_workspace = "prefix+shift+d"
-switch_workspace = "alt+1..9"
+# switch_workspace moved off the alt digit row 2026-08: alt+1..6 now switch
+# TABS and workspaces live on the harpoon letter set below. Indexed bindings
+# are all-or-nothing 1..9 ("indexed keybinding must use 1..9"), so a split
+# alt row is only expressible as [[keys.command]] entries.
+# switch_workspace = "alt+1..9"
 
 [ui]
 show_agent_labels_on_pane_borders = true
@@ -72,3 +76,108 @@ command = "sesh-bro.open"
 key = "alt+m"
 type = "plugin_action"
 command = "herdr-notes.toggle"
+
+# ---------------------------------------------------------------------------
+# alt row, 2026-08. Mirrors the old harpoon layout, which moved to <leader>h in
+# ~/.config/nvim/lua/plugins/harpoon.lua on the same day.
+#
+#   alt+1..6                    focus tab 1-6 in the current workspace
+#   alt+j k l u i o 7 8 9       focus workspace (space) 1-9
+#
+# Workspace and tab numbers are POSITIONAL: they renumber as spaces and tabs
+# open and close, so alt+j follows position 1, not a fixed project.
+#
+# `herdr workspace focus <N>` takes the number directly. `herdr tab focus` does
+# NOT — it only accepts a full tab_id like w8A:t1 — hence the jq lookup. Both
+# paths are absolute because a detached shell binding does not inherit this
+# terminal's PATH; HOME alone is enough for herdr to find the right socket.
+
+[[keys.command]]
+key = "alt+1"
+type = "shell"
+command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==1)|.tab_id")'
+description = "Tab 1"
+
+[[keys.command]]
+key = "alt+2"
+type = "shell"
+command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==2)|.tab_id")'
+description = "Tab 2"
+
+[[keys.command]]
+key = "alt+3"
+type = "shell"
+command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==3)|.tab_id")'
+description = "Tab 3"
+
+[[keys.command]]
+key = "alt+4"
+type = "shell"
+command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==4)|.tab_id")'
+description = "Tab 4"
+
+[[keys.command]]
+key = "alt+5"
+type = "shell"
+command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==5)|.tab_id")'
+description = "Tab 5"
+
+[[keys.command]]
+key = "alt+6"
+type = "shell"
+command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==6)|.tab_id")'
+description = "Tab 6"
+
+[[keys.command]]
+key = "alt+j"
+type = "shell"
+command = '/opt/homebrew/bin/herdr workspace focus 1'
+description = "Space 1"
+
+[[keys.command]]
+key = "alt+k"
+type = "shell"
+command = '/opt/homebrew/bin/herdr workspace focus 2'
+description = "Space 2"
+
+[[keys.command]]
+key = "alt+l"
+type = "shell"
+command = '/opt/homebrew/bin/herdr workspace focus 3'
+description = "Space 3"
+
+[[keys.command]]
+key = "alt+u"
+type = "shell"
+command = '/opt/homebrew/bin/herdr workspace focus 4'
+description = "Space 4"
+
+[[keys.command]]
+key = "alt+i"
+type = "shell"
+command = '/opt/homebrew/bin/herdr workspace focus 5'
+description = "Space 5"
+
+[[keys.command]]
+key = "alt+o"
+type = "shell"
+command = '/opt/homebrew/bin/herdr workspace focus 6'
+description = "Space 6"
+
+[[keys.command]]
+key = "alt+7"
+type = "shell"
+command = '/opt/homebrew/bin/herdr workspace focus 7'
+description = "Space 7"
+
+[[keys.command]]
+key = "alt+8"
+type = "shell"
+command = '/opt/homebrew/bin/herdr workspace focus 8'
+description = "Space 8"
+
+[[keys.command]]
+key = "alt+9"
+type = "shell"
+command = '/opt/homebrew/bin/herdr workspace focus 9'
+description = "Space 9"

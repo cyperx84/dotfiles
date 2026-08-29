@@ -100,7 +100,7 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 source <(fzf --zsh)
 
 # Per-machine border for FZF (applies to Sesh and other FZF interfaces).
-# Colour follows $MACHINE_ACCENT from ~/.config/machine-accent.sh (blue m1 / green m4).
+# Colour follows $MACHINE_ACCENT from ~/.config/machine-accent.sh (green m1 / blue m4).
 export FZF_DEFAULT_OPTS="--border=rounded --color=border:${MACHINE_ACCENT:-#00ff00}"
 
 # Note: var names stay FZF_ALT_C_OPTS / FZF_CTRL_T_OPTS — each widget reads its

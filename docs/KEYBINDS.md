@@ -27,7 +27,7 @@ These tools stack on top of each other — a keystroke passes through Kanata, th
 | Hardware (produces modifiers) | **Kanata** | Caps→Esc/Ctrl, home-row mods, Tab→Hyper, Space-hold→Symbols, RCmd-hold→Numbers | Kanata **generates** the Ctrl/Alt/Cmd/Shift keycodes the other tools consume. It can't collide with them by design. |
 | Global window manager | **Aerospace** | `Cmd+letter`, `Cmd+Shift+letter`, `Shift+Ctrl+*`, `Ctrl+Alt+*`, `Cmd+Alt+Shift+*`, `Shift+Alt+*`, `Ctrl+Shift+1-9` | Heavy multi-modifier chords are reserved for global window ops + app launchers. |
 | Multiplexer (prefix) | **Tmux** | `C-a` then key | Gated behind the `Ctrl-A` prefix, so prefix bindings never collide with bare chords. |
-| Multiplexer (non-prefix) | **Tmux** | bare `Alt+letter` | `M-1..M-6`, `M-j/k/l/u/i/o`, `M-s/v/c/x/w/r/q`, `M-Tab`, `M-\`, `M-Space`, `M-p`. Harpoon **vacated** this space (it uses `<leader>` keys), so tmux owns `Alt+letter` cleanly. |
+| Multiplexer (non-prefix) | **herdr** | bare `Alt+letter` | `alt+1..6` focus tabs 1-6; `alt+j/k/l/u/i/o/7/8/9` focus workspaces 1-9; `alt+s/v/c/x/w/r/q/n/b/g/e/m`, `alt+Tab`. Harpoon **vacated** this space (it lives under `<leader>h`), so herdr owns `Alt+letter` cleanly. |
 | Editor punctuation | **Neovim** | `Alt+punctuation` | `<M-;>` ClaudeCode toggle, `<M-'>` OpenCode toggle. Tmux leaves `Alt+punctuation` free. |
 | Editor leader | **Neovim** | `<leader>` (Space) prefix | All nvim-internal: Telescope, Neogit, Harpoon, ClaudeCode, Obsidian, sessions. See [Neovim Keybinds](NEOVIM_KEYBINDS.md). |
 | Shared integration channel | **Tmux + Neovim** | bare `Ctrl+h/j/k/l` | Deliberately shared via `vim-tmux-navigator` — one chord routed across tmux panes **and** nvim splits. The one intentional overlap. |

@@ -31,8 +31,8 @@ export BG2=0x60494d64
 # so dynamically-drawn items (workspace outline/text, etc.) signal the machine
 # at a glance, matching the shell prompt skull + tmux/fzf border. SINGLE SOURCE:
 # ~/.config/machine-accent.sh maps hostname -> $MACHINE_ACCENT ("#RRGGBB");
-# convert to SketchyBar's 0xAARRGGBB (opaque). M1 = blue #0A84FF, M4 = green
-# #00FF00. MUST come before the ICON/LABEL/SPACE derivations below so they
+# convert to SketchyBar's 0xAARRGGBB (opaque). M1 = green #00FF00, M4 = blue
+# #0A84FF. MUST come before the ICON/LABEL/SPACE derivations below so they
 # inherit it. Agent-status plugins set their own local GREEN and are unaffected.
 # Mirror of colors.lua's machine accent.
 # ----------------------------------------------------------------------------

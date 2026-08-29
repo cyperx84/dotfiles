@@ -29,7 +29,7 @@ local base = {
 -- border), so the whole bar signals which machine at a glance — mirrors the
 -- shell prompt skull + tmux/fzf border. SINGLE SOURCE: ~/.config/machine-accent.sh
 -- maps hostname -> $MACHINE_ACCENT ("#RRGGBB"); source it and convert to
--- SketchyBar's 0xAARRGGBB (opaque). M1 = blue #0A84FF, M4 = green #00FF00.
+-- SketchyBar's 0xAARRGGBB (opaque). M1 = green #00FF00, M4 = blue #0A84FF.
 -- Falls back to the theme green if the file/var is missing or malformed.
 -- Agent-status greens are a different hex set in their own plugins, untouched.
 local function machine_color()
