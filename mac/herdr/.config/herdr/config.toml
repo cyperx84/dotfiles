@@ -84,48 +84,48 @@ command = "herdr-notes.toggle"
 #   alt+1..6                    focus tab 1-6 in the current workspace
 #   alt+j k l u i o 7 8 9       focus workspace (space) 1-9
 #
-# Workspace and tab numbers are POSITIONAL: they renumber as spaces and tabs
-# open and close, so alt+j follows position 1, not a fixed project.
-#
-# `herdr workspace focus <N>` takes the number directly. `herdr tab focus` does
-# NOT — it only accepts a full tab_id like w8A:t1 — hence the jq lookup. Both
-# paths are absolute because a detached shell binding does not inherit this
-# terminal's PATH; HOME alone is enough for herdr to find the right socket.
+# Workspace numbers renumber as spaces open and close, so alt+j follows
+# position 1, not a fixed project. Tab `.number` does NOT renumber — it is
+# sticky for the tab's lifetime (close tab 2 and the rest stay 1,3,4) — so
+# alt+1..6 go through the tab-jump plugin (cyperx84/herdr-tab-jump, linked
+# local from ~/github/herdr-tab-jump), which focuses tab N by POSITION in
+# sidebar order. A missing position is a no-op. Fresh machine:
+# `herdr plugin install cyperx84/herdr-tab-jump`.
 
 [[keys.command]]
 key = "alt+1"
-type = "shell"
-command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==1)|.tab_id")'
+type = "plugin_action"
+command = "tab-jump.1"
 description = "Tab 1"
 
 [[keys.command]]
 key = "alt+2"
-type = "shell"
-command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==2)|.tab_id")'
+type = "plugin_action"
+command = "tab-jump.2"
 description = "Tab 2"
 
 [[keys.command]]
 key = "alt+3"
-type = "shell"
-command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==3)|.tab_id")'
+type = "plugin_action"
+command = "tab-jump.3"
 description = "Tab 3"
 
 [[keys.command]]
 key = "alt+4"
-type = "shell"
-command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==4)|.tab_id")'
+type = "plugin_action"
+command = "tab-jump.4"
 description = "Tab 4"
 
 [[keys.command]]
 key = "alt+5"
-type = "shell"
-command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==5)|.tab_id")'
+type = "plugin_action"
+command = "tab-jump.5"
 description = "Tab 5"
 
 [[keys.command]]
 key = "alt+6"
-type = "shell"
-command = 'W=$(/opt/homebrew/bin/herdr workspace list | /opt/homebrew/bin/jq -r ".result.workspaces[]|select(.focused)|.workspace_id"); /opt/homebrew/bin/herdr tab focus $(/opt/homebrew/bin/herdr tab list --workspace "$W" | /opt/homebrew/bin/jq -r ".result.tabs[]|select(.number==6)|.tab_id")'
+type = "plugin_action"
+command = "tab-jump.6"
 description = "Tab 6"
 
 [[keys.command]]
