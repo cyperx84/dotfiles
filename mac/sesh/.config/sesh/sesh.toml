@@ -124,6 +124,6 @@ path = "~"
 startup_command = "ssh m1"
 
 [[session]]
-name = "ssh-omarchy"
+name = "ssh-tryomarchy"
 path = "~"
-startup_command = "ssh omarchy"
+startup_command = "ssh tryomarchy"

@@ -27,8 +27,3 @@ startup_command = "ssh m4"
 name = "ssh-m1"
 path = "~"
 startup_command = "ssh m1"
-
-[[session]]
-name = "ssh-omarchy"
-path = "~"
-startup_command = "ssh omarchy"
