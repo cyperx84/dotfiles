@@ -25,6 +25,12 @@ linux/tmux/.config/tmux/plugins/
 # Per-machine ghostty overrides (e.g. cursor-color differs M1 vs M4)
 mac/ghostty/.config/ghostty/local.conf
 
+# Per-machine SSH host inventory (hostnames, logins, tailnet IPs). Pulled in by
+# the tracked ssh config via `Include ~/.ssh/config.local`. Never commit it —
+# this repo is PUBLIC.
+mac/ssh/.ssh/config.local
+linux/ssh/.ssh/config.local
+
 # Claude Code config now lives in its own repo: github.com/cyperx84/dotclaude
 
 # herdr writes runtime logs + session state into its stowed config dir
