@@ -2,7 +2,9 @@
 set -e
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-PACKAGES=(zsh hypr waybar walker terminals tmux dev-tools kanata omarchy-user ssh sesh)
+# Omarchy 4 owns the desktop layer (quickshell bar, omarchy-menu launcher, its
+# own hypr defaults), so we stow only our deltas on top of it.
+PACKAGES=(zsh hypr terminals tmux dev-tools kanata ssh sesh)
 
 echo "==================================="
 echo "  Dotfiles Bootstrap (Linux)"
@@ -15,7 +17,12 @@ if [[ ! -d ~/.local/share/omarchy ]]; then
   echo "Install omarchy first: https://omarchy.org"
   exit 1
 fi
-echo "✓ Omarchy detected ($(cat ~/.local/share/omarchy/version 2>/dev/null || echo 'unknown version'))"
+omarchy_version="$(cat /usr/share/omarchy/version 2>/dev/null || cat ~/.local/share/omarchy/version 2>/dev/null || echo 'unknown version')"
+echo "✓ Omarchy detected ($omarchy_version)"
+case "$omarchy_version" in
+  4.*) ;;
+  *) echo "WARNING: these configs target Omarchy 4 (Lua hypr configs, quickshell bar)." ;;
+esac
 
 # 2. Install stow if missing
 if ! command -v stow &>/dev/null; then

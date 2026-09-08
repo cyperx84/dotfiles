@@ -7,7 +7,7 @@
 # (apt / dnf / pacman / zypper / apk). Idempotent — safe to re-run.
 #
 # This is the SERVER counterpart to bootstrap.sh (which is for Omarchy desktops
-# and stows the GUI stack: hypr/waybar/walker/etc). This one stows only the
+# and stows the GUI stack: hypr/etc). This one stows only the
 # headless shell stack.
 #
 # Usage:
