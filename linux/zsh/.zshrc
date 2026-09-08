@@ -1,9 +1,15 @@
+# Omarchy's environment (OMARCHY_PATH, PATH additions). Omarchy 4 ships only
+# default/bash/ — no zsh rc — but env-bootstrap is POSIX-sh compatible, so zsh
+# can source it directly. Deliberately ABOVE the interactive guard: scripts and
+# `ssh host cmd` need the same PATH as a login shell.
+[ -r /usr/share/omarchy/default/bash/env-bootstrap ] && . /usr/share/omarchy/default/bash/env-bootstrap
+
+# Omarchy 3 shipped a zsh rc instead. Both are guarded so a plain VPS with
+# neither still starts a clean shell.
+[ -r ~/.local/share/omarchy/default/zsh/rc ] && source ~/.local/share/omarchy/default/zsh/rc
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
-
-# Load Omarchy default zsh configuration (only on Omarchy desktops; a plain VPS
-# won't have it, so guard the source or the shell errors on startup).
-[ -f ~/.local/share/omarchy/default/zsh/rc ] && source ~/.local/share/omarchy/default/zsh/rc
 
 # ============================================================================
 # USER CUSTOMIZATIONS (overrides Omarchy defaults)
