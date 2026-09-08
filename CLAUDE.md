@@ -42,11 +42,8 @@ mac/macos/Brewfile, mac/macos/setup.sh               # Machine provisioning
 
 ```
 linux/zsh/.zshrc                                     # Shell
-linux/hypr/.config/hypr/                             # Hyprland (bindings, monitors, looknfeel)
-linux/waybar/                                        # Status bar
-linux/walker/                                        # Launcher
+linux/hypr/.config/hypr/                             # Hyprland deltas over Omarchy 4 (Lua)
 linux/sesh/, linux/ssh/, linux/dev-tools/, linux/terminals/  # Sessions, SSH, dev tools, terminals
-linux/omarchy-user/                                  # Omarchy user overrides
 linux/provision-server.sh                            # Server provisioning
 linux/kanata/.config/kanata/config.kbd              # Keyboard remapper (Linux)
 linux/.stowrc                                        # Targets /home/cyperx
@@ -98,7 +95,7 @@ GNU Stow-managed monorepo (macOS + Linux):
 - **macOS — Terminal stack**: Ghostty → Herdr (agent multiplexer, Ctrl+A, PRIMARY) → Zsh → Starship (prompt); Tmux kept as backup only — don't extend it, extend herdr
 - **macOS — Input**: Kanata (ACTIVE, LaunchDaemon) — Karabiner DriverKit pinned to 6.6.0
 - **macOS — Automation**: Hammerspoon (ACTIVE) — focus-follows-mouse only, raises the window under the cursor
-- **Linux — Window mgmt**: Hyprland → Waybar → Walker (Omarchy layer)
+- **Linux — Window mgmt**: Hyprland + Omarchy 4 (quickshell bar, omarchy-menu launcher; we ship deltas only)
 - **Linux — Input**: Kanata (`config.kbd`)
 - **Editor (shared)**: Neovim (kickstart.nvim base, standalone repo at `~/.config/nvim`)
 - **Provisioning**: `mac/macos/Brewfile` + `mac/macos/setup.sh` mirror this machine onto a fresh Mac (see provision-mac-twin skill); `linux/bootstrap.sh` for Omarchy

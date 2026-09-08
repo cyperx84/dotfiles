@@ -484,7 +484,7 @@ stow zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starshi
 
 # Deploy Linux components
 cd ~/dotfiles/linux
-stow zsh hypr waybar walker terminals tmux dev-tools kanata omarchy-user
+stow zsh hypr terminals tmux dev-tools kanata ssh sesh
 
 # Deploy individual components
 stow ghostty aerospace sketchybar # etc.

@@ -65,13 +65,10 @@ dotfiles/
 │   ├── zsh/             # Z shell configuration and plugins
 │   └── bootstrap.sh     # macOS provisioning entry point
 ├── linux/               # Linux (Omarchy/Hyprland) configs — stow from here (target: /home/cyperx)
-│   ├── hypr/            # Hyprland window manager
-│   ├── waybar/          # Status bar
-│   ├── walker/          # Application launcher
+│   ├── hypr/            # Hyprland deltas layered on Omarchy 4 (Lua)
 │   ├── terminals/       # Terminal emulator configs
 │   ├── kanata/          # Keyboard remapper (config.kbd)
 │   ├── dev-tools/       # btop, fastfetch, git, lazygit, starship
-│   ├── omarchy-user/    # Omarchy user layer
 │   ├── tmux/, zsh/, scripts/
 │   └── bootstrap.sh     # Linux provisioning entry point
 └── docs/                # Shared documentation

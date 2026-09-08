@@ -37,7 +37,7 @@
 | **Antigravity** | - | `Cmd+Ctrl+u` | Cyperx-only |
 | **iPhone Mirroring** | - | `Cmd+Ctrl+i` | Cyperx-only |
 | **Sidecar (iPad)** | - | `Cmd+Ctrl+s` | Cyperx-only |
-| **App launcher** | `Super+Space` | - | Omarchy: Walker fuzzy launcher |
+| **App launcher** | `Super+Space` | - | Omarchy 4: omarchy-menu |
 
 ### Modifier Pattern Comparison
 
