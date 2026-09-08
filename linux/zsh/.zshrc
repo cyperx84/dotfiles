@@ -42,7 +42,9 @@ export STARSHIP_CONFIG=~/.config/starship.toml
 # the escapes in %{ %} so zsh width math stays correct. Keep in sync with
 # mac/zsh/.zshrc. Add a machine = add a case line with its own colour.
 # ----------------------------------------------------------------------------
-case "$(hostname -s)" in
+# ${HOST} is a zsh builtin — Arch (and so Omarchy) ships no `hostname` binary,
+# and calling it errored on every shell start. %%.* strips any domain suffix.
+case "${HOST%%.*}" in
   m4*)      export STARSHIP_MACHINE=$'\e[38;2;0;255;0m󰯈\e[0m' ;;    # green  — m4
   m1*)      export STARSHIP_MACHINE=$'\e[38;2;255;69;1m󰯈\e[0m' ;;   # orange — m1
   omarchy*) export STARSHIP_MACHINE=$'\e[38;2;177;98;134m󰯈\e[0m' ;; # purple — omarchy
