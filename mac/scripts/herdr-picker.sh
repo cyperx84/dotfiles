@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Cold-launch entry point for herdr, run inside a fresh Ghostty window by the
-# alt+space hotkey in mac/hammerspoon/.hammerspoon/init.lua:
+# alt+e hotkey in mac/hammerspoon/.hammerspoon/init.lua:
 #
 #   open -na Ghostty --args --title=herdr -e herdr-picker.sh
 #

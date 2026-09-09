@@ -40,10 +40,34 @@ close_workspace = "prefix+shift+d"
 
 [ui]
 show_agent_labels_on_pane_borders = true
+# Outer terminal title. Hammerspoon's alt+e summon (mac/hammerspoon/.hammerspoon/
+# init.lua herdrWindow) finds the herdr Ghostty window by a "herdr" title
+# prefix; the default "{hostname}: {workspace}" never matched, so every alt+e
+# cold-launched a second Ghostty + session picker instead of sesh-bro.
+window_title = "herdr · {workspace}"
+
+# Agents panel as an attention queue -- blocked > done-unseen > working > idle --
+# so row 1 is always whoever needs you. Was "spaces", which ordered by workspace
+# and made every row look equally urgent (herdr discussions #2761, #2466).
+agent_panel_sort = "priority"
+# Distinct static glyph per state rather than colour-only dots (herdr 0.8.2).
+status_indicators = "symbols"
+
+# Agent counts in the tab bar: the answer to "does anything need me" without
+# opening anything. herdr runs this through /bin/sh -lc every interval and
+# takes the LAST line of stdout, so the path is absolute and the output is
+# one line. See herdr-sesh-bro's README "Zero keypresses" section.
+tab_bar_right = [
+  { type = "command", command = "/Users/cyperx/github/herdr-sesh-bro/bin/sesh-bro counts", interval_seconds = 2 },
+]
+
+# Toast delivery defaults to off, so a state change in a background workspace
+# announced itself nowhere. "herdr" draws it inside herdr, no OS permission.
+[ui.toast]
+delivery = "herdr"
 
 # vim-herdr-navigation: ctrl+h/j/k/l route through the plugin, which detects
 # Vim/Neovim in the foreground and forwards the chord; otherwise switches pane.
-agent_panel_sort = "spaces"
 [[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"
@@ -71,19 +95,31 @@ key = "alt+e"
 type = "plugin_action"
 command = "sesh-bro.open"
 
+# alt+. / alt+, : jump to the next/previous agent that needs you (blocked
+# first, then done-unseen). herdr's own next_agent cycles in PANEL order, so
+# it only follows urgency if agent_panel_sort = "priority" — and that reorders
+# the panel, breaking the stable positions focus_agent's 1..9 rely on (herdr
+# discussion #2761). sesh-bro reorders nothing: it reads the snapshot, picks,
+# focuses. Punctuation keys because the alt letter row is full and kanata's
+# home-row mods make alt+a/s/d/f/j/k/l unreliable as chords.
+[[keys.command]]
+key = "alt+."
+type = "plugin_action"
+command = "sesh-bro.next"
+description = "jump to the next agent needing attention"
+
+[[keys.command]]
+key = "alt+,"
+type = "plugin_action"
+command = "sesh-bro.prev"
+description = "jump to the previous agent needing attention"
+
 # alt+m: toggle the focused workspace's persistent Markdown scratch note.
 [[keys.command]]
 key = "alt+m"
 type = "plugin_action"
 command = "herdr-notes.toggle"
 
-# ---------------------------------------------------------------------------
-# alt row, 2026-08. Mirrors the old harpoon layout, which moved to <leader>h in
-# ~/.config/nvim/lua/plugins/harpoon.lua on the same day.
-#
-#   alt+1..6                    focus tab 1-6 in the current workspace
-#   alt+j k l u i o 7 8 9       focus workspace (space) 1-9
-#
 # Workspace numbers renumber as spaces open and close, so alt+j follows
 # position 1, not a fixed project. Tab `.number` does NOT renumber — it is
 # sticky for the tab's lifetime (close tab 2 and the rest stay 1,3,4) — so
