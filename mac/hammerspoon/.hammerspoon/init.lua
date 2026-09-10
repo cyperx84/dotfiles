@@ -131,12 +131,49 @@ local function sendPickerChord()
   hs.eventtap.keyStroke({ "alt" }, "e", 100000, app)
 end
 
+-- Which machine the herdr CLIENT is currently showing, as an ssh target, or nil
+-- for Local.
+--
+-- This exists because the CLI cannot answer "where is the user looking". It
+-- dials a socket, and with no HERDR_SOCKET_PATH in Hammerspoon's environment
+-- that socket is always the LOCAL server -- while the client's window may be
+-- showing a saved SSH machine. That mismatch is the whole bug this function
+-- fixes: alt+e opened the picker on Local, invisible behind the remote view,
+-- and reappeared as an already-open popup on the next switch back.
+--
+-- `machine list --json` is the only surface that reports the selection.
+-- herdr exports `selected` read-only: nothing in protocol 22 can CHANGE which
+-- machine is selected (the API's whole Client area is client.window_title.*),
+-- but reading it is enough to send the request to the right server.
+local function selectedMachine()
+  local ok, out = pcall(hs.execute, HERDR .. " machine list --json 2>/dev/null")
+  if not ok or not out then return nil end
+  -- Deliberately not a JSON parse. Hammerspoon ships no JSON decoder worth
+  -- the dependency here, the shape is flat and herdr's own, and the only
+  -- question is which entry carries "selected": true.
+  for entry in out:gmatch("%b{}") do
+    if entry:match('"selected"%s*:%s*true') then
+      return entry:match('"target"%s*:%s*"([^"]+)"')
+    end
+  end
+  return nil
+end
+
 -- The popup is a pure overlay (not in `pane list`), so there's no pane id to
 -- close. Detect whether it's already open via `plugin pane open`'s
 -- "popup already open" error, and close it by sending escape (fzf's exit key).
 -- Returns "opened", "closed", or "error".
 local function togglePicker()
-  local ok, out = pcall(hs.execute, HERDR .. " plugin pane open --plugin sesh-bro --entrypoint picker 2>&1")
+  local target = selectedMachine()
+  local cmd
+  if target then
+    cmd = string.format(
+      "ssh -o BatchMode=yes -o ConnectTimeout=5 %q " ..
+      "'sh -lc \"herdr plugin pane open --plugin sesh-bro --entrypoint picker\"' 2>&1", target)
+  else
+    cmd = HERDR .. " plugin pane open --plugin sesh-bro --entrypoint picker 2>&1"
+  end
+  local ok, out = pcall(hs.execute, cmd)
   local alreadyOpen = ok and (out or ""):find("popup already open", 1, true) ~= nil
   if not ok and not alreadyOpen then
     return "error"
