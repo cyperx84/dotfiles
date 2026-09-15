@@ -84,6 +84,7 @@ focusCheck()
 require("hs.ipc")
 
 local HERDR_PICKER = os.getenv("HOME") .. "/dotfiles/mac/scripts/herdr-picker.sh"
+local SESH_BRO = os.getenv("HOME") .. "/github/herdr-sesh-bro/bin/sesh-bro"
 local HERDR = "/opt/homebrew/bin/herdr"
 local AEROSPACE = "/opt/homebrew/bin/aerospace"
 
@@ -151,8 +152,7 @@ local function togglePicker()
   return "opened"
 end
 
-local function summonHerdr()
-  local win = herdrWindow()
+local function openPicker(win)
   if win then
     if focusHerdrWorkspace(win) then
       hs.timer.doAfter(0.15, togglePicker)
@@ -176,6 +176,32 @@ local function summonHerdr()
       poll:stop()
     end
   end)
+end
+
+
+local function summonHerdr()
+  -- Send the herdr window back to Local first. While it shows another machine
+  -- it carries that machine's window title, so it cannot be found by title,
+  -- and the picker is a Local plugin anyway. Exit 0 means a herdr client took
+  -- it; then wait for the Local title to come back before looking.
+  local _, focused = hs.execute("HERDR_BIN_PATH=" .. HERDR .. " " .. SESH_BRO .. " focus --machine local 2>/dev/null")
+  local tries = 0
+  local function findAndOpen()
+    local win = herdrWindow()
+    if not win and focused and tries < 15 then
+      tries = tries + 1
+      hs.timer.doAfter(0.1, findAndOpen)
+      return
+    end
+    if not win and focused then
+      -- A herdr client is attached but its window was not found by title:
+      -- open the picker there rather than launching a second herdr.
+      togglePicker()
+      return
+    end
+    openPicker(win)
+  end
+  findAndOpen()
 end
 
 hs.hotkey.bind({ "alt" }, "e", summonHerdr)
