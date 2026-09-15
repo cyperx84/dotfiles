@@ -205,16 +205,12 @@ brew "supreme-gg-gg/tap/instagram-cli", trusted: true
 brew "surrealdb/tap/surreal", trusted: true
 # Command-line interface for 1Password
 cask "1password-cli"
-# Sound and music editor
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace"
 # CLI for the Claude Platform
 cask "anthropics/tap/ant", trusted: true
-# Tool to flash OS images to SD cards & USB drives
 # Virtual Audio Driver
 cask "blackhole-16ch"
-# Server for forwarding iMessages
-cask "bluebubbles"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Ghostty-based terminal with vertical tabs and notifications for AI coding agents
@@ -229,9 +225,6 @@ cask "copilot-cli"
 cask "discord"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
-# Web browser
-cask "firefox"
-# UI toolkit for building applications for mobile, web and desktop
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-meslo-lg-nerd-font"
@@ -248,8 +241,6 @@ cask "google-gemini"
 # Desktop automation application
 cask "hammerspoon"
 # Discover, download, and run local LLMs
-# Trims video and audio files losslessly
-cask "losslesscut"
 # Open-source software for live streaming and screen recording
 cask "obs"
 # Knowledge base that works on top of a local folder of plain text Markdown files
@@ -257,8 +248,6 @@ cask "obsidian"
 # Get up and running with large language models locally
 # Personal AI assistant
 cask "openclaw"
-# Music streaming service
-cask "spotify"
 # Video game digital distribution service
 # Minimal GUI for AI code agents
 cask "t3-code"
@@ -268,8 +257,6 @@ cask "tailscale-app"
 cask "telegram"
 # Native desktop client for WhatsApp
 cask "whatsapp"
-# Voice-to-text dictation with AI-powered auto-editing
-cask "wispr-flow"
 # Auth-enabled curl-like CLI for the X API
 cask "xdevplatform/tap/xurl"
 # Gecko based web browser
@@ -281,3 +268,11 @@ uv "mlx-vlm"
 uv "nano-pdf"
 npm "corepack"
 npm "openclaw"
+
+# --- Load-bearing tools missing from this manifest ---
+# Agent multiplexer; LaunchAgent com.cyperx.herdr-server
+brew "herdr"
+# Anthropic bridge on 127.0.0.1:8317; LaunchAgent homebrew.mxcl.cliproxyapi
+brew "cliproxyapi"
+# Secret decryption for the deepseek-sops-bridge LaunchAgent
+brew "sops"
