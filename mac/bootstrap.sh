@@ -65,7 +65,42 @@ for pkg in "${PACKAGES[@]}"; do
   echo "✓ Stowed $pkg"
 done
 
-# 5. Clone TPM for tmux if missing
+# 5. Neovim config — separate repo, intentionally NOT stow-managed.
+# It's a full project (own CI, plugin patches, lockfile), so we clone it rather
+# than symlink files. Cloning also keeps `stow --adopt` above from ever being
+# able to swallow plugin dirs into this repo.
+NVIM_REPO="https://github.com/cyperx84/nvim.git"
+NVIM_DIR="$HOME/.config/nvim"
+# Normalise https/ssh URLs to host/owner/repo so either clone style matches.
+nvim_slug() { local u="${1%.git}"; u="${u#*://}"; u="${u#*@}"; printf '%s' "${u/://}"; }
+NVIM_ORIGIN="$(git -C "$NVIM_DIR" remote get-url origin 2>/dev/null || true)"
+if [[ -n "$NVIM_ORIGIN" && "$(nvim_slug "$NVIM_ORIGIN")" == "$(nvim_slug "$NVIM_REPO")" ]]; then
+  if [[ -z "$(git -C "$NVIM_DIR" status --porcelain)" ]]; then
+    # fetch first: a reachable origin + failed fast-forward means real divergence,
+    # whereas a failed fetch is just network/auth and is safe to ignore.
+    if git -C "$NVIM_DIR" fetch --quiet origin 2>/dev/null; then
+      git -C "$NVIM_DIR" merge --ff-only --quiet '@{u}' 2>/dev/null \
+        && echo "✓ Neovim config up to date" \
+        || echo "⚠ Neovim config diverged from origin — left as-is"
+    else
+      echo "⚠ Neovim config: couldn't reach origin — left as-is"
+    fi
+  else
+    echo "ℹ Neovim config has local changes — left untouched"
+  fi
+elif [[ -e "$NVIM_DIR" ]]; then
+  echo "Foreign nvim config found — backing it up..."
+  mv "$NVIM_DIR" "$HOME/.config/nvim.backup-$TIMESTAMP"
+  git clone --quiet "$NVIM_REPO" "$NVIM_DIR"
+  echo "✓ Neovim config cloned (previous config kept at ~/.config/nvim.backup-$TIMESTAMP)"
+else
+  git clone --quiet "$NVIM_REPO" "$NVIM_DIR"
+  echo "✓ Neovim config cloned"
+fi
+# Plugins install on first launch — that first boot is slow by design.
+echo "  → run 'nvim' once to let vim.pack clone plugins and Mason install LSPs"
+
+# 6. Clone TPM for tmux if missing
 if [[ ! -d ~/.tmux/plugins/tpm ]]; then
   echo "Installing Tmux Plugin Manager..."
   mkdir -p ~/.tmux/plugins
@@ -75,7 +110,7 @@ else
   echo "✓ TPM already installed"
 fi
 
-# 6. Kanata LaunchDaemon
+# 7. Kanata LaunchDaemon
 PLIST_SRC="$DOTFILES_DIR/kanata/.config/kanata/com.example.kanata.plist"
 PLIST_DST="/Library/LaunchDaemons/com.example.kanata.plist"
 if [[ -f "$PLIST_SRC" && ! -f "$PLIST_DST" ]]; then
@@ -93,7 +128,7 @@ if [[ -f "$PLIST_SRC" && ! -f "$PLIST_DST" ]]; then
   echo "  → Grant 'Input Monitoring' to kanata in System Settings > Privacy for remaps to work"
 fi
 
-# 7. Zen Browser config (not stow-managed — random profile dir; seeded by script)
+# 8. Zen Browser config (not stow-managed — random profile dir; seeded by script)
 if [[ -f "$HOME/Library/Application Support/zen/profiles.ini" ]]; then
   echo "Seeding Zen config..."
   "$DOTFILES_DIR/zen/install.sh" || echo "⚠ Zen seed skipped (is Zen running?) — run mac/zen/install.sh later"
