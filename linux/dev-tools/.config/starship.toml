@@ -8,7 +8,6 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 format = """
 ${env_var.STARSHIP_MACHINE}\
-$os\
 $directory\
 $git_branch\
 $git_commit\
