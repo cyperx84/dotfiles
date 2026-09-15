@@ -115,3 +115,17 @@ fi
 
 # OpenClaw Completion
 [ -f "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"
+
+# ============================================================================
+# STARSHIP PROMPT
+# ============================================================================
+# Omarchy 4 wires starship for BASH ONLY (default/bash/init runs
+# `starship init bash`) and ships no zsh rc, so without this zsh falls back to
+# the stock `%m%#` prompt even though STARSHIP_CONFIG + STARSHIP_MACHINE above
+# are already set. Guard mirrors omarchy's own init guard. Kept LAST: starship
+# registers precmd hooks, so it must wrap after any other zsh plugin.
+# Config sits at starship's default path (~/.config/starship.toml), which is
+# both what omarchy documents and where the dev-tools package stows it.
+if [[ ${TERM:-} != "dumb" ]] && (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+fi
