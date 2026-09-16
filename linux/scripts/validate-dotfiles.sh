@@ -178,24 +178,39 @@ else
     || fail 'starship format no longer includes ${env_var.STARSHIP_MACHINE}'
 fi
 
-# Omarchy 4 moved the current theme to $XDG_STATE_HOME; the 3.x config path does
-# not exist, so a stale import silently falls back to default colors.
-LEGACY_THEME='~/.config/omarchy/current/theme'
-check_theme_import() {
-  local rel="$1" want="$2" file="$LINUX_DIR/$1"
-  if [[ ! -f "$file" ]]; then
-    fail "$rel missing"
-  elif grep -qF -- "$LEGACY_THEME" "$file"; then
-    fail "$rel imports the dead Omarchy 3.x theme path ($LEGACY_THEME)"
-  elif grep -qF -- "$want" "$file"; then
-    pass "$rel imports the Omarchy 4 theme path"
+# Terminal configs are Omarchy's. It rewrites ~/.config/{alacritty,kitty,ghostty}
+# font lines with `sed -i` — which turns a stow symlink back into a regular file —
+# and its migrations edit those files in place to keep them working across
+# upgrades. So we ship deltas beside them and let Omarchy's file include ours.
+# Owning the whole file means losing every migration and the theme import with it.
+TERM_DELTAS=(
+  'terminals/.config/ghostty/cyperx.conf'
+  'terminals/.config/kitty/cyperx.conf'
+  'terminals/.config/alacritty/cyperx.toml'
+)
+for delta in "${TERM_DELTAS[@]}"; do
+  check_file "$LINUX_DIR/$delta" "Terminal delta ${delta##*/}"
+done
+
+# A font line in a delta would override whatever Omarchy's menu just set, and
+# pin it silently.
+for delta in "${TERM_DELTAS[@]}"; do
+  file="$LINUX_DIR/$delta"
+  [[ -f "$file" ]] || continue
+  if grep -qE '^[[:space:]]*(font-size|font_size|size)[[:space:]]*=?[[:space:]]*[0-9]|^[[:space:]]*(font-family|font_family)|family[[:space:]]*=' "$file"; then
+    fail "${delta##*/} sets a font family/size; that is Omarchy's to change"
   else
-    fail "$rel does not import $want"
+    pass "${delta##*/} leaves font family/size to Omarchy"
   fi
-}
-check_theme_import 'terminals/.config/alacritty/alacritty.toml' '~/.local/state/omarchy/current/theme/alacritty.toml'
-check_theme_import 'terminals/.config/kitty/kitty.conf' '~/.local/state/omarchy/current/theme/kitty.conf'
-check_theme_import 'terminals/.config/ghostty/config' '~/.local/state/omarchy/current/theme/ghostty.conf'
+done
+
+# The old layout: whole-file terminal configs stowed over Omarchy's. Their return
+# means the repo drifted back to fighting Omarchy for the same paths.
+for stale in ghostty/config kitty/kitty.conf alacritty/alacritty.toml; do
+  [[ -e "$LINUX_DIR/terminals/.config/$stale" ]] \
+    && fail "terminals/$stale is back; Omarchy owns that file, ship a cyperx delta instead" \
+    || true
+done
 
 section '4. Stow Layout'
 if command -v stow >/dev/null 2>&1; then
@@ -239,6 +254,30 @@ if [[ "$(uname -s)" == Linux ]]; then
       && pass "hypr $delta.lua deployed" \
       || fail "~/.config/hypr/$delta.lua not deployed"
   done
+
+  # Deployment side of the delta layout: our file stowed next to Omarchy's, and
+  # Omarchy's file still including it. `omarchy-refresh-config <path>` does a
+  # `cp -f` of the shipped default and is the one command that drops the include.
+  check_term_wiring() {
+    local delta="$1" owner="$2" needle="$3" name="${2%%/*}"
+    if [[ ! -e "$HOME/.config/$delta" ]]; then
+      fail "~/.config/$delta not deployed"
+    elif [[ ! -L "$HOME/.config/$delta" ]]; then
+      fail "~/.config/$delta is a regular file, not a stow symlink"
+    else
+      pass "$name delta deployed"
+    fi
+    if [[ ! -f "$HOME/.config/$owner" ]]; then
+      warn "$name not configured on this machine (~/.config/$owner absent)"
+    elif grep -qF -- "$needle" "$HOME/.config/$owner"; then
+      pass "$name includes our delta"
+    else
+      fail "~/.config/$owner lost the include (omarchy-refresh-config?); re-run scripts/wire-terminal-includes.sh"
+    fi
+  }
+  check_term_wiring 'ghostty/cyperx.conf'   'ghostty/config'            'cyperx.conf'
+  check_term_wiring 'kitty/cyperx.conf'     'kitty/kitty.conf'          'cyperx.conf'
+  check_term_wiring 'alacritty/cyperx.toml' 'alacritty/alacritty.toml'  'cyperx.toml'
 
   if [[ -d "$HOME/.local/state/omarchy/current/theme" ]]; then
     pass 'Omarchy current theme dir present'

@@ -1,0 +1,15 @@
+# Personal alacritty deltas, layered on top of Omarchy's own
+# ~/.config/alacritty/alacritty.toml via general.import.
+#
+# Never set font.size or font.*.family here — omarchy-display-text-size and
+# omarchy-font-set rewrite those in Omarchy's file.
+#
+# NOTE: alacritty gives the importing file precedence over its imports, so a
+# scalar set here loses to the same scalar in Omarchy's file. Keep this additive.
+# Same-key bindings are the one case that still resolves in our favour.
+
+[keyboard]
+# Send Shift+Return as Alt+Return rather than Omarchy 4's "[13;2u".
+bindings = [
+  { key = "Return", mods = "Shift", chars = "\r" },
+]

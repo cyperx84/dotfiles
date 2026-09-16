@@ -63,6 +63,12 @@ for pkg in "${PACKAGES[@]}"; do
   echo "✓ Stowed $pkg"
 done
 
+# 3b. Terminal configs are Omarchy's, not ours — it rewrites them with `sed -i`
+# (font size, font family) and migrations edit them in place. We stow only
+# cyperx.conf/cyperx.toml deltas beside them and append an include line.
+echo
+bash "$DOTFILES_DIR/scripts/wire-terminal-includes.sh" "$BACKUP_DIR" || true
+
 # 4. Neovim config — separate repo, intentionally NOT stow-managed.
 # Note: Omarchy ships its own LazyVim config at ~/.config/nvim and its theme
 # system writes a neovim.lua into ~/.config/omarchy/current/theme/. This config
