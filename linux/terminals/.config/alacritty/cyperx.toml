@@ -4,9 +4,10 @@
 # Never set font.size or font.*.family here — omarchy-display-text-size and
 # omarchy-font-set rewrite those in Omarchy's file.
 #
-# NOTE: alacritty gives the importing file precedence over its imports, so a
-# scalar set here loses to the same scalar in Omarchy's file. Keep this additive.
-# Same-key bindings are the one case that still resolves in our favour.
+# UNVERIFIED: alacritty may give the importing file precedence over its imports,
+# in which case a scalar set here loses to the same scalar in Omarchy's file. The
+# docs only state that later imports beat earlier ones. Keep this additive until
+# someone checks on a machine that actually has alacritty installed.
 
 [keyboard]
 # Send Shift+Return as Alt+Return rather than Omarchy 4's "\u001B[13;2u".

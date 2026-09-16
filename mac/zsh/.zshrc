@@ -441,3 +441,6 @@ alias reasonix="herdr-run reasonix reasonix"
 # cmd and commandcode are the same tool, two entrypoints
 alias cmd="herdr-run cmd cmd"
 alias commandcode="herdr-run commandcode commandcode"
+
+# opencode
+export PATH=/Users/cyperx/.opencode/bin:$PATH
