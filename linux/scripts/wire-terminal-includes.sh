@@ -26,6 +26,18 @@ BACKUP_DIR="${1:-$HOME/dotfiles-backup-$(date +%Y%m%d-%H%M%S)}"
 
 failed=0
 
+# Omarchy legitimately edits its own terminal configs — omarchy-display-text-size
+# and omarchy-font-set rewrite the font lines. So "differs from the shipped
+# default" does not mean the file is ours; comparing must ignore font lines, or
+# the first bootstrap on a machine with a text size set would reset it.
+strip_font_lines() { grep -vEi '^[[:space:]]*(font|size|family)|family[[:space:]]*=' "$1"; }
+is_omarchy_file() {
+  local live="$1" shipped="$2"
+  [[ -f $shipped ]] || return 1
+  [[ -L $live ]] && return 1  # stow's, i.e. the old whole-file layout
+  diff -q <(strip_font_lines "$live") <(strip_font_lines "$shipped") >/dev/null 2>&1
+}
+
 # target config | our delta file | include line | repo-relative stow source
 wire() {
   local target="$HOME/.config/$1" delta="$HOME/.config/$2" line="$3" prefix="${4:-}"
@@ -52,7 +64,7 @@ wire() {
 
   # Old layout: the target is (or was) our stowed whole-file config. Hand the file
   # back to Omarchy, keeping a copy — the deltas now live in $delta.
-  if [[ -L $target ]] || ! cmp -s "$target" "$OMARCHY_PATH/config/$1"; then
+  if ! is_omarchy_file "$target" "$OMARCHY_PATH/config/$1"; then
     if ! grep -qF "$line" "$target" 2>/dev/null && [[ -f "$OMARCHY_PATH/config/$1" ]]; then
       mkdir -p "$BACKUP_DIR/$(dirname "$1")"
       cp -L "$target" "$BACKUP_DIR/$1"
@@ -99,7 +111,7 @@ elif [[ ! -f $alacritty ]]; then
   fi
 fi
 if [[ -f $alacritty ]]; then
-  if [[ -L $alacritty ]] || ! cmp -s "$alacritty" "$OMARCHY_PATH/config/alacritty/alacritty.toml"; then
+  if ! is_omarchy_file "$alacritty" "$OMARCHY_PATH/config/alacritty/alacritty.toml"; then
     if ! grep -qF 'cyperx.toml' "$alacritty" && [[ -f "$OMARCHY_PATH/config/alacritty/alacritty.toml" ]]; then
       mkdir -p "$BACKUP_DIR/alacritty"
       cp -L "$alacritty" "$BACKUP_DIR/alacritty/alacritty.toml"
