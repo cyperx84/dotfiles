@@ -94,6 +94,11 @@ command = "vim-herdr-navigation.right"
 key = "alt+e"
 type = "plugin_action"
 command = "sesh-bro.open"
+# The picker is a Local plugin, and a plugin key otherwise runs on whichever
+# machine the window is showing — on a saved machine, sesh-bro is not there and
+# the key does nothing. This switches the window back to Local first. Needs a
+# herdr with keys.command machine support (~/github/herdr feat/client-focus).
+machine = "local"
 
 # alt+. / alt+, : jump to the next/previous agent that needs you (blocked
 # first, then done-unseen). herdr's own next_agent cycles in PANEL order, so
