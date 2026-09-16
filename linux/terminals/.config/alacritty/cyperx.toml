@@ -9,7 +9,7 @@
 # Same-key bindings are the one case that still resolves in our favour.
 
 [keyboard]
-# Send Shift+Return as Alt+Return rather than Omarchy 4's "[13;2u".
+# Send Shift+Return as Alt+Return rather than Omarchy 4's "\u001B[13;2u".
 bindings = [
-  { key = "Return", mods = "Shift", chars = "\r" },
+  { key = "Return", mods = "Shift", chars = "\u001B\r" },
 ]
