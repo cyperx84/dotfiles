@@ -151,11 +151,37 @@ local function togglePicker()
   return "opened"
 end
 
+-- Which machine the herdr client is showing. Local means its own selection file
+-- names no saved machine, which is the only state where `plugin pane open` on
+-- the local server puts the popup on screen: a popup belongs to one server's
+-- surface, and the surface of a machine that is not selected is not drawn.
+local ENDPOINT_SELECTION = os.getenv("HOME") .. "/.local/state/herdr/client/endpoint-selection.json"
+
+local function showingLocal()
+  local file = io.open(ENDPOINT_SELECTION, "r")
+  if not file then return true end
+  local body = file:read("*a") or ""
+  file:close()
+  return body:match('"selected_profile"%s*:%s*null') ~= nil
+end
+
+-- On Local, open the popup through the API: that is what makes alt+e a toggle,
+-- since `plugin pane open` reports a popup that is already open and escape
+-- closes it. On another machine, press the key instead and let herdr's own
+-- binding (keys.command machine = "local") switch to Local and open it there.
+local function openOrToggle()
+  if showingLocal() then
+    return togglePicker()
+  end
+  sendPickerChord()
+  return "chord"
+end
+
 local function summonHerdr()
   local win = herdrWindow()
   if win then
     if focusHerdrWorkspace(win) then
-      hs.timer.doAfter(0.15, togglePicker)
+      hs.timer.doAfter(0.15, openOrToggle)
     end
     return
   end
@@ -170,7 +196,7 @@ local function summonHerdr()
     if w then
       poll:stop()
       if focusHerdrWorkspace(w) then
-        hs.timer.doAfter(0.6, togglePicker) -- let the TUI paint first
+        hs.timer.doAfter(0.6, openOrToggle) -- let the TUI paint first
       end
     elseif tries > 30 then
       poll:stop()
