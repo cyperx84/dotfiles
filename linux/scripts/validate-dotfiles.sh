@@ -187,6 +187,7 @@ TERM_DELTAS=(
   'terminals/.config/ghostty/cyperx.conf'
   'terminals/.config/kitty/cyperx.conf'
   'terminals/.config/alacritty/cyperx.toml'
+  'terminals/.config/foot/cyperx.ini'
 )
 for delta in "${TERM_DELTAS[@]}"; do
   check_file "$LINUX_DIR/$delta" "Terminal delta ${delta##*/}"
@@ -197,7 +198,7 @@ done
 for delta in "${TERM_DELTAS[@]}"; do
   file="$LINUX_DIR/$delta"
   [[ -f "$file" ]] || continue
-  if grep -qE '^[[:space:]]*(font-size|font_size|size)[[:space:]]*=?[[:space:]]*[0-9]|^[[:space:]]*(font-family|font_family)|family[[:space:]]*=' "$file"; then
+  if grep -qE '^[[:space:]]*(font-size|font_size|size)[[:space:]]*=?[[:space:]]*[0-9]|^[[:space:]]*(font-family|font_family|font)=|family[[:space:]]*=' "$file"; then
     fail "${delta##*/} sets a font family/size; that is Omarchy's to change"
   else
     pass "${delta##*/} leaves font family/size to Omarchy"
@@ -278,6 +279,18 @@ if [[ "$(uname -s)" == Linux ]]; then
   check_term_wiring 'ghostty/cyperx.conf'   'ghostty/config'            'cyperx.conf'
   check_term_wiring 'kitty/cyperx.conf'     'kitty/kitty.conf'          'cyperx.conf'
   check_term_wiring 'alacritty/cyperx.toml' 'alacritty/alacritty.toml'  'cyperx.toml'
+  check_term_wiring 'foot/cyperx.ini'       'foot/foot.ini'             'cyperx.ini'
+
+  # foot is the only one of the four that can check its own config. It also
+  # catches the include landing in the wrong section: `include` is a [main] key,
+  # and Omarchy's file ends inside [text-bindings].
+  if command -v foot >/dev/null 2>&1; then
+    foot --check-config >/dev/null 2>&1 \
+      && pass 'foot accepts the merged config' \
+      || fail 'foot rejects the merged config (run: foot --check-config)'
+  else
+    warn 'foot not installed; skipped merged-config check'
+  fi
 
   if [[ -d "$HOME/.local/state/omarchy/current/theme" ]]; then
     pass 'Omarchy current theme dir present'

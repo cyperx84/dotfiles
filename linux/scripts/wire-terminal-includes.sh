@@ -28,7 +28,7 @@ failed=0
 
 # target config | our delta file | include line | repo-relative stow source
 wire() {
-  local target="$HOME/.config/$1" delta="$HOME/.config/$2" line="$3"
+  local target="$HOME/.config/$1" delta="$HOME/.config/$2" line="$3" prefix="${4:-}"
   local name="${1%%/*}"
 
   if [[ ! -e $delta ]]; then
@@ -65,7 +65,7 @@ wire() {
   if grep -qF "$line" "$target"; then
     echo "  ✓ $name: already includes $2"
   else
-    printf '\n# Personal deltas (dotfiles/linux/terminals). Keep this last.\n%s\n' "$line" >>"$target"
+    printf '\n# Personal deltas (dotfiles/linux/terminals). Keep this last.\n%s%s\n' "$prefix" "$line" >>"$target"
     echo "  ✓ $name: include appended to $target"
   fi
 }
@@ -76,6 +76,14 @@ echo "Wiring Omarchy terminal configs to our deltas..."
 # and both let a later value override an earlier one — so appending wins.
 wire "ghostty/config"   "ghostty/cyperx.conf" 'config-file = ?"cyperx.conf"'
 wire "kitty/kitty.conf" "kitty/cyperx.conf"   'include cyperx.conf'
+
+# foot is the terminal Omarchy 4 ships. Verified on foot 1.27.0: the config is
+# parsed top to bottom, `include` is an inline paste, and the last assignment
+# wins — so an include at the end overrides everything above it. But `include` is
+# only a [main] key, and Omarchy's file ends inside [text-bindings], where the
+# line would be read as a key binding. Hence the section header in the prefix.
+wire "foot/foot.ini" "foot/cyperx.ini" 'include=~/.config/foot/cyperx.ini' '[main]
+'
 
 # Alacritty is TOML: a second `general.import = [...]` key would be a duplicate,
 # so extend the existing array instead of appending a line.
