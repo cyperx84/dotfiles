@@ -62,6 +62,18 @@ status)
     echo "linked:  $(current)"
     "$LINK" --version
     "$LINK" status server 2>/dev/null | grep -E 'status|version' || true
+    # Say plainly whose herdr is in the path. A Homebrew upgrade or `herdr
+    # update` can put the stock binary back, and the symptom of that is not an
+    # error: picker rows for other machines simply stop working, because the
+    # stock build has no client.focus.
+    if [[ $(current) == "$INSTALLED" ]]; then
+        echo "build:   local (client.focus available)"
+        if [[ -x $BUILD ]] && ! cmp -s "$BUILD" "$INSTALLED"; then
+            echo "         note: $BUILD is newer than the installed copy; run: $0 switch"
+        fi
+    else
+        echo "build:   NOT the local build — run: $0 switch"
+    fi
     ;;
 switch)
     [[ -x $BUILD ]] || { echo "No build at $BUILD. Run: cargo build --release" >&2; exit 1; }
