@@ -4,6 +4,15 @@ onboarding = false
 name = "terminal"
 auto_switch = false
 
+[update]
+# herdr here is a local build (~/github/herdr, branch feat/client-focus) carrying
+# client.focus and keys.command machine support, installed by
+# mac/scripts/herdr-build.sh. `herdr update` replaces the binary at its install
+# path, which is that build — so the offer to update is an offer to throw it
+# away. Homebrew's formula is pinned for the same reason. Rebuild and rerun
+# `herdr-build.sh switch` to move up a version deliberately.
+version_check = false
+
 [keys]
 prefix = "ctrl+a"
 # Pinned on purpose: aerospace owns alt-space globally, so herdr can never
