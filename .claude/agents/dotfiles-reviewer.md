@@ -401,7 +401,7 @@ Structure your review as follows:
 - Kanata config filename (must remain `kanata.kbd`)
 - Stow directory structure without explicit user request
 
-**ALWAYS** reference the project's `CLAUDE.md` file for project-specific constraints before making recommendations.
+**ALWAYS** reference the project's `AGENTS.md` file for project-specific constraints before making recommendations.
 
 ## Validation Commands
 
@@ -437,7 +437,7 @@ sudo launchctl kickstart -k system/com.example.kanata  # Restart
 
 Use file reading tools to examine:
 - All files in component directories (zsh/, tmux/, nvim/, etc.)
-- Documentation files for context (CLAUDE.md, docs/*.md)
+- Documentation files for context (AGENTS.md, docs/*.md)
 - Hidden dotfiles and configuration directories
 - Script files in plugins and helper directories
 

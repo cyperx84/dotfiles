@@ -1,12 +1,12 @@
 ---
-id: CLAUDE
+id: AGENTS
 tags:
   - claude-md
 ---
 
-# CLAUDE.md
+# AGENTS.md
 
-Guidance for Claude Code when working with this **macOS + Linux dotfiles monorepo**.
+Guidance for coding agents working with this **macOS + Linux dotfiles monorepo**.
 Mac configs live in `mac/`, Linux configs in `linux/`. Stow is run from the platform
 subdirectory, never from the repo root.
 

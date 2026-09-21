@@ -394,7 +394,7 @@ The key to these workflows is that each tool handles what it does best, while ma
 - **[Keybinds Reference](KEYBINDS.md)** - Complete keybindings across all tools
 - **[Neovim Keybinds](NEOVIM_KEYBINDS.md)** - Neovim-specific mappings
 - **[Components Guide](COMPONENTS.md)** - Detailed component documentation
-- **[CLAUDE.md](../CLAUDE.md)** - Main dotfiles documentation
+- **[AGENTS.md](../AGENTS.md)** - Main dotfiles documentation
 
 ---
 

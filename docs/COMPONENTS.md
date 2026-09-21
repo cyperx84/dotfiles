@@ -521,7 +521,7 @@ stow -D component_name
 - **[Multi-LLM Workflow](MULTI_LLM_WORKFLOW.md)** - Claude Code + CodeCompanion orchestration
 - **[Maintenance Guide](MAINTENANCE.md)** - Validation and troubleshooting
 - **[Main Repository](../README.md)** - Installation and overview
-- **[Claude Documentation](../CLAUDE.md)** - Claude Code specific guidance
+- **[Agent Documentation](../AGENTS.md)** - Agent guidance
 
 ---
 

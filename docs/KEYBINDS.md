@@ -458,7 +458,7 @@ Karabiner-Elements is installed but has no active remappings (`simple_modificati
 
 - [Neovim Keybinds](NEOVIM_KEYBINDS.md) - Comprehensive Neovim mappings (standalone repo at `~/.config/nvim`)
 - [Workflow Guides](WORKFLOW_GUIDES.md) - Cross-tool integration workflows
-- [CLAUDE.md](../CLAUDE.md) - Main dotfiles documentation
+- [AGENTS.md](../AGENTS.md) - Main dotfiles documentation
 
 ---
 

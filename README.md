@@ -32,7 +32,7 @@ A curated collection of configuration files for a complete development environme
 | **[🔄 Workflow Guides](docs/WORKFLOW_GUIDES.md)** | Cross-tool integration patterns | Learning tool combinations |
 | **[🧠 Local MLX Gemma 4](docs/MLX_GEMMA_SETUP.md)** | Local Gemma 4 on MLX for OpenClaw/Hermes + MTP optimization | Running a fast local agent model |
 | **[🔧 Maintenance Guide](docs/MAINTENANCE.md)** | Validation, troubleshooting, updates | System reliability |
-| **[🤖 Claude Documentation](CLAUDE.md)** | Claude Code guidance & agent guidelines | AI-assisted development |
+| **[🤖 Agent Documentation](AGENTS.md)** | Agent guidance & guidelines | AI-assisted development |
 
 ## 🌟 Features
 

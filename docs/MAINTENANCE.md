@@ -570,7 +570,7 @@ stow zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starshi
 - **[Components Guide](COMPONENTS.md)** - Detailed component information
 - **[Troubleshooting Keybinds](KEYBINDS.md)** - Key binding reference
 - **[Workflow Guides](WORKFLOW_GUIDES.md)** - Integration workflows
-- **[CLAUDE.md](../CLAUDE.md)** - Claude Code guidance and agent guidelines
+- **[AGENTS.md](../AGENTS.md)** - Agent guidance and guidelines
 
 ---
 
