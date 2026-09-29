@@ -50,7 +50,7 @@ style = "bold color_purple"
 disabled = false
 
 [os]
-disabled = false
+disabled = true
 style ="bold color_green"
 
 [os.symbols]
