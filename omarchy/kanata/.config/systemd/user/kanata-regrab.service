@@ -1,0 +1,12 @@
+[Unit]
+Description=Restart kanata when it misses a reconnected keyboard
+After=kanata.service
+
+[Service]
+Type=simple
+ExecStart=%h/.config/kanata/kanata-regrab
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target

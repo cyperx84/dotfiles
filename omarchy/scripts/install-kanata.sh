@@ -22,7 +22,17 @@ stow kanata
 kanata --cfg "$HOME/.config/kanata/config.kbd" --check
 
 systemctl --user daemon-reload
-systemctl --user enable kanata.service
+systemctl --user enable kanata.service kanata-regrab.service
+
+# Home row mods indicator on the bar (kanata.qml, fed by kanata's TCP port).
+# shell.json is rewritten by the bar itself, so patch it rather than stow it.
+shell_json="$HOME/.config/omarchy/shell.json"
+[[ -f $shell_json ]] || cp "$OMARCHY_PATH/config/omarchy/shell.json" "$shell_json"
+if ! jq -e '.bar.layout[][] | select(.id == "kanata")' "$shell_json" >/dev/null; then
+  tmp=$(mktemp)
+  jq '.bar.layout.center += [{"id": "kanata", "type": "qml"}]' "$shell_json" >"$tmp" && cat "$tmp" >"$shell_json"
+  rm -f "$tmp"
+fi
 
 echo "Done. Log out and back in (group changes), then kanata starts automatically."
 echo "Check with: systemctl --user status kanata"
