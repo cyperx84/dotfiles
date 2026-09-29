@@ -16,6 +16,7 @@ subdirectory, never from the repo root.
 dotfiles/
   mac/      ← stow from here on macOS   (target: ~)
   linux/    ← stow from here on Linux   (target: /home/cyperx, via linux/.stowrc)
+  omarchy/  ← stow from here on Omarchy (target: $HOME, via omarchy/.stowrc)
   docs/     ← documentation (shared)
   .claude/  ← repo tooling: agents, commands, skills for working ON these dotfiles
 ```
@@ -47,6 +48,15 @@ linux/sesh/, linux/ssh/, linux/dev-tools/, linux/terminals/  # Sessions, SSH, de
 linux/provision-server.sh                            # Server provisioning
 linux/kanata/.config/kanata/config.kbd              # Keyboard remapper (Linux)
 linux/.stowrc                                        # Targets /home/cyperx
+```
+
+## 📍 Critical File Locations (Omarchy)
+
+```
+omarchy/kanata/.config/kanata/config.kbd            # Keyboard remapper (port of mac kanata.kbd)
+omarchy/kanata/.config/systemd/user/kanata.service  # Runs kanata as a user service
+omarchy/scripts/install-kanata.sh                   # kanata-bin + input/uinput perms + stow + enable
+omarchy/.stowrc                                     # Targets $HOME
 ```
 
 ## 🎯 User Intent Mapping

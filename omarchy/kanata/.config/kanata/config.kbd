@@ -1,0 +1,136 @@
+;; ============================================================================
+;; KANATA — Omarchy / Linux (ported from mac/kanata/kanata.kbd v1.2)
+;; ============================================================================
+;; LAYERS:
+;;   - base:    Home row mods, Space→Symbols, RMeta→Numbers
+;;   - nav:     Vim arrows + editing (Space hold)
+;;   - nums:    Numbers + arrows + F-keys (RMeta hold)
+;;   - vanilla: No home row mods
+;;
+;; QUICK REFERENCE:
+;;   Space + hjkl = ←↓↑→    Space + u/d = PgUp/PgDn
+;;   RMeta + qwerty = 123456    RMeta + jkl = 456    RMeta + h = 0
+;;   RMeta + asdf = ←↓↑→
+;;   RMeta + 1..= = F1..F12
+;;   RMeta + Tab = Toggle home row mods on/off
+;;   Alt (tap) = Toggle home row mods on/off (hold = normal Alt)
+;;
+;; DROPPED FROM MAC:
+;;   - Fn layers: the MacBook Fn key is consumed by hid_apple and never
+;;     reaches kanata. F1-F12 moved to RMeta + number row instead.
+;;   - With hid_apple fnmode=2 the kernel sends F1-F12, which the base layer
+;;     below turns into media keys (as on mac). Fn+F-row still gives media.
+;; ============================================================================
+
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold yes
+)
+
+(defsrc
+  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+       lctl lalt lmet           spc            rmet ralt
+)
+
+;; Increase tap-time if taps register as holds,
+;; increase hold-time if holds register as taps.
+(defvar
+  tap-time 200
+  hold-time 230
+)
+
+(defalias
+  ;; Caps → Esc (tap) / Ctrl (hold)
+  escctrl (tap-hold $tap-time $hold-time esc lctl)
+
+  ;; Home row mods (GASC): Super Alt Shift Ctrl | Ctrl Shift Alt Super
+  a (tap-hold $tap-time $hold-time a lmet)
+  s (tap-hold $tap-time $hold-time s lalt)
+  d (tap-hold $tap-time $hold-time d lsft)
+  f (tap-hold $tap-time $hold-time f lctl)
+  j (tap-hold $tap-time $hold-time j rctl)
+  k (tap-hold $tap-time $hold-time k rsft)
+  l (tap-hold $tap-time $hold-time l ralt)
+  ; (tap-hold $tap-time $hold-time ; rmet)
+
+  ;; Tab → Tab (tap) / Hyper (hold)
+  hypertab (tap-hold $tap-time $hold-time tab (multi lmet lalt lsft lctl))
+
+  ;; Space → Space (tap) / Symbols (hold)
+  spsym (tap-hold $tap-time $hold-time spc (layer-toggle nav))
+
+  ;; Right Shift → Backspace
+  rshiftbspc bspc
+
+  ;; Right Meta → RMeta (tap) / Numbers (hold)
+  rmetnums (tap-hold $tap-time $hold-time rmet (layer-toggle nums))
+  rmetvanillanums (tap-hold $tap-time $hold-time rmet (layer-toggle numsvanilla))
+
+  togmods (layer-switch vanilla)
+  togbase (layer-switch base)
+
+  ;; Alt → HRM toggle (tap) / Alt (hold)
+  ralthrmoff (tap-hold $tap-time $hold-time (layer-switch vanilla) ralt)
+  ralthrmon  (tap-hold $tap-time $hold-time (layer-switch base)    ralt)
+  lalthrmoff (tap-hold $tap-time $hold-time (layer-switch vanilla) lalt)
+  lalthrmon  (tap-hold $tap-time $hold-time (layer-switch base)    lalt)
+)
+
+(deflayer base
+  brdn brup _    _    _    _    prev pp   next mute vold volu
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  @hypertab q  w    e    r    t    y    u    i    o    p    [    ]    \
+  @escctrl @a  @s   @d   @f   g    h    @j   @k   @l   @;   '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    @rshiftbspc
+       lctl @lalthrmoff lmet    @spsym         @rmetnums @ralthrmoff
+)
+
+;; Nav (Space hold) — vim style
+;;   h/j/k/l = ← ↓ ↑ →    u = PgUp  d = PgDn  (like vim Ctrl-u / Ctrl-d)
+;;   Everything else: unassigned (types the normal key)
+(deflayer nav
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    pgup _    _    _    _    _    _
+  _    _    _    pgdn _    _    left down up   rght _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+       _    _    _              _              _    _
+)
+
+;; Numbers (RMeta hold)
+;;   Tab = toggle HRM off     1..= = F1..F12
+;;   q=1 w=2 e=3 r=4 t=5 y=6  u=7 i=8 o=9 p=+
+;;   a=← s=↓ d=↑ f=→          h=0 j=4 k=5 l=6 ;=-
+;;   c=. v=+                  n=, m=1 ,=2 .=3 /=/
+(deflayer nums
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
+  @togmods 1   2    3    4    5    6    7    8    9    S-=  _    _    _
+  _    left down up   rght _    0    4    5    6    -    _    _
+  _    _    _    .    S-=  _    ,    1    2    3    /    _
+       _    _    _              _              _    _
+)
+
+;; Vanilla: no home row mods, everything else kept
+(deflayer vanilla
+  brdn brup _    _    _    _    prev pp   next mute vold volu
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  @hypertab q  w    e    r    t    y    u    i    o    p    [    ]    \
+  @escctrl a  s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    @rshiftbspc
+       lctl @lalthrmon lmet     @spsym         @rmetvanillanums @ralthrmon
+)
+
+;; Numbers for vanilla (Tab toggles HRM back on)
+(deflayer numsvanilla
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
+  @togbase 1   2    3    4    5    6    7    8    9    S-=  _    _    _
+  _    left down up   rght _    0    4    5    6    -    _    _
+  _    _    _    .    S-=  _    ,    1    2    3    /    _
+       _    _    _              _              _    _
+)

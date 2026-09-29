@@ -71,6 +71,9 @@ dotfiles/
 │   ├── dev-tools/       # btop, fastfetch, git, lazygit, starship
 │   ├── tmux/, zsh/, scripts/
 │   └── bootstrap.sh     # Linux provisioning entry point
+├── omarchy/             # Omarchy configs — stow from here (target: $HOME)
+│   ├── kanata/          # Home row mods + layers (port of mac kanata, user service)
+│   └── scripts/         # install-kanata.sh
 └── docs/                # Shared documentation
 ```
 
