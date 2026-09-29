@@ -56,6 +56,9 @@ linux/.stowrc                                        # Targets /home/cyperx
 omarchy/kanata/.config/kanata/config.kbd            # Keyboard remapper (port of mac kanata.kbd)
 omarchy/kanata/.config/systemd/user/kanata.service  # Runs kanata as a user service
 omarchy/scripts/install-kanata.sh                   # kanata-bin + input/uinput perms + stow + enable
+omarchy/hypr/.config/hypr/bindings.lua              # Hyprland binds (home-row workspaces, Ctrl+Shift+hjkl focus)
+omarchy/ghostty/.config/ghostty/config              # Terminal (default via `omarchy install terminal ghostty`)
+omarchy/starship/.config/starship.toml              # Prompt (same as linux/dev-tools)
 omarchy/.stowrc                                     # Targets $HOME
 ```
 
