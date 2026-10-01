@@ -24,3 +24,13 @@ case "${HOSTNAME%%.*}" in
   mbp*|omarchy*) export STARSHIP_MACHINE=$'\e[38;2;177;98;134m󰯈\e[0m' ;; # purple — omarchy
   *)            export STARSHIP_MACHINE=$'\e[38;2;102;92;84m󰯈\e[0m' ;;  # grey   — unknown host
 esac
+
+# Neovim: several configs side by side via NVIM_APPNAME. ~/.config/nvim is the
+# main one (Omarchy's own `n` opens it); any other ~/.config/nvim-* dir shows up
+# in the `vv` picker. EDITOR stays Omarchy's omarchy-launch-editor default.
+vv() {
+  local config
+  config=$(fd --max-depth 1 --type d --glob 'nvim*' ~/.config | fzf --prompt='Neovim Configs > ' --height=~50% --layout=reverse --border --exit-0)
+  [[ -z $config ]] && echo "No config selected" && return
+  NVIM_APPNAME=$(basename "$config") nvim "$@"
+}
