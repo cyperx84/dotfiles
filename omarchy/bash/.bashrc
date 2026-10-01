@@ -24,6 +24,16 @@ case "${HOSTNAME%%.*}" in
   mbp*|omarchy*) export STARSHIP_MACHINE=$'\e[38;2;177;98;134m󰯈\e[0m' ;; # purple — omarchy
   *)            export STARSHIP_MACHINE=$'\e[38;2;102;92;84m󰯈\e[0m' ;;  # grey   — unknown host
 esac
+# fzf border follows the same per-machine colour
+case "${HOSTNAME%%.*}" in
+  m4*)           export MACHINE_ACCENT='#00ff00' ;;
+  m1*)           export MACHINE_ACCENT='#ff4501' ;;
+  mbp*|omarchy*) export MACHINE_ACCENT='#b16286' ;;
+  *)             export MACHINE_ACCENT='#665c54' ;;
+esac
+
+# Personal aliases, functions and fzf/PATH setup ported from the mac zshrc
+[[ -r ~/.config/bash/personal.sh ]] && source ~/.config/bash/personal.sh
 
 # Neovim: several configs side by side via NVIM_APPNAME. ~/.config/nvim is the
 # main one (Omarchy's own `n` opens it); any other ~/.config/nvim-* dir shows up
