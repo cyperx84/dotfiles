@@ -21,14 +21,14 @@ source "$OMARCHY_PATH/default/bash/rc"
 case "${HOSTNAME%%.*}" in
   m4*)          export STARSHIP_MACHINE=$'\e[38;2;0;255;0m󰯈\e[0m' ;;    # green  — m4
   m1*)          export STARSHIP_MACHINE=$'\e[38;2;255;69;1m󰯈\e[0m' ;;   # orange — m1
-  mbp*|omarchy*) export STARSHIP_MACHINE=$'\e[38;2;177;98;134m󰯈\e[0m' ;; # purple — omarchy
+  mbp*|omarchy*) export STARSHIP_MACHINE=$'\e[38;2;0;255;0m󰯈\e[0m' ;;     # green  — omarchy
   *)            export STARSHIP_MACHINE=$'\e[38;2;102;92;84m󰯈\e[0m' ;;  # grey   — unknown host
 esac
 # fzf border follows the same per-machine colour
 case "${HOSTNAME%%.*}" in
   m4*)           export MACHINE_ACCENT='#00ff00' ;;
   m1*)           export MACHINE_ACCENT='#ff4501' ;;
-  mbp*|omarchy*) export MACHINE_ACCENT='#b16286' ;;
+  mbp*|omarchy*) export MACHINE_ACCENT='#00ff00' ;;
   *)             export MACHINE_ACCENT='#665c54' ;;
 esac
 

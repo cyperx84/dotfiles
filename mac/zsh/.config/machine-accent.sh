@@ -14,7 +14,7 @@ _machine_accent_host="$(scutil --get LocalHostName 2>/dev/null || hostname -s)"
 case "$_machine_accent_host" in
   m1*)      MACHINE_ACCENT="#00FF00"; MACHINE_ACCENT_RGB="0;255;0" ;;     # green  — m1
   m4*)      MACHINE_ACCENT="#0A84FF"; MACHINE_ACCENT_RGB="10;132;255" ;;  # blue   — m4
-  omarchy*) MACHINE_ACCENT="#B16286"; MACHINE_ACCENT_RGB="177;98;134" ;;  # purple — omarchy
+  omarchy*) MACHINE_ACCENT="#00FF00"; MACHINE_ACCENT_RGB="0;255;0" ;;     # green  — omarchy
   *)        MACHINE_ACCENT="#665C54"; MACHINE_ACCENT_RGB="102;92;84" ;;   # grey   — unknown
 esac
 unset _machine_accent_host
