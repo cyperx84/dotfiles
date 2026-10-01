@@ -19,27 +19,38 @@ new_cwd = "follow"
 [keys]
 prefix = "ctrl+a"
 
+# Keys ported from the mac config (alt+letter, bare) sit first in each list; the
+# tmux-style prefix keys stay as the second way in. Where the two clash the mac
+# key wins: prefix+r is resize (was rename tab), prefix+shift+r reloads (was
+# rename workspace; that is alt+r now).
+#
+# Hyprland owns ALT+TAB, so the mac last_pane key is alt+t here.
+
+# Jump straight to a workspace/session by name
+goto = "alt+g"
+
 # Config and help
-reload_config = "prefix+q"
+reload_config = ["prefix+shift+r", "prefix+q"]
 help = "prefix+?"
-detach = "prefix+d"
+detach = ["alt+q", "prefix+d"]
+toggle_sidebar = ["alt+b"]
 
 # Copy mode
 copy_mode = "prefix+["
 
 # Panes
-split_horizontal = "prefix+h"
-split_vertical = "prefix+v"
-close_pane = ["prefix+x", "alt+esc"]
-zoom = "prefix+z"
-last_pane = "prefix+;"
+split_horizontal = ["alt+s", "prefix+h"]
+split_vertical = ["alt+v", "prefix+v"]
+close_pane = ["alt+x", "prefix+x", "alt+esc"]
+zoom = ["alt+w", "prefix+z"]
+last_pane = ["alt+t", "prefix+;"]
 
 focus_pane_left = "ctrl+alt+left"
 focus_pane_down = "ctrl+alt+down"
 focus_pane_up = "ctrl+alt+up"
 focus_pane_right = "ctrl+alt+right"
 
-resize_mode = ["prefix+ctrl+left", "prefix+ctrl+down", "prefix+ctrl+up", "prefix+ctrl+right"]
+resize_mode = ["prefix+r", "prefix+ctrl+left", "prefix+ctrl+down", "prefix+ctrl+up", "prefix+ctrl+right"]
 
 # Like resize-pane on C-M-S-arrows
 resize_pane_left = "ctrl+alt+shift+left"
@@ -51,10 +62,12 @@ resize_pane_right = "ctrl+alt+shift+right"
 rename_pane = "prefix+shift+o"
 
 # Windows -> tabs
-new_tab = "prefix+c"
-rename_tab = "prefix+r"
-close_tab = "prefix+k"
-switch_tab = ["prefix+1..9", "alt+1..9"]
+new_tab = ["alt+c", "prefix+c"]
+rename_tab = "prefix+shift+t"
+close_tab = ["prefix+shift+x", "prefix+k"]
+# alt+1..6 are the tab-jump plugin below (positional), so no alt+1..9 here:
+# indexed bindings are all-or-nothing and would clash with those.
+switch_tab = "prefix+1..9"
 previous_tab = ["prefix+p", "alt+left"]
 next_tab = ["prefix+n", "alt+right"]
 
@@ -63,9 +76,9 @@ move_tab_previous = "alt+shift+left"
 move_tab_next = "alt+shift+right"
 
 # Sessions -> workspaces
-new_workspace = "prefix+shift+c"
-rename_workspace = "prefix+shift+r"
-close_workspace = "prefix+shift+k"
+new_workspace = ["alt+n", "prefix+shift+c"]
+rename_workspace = "alt+r"
+close_workspace = ["prefix+shift+d", "prefix+shift+k"]
 previous_workspace = ["prefix+shift+p", "alt+up"]
 next_workspace = ["prefix+shift+n", "alt+down"]
 
@@ -98,6 +111,14 @@ window_title = "{hostname}: {workspace}"
 show_agent_labels_on_pane_borders = true
 status_indicators = "symbols"
 
+# Agents panel as an attention queue: blocked > done-unseen > working > idle,
+# so row 1 is always whoever needs you.
+agent_panel_sort = "priority"
+
+# Toasts for state changes in background workspaces, drawn inside herdr.
+[ui.toast]
+delivery = "herdr"
+
 [ui.sound]
 enabled = false
 
@@ -126,3 +147,99 @@ command = "herdr-navigator.right"
 key = "prefix+ctrl+l"
 type = "shell"
 command = "\"$HERDR_BIN_PATH\" pane send-keys \"$HERDR_ACTIVE_PANE_ID\" ctrl+l"
+
+# alt+1..6: focus tab N by position (cyperx84/herdr-tab-jump). Tab numbers are
+# sticky, so herdr's own indexed bindings point at dead slots after a close.
+
+[[keys.command]]
+key = "alt+1"
+type = "plugin_action"
+command = "tab-jump.1"
+description = "Tab 1"
+
+[[keys.command]]
+key = "alt+2"
+type = "plugin_action"
+command = "tab-jump.2"
+description = "Tab 2"
+
+[[keys.command]]
+key = "alt+3"
+type = "plugin_action"
+command = "tab-jump.3"
+description = "Tab 3"
+
+[[keys.command]]
+key = "alt+4"
+type = "plugin_action"
+command = "tab-jump.4"
+description = "Tab 4"
+
+[[keys.command]]
+key = "alt+5"
+type = "plugin_action"
+command = "tab-jump.5"
+description = "Tab 5"
+
+[[keys.command]]
+key = "alt+6"
+type = "plugin_action"
+command = "tab-jump.6"
+description = "Tab 6"
+
+# Workspaces live on the harpoon letter set: alt+j/k/l/u/i/o = 1..6, alt+7/8/9.
+# Workspace numbers renumber as spaces open and close, so these follow position.
+
+[[keys.command]]
+key = "alt+j"
+type = "shell"
+command = 'herdr workspace focus 1'
+description = "Space 1"
+
+[[keys.command]]
+key = "alt+k"
+type = "shell"
+command = 'herdr workspace focus 2'
+description = "Space 2"
+
+[[keys.command]]
+key = "alt+l"
+type = "shell"
+command = 'herdr workspace focus 3'
+description = "Space 3"
+
+[[keys.command]]
+key = "alt+u"
+type = "shell"
+command = 'herdr workspace focus 4'
+description = "Space 4"
+
+[[keys.command]]
+key = "alt+i"
+type = "shell"
+command = 'herdr workspace focus 5'
+description = "Space 5"
+
+[[keys.command]]
+key = "alt+o"
+type = "shell"
+command = 'herdr workspace focus 6'
+description = "Space 6"
+
+[[keys.command]]
+key = "alt+7"
+type = "shell"
+command = 'herdr workspace focus 7'
+description = "Space 7"
+
+[[keys.command]]
+key = "alt+8"
+type = "shell"
+command = 'herdr workspace focus 8'
+description = "Space 8"
+
+[[keys.command]]
+key = "alt+9"
+type = "shell"
+command = 'herdr workspace focus 9'
+description = "Space 9"

@@ -4,7 +4,7 @@ set -e
 
 OMARCHY_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
-omarchy-pkg-add stow herdr
+omarchy-pkg-add stow herdr jq
 
 # A real config.toml (e.g. written by herdr's first run) blocks the symlink
 cfg="$HOME/.config/herdr/config.toml"
@@ -17,9 +17,12 @@ cd "$OMARCHY_DIR"
 stow herdr
 
 # Plugins are machine state (plugins.json, plugins/), so install rather than stow.
-# ctrl+h/j/k/l across herdr panes and nvim splits (config.toml routes through it).
-herdr plugin list 2>/dev/null | grep -q herdr-navigator ||
-  herdr plugin install kaar/nvim-herdr-navigator
+# --yes because these run unattended; each one is bound in config.toml.
+install_plugin() { # <github owner/repo> <plugin id>
+  herdr plugin list 2>/dev/null | grep -q "^- $2 " || herdr plugin install "$1" --yes
+}
+install_plugin kaar/nvim-herdr-navigator herdr-navigator # ctrl+h/j/k/l across panes and nvim splits
+install_plugin cyperx84/herdr-tab-jump tab-jump          # alt+1..6, tab by position (needs jq)
 
 # The official skill ships inside the binary (`herdr --skill`), so it is generated,
 # not committed. Run it now and install it as an Omarchy post-update hook so it
