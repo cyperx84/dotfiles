@@ -31,8 +31,6 @@ mac/ghostty/.config/ghostty/local.conf
 mac/ssh/.ssh/config.local
 linux/ssh/.ssh/config.local
 
-# Claude Code config now lives in its own repo: github.com/cyperx84/dotclaude
-
 # herdr writes runtime logs + session state into its stowed config dir
 # (~/.config/herdr → repo). Only config.toml is ours; never commit the rest
 # (session.json can hold live session data — this repo is PUBLIC).
