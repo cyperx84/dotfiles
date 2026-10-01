@@ -59,3 +59,7 @@ o.bind("SHIFT + ALT + G", "Move window to next monitor", hl.dsp.window.move({ mo
 
 -- ── Apps ────────────────────────────────────────────────────────────────────
 o.bind("SUPER + SHIFT + T", "Activity", "omarchy-launch-tui btop")
+
+-- ── Dictation ───────────────────────────────────────────────────────────────
+-- voxtype's built-in hotkey can't take combos, so toggle it from Hyprland.
+o.bind("CTRL + SPACE", "Toggle dictation", "voxtype record toggle")
