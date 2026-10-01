@@ -1,0 +1,12 @@
+#!/bin/bash
+# Write herdr's official skill (`herdr --skill`) into each agent harness's skills
+# dir. Installed as an Omarchy post-update hook, so it follows herdr upgrades.
+# Dirs match the ones Omarchy links its own skills into.
+command -v herdr >/dev/null || exit 0
+skill=$(herdr --skill) || exit 0
+
+for dir in "$HOME/.agents" "$HOME/.claude" "$HOME/.codex" "$HOME/.hermes" "$HOME/.pi/agent"; do
+  [[ -d $dir ]] || continue
+  mkdir -p "$dir/skills/herdr"
+  printf '%s\n' "$skill" >"$dir/skills/herdr/SKILL.md"
+done

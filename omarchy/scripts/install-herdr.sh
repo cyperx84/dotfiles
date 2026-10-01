@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Stow the herdr config and install its plugins.
+# Stow the herdr config, install its plugins and the official herdr skill.
 set -e
 
 OMARCHY_DIR="$(cd "$(dirname "$0")/.." && pwd)"
@@ -20,6 +20,12 @@ stow herdr
 # ctrl+h/j/k/l across herdr panes and nvim splits (config.toml routes through it).
 herdr plugin list 2>/dev/null | grep -q herdr-navigator ||
   herdr plugin install kaar/nvim-herdr-navigator
+
+# The official skill ships inside the binary (`herdr --skill`), so it is generated,
+# not committed. Run it now and install it as an Omarchy post-update hook so it
+# follows herdr upgrades (`omarchy update`).
+"$OMARCHY_DIR/scripts/herdr-skill.hook"
+omarchy-hook-install post-update "$OMARCHY_DIR/scripts/herdr-skill.hook"
 
 herdr server reload-config 2>/dev/null || true
 echo "Done. Plugin keys need the matching nvim side: see kaar/nvim-herdr-navigator."
