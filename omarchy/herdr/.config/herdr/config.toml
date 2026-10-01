@@ -65,9 +65,7 @@ rename_pane = "prefix+shift+o"
 new_tab = ["alt+c", "prefix+c"]
 rename_tab = "prefix+shift+t"
 close_tab = ["prefix+shift+x", "prefix+k"]
-# alt+1..6 are the tab-jump plugin below (positional), so no alt+1..9 here:
-# indexed bindings are all-or-nothing and would clash with those.
-switch_tab = "prefix+1..9"
+switch_tab = ["alt+1..9", "prefix+1..9"]
 previous_tab = ["prefix+p", "alt+left"]
 next_tab = ["prefix+n", "alt+right"]
 
@@ -148,46 +146,8 @@ key = "prefix+ctrl+l"
 type = "shell"
 command = "\"$HERDR_BIN_PATH\" pane send-keys \"$HERDR_ACTIVE_PANE_ID\" ctrl+l"
 
-# alt+1..6: focus tab N by position (cyperx84/herdr-tab-jump). Tab numbers are
-# sticky, so herdr's own indexed bindings point at dead slots after a close.
-
-[[keys.command]]
-key = "alt+1"
-type = "plugin_action"
-command = "tab-jump.1"
-description = "Tab 1"
-
-[[keys.command]]
-key = "alt+2"
-type = "plugin_action"
-command = "tab-jump.2"
-description = "Tab 2"
-
-[[keys.command]]
-key = "alt+3"
-type = "plugin_action"
-command = "tab-jump.3"
-description = "Tab 3"
-
-[[keys.command]]
-key = "alt+4"
-type = "plugin_action"
-command = "tab-jump.4"
-description = "Tab 4"
-
-[[keys.command]]
-key = "alt+5"
-type = "plugin_action"
-command = "tab-jump.5"
-description = "Tab 5"
-
-[[keys.command]]
-key = "alt+6"
-type = "plugin_action"
-command = "tab-jump.6"
-description = "Tab 6"
-
-# Workspaces live on the harpoon letter set: alt+j/k/l/u/i/o = 1..6, alt+7/8/9.
+# Workspaces live on the harpoon letter set: alt+j/k/l/u/i/o = workspaces 1..6.
+# alt+digits are tabs (indexed bindings are all-or-nothing 1..9), so no 7/8/9 here.
 # Workspace numbers renumber as spaces open and close, so these follow position.
 
 [[keys.command]]
@@ -225,21 +185,3 @@ key = "alt+o"
 type = "shell"
 command = 'herdr workspace focus 6'
 description = "Space 6"
-
-[[keys.command]]
-key = "alt+7"
-type = "shell"
-command = 'herdr workspace focus 7'
-description = "Space 7"
-
-[[keys.command]]
-key = "alt+8"
-type = "shell"
-command = 'herdr workspace focus 8'
-description = "Space 8"
-
-[[keys.command]]
-key = "alt+9"
-type = "shell"
-command = 'herdr workspace focus 9'
-description = "Space 9"
