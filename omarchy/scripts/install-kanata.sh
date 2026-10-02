@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # Install kanata and run it as a systemd user service (no root daemon).
 set -e
-
-OMARCHY_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+source "$(dirname "$0")/lib.sh"
 
 omarchy-pkg-add stow
 omarchy-pkg-aur-add kanata-bin
@@ -17,22 +16,17 @@ sudo modprobe uinput
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 
-cd "$OMARCHY_DIR"
-stow kanata
+stow_package kanata
 kanata --cfg "$HOME/.config/kanata/config.kbd" --check
 
 systemctl --user daemon-reload
 systemctl --user enable kanata.service kanata-regrab.service
 
-# Home row mods indicator on the bar (kanata.qml, fed by kanata's TCP port).
-# shell.json is rewritten by the bar itself, so patch it rather than stow it.
-shell_json="$HOME/.config/omarchy/shell.json"
-[[ -f $shell_json ]] || cp "$OMARCHY_PATH/config/omarchy/shell.json" "$shell_json"
-if ! jq -e '.bar.layout[][] | select(.id == "kanata")' "$shell_json" >/dev/null; then
-  tmp=$(mktemp)
-  jq '.bar.layout.center += [{"id": "kanata", "type": "qml"}]' "$shell_json" >"$tmp" && cat "$tmp" >"$shell_json"
-  rm -f "$tmp"
-fi
+# Home row mods indicator on the bar: the stowed custom module
+# ~/.config/omarchy/bar/modules/kanata.qml, fed by kanata's TCP port. Both
+# commands are no-ops when it's already there.
+omarchy bar put kanata --after omarchy.keyboard-layout
+omarchy bar set kanata type qml
 
 echo "Done. Log out and back in (group changes), then kanata starts automatically."
 echo "Check with: systemctl --user status kanata"

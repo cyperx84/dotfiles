@@ -1,20 +1,11 @@
 #!/usr/bin/env bash
 # Stow the herdr config, install its plugins and the official herdr skill.
 set -e
-
-OMARCHY_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+source "$(dirname "$0")/lib.sh"
 
 omarchy-pkg-add stow herdr
 
-# A real config.toml (e.g. written by herdr's first run) blocks the symlink
-cfg="$HOME/.config/herdr/config.toml"
-if [[ -f $cfg && ! -L $cfg ]]; then
-  mv "$cfg" "$cfg.bak"
-  echo "Moved existing config to $cfg.bak"
-fi
-
-cd "$OMARCHY_DIR"
-stow herdr
+stow_package herdr
 
 # Plugins are machine state (plugins.json, plugins/), so install rather than stow.
 # --yes because these run unattended; each one is bound in config.toml.

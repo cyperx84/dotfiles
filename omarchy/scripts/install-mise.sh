@@ -4,21 +4,10 @@
 # writes straight into the stowed config.toml. Hermes is the desktop app's
 # (install-apps.sh), so never add it here.
 set -e
-
-OMARCHY_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+source "$(dirname "$0")/lib.sh"
 
 omarchy-pkg-add stow mise
 
-# A real config.toml (e.g. from an earlier `mise use -g`) blocks the symlink.
-# Compare by inode: stow links the whole ~/.config/mise dir, so the file itself
-# is never a symlink.
-cfg="$HOME/.config/mise/config.toml"
-if [[ -f $cfg && ! $cfg -ef $OMARCHY_DIR/mise/.config/mise/config.toml ]]; then
-  mv "$cfg" "$cfg.bak"
-  echo "Moved existing $cfg to $cfg.bak"
-fi
-
-cd "$OMARCHY_DIR"
-stow mise
+stow_package mise
 
 mise install
