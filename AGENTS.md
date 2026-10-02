@@ -65,6 +65,8 @@ omarchy/bash/.bashrc                                # Bash (Omarchy default shel
 omarchy/bash/.config/bash/personal.sh               # Aliases/fzf/PATH ported from mac/zsh/.zshrc (sourced by .bashrc)
 omarchy/herdr/.config/herdr/config.toml             # Herdr: mac alt+letter keys + tmux-style prefix keys
 omarchy/yazi/, omarchy/ssh/, omarchy/git/          # Yazi keymap, ~/.ssh/config (hosts in untracked config.local), git config
+omarchy/mise/.config/mise/config.toml               # mise: coding harnesses (claude, codex) + runtimes; `mise use -g` writes here
+omarchy/scripts/install-apps.sh                     # Desktop apps: godot/blender via omarchy-pkg-add, `omarchy install ai ...` (incl. Hermes desktop, which owns `hermes`) when missing
 omarchy/scripts/install-*.sh                        # One idempotent installer per component (pkg + stow + services)
 omarchy/scripts/herdr-skill.hook                    # Post-update hook: writes `herdr --skill` into each harness's skills dir
 omarchy/.stowrc                                     # Targets $HOME

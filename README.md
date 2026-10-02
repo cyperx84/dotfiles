@@ -356,6 +356,60 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
    > See the `provision-mac-twin` skill for the full fresh-Mac walkthrough,
    > including the Homebrew 6.x / Kanata / TCC gotchas.
 
+## 🐧 Omarchy (fresh machine)
+
+The `omarchy/` layer is a baseline on top of stock [Omarchy](https://omarchy.org/):
+it only ships what differs from Omarchy's defaults. Every installer is idempotent,
+so re-running one after a change is always safe.
+
+| What | Where it lives | How it's installed |
+|------|----------------|--------------------|
+| Coding harnesses + runtimes (claude, codex, node, ...) | `omarchy/mise/.config/mise/config.toml` | `install-mise.sh` → `mise install` |
+| Desktop apps (Godot, Blender, ChatGPT, T3 Code, OpenClaw, Hermes) | `omarchy/scripts/install-apps.sh` | `omarchy-pkg-add` / `omarchy install ...` |
+| Configs | `omarchy/<tool>/` mirroring `$HOME` | `stow <tool>` (`.stowrc` targets `$HOME`) |
+
+1. **Clone:**
+   ```bash
+   git clone https://github.com/cyperx84/dotfiles.git ~/dotfiles
+   cd ~/dotfiles/omarchy
+   ```
+
+2. **Run the installers** (packages, stow, services):
+   ```bash
+   scripts/install-git.sh
+   scripts/install-ssh.sh
+   scripts/install-mise.sh
+   scripts/install-apps.sh
+   scripts/install-nvim.sh
+   scripts/install-herdr.sh
+   scripts/install-kanata.sh
+   scripts/install-yazi.sh
+   ```
+
+3. **Stow the config-only packages.** Omarchy already wrote its own copies of
+   these files, so move each aside first or stow refuses to link over it:
+   ```bash
+   omarchy install terminal ghostty
+   for f in ~/.bashrc ~/.config/ghostty/config ~/.config/starship.toml ~/.config/hypr/bindings.lua; do
+     [[ -f $f && ! -L $f ]] && mv "$f" "$f.bak"
+   done
+   stow bash ghostty starship hypr
+   ```
+
+### Adding to the baseline
+
+- **A CLI or coding harness:** `mise use -g <tool>`, then commit. It writes
+  straight into the stowed `config.toml`.
+- **A desktop app:** add it to `install-apps.sh`. Arch/AUR packages go on the
+  `omarchy-pkg-add` line; apps with an `omarchy install ...` installer get an
+  `omarchy_install <package> <args>` line so they're themed by Omarchy.
+- **A config:** put it at `omarchy/<tool>/<path under $HOME>` and `stow <tool>`.
+  If it also needs a package or a service, add an `omarchy/scripts/install-<tool>.sh`
+  following the existing ones.
+- **Never** run `omarchy refresh` on a stowed config: it replaces the symlink
+  with Omarchy's default (re-stow to fix). Never edit `/usr/share/omarchy/`.
+- Hermes belongs to the desktop app, so don't add it to mise.
+
 ## 📦 Neovim Configuration
 
 Neovim is a **standalone repository** at [`github.com/cyperx84/nvim`](https://github.com/cyperx84/nvim) — it is not a submodule of this dotfiles repo.
