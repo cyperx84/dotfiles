@@ -7,21 +7,27 @@ tags:
 # AGENTS.md
 
 Guidance for coding agents (Claude Code, Codex, opencode, pi, ...) working with this **macOS + Linux dotfiles monorepo**.
-Mac configs live in `mac/`, Linux configs in `linux/`. Stow is run from the platform
-subdirectory, never from the repo root.
+Mac configs live in `mac/`, Linux configs in `linux/`, Omarchy (the daily-driver
+Linux desktop) configs in `omarchy/`. Stow is run from the platform subdirectory,
+never from the repo root.
 
 ## 📍 Repo Structure
 
 ```
 dotfiles/
   mac/      ← stow from here on macOS   (target: ~)
-  linux/    ← stow from here on Linux   (target: /home/cyperx, via linux/.stowrc)
+  linux/    ← stow from here on Linux   (target: $HOME, via linux/.stowrc)
   omarchy/  ← stow from here on Omarchy (target: $HOME, via omarchy/.stowrc)
   docs/     ← documentation (shared)
-  .claude/  ← repo tooling: agents, commands, skills for working ON these dotfiles
+  .claude/  ← repo tooling: agents + commands for working ON these dotfiles
 ```
 
-Provision a fresh machine with `mac/bootstrap.sh` or `linux/bootstrap.sh`.
+`omarchy/` is the active layer on the current machine and is ported from `mac/` (kanata,
+herdr, zsh→bash aliases) and `linux/` (hypr binds). `linux/` is the older Omarchy 4 /
+server layer — it still stows, but new Omarchy work goes in `omarchy/`.
+
+Provision a fresh machine with `mac/bootstrap.sh` or `linux/bootstrap.sh`; on Omarchy run the
+idempotent `omarchy/install.sh`, which runs `omarchy/scripts/install-*.sh` in order.
 
 ## 📍 Critical File Locations (macOS)
 
@@ -47,14 +53,15 @@ linux/hypr/.config/hypr/                             # Hyprland deltas over Omar
 linux/sesh/, linux/ssh/, linux/dev-tools/, linux/terminals/  # Sessions, SSH, dev tools, terminals
 linux/provision-server.sh                            # Server provisioning
 linux/kanata/.config/kanata/config.kbd              # Keyboard remapper (Linux)
-linux/.stowrc                                        # Targets /home/cyperx
+linux/scripts/validate-dotfiles.sh                   # Linux validation
+linux/.stowrc                                        # Targets $HOME
 ```
 
 ## 📍 Critical File Locations (Omarchy)
 
 ```
 omarchy/kanata/.config/kanata/config.kbd            # Keyboard remapper (port of mac kanata.kbd)
-omarchy/kanata/.config/systemd/user/kanata.service  # Runs kanata as a user service
+omarchy/kanata/.config/systemd/user/kanata.service  # Runs kanata as a user service (+ kanata-regrab.service)
 omarchy/kanata/.config/kanata/kanata-regrab         # Restarts kanata when it misses a reconnected keyboard (kanata-regrab.service)
 omarchy/kanata/.config/omarchy/bar/modules/kanata.qml  # Bar widget: home row mods on/off (kanata TCP 127.0.0.1:5829)
 omarchy/scripts/install-kanata.sh                   # kanata-bin + input/uinput perms + stow + enable + bar widget
@@ -62,7 +69,7 @@ omarchy/hypr/.config/hypr/bindings.lua              # Hyprland binds (home-row w
 omarchy/hypr/.config/hypr/looknfeel.lua             # Rounding 16, dim inactive windows
 omarchy/theme/.config/omarchy/themes/tokyo-night/colors.toml  # Theme overlay: green accent (stowed --no-folding)
 omarchy/voxtype/.config/voxtype/config.toml         # Dictation: parakeet engine, hotkey off (Ctrl+Space bind drives it)
-omarchy/ghostty/.config/ghostty/config              # Terminal (default via `omarchy install terminal ghostty`)
+omarchy/ghostty/.config/ghostty/config              # Terminal (+ shaders/), default via `omarchy install terminal ghostty`
 omarchy/starship/.config/starship.toml              # Prompt (same as linux/dev-tools)
 omarchy/bash/.bashrc                                # Bash (Omarchy default shell) + starship machine skull, vv nvim picker
 omarchy/bash/.config/bash/personal.sh               # Aliases/fzf/PATH ported from mac/zsh/.zshrc (sourced by .bashrc)
@@ -114,7 +121,10 @@ omarchy/.stowrc                                     # Targets $HOME
    - Tmux prefix (`Ctrl+A` is intentional, not `Ctrl+B`)
    - Aerospace gap sizes (20px inner, 52px top is required for SketchyBar)
 
-4. **ALWAYS** run validation before declaring changes complete: `mac/scripts/test_dotfiles.sh` (full suite) and `~/.config/sketchybar/test_sketchybar.sh` (menu bar plugins)
+4. **ALWAYS** run validation before declaring changes complete:
+   - macOS: `mac/scripts/test_dotfiles.sh` (full suite) and `~/.config/sketchybar/test_sketchybar.sh` (menu bar plugins)
+   - Linux: `linux/scripts/validate-dotfiles.sh`
+   - Omarchy: no suite — `stow -nv <component>` from `omarchy/`, `kanata --cfg <file> --check` for kanata, `bash -n` for installers
 
 ## 🤖 Agent Guidelines
 
@@ -122,18 +132,20 @@ omarchy/.stowrc                                     # Targets $HOME
 - Test stow changes before applying, from the correct platform subdir:
   - macOS: `cd ~/dotfiles/mac && stow -nv <component>`
   - Linux: `cd ~/dotfiles/linux && stow -nv <component>`
+  - Omarchy: `cd ~/dotfiles/omarchy && stow -nv <component>`
 - After changes restart services in order: Aerospace → borders → sketchybar
 - Nvim is a **standalone repo** at `~/.config/nvim` (github.com/cyperx84/nvim) — commit/push directly from there, no dotfiles pointer to update
 
 ## 🏗️ Architecture Overview
 
 GNU Stow-managed monorepo (macOS + Linux):
-- **macOS — Window mgmt**: Aerospace (tiling, PRIMARY) → JankyBorders (borders) → SketchyBar (menu bar, 40 plugins)
+- **macOS — Window mgmt**: Aerospace (tiling, PRIMARY) → JankyBorders (borders) → SketchyBar (menu bar, Lua config + shell plugins)
 - **macOS — Terminal stack**: Ghostty → Herdr (agent multiplexer, Ctrl+A, PRIMARY) → Zsh → Starship (prompt); Tmux kept as backup only — don't extend it, extend herdr
 - **macOS — Input**: Kanata (ACTIVE, LaunchDaemon) — Karabiner DriverKit pinned to 6.6.0
 - **macOS — Automation**: Hammerspoon (ACTIVE) — focus-follows-mouse only, raises the window under the cursor
 - **Linux — Window mgmt**: Hyprland + Omarchy 4 (quickshell bar, omarchy-menu launcher; we ship deltas only)
 - **Linux — Input**: Kanata (`config.kbd`)
+- **Omarchy — Terminal stack**: Ghostty → Herdr (same keys as mac, `omarchy/herdr`) → Bash (Omarchy default) → Starship; input via Kanata user service
 - **Editor (shared)**: Neovim (kickstart.nvim base, standalone repo at `~/.config/nvim`)
 - **Provisioning**: `mac/macos/Brewfile` + `mac/macos/setup.sh` mirror this machine onto a fresh Mac (see provision-mac-twin skill); `linux/bootstrap.sh` for Omarchy
 - **Agent config**: harnesses are moving to `AGENTS.md`; no separate Claude config repo (`dotclaude` is retired). Agent skills that ship with a tool (e.g. `herdr --skill`) are generated by that tool's install script, not committed
@@ -150,6 +162,15 @@ tmux source-file ~/.tmux.conf                              # Reload tmux (backup
 hs -c "hs.reload()" || killall Hammerspoon                 # Reload Hammerspoon
 exec zsh                                                   # Reload shell
 ~/.config/sketchybar/test_sketchybar.sh                   # Test SketchyBar plugins
+```
+
+## 🔧 Service Management (Omarchy)
+
+```bash
+hyprctl reload                                             # Reload Hyprland (Lua config)
+systemctl --user restart kanata kanata-regrab              # Restart Kanata
+herdr server reload-config                                 # Reload herdr
+exec bash                                                  # Reload shell
 ```
 
 ## 🔑 Key Integration Notes
