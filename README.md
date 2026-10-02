@@ -377,7 +377,7 @@ and back in afterwards for kanata's input groups.
 | `install-mise.sh` | Coding harnesses + runtimes pinned in `mise/.config/mise/config.toml` |
 | `install-configs.sh` | bash, starship, ghostty (as the default terminal) |
 | `install-hypr.sh` | Hyprland bindings and look'n'feel |
-| `install-look.sh` | tokyo-night accent override, bar transparency and clock |
+| `install-look.sh` | tokyo-night accent override, Ghostty cursor on the accent, bar transparency and clock |
 | `install-herdr.sh`, `install-nvim.sh`, `install-yazi.sh` | Herdr (+ plugins, skill hook), Neovim configs, Yazi |
 | `install-voxtype.sh` | Dictation (parakeet), driven by Ctrl+Space |
 | `install-apps.sh` | Godot, Blender, grok-bot, Chrome (default) + Zen, Tailscale, ChatGPT, T3 Code, OpenClaw, Hermes |
@@ -396,6 +396,12 @@ and back in afterwards for kanata's input groups.
   `stow_package <tool>` (from `scripts/lib.sh`) in that tool's installer, which
   moves Omarchy's copy aside to `.bak` first. Use `--no-folding` when the app also
   writes its own files into that directory.
+- **A theme colour or template:** an overlay goes in
+  `omarchy/theme/.config/omarchy/themes/<theme>/`, a template (`{{ accent }}` and
+  the rest of `colors.toml`) in `omarchy/theme/.config/omarchy/themed/` under a
+  name of its own, so Omarchy's built-in templates stay untouched.
+  `install-look.sh` links these absolute rather than stowing them (Omarchy copies
+  theme folders without following links) and removes links whose file is gone.
 - **A bar change:** an `omarchy bar ...` line in `install-look.sh`, never a stowed
   `shell.json` (the bar rewrites that file and would drop the symlink).
 - **Never** run `omarchy refresh` on a stowed config (it replaces the symlink;

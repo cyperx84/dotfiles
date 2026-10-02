@@ -1,5 +1,7 @@
 # Dynamic theme colors (Omarchy 4 theme path)
 config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
+# Our accent tweaks on top, from omarchy/theme/.config/omarchy/themed/ghostty-accent.conf.tpl
+config-file = ?"~/.local/state/omarchy/current/theme/ghostty-accent.conf"
 
 # Font
 font-family = "JetBrainsMono Nerd Font"
@@ -15,8 +17,7 @@ confirm-close-surface=false
 resize-overlay = never
 gtk-toolbar-style = flat
 
-# Cursor styling
-cursor-color = #00FF00
+# Cursor styling (colour is the theme accent, see ghostty-accent.conf above)
 cursor-style = block_hollow
 cursor-style-blink = true
 

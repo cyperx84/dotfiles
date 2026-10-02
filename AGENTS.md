@@ -67,7 +67,8 @@ omarchy/kanata/.config/omarchy/bar/modules/kanata.qml  # Bar widget: home row mo
 omarchy/scripts/install-kanata.sh                   # kanata-bin + input/uinput perms + stow + enable + bar widget
 omarchy/hypr/.config/hypr/bindings.lua              # Hyprland binds (home-row workspaces, Ctrl+Shift+hjkl focus)
 omarchy/hypr/.config/hypr/looknfeel.lua             # Rounding 16, dim inactive windows
-omarchy/theme/.config/omarchy/themes/tokyo-night/colors.toml  # Theme overlay: green accent (stowed --no-folding)
+omarchy/theme/.config/omarchy/themes/tokyo-night/colors.toml  # Theme overlay: green accent (absolute symlink, see install-look.sh)
+omarchy/theme/.config/omarchy/themed/ghostty-accent.conf.tpl  # Ghostty cursor = theme accent, loaded after Omarchy's ghostty.conf
 omarchy/voxtype/.config/voxtype/config.toml         # Dictation: parakeet engine, hotkey off (Ctrl+Space bind drives it)
 omarchy/ghostty/.config/ghostty/config              # Terminal (+ shaders/), default via `omarchy install terminal ghostty`
 omarchy/starship/.config/starship.toml              # Prompt (same as linux/dev-tools)
