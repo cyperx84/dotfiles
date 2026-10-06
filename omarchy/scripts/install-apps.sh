@@ -26,4 +26,4 @@ omarchy_install openclaw ai openclaw
 # it removes any mise copy (pipx:hermes-agent) and builds its own in ~/.hermes.
 omarchy_install hermes-desktop ai hermes
 
-[[ $(omarchy default browser) == chrome ]] || omarchy default browser chrome
+[[ $(omarchy default browser) == zen ]] || omarchy default browser zen
