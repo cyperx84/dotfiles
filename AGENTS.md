@@ -77,7 +77,7 @@ omarchy/bash/.config/bash/personal.sh               # Aliases/fzf/PATH ported fr
 omarchy/herdr/.config/herdr/config.toml             # Herdr: mac alt+letter keys + tmux-style prefix keys
 omarchy/yazi/, omarchy/ssh/, omarchy/git/          # Yazi keymap, ~/.ssh/config (hosts in untracked config.local), git config
 omarchy/mise/.config/mise/config.toml               # mise: coding harnesses (claude, codex) + runtimes; `mise use -g` writes here
-omarchy/scripts/install-apps.sh                     # Apps: omarchy-pkg-add (godot, blender, grok-bot) + `omarchy install ...` when missing (browsers, tailscale, AI apps incl. Hermes desktop, which owns `hermes`)
+omarchy/scripts/install-apps.sh                     # Apps: omarchy-pkg-add (godot, blender, grok-bot, xorg-server-xvfb) + `omarchy install ...` when missing (browsers, tailscale, AI apps incl. Hermes desktop, which owns `hermes`)
 omarchy/scripts/install-t2-mac.sh                   # T2 MacBook extras over Omarchy's own T2 setup; no-op elsewhere
 omarchy/scripts/lib.sh                              # stow_package: moves real files aside to .bak, then stows
 omarchy/install.sh                                  # Runs every installer in order (fresh machine or re-apply)
