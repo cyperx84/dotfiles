@@ -63,3 +63,12 @@ o.bind("SUPER + SHIFT + T", "Activity", "omarchy-launch-tui btop")
 -- ── Dictation ───────────────────────────────────────────────────────────────
 -- voxtype's built-in hotkey can't take combos, so toggle it from Hyprland.
 o.bind("CTRL + SPACE", "Toggle dictation", "voxtype record toggle")
+
+-- ── Pulse ───────────────────────────────────────────────────────────────────
+-- Full-screen resource HUD from the Pulse bar plugin (~/Code/omarchy-pulse).
+o.bind("SUPER + ALT + R", "Resource HUD", "omarchy-shell cyperx84.pulse hud")
+
+-- ── Fleet ───────────────────────────────────────────────────────────────────
+-- Override Omarchy's default "Full width" binding with the Fleet overview.
+hl.unbind("SUPER + ALT + F")
+o.bind("SUPER + ALT + F", "Fleet overview", "omarchy-shell cyperx84.fleet overlay")

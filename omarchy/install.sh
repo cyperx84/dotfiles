@@ -11,6 +11,7 @@ cd "$(dirname "$0")/scripts"
 ./install-configs.sh
 ./install-hypr.sh
 ./install-look.sh
+./install-plugins.sh
 ./install-herdr.sh
 ./install-nvim.sh
 ./install-yazi.sh

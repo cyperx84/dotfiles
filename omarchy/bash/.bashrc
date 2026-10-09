@@ -44,3 +44,18 @@ vv() {
   [[ -z $config ]] && echo "No config selected" && return
   NVIM_APPNAME=$(basename "$config") nvim "$@"
 }
+
+# Inside herdr, name Remote Control sessions after the herdr workspace (herdr-<workspace>)
+unalias claude 2>/dev/null
+function claude {
+  if [ -n "$HERDR_WORKSPACE_ID" ] && { [ $# -eq 0 ] || [[ "$1" == -* && "$1" != -p && "$1" != --print && "$1" != -v && "$1" != --version && "$1" != -h && "$1" != --help ]]; }; then
+    local ws
+    ws=$(herdr workspace get "$HERDR_WORKSPACE_ID" 2>/dev/null | jq -r '.result.workspace.label // empty' | tr -cs 'A-Za-z0-9_-' '-' | sed 's/-$//')
+    env -u TMUX -u TMUX_PANE claude --remote-control-session-name-prefix "herdr-${ws:-pane}" "$@"
+  else
+    env -u TMUX -u TMUX_PANE claude "$@"
+  fi
+}
+
+# Command Code Provider API key (GOAT plan) — used by pi, codex, opencode, openclaw, claude-cc
+[ -f "$HOME/.config/secrets/commandcode.env" ] && . "$HOME/.config/secrets/commandcode.env"

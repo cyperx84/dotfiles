@@ -5,7 +5,7 @@ onboarding = false
 [theme]
 # The terminal's own ANSI palette, which Omarchy rewrites in Ghostty on every theme
 # switch, so herdr follows the Omarchy theme live with nothing hard-coded here
-name = "terminal"
+name = "tokyo-night"
 
 auto_switch = false
 [theme.custom]
@@ -113,7 +113,7 @@ status_indicators = "symbols"
 
 # Agents panel as an attention queue: blocked > done-unseen > working > idle,
 # so row 1 is always whoever needs you.
-agent_panel_sort = "priority"
+agent_panel_sort = "spaces"
 
 # Toasts for state changes in background workspaces, drawn inside herdr.
 [ui.toast]
@@ -121,6 +121,14 @@ delivery = "herdr"
 
 [ui.sound]
 enabled = false
+
+# Claude rows fed by the herdr-presence mod ($model $ctx $cost $branch $tool are pane metadata tokens)
+[ui.sidebar.agents.rows_by_agent]
+claude = [
+  ["state_icon", "workspace", "tab"],
+  ["terminal_title_stripped"],
+  [{ token = "$model", fg = "#cba6f7", bold = true }, "$ctx", { token = "$cost", fg = "#a6e3a1" }, { token = "$branch", dim = true }, "$tool"],
+]
 
 # ctrl+hjkl: herdr panes, handing off to nvim splits (nvim-herdr-navigator)
 [[keys.command]]
