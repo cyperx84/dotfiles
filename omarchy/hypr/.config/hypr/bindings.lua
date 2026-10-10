@@ -32,6 +32,7 @@ for _, entry in ipairs(workspace_keys) do
   local key, workspace = entry[1], tostring(entry[2])
   o.bind("SUPER + " .. key, "Switch to workspace " .. workspace, hl.dsp.focus({ workspace = workspace }))
   o.bind("ALT + SHIFT + " .. key, "Move window to workspace " .. workspace, hl.dsp.window.move({ workspace = workspace }))
+  o.bind("SUPER + ALT + SHIFT + " .. key, "Move window silently to workspace " .. workspace, hl.dsp.window.move({ workspace = workspace, follow = false }))
 end
 
 o.bind("ALT + SHIFT + N", "Move window to next workspace", hl.dsp.window.move({ workspace = "e+1" }))
