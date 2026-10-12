@@ -80,7 +80,7 @@ omarchy/mise/.config/mise/config.toml               # mise: coding harnesses (cl
 omarchy/scripts/install-apps.sh                     # Apps: omarchy-pkg-add (godot, blender, grok-bot, xorg-server-xvfb) + `omarchy install ...` when missing (browsers, tailscale, AI apps incl. Hermes desktop, which owns `hermes`)
 omarchy/scripts/install-plugins.sh                  # Omarchy bar plugins: local dev links or GitHub installs + enablement
 omarchy/scripts/install-t2-mac.sh                   # T2 MacBook extras over Omarchy's own T2 setup; no-op elsewhere
-omarchy/t2-audio/.config/pipewire/pipewire.conf.d/90-t2-speakers.conf  # Balanced "Speakers" sink (RL+RR); FR driver is dead on this MBP15,3
+omarchy/t2-audio/.config/pipewire/pipewire.conf.d/90-t2-speakers.conf  # "Speakers" filter-chain: L/R on tweeters, mono bass on left woofer (right woofer dead under Linux)
 omarchy/scripts/lib.sh                              # stow_package: moves real files aside to .bak, then stows
 omarchy/install.sh                                  # Runs every installer in order (fresh machine or re-apply)
 omarchy/scripts/install-*.sh                        # One idempotent installer per component (pkg + stow + services)

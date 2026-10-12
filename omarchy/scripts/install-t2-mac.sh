@@ -18,8 +18,8 @@ fi
 omarchy-pkg-add t2bce_audio-alsa-ucm-conf supergfxctl
 systemctl is-enabled --quiet supergfxd.service || sudo systemctl enable --now supergfxd.service
 
-# Balanced stereo "Speakers" sink on RL+RR, since the FR speaker driver is
-# silent (see t2-audio/.config/pipewire/pipewire.conf.d/90-t2-speakers.conf)
+# "Speakers" sink: L/R on the tweeters, mono bass on the left woofer, since the
+# right woofer is silent (see t2-audio/.config/pipewire/pipewire.conf.d/90-t2-speakers.conf)
 if [[ $(cat /sys/class/dmi/id/product_name) == MacBookPro15,3 ]]; then
   speakers=$HOME/.config/pipewire/pipewire.conf.d/90-t2-speakers.conf
   [[ -L $speakers ]] && linked=1 || linked=0
