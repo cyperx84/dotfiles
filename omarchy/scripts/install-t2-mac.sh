@@ -12,10 +12,11 @@ if ! lspci -nn | grep -q "106b:180[12]"; then
 fi
 
 # t2bce_audio-alsa-ucm-conf: speaker/mic profiles for the t2bce audio driver
+# lsp-plugins-lv2: compressor/limiter/loudness for the "Speakers (DSP)" sink
 # supergfxctl: switch between the Intel iGPU and the AMD dGPU. Its daemon owns
 # /etc/supergfxd.conf (rewritten on every mode change), so it is not tracked;
 # the default Hybrid mode is the one we use.
-omarchy-pkg-add t2bce_audio-alsa-ucm-conf supergfxctl
+omarchy-pkg-add t2bce_audio-alsa-ucm-conf lsp-plugins-lv2 supergfxctl
 systemctl is-enabled --quiet supergfxd.service || sudo systemctl enable --now supergfxd.service
 
 # "Speakers" sink: L/R on the tweeters, mono bass on the left woofer, since the
