@@ -28,6 +28,22 @@ if [[ $(cat /sys/class/dmi/id/product_name) == MacBookPro15,3 ]]; then
   ((linked)) || systemctl --user restart pipewire pipewire-pulse wireplumber
 fi
 
+# Hardware video decode: the AMD dGPU has no VP9 or AV1 decoder, so Zen asks
+# YouTube for H.264 (see scripts/t2-zen-user.js). Profile directories are named
+# at random, so link the prefs into each one instead of stowing them.
+for profile in "$HOME"/.config/zen/*/; do
+  [[ -f $profile/prefs.js ]] || continue
+  ln -sfn "$OMARCHY_DIR/scripts/t2-zen-user.js" "$profile/user.js"
+done
+
+# Chromium and Chrome decode through VA-API only with these features on.
+# Chromium honours just the last --enable-features, so extend Omarchy's line.
+for flags in "$HOME"/.config/chromium-flags.conf "$HOME"/.config/chrome-flags.conf; do
+  [[ -f $flags ]] || continue
+  grep -q AcceleratedVideoDecodeLinuxGL "$flags" ||
+    sed -i '/^--enable-features=/s/$/,AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL,AcceleratedVideoEncoder/' "$flags"
+done
+
 # BD PROCHOT: the SMC sometimes throttles the CPU to 800 MHz at normal temps
 # (charger/battery events). A root timer clears it; these are system units, so
 # they are installed into /etc rather than stowed.
