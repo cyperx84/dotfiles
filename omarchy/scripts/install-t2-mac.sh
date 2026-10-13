@@ -26,3 +26,12 @@ if [[ $(cat /sys/class/dmi/id/product_name) == MacBookPro15,3 ]]; then
   stow_package t2-audio --no-folding
   ((linked)) || systemctl --user restart pipewire pipewire-pulse wireplumber
 fi
+
+# BD PROCHOT: the SMC sometimes throttles the CPU to 800 MHz at normal temps
+# (charger/battery events). A root timer clears it; these are system units, so
+# they are installed into /etc rather than stowed.
+omarchy-pkg-add msr-tools
+sudo install -Dm755 "$OMARCHY_DIR/t2-prochot/t2-clear-prochot" /usr/local/bin/t2-clear-prochot
+sudo install -Dm644 -t /etc/systemd/system "$OMARCHY_DIR"/t2-prochot/t2-clear-prochot.{service,timer}
+sudo systemctl daemon-reload
+sudo systemctl enable --now t2-clear-prochot.timer

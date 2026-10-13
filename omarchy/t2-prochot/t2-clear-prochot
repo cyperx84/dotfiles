@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Clear BD PROCHOT (bit 0 of MSR 0x1FC) on every core. The T2 SMC asserts it
+# around charger and battery events, pinning the CPU at 800 MHz regardless of
+# temperature. Run by t2-clear-prochot.timer; a no-op while the bit is clear.
+set -e
+modprobe msr
+val=$(rdmsr -p0 0x1FC)
+if (( 0x$val & 1 )); then
+  wrmsr -a 0x1FC $(( 0x$val & ~1 ))
+  echo "Cleared BD PROCHOT (0x1FC was 0x$val)"
+fi
