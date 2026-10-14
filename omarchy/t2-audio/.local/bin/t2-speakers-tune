@@ -1,0 +1,342 @@
+#!/usr/bin/env python3
+"""Live control panel for the "Speakers" filter-chain (90-t2-speakers.conf).
+
+Serves a page on 127.0.0.1 with the crossover, per-driver level and polarity,
+the bass sum, and test signals. Moving a control changes the running sink;
+Save writes the values back into the config (follows the stow symlink into
+the dotfiles), Revert reloads them from it.
+"""
+import json
+import math
+import os
+import re
+import subprocess
+import sys
+import threading
+import wave
+import webbrowser
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+PORT = 8752
+SINK = "t2_speakers"
+HW_SINK = "alsa_output.pci-0000_04_00.3.HiFi__Speaker__sink"
+CONF = os.path.realpath(os.path.expanduser(
+    "~/.config/pipewire/pipewire.conf.d/90-t2-speakers.conf"))
+CACHE = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "t2-speakers-tune")
+RATE = 48000
+
+# UI control -> filter-chain params it drives
+HP = ["tweeterL1", "tweeterL2", "tweeterR1", "tweeterR2"]
+LP = ["bassLP1", "bassLP2"]
+WOOF_HP = ["woofHP1", "woofHP2"]
+GAINS = {"woofer": "wooferGain", "tweeterL": "tweeterLGain", "tweeterR": "tweeterRGain"}
+
+
+def node_id(name):
+    out = subprocess.run(["pw-dump"], capture_output=True, text=True).stdout
+    for o in json.loads(out or "[]"):
+        if ((o.get("info") or {}).get("props") or {}).get("node.name") == name:
+            return o["id"]
+    raise RuntimeError(f"{name} not found; is PipeWire running?")
+
+
+def read_params():
+    out = subprocess.run(["pw-cli", "e", str(node_id(SINK)), "Props"],
+                         capture_output=True, text=True).stdout
+    vals, key = {}, None
+    for line in out.splitlines():
+        m = re.match(r'\s*String "(.+)"', line)
+        if m:
+            key = m.group(1)
+            continue
+        m = re.match(r"\s*Float (\S+)", line)
+        if m and key:
+            vals[key] = float(m.group(1))
+        key = None
+    return vals
+
+
+def write_params(params):
+    # The graph takes Props on the playback side; the sink side ignores them
+    flat = " ".join(f'"{k}" {v:.6f}' for k, v in params.items())
+    subprocess.run(["pw-cli", "s", str(node_id(SINK + ".output")), "Props",
+                    f"{{ params = [ {flat} ] }}"], capture_output=True)
+
+
+def db(g):
+    return 20 * math.log10(abs(g)) if g else -60.0
+
+
+def ui_state(p):
+    s = {
+        "hp": p["tweeterL1:Freq"], "hpQ": p["tweeterL1:Q"],
+        "lp": p["bassLP1:Freq"], "lpQ": p["bassLP1:Q"],
+        "protect": p["woofHP1:Freq"],
+        "sumL": db(p["bassMix:Gain 1"]), "sumR": db(p["bassMix:Gain 2"]),
+    }
+    for ui, node in GAINS.items():
+        g = p[f"{node}:Gain 1"]
+        s[ui] = round(db(g), 2)
+        s[ui + "Inv"] = g < 0
+    return s
+
+
+def to_params(s):
+    p = {}
+    for n in HP:
+        p[f"{n}:Freq"], p[f"{n}:Q"] = s["hp"], s["hpQ"]
+    for n in LP:
+        p[f"{n}:Freq"], p[f"{n}:Q"] = s["lp"], s["lpQ"]
+    for n in WOOF_HP:
+        p[f"{n}:Freq"] = s["protect"]
+    p["bassMix:Gain 1"] = 10 ** (s["sumL"] / 20)
+    p["bassMix:Gain 2"] = 10 ** (s["sumR"] / 20)
+    for ui, node in GAINS.items():
+        p[f"{node}:Gain 1"] = (-1 if s[ui + "Inv"] else 1) * 10 ** (s[ui] / 20)
+    return p
+
+
+def conf_params():
+    text = open(CONF).read()
+    p = {}
+    for node, body in re.findall(r"name = (\w+)\s+control = \{([^}]*)\}", text):
+        for k, v in re.findall(r'"([^"]+)" = (-?[\d.]+)', body):
+            p[f"{node}:{k}"] = float(v)
+    return p
+
+
+def save_conf(params):
+    text = open(CONF).read()
+
+    def fix(m):
+        node = m.group(1)
+
+        def value(kv):
+            v = params.get(f"{node}:{kv.group(1)}", float(kv.group(2)))
+            return f'"{kv.group(1)}" = {round(v, 4)}'
+        return re.sub(r'"([^"]+)" = (-?[\d.]+)', value, m.group(0))
+
+    text = re.sub(r"name = (\w+)\s+control = \{[^}]*\}", fix, text)
+    with open(CONF, "w") as f:
+        f.write(text)
+
+
+# --- test signals ----------------------------------------------------------
+
+def write_wav(path, frames, channels):
+    import numpy as np
+    pcm = (np.clip(frames, -1, 1) * 32767).astype("<i2")
+    with wave.open(path, "wb") as w:
+        w.setnchannels(channels)
+        w.setsampwidth(2)
+        w.setframerate(RATE)
+        w.writeframes(pcm.tobytes())
+
+
+def signals():
+    import numpy as np
+    os.makedirs(CACHE, exist_ok=True)
+    if os.path.exists(os.path.join(CACHE, "sweep.wav")):
+        return
+    rng = np.random.default_rng(1)
+    n = RATE * 30
+
+    def pink():
+        spec = np.fft.rfft(rng.standard_normal(n))
+        f = np.fft.rfftfreq(n, 1 / RATE)
+        spec[1:] /= np.sqrt(f[1:])
+        spec[0] = 0
+        x = np.fft.irfft(spec, n)
+        return x / np.sqrt(np.mean(x ** 2)) * 10 ** (-20 / 20)  # -20 dBFS RMS
+
+    a, b, z = pink(), pink(), np.zeros(n)
+    write_wav(os.path.join(CACHE, "L.wav"), np.stack([a, z], 1), 2)
+    write_wav(os.path.join(CACHE, "R.wav"), np.stack([z, a], 1), 2)
+    write_wav(os.path.join(CACHE, "mono.wav"), np.stack([a, a], 1), 2)
+    write_wav(os.path.join(CACHE, "stereo.wav"), np.stack([a, b], 1), 2)
+    for ch in range(4):
+        x = np.zeros((n, 4))
+        x[:, ch] = a
+        write_wav(os.path.join(CACHE, f"ch{ch}.wav"), x, 4)
+    # 50 Hz - 10 kHz log sweep, 20 s, mono, -12 dBFS
+    t = np.arange(RATE * 20) / RATE
+    k = math.log(10000 / 50)
+    s = 10 ** (-12 / 20) * np.sin(2 * math.pi * 50 * 20 / k * (np.exp(t / 20 * k) - 1))
+    write_wav(os.path.join(CACHE, "sweep.wav"), np.stack([s, s], 1), 2)
+
+
+player = None
+lock = threading.Lock()
+
+
+def play(what):
+    global player
+    with lock:
+        if player and player.poll() is None:
+            player.terminate()
+        player = None
+        if what == "stop":
+            return
+        signals()
+        path = os.path.join(CACHE, what + ".wav")
+        if what.startswith("ch"):
+            cmd = ["pw-play", "--target", HW_SINK, "--channel-map", "FL,FR,RL,RR", path]
+        else:
+            cmd = ["pw-play", "--target", SINK, path]
+        player = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
+# --- web -------------------------------------------------------------------
+
+class Handler(BaseHTTPRequestHandler):
+    def log_message(self, *a):
+        pass
+
+    def reply(self, body, ctype="application/json", code=200):
+        data = body.encode()
+        self.send_response(code)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+
+    def do_GET(self):
+        if self.path == "/":
+            return self.reply(PAGE, "text/html; charset=utf-8")
+        if self.path == "/state":
+            return self.reply(json.dumps(ui_state(read_params())))
+        self.reply("{}", code=404)
+
+    def do_POST(self):
+        body = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or "{}")
+        try:
+            if self.path == "/set":
+                write_params(to_params(body))
+            elif self.path == "/play":
+                play(body["what"])
+            elif self.path == "/save":
+                save_conf(to_params(body))
+            elif self.path == "/revert":
+                write_params(conf_params())
+                return self.reply(json.dumps(ui_state({**read_params(), **conf_params()})))
+            self.reply("{}")
+        except Exception as e:
+            self.reply(json.dumps({"error": str(e)}), code=500)
+
+
+PAGE = r"""<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>T2 Speakers</title>
+<style>
+:root{--bg:#f6f6f4;--card:#fff;--fg:#1c1c1c;--mute:#6b6b6b;--line:#e2e2de;--acc:#2f7d4f;--warn:#b5432f}
+@media (prefers-color-scheme:dark){:root{--bg:#141414;--card:#1d1d1d;--fg:#e9e9e6;--mute:#9a9a95;--line:#2d2d2b;--acc:#5fbf86;--warn:#e07a63}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:20px;margin:0 0 4px}
+p.sub{color:var(--mute);margin:0 0 20px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin:0 0 12px}
+.row{display:grid;grid-template-columns:130px 1fr 84px;gap:12px;align-items:center;margin:8px 0}
+.row label{font-weight:500}
+.row output{text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--acc)}
+.opts{display:flex;gap:16px;flex-wrap:wrap;margin:6px 0 2px;color:var(--mute)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--acc)}
+button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+button.primary{background:var(--acc);border-color:var(--acc);color:#fff}
+.note{color:var(--mute);font-size:12.5px;margin:10px 0 0}
+#status{color:var(--mute);margin-left:auto;align-self:center}
+@media (max-width:520px){.row{grid-template-columns:1fr 70px}.row input{grid-column:1/-1;order:3}}
+</style></head><body><main>
+<h1>T2 Speakers</h1>
+<p class="sub">Live controls for the "Speakers" sink. Changes apply immediately; Save writes them into 90-t2-speakers.conf.</p>
+
+<section><h2>Crossover (LR4: two 2nd-order stages each side)</h2>
+<div class="row"><label>Woofer low-pass</label><input type="range" id="lp" min="80" max="2500" step="5"><output id="lpV"></output></div>
+<div class="row"><label>Tweeter high-pass</label><input type="range" id="hp" min="80" max="2500" step="5"><output id="hpV"></output></div>
+<div class="opts"><label><input type="checkbox" id="link" checked> Link frequencies</label></div>
+<div class="row"><label>Woofer Q</label><input type="range" id="lpQ" min="0.5" max="1.2" step="0.001"><output id="lpQV"></output></div>
+<div class="row"><label>Tweeter Q</label><input type="range" id="hpQ" min="0.5" max="1.2" step="0.001"><output id="hpQV"></output></div>
+<p class="note">Q 0.707 per stage = Linkwitz-Riley 4th order (flat sum at the crossover).</p>
+<div class="row"><label>Woofer protection</label><input type="range" id="protect" min="30" max="150" step="1"><output id="protectV"></output></div>
+<p class="note">High-pass on the woofer: removes sub-bass it can't play but would still move the cone for.</p>
+</section>
+
+<section><h2>Driver levels</h2>
+<div class="row"><label>Left woofer</label><input type="range" id="woofer" min="-24" max="0" step="0.5"><output id="wooferV"></output></div>
+<div class="row"><label>Left tweeter</label><input type="range" id="tweeterL" min="-24" max="0" step="0.5"><output id="tweeterLV"></output></div>
+<div class="row"><label>Right tweeter</label><input type="range" id="tweeterR" min="-24" max="0" step="0.5"><output id="tweeterRV"></output></div>
+<div class="opts">Invert polarity:
+<label><input type="checkbox" id="wooferInv"> woofer</label>
+<label><input type="checkbox" id="tweeterLInv"> L tweeter</label>
+<label><input type="checkbox" id="tweeterRInv"> R tweeter</label></div>
+<p class="note">Capped at 0 dB so the gain staging can never exceed full scale; a −1 dBFS limiter on each output catches filter overshoot. Use the volume for loudness.</p>
+</section>
+
+<section><h2>Bass sum into the woofer</h2>
+<div class="row"><label>From left</label><input type="range" id="sumL" min="-24" max="-6" step="0.5"><output id="sumLV"></output></div>
+<div class="row"><label>From right</label><input type="range" id="sumR" min="-24" max="-6" step="0.5"><output id="sumRV"></output></div>
+<p class="note">Capped at −6 dB each, (L+R)/2, so a centred full-scale signal can't sum over 0 dBFS. Raise the woofer level instead.</p>
+</section>
+
+<section><h2>Test signals</h2>
+<div class="btns" id="tests">
+<button data-p="L">Pink L</button><button data-p="R">Pink R</button>
+<button data-p="mono">Pink mono</button><button data-p="stereo">Pink stereo</button>
+<button data-p="sweep">Sweep 50 Hz–10 kHz</button><button data-p="stop">Stop</button></div>
+<p class="note">These play through the sink above, so you hear your settings.</p>
+<div class="btns" id="raw" style="margin-top:12px">
+<button data-p="ch0">Raw ch0 · L woofer</button><button data-p="ch1">Raw ch1 · R woofer</button>
+<button data-p="ch2">Raw ch2 · L tweeter</button><button data-p="ch3">Raw ch3 · R tweeter</button></div>
+<p class="note">Raw buttons bypass the tuning and drive one speaker channel directly.</p>
+</section>
+
+<div class="btns"><button class="primary" id="save">Save</button><button id="revert">Revert to saved</button><span id="status"></span></div>
+</main>
+<script>
+const ids=["lp","hp","lpQ","hpQ","protect","woofer","tweeterL","tweeterR","sumL","sumR"];
+const inv=["wooferInv","tweeterLInv","tweeterRInv"];
+const $=id=>document.getElementById(id);
+const fmt={protect:v=>Math.round(v)+" Hz",lp:v=>Math.round(v)+" Hz",hp:v=>Math.round(v)+" Hz",lpQ:v=>(+v).toFixed(3),hpQ:v=>(+v).toFixed(3)};
+const show=id=>$(id+"V").textContent=(fmt[id]||(v=>(v>0?"+":"")+(+v).toFixed(1)+" dB"))($(id).value);
+function state(){const s={};ids.forEach(i=>s[i]=+$(i).value);inv.forEach(i=>s[i]=$(i).checked);return s}
+function load(s){ids.forEach(i=>{$(i).value=s[i];show(i)});inv.forEach(i=>$(i).checked=s[i])}
+const status=t=>{$("status").textContent=t};
+let t;function push(){clearTimeout(t);t=setTimeout(()=>post("/set",state()),30)}
+async function post(path,body){const r=await fetch(path,{method:"POST",body:JSON.stringify(body)});const j=await r.json();if(j.error)status(j.error);return j}
+ids.forEach(i=>$(i).addEventListener("input",()=>{
+  if($("link").checked&&(i=="lp"||i=="hp")){const o=i=="lp"?"hp":"lp";$(o).value=$(i).value;show(o)}
+  show(i);status("unsaved");push()}));
+inv.forEach(i=>$(i).addEventListener("change",()=>{status("unsaved");push()}));
+document.querySelectorAll("[data-p]").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("[data-p]").forEach(x=>x.classList.remove("on"));
+  if(b.dataset.p!="stop")b.classList.add("on");post("/play",{what:b.dataset.p})}));
+$("save").onclick=async()=>{await post("/save",state());status("saved")};
+$("revert").onclick=async()=>{load(await post("/revert",{}));status("reverted")};
+fetch("/state").then(r=>r.json()).then(s=>{load(s);$("link").checked=s.lp==s.hp});
+</script></body></html>"""
+
+
+def main():
+    url = f"http://127.0.0.1:{PORT}/"
+    try:
+        server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+    except OSError:
+        webbrowser.open(url)  # already running
+        return
+    threading.Thread(target=signals, daemon=True).start()
+    print(f"T2 speaker tuning at {url}  (Ctrl+C to quit)")
+    webbrowser.open(url)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        play("stop")
+
+
+if __name__ == "__main__":
+    sys.exit(main())

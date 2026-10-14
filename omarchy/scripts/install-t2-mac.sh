@@ -12,7 +12,8 @@ if ! lspci -nn | grep -q "106b:180[12]"; then
 fi
 
 # t2bce_audio-alsa-ucm-conf: speaker/mic profiles for the t2bce audio driver
-# lsp-plugins-lv2: compressor/limiter/loudness for the "Speakers (DSP)" sink
+# lsp-plugins-lv2: safety limiters in "Speakers"; compressor/limiter/loudness in
+# the "Speakers (DSP)" sink
 # supergfxctl: switch between the Intel iGPU and the AMD dGPU. Its daemon owns
 # /etc/supergfxd.conf (rewritten on every mode change), so it is not tracked;
 # the default Hybrid mode is the one we use.

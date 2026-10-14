@@ -81,6 +81,7 @@ omarchy/scripts/install-apps.sh                     # Apps: omarchy-pkg-add (god
 omarchy/scripts/install-plugins.sh                  # Omarchy bar plugins: local dev links or GitHub installs + enablement
 omarchy/scripts/install-t2-mac.sh                   # T2 MacBook extras over Omarchy's own T2 setup; no-op elsewhere
 omarchy/t2-audio/.config/pipewire/pipewire.conf.d/90-t2-speakers.conf  # "Speakers" filter-chain: L/R on tweeters, mono bass on left woofer (right woofer dead under Linux)
+omarchy/t2-audio/.local/bin/t2-speakers-tune       # Local web panel: live crossover/levels/polarity for that sink, test signals, saves into the conf
 omarchy/t2-prochot/                                 # Root timer clearing BD PROCHOT (SMC pins CPU at 800 MHz); installed into /etc by install-t2-mac.sh
 omarchy/scripts/lib.sh                              # stow_package: moves real files aside to .bak, then stows
 omarchy/install.sh                                  # Runs every installer in order (fresh machine or re-apply)
