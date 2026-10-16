@@ -58,7 +58,7 @@ DISPLAY_UUID="$(display_uuid)"
 # Drop OAuth sections from an OBS ini on stdin.
 strip_auth() {
   awk '
-    /^\[/ { skip = ($0 ~ /^\[(Twitch|YouTube|Restream|Auth)/) }
+    /^\[/ { skip = ($0 ~ /^\[(Twitch|YouTube|Restream|Auth|Panels)/) }
     !skip { print }
   '
 }
@@ -101,7 +101,7 @@ else
   # carry existing auth sections over into the freshly rendered basic.ini.
   live="$DST/profiles/$NAME/basic.ini"
   auth=""
-  [[ -f "$live" ]] && auth="$(awk '/^\[/{keep=($0 ~ /^\[(Twitch|YouTube|Restream|Auth)/)} keep' "$live")"
+  [[ -f "$live" ]] && auth="$(awk '/^\[/{keep=($0 ~ /^\[(Twitch|YouTube|Restream|Auth|Panels)/)} keep' "$live")"
   { sed "s|__HOME__|$HOME|g" "$SRC/profiles/$NAME/basic.ini"
     if [[ -n "$auth" ]]; then printf '\n%s\n' "$auth"; fi
   } > "$live"
