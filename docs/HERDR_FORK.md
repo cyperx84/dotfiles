@@ -1,6 +1,10 @@
 # herdr fork: cross-machine jump
 
-The `herdr` on this Mac is a local build, not Homebrew's. It carries three
+> **Status (2026-10-16):** not in use. This Mac runs Homebrew's stock herdr;
+> the fork below is kept for a later rebase. Run `mac/scripts/herdr-build.sh switch`
+> to use it again, then `brew pin herdr` and set `[update] version_check = false`.
+
+When in use, the `herdr` on this Mac is a local build, not Homebrew's. It carries three
 commits that upstream does not have, and they are what makes the sesh-bro
 picker able to jump to another machine.
 
@@ -41,7 +45,7 @@ Upstream has closed this class of request as not planned (issues #3820, #3749,
 
 ## Staying put is fine
 
-Homebrew's formula is pinned (`brew pin herdr`) and `[update] version_check` is
+While the fork is in use, Homebrew's formula is pinned (`brew pin herdr`) and `[update] version_check` is
 false, so nothing replaces the build behind your back. There is no need to track
 herdr releases; upgrade when a release has something you want.
 

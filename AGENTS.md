@@ -61,6 +61,7 @@ linux/.stowrc                                        # Targets /home/cyperx
 | "Provisioning" / "New Mac" / "Brewfile" | mac/macos/Brewfile, mac/macos/setup.sh, docs/MAINTENANCE.md |
 | "Linux" / "Omarchy" / "Hyprland" | linux/, linux/bootstrap.sh |
 | Linux keybinds | docs/OMARCHY_KEYBINDS.md |
+| "herdr fork" / "client.focus" / "sesh-bro jump to another machine" | docs/HERDR_FORK.md |
 | "Tailscale" / "SSH" / "tailnet" / "remote access" | moved to vault (`notes/systems/tailscale-ssh.md`) — machine topology, not repo-tied |
 
 ## ⚠️ CRITICAL - Do NOT Do These
@@ -77,7 +78,9 @@ linux/.stowrc                                        # Targets /home/cyperx
    - Tmux prefix (`Ctrl+A` is intentional, not `Ctrl+B`)
    - Aerospace gap sizes (20px inner, 52px top is required for SketchyBar)
 
-4. **ALWAYS** run validation before declaring changes complete: `mac/scripts/test_dotfiles.sh` (full suite) and `~/.config/sketchybar/test_sketchybar.sh` (menu bar plugins)
+4. **DO NOT** `brew unpin kanata` — it is pinned on purpose. herdr is no longer pinned (stock Homebrew build since 2026-10-16); if the fork is ever switched back in, re-pin it with `brew pin herdr` so `brew upgrade` cannot relink `/opt/homebrew/bin/herdr` away from it. Check whose binary is linked with `mac/scripts/herdr-build.sh status`; `switch` / `revert` move between the fork and Homebrew's (see docs/HERDR_FORK.md)
+
+5. **ALWAYS** run validation before declaring changes complete: `mac/scripts/test_dotfiles.sh` (full suite) and `~/.config/sketchybar/test_sketchybar.sh` (menu bar plugins)
 
 ## 🤖 Agent Guidelines
 
@@ -121,6 +124,7 @@ exec zsh                                                   # Reload shell
 - **Kanata logs**: `/tmp/kanata.out.log`, `/tmp/kanata.err.log`
 - **SketchyBar helper**: C binary at `~/.config/sketchybar/helper/` — recompile with `make clean && make` if system metrics plugins fail
 - **Temperature plugin**: Uses `smctemp` TH0x (heatsink) sensor — M4 die sensors (TCMb) read 90°C+ at idle which is normal/misleading
+- **herdr is Homebrew's stock build (reverted from the local fork 2026-10-16)**: `/opt/homebrew/bin/herdr` links to `../Cellar/herdr/<version>/bin/herdr`. The fork (`~/github/herdr` branch `feat/client-focus`, never pushed, built to `~/.local/share/herdr-build/herdr`) is kept but not in use; its three commits are what let the sesh-bro picker jump to another machine, so that jump does not work on stock. `mac/scripts/herdr-build.sh status|switch|revert` moves between the fork and Homebrew's and says which is linked; `switch`/`revert` stop every running herdr session, so run them from a terminal outside herdr. On stock, the formula is unpinned and `[update] version_check` is true; switching back to the fork means `brew pin herdr` and `version_check = false`. `mac/macos/Brewfile:274` lists `brew "herdr"`. Full story in docs/HERDR_FORK.md
 - **Hammerspoon**: single-purpose focus-follows-mouse (`mac/hammerspoon/.hammerspoon/init.lua`) — polls every 50ms via the Accessibility API, with explicit guards so it does NOT steal focus from dialogs/sheets/System Settings or the emoji picker. Needs Accessibility permission; touch carefully — it interacts with Aerospace focus
 
 ## 📋 Code Style
