@@ -107,6 +107,27 @@ else
   } > "$live"
 fi
 
+# Seed the service so OBS starts on YouTube, never its Twitch default: Twitch is
+# H.264-only, and OBS silently swaps an incompatible encoder (our HEVC) for
+# x264 the first time Settings opens. Only when missing: the live file holds
+# the stream key and is never overwritten.
+SERVICE="$DST/profiles/$NAME/service.json"
+if [[ ! -f "$SERVICE" ]]; then
+  echo "→ Seeding service.json (YouTube - RTMPS, no key)"
+  if [[ "$DRY_RUN" != 1 ]]; then
+    cat > "$SERVICE" <<'JSON'
+{
+    "type": "rtmp_common",
+    "settings": {
+        "service": "YouTube - RTMPS",
+        "protocol": "RTMPS",
+        "server": "rtmps://a.rtmps.youtube.com:443/live2"
+    }
+}
+JSON
+  fi
+fi
+
 echo "→ Installing scene collection $NAME (display $DISPLAY_UUID)"
 if [[ "$DRY_RUN" == 1 ]]; then
   echo "  [dry-run] render $NAME.json with display UUID"
@@ -131,5 +152,5 @@ if [[ "$DRY_RUN" == 1 ]]; then
 else
   echo "✓ OBS config installed ($NAME)"
   [[ -d "$BACKUP" ]] && echo "  Previous files backed up to: ${BACKUP/#$HOME/~}"
-  echo "  Open OBS → Settings → Stream → Connect Account."
+  echo "  Open OBS → Settings → Stream → Use Stream Key (YouTube Studio → Go live → Stream)."
 fi
