@@ -1,0 +1,115 @@
+{
+    "name": "WoW-Forever",
+    "AuxAudioDevice1": {
+        "name": "Mic",
+        "uuid": "75840ee7-9998-4217-bab4-1eb656db3538",
+        "id": "coreaudio_input_capture",
+        "versioned_id": "coreaudio_input_capture",
+        "settings": {
+            "device_id": "default"
+        },
+        "mixers": 255,
+        "volume": 1.0,
+        "enabled": true,
+        "muted": false
+    },
+    "sources": [
+        {
+            "name": "WoW",
+            "uuid": "07578fd2-508f-433c-b21d-6fa90e4dc2c7",
+            "id": "screen_capture",
+            "versioned_id": "screen_capture",
+            "settings": {
+                "type": 2,
+                "display_uuid": "__DISPLAY_UUID__",
+                "application": "com.blizzard.worldofwarcraft",
+                "show_cursor": true,
+                "show_hidden_windows": true
+            },
+            "mixers": 0,
+            "enabled": true
+        },
+        {
+            "name": "WoW Audio",
+            "uuid": "fa070475-cede-409b-81cf-6aee6eb827f4",
+            "id": "sck_audio_capture",
+            "versioned_id": "sck_audio_capture",
+            "settings": {
+                "type": 1,
+                "application": "com.blizzard.worldofwarcraft"
+            },
+            "mixers": 255,
+            "volume": 1.0,
+            "enabled": true,
+            "muted": false
+        },
+        {
+            "name": "Live",
+            "uuid": "b302feb8-ba72-47dd-84ca-427ce422a572",
+            "id": "scene",
+            "versioned_id": "scene",
+            "settings": {
+                "id_counter": 2,
+                "custom_size": false,
+                "items": [
+                    {
+                        "name": "WoW",
+                        "source_uuid": "07578fd2-508f-433c-b21d-6fa90e4dc2c7",
+                        "visible": true,
+                        "locked": true,
+                        "pos": { "x": 0.0, "y": 0.0 },
+                        "scale": { "x": 1.0, "y": 1.0 },
+                        "rot": 0.0,
+                        "align": 5,
+                        "bounds_type": 2,
+                        "bounds_align": 0,
+                        "bounds": { "x": 2560.0, "y": 1440.0 },
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 1,
+                        "group_item_backup": false,
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal"
+                    },
+                    {
+                        "name": "WoW Audio",
+                        "source_uuid": "fa070475-cede-409b-81cf-6aee6eb827f4",
+                        "visible": true,
+                        "locked": true,
+                        "pos": { "x": 0.0, "y": 0.0 },
+                        "scale": { "x": 1.0, "y": 1.0 },
+                        "rot": 0.0,
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds": { "x": 0.0, "y": 0.0 },
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 2,
+                        "group_item_backup": false,
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal"
+                    }
+                ]
+            },
+            "mixers": 0,
+            "enabled": true
+        }
+    ],
+    "groups": [],
+    "scene_order": [
+        { "name": "Live" }
+    ],
+    "current_scene": "Live",
+    "current_program_scene": "Live",
+    "current_transition": "Fade",
+    "transition_duration": 300,
+    "transitions": [],
+    "version": 2
+}

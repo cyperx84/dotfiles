@@ -39,3 +39,7 @@ mac/herdr/.config/herdr/*
 !mac/herdr/.config/herdr/config.toml
 omarchy/herdr/.config/herdr/*
 !omarchy/herdr/.config/herdr/config.toml
+
+# OBS: stream key / service lives in profiles/*/service.json — never commit.
+# mac/obs/install.sh --pull already skips it; this is the backstop.
+mac/obs/**/service.json
