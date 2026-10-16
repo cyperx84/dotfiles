@@ -1,6 +1,6 @@
 {
     "rate_control": "CBR",
-    "bitrate": 12000,
+    "bitrate": 6000,
     "keyint_sec": 2,
     "profile": "main",
     "bframes": true
