@@ -6,7 +6,7 @@
 #
 # Tracked (mac/obs/config/basic/):
 #   profiles/WoW-Forever/basic.ini          video/output/audio settings
-#   profiles/WoW-Forever/streamEncoder.json Apple VT H.264: CBR 6000, 2s keyint
+#   profiles/WoW-Forever/streamEncoder.json Apple VT HEVC (YouTube): CBR 12000, 2s keyint
 #   scenes/WoW-Forever.json                 WoW app capture + app audio + mic
 #
 # Never tracked: profiles/*/service.json (stream key / service), and any
