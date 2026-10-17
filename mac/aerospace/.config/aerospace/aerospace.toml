@@ -87,11 +87,6 @@ run = 'move-node-to-workspace 4'
 if.app-id = 'io.open-design.desktop'
 run = 'move-node-to-workspace 5'
 
-# Prevent Chrome from stealing focus - moves it to workspace 5 silently
-[[on-window-detected]]
-if.app-id = 'com.google.Chrome'
-run = 'move-node-to-workspace 5'
-
 # ============================================================================
 # System Apps - Auto-Float Rules
 # These apps work better as floating windows (dialogs, utilities, etc.)
