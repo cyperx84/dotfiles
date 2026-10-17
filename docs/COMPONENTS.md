@@ -482,10 +482,6 @@ All components use GNU Stow for deployment:
 cd ~/dotfiles/mac
 stow zsh tmux ghostty aerospace borders sketchybar kanata karabiner sesh starship hammerspoon
 
-# Deploy Linux components
-cd ~/dotfiles/linux
-stow zsh hypr terminals tmux dev-tools kanata ssh sesh
-
 # Deploy individual components
 stow ghostty aerospace sketchybar # etc.
 

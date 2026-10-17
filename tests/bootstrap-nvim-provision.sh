@@ -3,9 +3,9 @@
 #
 # Guards against the bootstrap clobbering a working ~/.config/nvim: it exercises
 # every branch of that block (fresh clone, foreign config, dirty clone, behind,
-# diverged, unreachable origin) for BOTH mac/bootstrap.sh and linux/bootstrap.sh.
+# diverged, unreachable origin) for mac/bootstrap.sh.
 #
-# The blocks under test are extracted from the real scripts, never duplicated,
+# The block under test is extracted from the real script, never duplicated,
 # so this cannot silently drift from what actually ships. Each case runs against
 # its own private local bare remote -- no network, no dependence on GitHub.
 #
@@ -45,8 +45,7 @@ extract() { # $1=script $2=start-regex $3=end-regex $4=out
 }
 
 extract "$REPO_ROOT/mac/bootstrap.sh"   '^# 5\. Neovim config' "run 'nvim' once" "$TMP/mac.tpl"   || exit 1
-extract "$REPO_ROOT/linux/bootstrap.sh" '^# 4\. Neovim config' "run 'nvim' once" "$TMP/linux.tpl" || exit 1
-echo "blocks under test: mac $(wc -l < "$TMP/mac.tpl" | tr -d ' ') lines, linux $(wc -l < "$TMP/linux.tpl" | tr -d ' ') lines"
+echo "block under test: mac $(wc -l < "$TMP/mac.tpl" | tr -d ' ') lines"
 
 chk() { # $1=ok|no $2=label
   TOTAL=$((TOTAL + 1))
@@ -82,7 +81,7 @@ advance() { # $1=tag $2=newfile
   )
 }
 
-for plat in mac linux; do
+for plat in mac; do
   echo "================ $plat ================"
   TPL="$TMP/$plat.tpl"
   render() { sed "s|https://github.com/cyperx84/nvim.git|$1|" "$TPL" > "$TMP/r.sh"; }

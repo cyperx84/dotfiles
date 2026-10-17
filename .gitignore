@@ -20,7 +20,6 @@ __pycache__/
 # Local/generated worktrees and plugin installs
 .claude/worktrees/
 mac/tmux/.tmux/plugins/
-linux/tmux/.config/tmux/plugins/
 
 # Per-machine ghostty overrides (e.g. cursor-color differs M1 vs M4)
 mac/ghostty/.config/ghostty/local.conf
@@ -29,7 +28,6 @@ mac/ghostty/.config/ghostty/local.conf
 # the tracked ssh config via `Include ~/.ssh/config.local`. Never commit it —
 # this repo is PUBLIC.
 mac/ssh/.ssh/config.local
-linux/ssh/.ssh/config.local
 
 # Claude Code config now lives in its own repo: github.com/cyperx84/dotclaude
 

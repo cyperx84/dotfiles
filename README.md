@@ -18,7 +18,7 @@ tags: []
          ░         ░ ░                                       
 ```
 
-A curated collection of configuration files for a complete development environment, organized as a **macOS + Linux monorepo**: macOS configs live in `mac/`, Linux (Omarchy/Hyprland) configs in `linux/`. This setup creates a beautiful, efficient, and highly customized workflow centered around tiling window management, terminal productivity, and modern development tools.
+A curated collection of configuration files for a complete development environment, with macOS configs in `mac/`. This setup creates a beautiful, efficient, and highly customized workflow centered around tiling window management, terminal productivity, and modern development tools.
 
 ## 📚 Documentation Hub
 
@@ -64,13 +64,6 @@ dotfiles/
 │   ├── tmux/            # Terminal multiplexer configuration
 │   ├── zsh/             # Z shell configuration and plugins
 │   └── bootstrap.sh     # macOS provisioning entry point
-├── linux/               # Linux (Omarchy/Hyprland) configs — stow from here (target: /home/cyperx)
-│   ├── hypr/            # Hyprland deltas layered on Omarchy 4 (Lua)
-│   ├── terminals/       # Terminal emulator configs
-│   ├── kanata/          # Keyboard remapper (config.kbd)
-│   ├── dev-tools/       # btop, fastfetch, git, lazygit, starship
-│   ├── tmux/, zsh/, scripts/
-│   └── bootstrap.sh     # Linux provisioning entry point
 └── docs/                # Shared documentation
 ```
 
@@ -300,11 +293,7 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
 2. **Run the bootstrap script** (recommended — installs Homebrew, all Brewfile
    apps/casks/fonts, stows every config, sets up TPM and the Kanata daemon):
    ```bash
-   # macOS
    ~/dotfiles/mac/bootstrap.sh
-
-   # Linux (Omarchy)
-   ~/dotfiles/linux/bootstrap.sh
    ```
 
    Or stow manually from the platform subdirectory if you only want the symlinks:

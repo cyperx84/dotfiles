@@ -45,7 +45,7 @@ color_yellow = '#FF7200'
 # Per-machine skull, coloured by the zshrc case block keyed on hostname.
 # The env value already carries truecolor ANSI + the glyph, so no `style` here
 # (a style would override the ANSI colour). Edit the colour/glyph in
-# mac/zsh/.zshrc (and linux/zsh/.zshrc), not here. Replaces the old $os symbol.
+# mac/zsh/.zshrc, not here. Replaces the old $os symbol.
 [env_var.STARSHIP_MACHINE]
 variable = "STARSHIP_MACHINE"
 format = "$env_value "
