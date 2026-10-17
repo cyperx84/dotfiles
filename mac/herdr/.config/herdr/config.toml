@@ -19,32 +19,60 @@ prefix = "ctrl+a"
 # (mac/hammerspoon/.hammerspoon/init.lua) focuses the herdr window from any
 # app and posts this chord — rebind here and that script must follow.
 goto = "alt+g"
-# focus_pane_* removed: ctrl+h/j/k/l now routed through vim-herdr-navigation
-# plugin, which detects Vim/Neovim and forwards the chord instead of always
-# intercepting.  See vim-herdr-navigation README for details.
-split_vertical = "alt+v"
-split_horizontal = "alt+s"
-close_pane = "alt+x"
-new_tab = "alt+c"
-last_pane = "alt+tab"
-zoom = "alt+w"
-detach = "alt+q"
-next_tab = "prefix+n"
-previous_tab = "prefix+p"
-switch_tab = "prefix+1..9"
+
+# Keys mirror omarchy/herdr/.config/herdr/config.toml: alt+letter first, the
+# tmux-style prefix keys as the second way in. ctrl+h/j/k/l pane focus goes
+# through the vim-herdr-navigation plugin below, ctrl+alt+arrows are the
+# plain fallback. alt+tab stays as a mac-only extra for last_pane (Hyprland
+# owns it on Omarchy, hence alt+t there).
+
+# Config and help
+reload_config = ["prefix+shift+r", "prefix+q"]
+help = "prefix+?"
+detach = ["alt+q", "prefix+d"]
+toggle_sidebar = ["alt+b"]
+
+# Copy mode
+copy_mode = "prefix+["
+
+# Panes
+split_horizontal = ["alt+s", "prefix+h"]
+split_vertical = ["alt+v", "prefix+v"]
+close_pane = ["alt+x", "prefix+x", "alt+esc"]
+zoom = ["alt+w", "prefix+z"]
+last_pane = ["alt+t", "alt+tab", "prefix+;"]
+
+focus_pane_left = "ctrl+alt+left"
+focus_pane_down = "ctrl+alt+down"
+focus_pane_up = "ctrl+alt+up"
+focus_pane_right = "ctrl+alt+right"
+
+resize_mode = ["prefix+r", "prefix+ctrl+left", "prefix+ctrl+down", "prefix+ctrl+up", "prefix+ctrl+right"]
+
+resize_pane_left = "ctrl+alt+shift+left"
+resize_pane_down = "ctrl+alt+shift+down"
+resize_pane_up = "ctrl+alt+shift+up"
+resize_pane_right = "ctrl+alt+shift+right"
+
+rename_pane = "prefix+shift+o"
+
+# Tabs. switch_tab indexes tabs by position (herdr src/workspace.rs
+# switch_tab), so alt+1..9 needs no tab-jump plugin.
+new_tab = ["alt+c", "prefix+c"]
 rename_tab = "prefix+shift+t"
-close_tab = "prefix+shift+x"
-resize_mode = "prefix+r"
-toggle_sidebar = "alt+b"
-reload_config = "prefix+shift+r"
+close_tab = ["prefix+shift+x", "prefix+k"]
+switch_tab = ["alt+1..9", "prefix+1..9"]
+previous_tab = ["prefix+p", "alt+left"]
+next_tab = ["prefix+n", "alt+right"]
+move_tab_previous = "alt+shift+left"
+move_tab_next = "alt+shift+right"
+
+# Workspaces. alt+j/k/l/u/i/o jump to 1..6 via [[keys.command]] below.
+new_workspace = ["alt+shift+c", "prefix+shift+c"]
 rename_workspace = "alt+r"
-new_workspace = "alt+n"
 close_workspace = "prefix+shift+d"
-# switch_workspace moved off the alt digit row 2026-08: alt+1..6 now switch
-# TABS and workspaces live on the harpoon letter set below. Indexed bindings
-# are all-or-nothing 1..9 ("indexed keybinding must use 1..9"), so a split
-# alt row is only expressible as [[keys.command]] entries.
-# switch_workspace = "alt+1..9"
+previous_workspace = ["alt+p", "alt+up"]
+next_workspace = ["alt+n", "alt+down"]
 
 [ui]
 show_agent_labels_on_pane_borders = true
@@ -96,6 +124,12 @@ key = "ctrl+l"
 type = "plugin_action"
 command = "vim-herdr-navigation.right"
 
+# ctrl+l is pane focus, so prefix+ctrl+l sends a real ctrl+l (clear screen)
+[[keys.command]]
+key = "prefix+ctrl+l"
+type = "shell"
+command = "\"$HERDR_BIN_PATH\" pane send-keys \"$HERDR_ACTIVE_PANE_ID\" ctrl+l"
+
 # alt+e: open the sesh-bro picker popup. Hammerspoon (init.lua) focuses the
 # herdr window from any app and posts this chord — keep the two in sync.
 [[keys.command]]
@@ -134,49 +168,9 @@ key = "alt+m"
 type = "plugin_action"
 command = "herdr-notes.toggle"
 
-# Workspace numbers renumber as spaces open and close, so alt+j follows
-# position 1, not a fixed project. Tab `.number` does NOT renumber — it is
-# sticky for the tab's lifetime (close tab 2 and the rest stay 1,3,4) — so
-# alt+1..6 go through the tab-jump plugin (cyperx84/herdr-tab-jump, linked
-# local from ~/github/herdr-tab-jump), which focuses tab N by POSITION in
-# sidebar order. A missing position is a no-op. Fresh machine:
-# `herdr plugin install cyperx84/herdr-tab-jump`.
-
-[[keys.command]]
-key = "alt+1"
-type = "plugin_action"
-command = "tab-jump.1"
-description = "Tab 1"
-
-[[keys.command]]
-key = "alt+2"
-type = "plugin_action"
-command = "tab-jump.2"
-description = "Tab 2"
-
-[[keys.command]]
-key = "alt+3"
-type = "plugin_action"
-command = "tab-jump.3"
-description = "Tab 3"
-
-[[keys.command]]
-key = "alt+4"
-type = "plugin_action"
-command = "tab-jump.4"
-description = "Tab 4"
-
-[[keys.command]]
-key = "alt+5"
-type = "plugin_action"
-command = "tab-jump.5"
-description = "Tab 5"
-
-[[keys.command]]
-key = "alt+6"
-type = "plugin_action"
-command = "tab-jump.6"
-description = "Tab 6"
+# Workspace numbers renumber as spaces open and close, so these follow
+# position. alt+digits are tabs (indexed bindings are all-or-nothing 1..9),
+# so no 7/8/9 here.
 
 [[keys.command]]
 key = "alt+j"
@@ -214,20 +208,5 @@ type = "shell"
 command = '/opt/homebrew/bin/herdr workspace focus 6'
 description = "Space 6"
 
-[[keys.command]]
-key = "alt+7"
-type = "shell"
-command = '/opt/homebrew/bin/herdr workspace focus 7'
-description = "Space 7"
-
-[[keys.command]]
-key = "alt+8"
-type = "shell"
-command = '/opt/homebrew/bin/herdr workspace focus 8'
-description = "Space 8"
-
-[[keys.command]]
-key = "alt+9"
-type = "shell"
-command = '/opt/homebrew/bin/herdr workspace focus 9'
-description = "Space 9"
+[ui.sound]
+enabled = false
