@@ -14,6 +14,25 @@ INSTALLER_NO_MODIFY_PATH=1
 # directory repeatedly. In zsh, PATH and the `path` array remain synchronized.
 typeset -U path PATH
 
+# ----------------------------------------------------------------------------
+# HISTORY
+# Without this block /etc/zshrc:17-18 wins: HISTSIZE=2000 / SAVEHIST=1000, so the
+# file sat permanently trimmed to ~1000 lines (a week of work). zsh also only
+# flushes on a CLEAN exit, so any pane herdr killed lost its whole session.
+# INC_APPEND_HISTORY writes each command as it runs — nothing is lost to a killed
+# pane — while keeping up-arrow pane-local. Swap it for SHARE_HISTORY if you want
+# every herdr pane's commands interleaved into every other pane's up-arrow.
+# ----------------------------------------------------------------------------
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=200000
+SAVEHIST=200000
+setopt EXTENDED_HISTORY        # record timestamps (enables `fc -li`)
+setopt INC_APPEND_HISTORY      # write as each command runs, not at shell exit
+setopt HIST_IGNORE_ALL_DUPS    # keep only the most recent copy of a command
+setopt HIST_IGNORE_SPACE       # leading space = do not record (secrets, one-offs)
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY             # !! expands into the buffer instead of firing blind
+
 # Ensure proper prompt formatting in tmux
 setopt PROMPT_SUBST
 setopt TRANSIENT_RPROMPT
@@ -91,7 +110,10 @@ if (( $+commands[gopass] )); then
 fi
 
 # Navigation
-fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
+# NOTE: call eza directly, not the `l` alias. Zsh expands aliases when it PARSES
+# a function, and `l` is defined ~180 lines below — so `&& l` used to end every
+# fcd with "command not found: l".
+fcd() { cd "$(fd --type d | fzf)" && eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions; }
 ff() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
 fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 
@@ -333,9 +355,13 @@ alias C="cd ~/Code/"
 export BAT_THEME=tokyonight_night
 
 # ---- Zoxide (better cd) ----
-# Lazy-load zoxide (saves ~10ms on shell startup)
-z() { unfunction z zi 2>/dev/null; eval "$(zoxide init zsh)"; z "$@"; }
-zi() { unfunction z zi 2>/dev/null; eval "$(zoxide init zsh)"; zi "$@"; }
+# Loaded eagerly (~10ms). It CANNOT be lazy-loaded: `zoxide init` is what installs
+# the chpwd hook that RECORDS every directory you enter. Behind a lazy `z()` wrapper
+# nothing is recorded until you happen to call `z` in that specific shell, so the
+# database only ever learned about dirs you already reached through zoxide — it
+# could never learn from a plain `cd`. Verified: $chpwd_functions held only
+# _direnv_hook. 10ms is the price of the feature working at all.
+eval "$(zoxide init zsh)"
 
 # ============================================================================
 # PATH CONFIGURATION (Consolidated)
