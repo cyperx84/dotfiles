@@ -1,0 +1,15 @@
+[tools]
+claude = "latest"
+codex = "latest"
+copilot = "latest"
+cursor-agent = { version = "latest", bin_path = "bin", strip_components = 0, url = 'https://downloads.cursor.com/lab/{{ version }}/{{ os(macos="darwin") }}/{{ arch(x64="x64", arm64="arm64") }}/agent-cli-package.tar.gz', version_list_url = "https://cursor.com/install", version_regex = 'downloads\.cursor\.com/lab/([0-9]{4}\.[0-9]{2}\.[0-9]{2}-[0-9a-f]+)/', postinstall = 'mkdir -p "$MISE_TOOL_INSTALL_PATH/bin" && ln -sfn ../dist-package/cursor-agent "$MISE_TOOL_INSTALL_PATH/bin/cursor-agent"' }
+gh = "latest"
+"http:muse" = { version = "latest", url = "https://api.meta.ai/muse-launcher.sh", bin = "muse", version_list_url = "https://api.meta.ai/muse-code/channels/muse-stable", version_json_path = ".version" }
+node = "26.8.2"
+"npm:@xai-official/grok" = "latest"
+opencode = "latest"
+pi = "latest"
+uv = "latest"
+
+[settings.upgrade]
+auto_prune = false

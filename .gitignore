@@ -28,14 +28,15 @@ mac/ghostty/.config/ghostty/local.conf
 # the tracked ssh config via `Include ~/.ssh/config.local`. Never commit it —
 # this repo is PUBLIC.
 mac/ssh/.ssh/config.local
-
-# Claude Code config now lives in its own repo: github.com/cyperx84/dotclaude
+omarchy/ssh/.ssh/config.local
 
 # herdr writes runtime logs + session state into its stowed config dir
 # (~/.config/herdr → repo). Only config.toml is ours; never commit the rest
 # (session.json can hold live session data — this repo is PUBLIC).
 mac/herdr/.config/herdr/*
 !mac/herdr/.config/herdr/config.toml
+omarchy/herdr/.config/herdr/*
+!omarchy/herdr/.config/herdr/config.toml
 
 # OBS: stream key / service lives in profiles/*/service.json — never commit.
 # mac/obs/install.sh --pull already skips it; this is the backstop.

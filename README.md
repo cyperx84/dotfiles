@@ -18,7 +18,7 @@ tags: []
          ░         ░ ░                                       
 ```
 
-A curated collection of configuration files for a complete development environment, with macOS configs in `mac/`. This setup creates a beautiful, efficient, and highly customized workflow centered around tiling window management, terminal productivity, and modern development tools.
+A curated collection of configuration files for a complete development environment, with macOS configs in `mac/` and Omarchy configs in `omarchy/`. This setup creates a beautiful, efficient, and highly customized workflow centered around tiling window management, terminal productivity, and modern development tools.
 
 ## 📚 Documentation Hub
 
@@ -64,6 +64,9 @@ dotfiles/
 │   ├── tmux/            # Terminal multiplexer configuration
 │   ├── zsh/             # Z shell configuration and plugins
 │   └── bootstrap.sh     # macOS provisioning entry point
+├── omarchy/             # Omarchy configs — stow from here (target: $HOME)
+│   ├── kanata/          # Home row mods + layers (port of mac kanata, user service)
+│   └── scripts/         # install-kanata.sh
 └── docs/                # Shared documentation
 ```
 
@@ -341,6 +344,58 @@ brew install uv node python kubectl kubectx kubens docker switchaudio-osx kanata
 
    > See the `provision-mac-twin` skill for the full fresh-Mac walkthrough,
    > including the Homebrew 6.x / Kanata / TCC gotchas.
+
+## 🐧 Omarchy (fresh machine)
+
+The `omarchy/` layer is a baseline on top of stock [Omarchy](https://omarchy.org/):
+it only ships what differs from Omarchy's defaults, and installs through Omarchy's
+own commands (`omarchy-pkg-add`, `omarchy install ...`, `omarchy bar ...`).
+
+```bash
+git clone https://github.com/cyperx84/dotfiles.git ~/dotfiles
+~/dotfiles/omarchy/install.sh
+```
+
+Every installer is idempotent, so `install.sh` (or any single
+`omarchy/scripts/install-<x>.sh`) is also how to re-apply after a change. Log out
+and back in afterwards for kanata's input groups.
+
+| Script | What it sets up |
+|--------|-----------------|
+| `install-git.sh`, `install-ssh.sh` | git config (gh credential helper), `~/.ssh/config` (hosts in untracked `config.local`) |
+| `install-mise.sh` | Coding harnesses + runtimes pinned in `mise/.config/mise/config.toml` |
+| `install-configs.sh` | bash, starship, ghostty (as the default terminal) |
+| `install-hypr.sh` | Hyprland bindings and look'n'feel |
+| `install-look.sh` | tokyo-night accent override, Ghostty cursor on the accent, bar transparency and clock |
+| `install-herdr.sh`, `install-nvim.sh`, `install-yazi.sh` | Herdr (+ plugins, skill hook), Neovim configs, Yazi |
+| `install-voxtype.sh` | Dictation (parakeet), driven by Ctrl+Space |
+| `install-apps.sh` | Godot, Blender, grok-bot, Chrome (default) + Zen, Tailscale, ChatGPT, T3 Code, OpenClaw, Hermes |
+| `install-t2-mac.sh` | T2 MacBook extras (audio profiles, supergfxctl); skips other machines |
+| `install-kanata.sh` | Kanata user service + bar widget |
+
+### Adding to the baseline
+
+- **A CLI or coding harness:** `mise use -g <tool>`, then commit. It writes
+  straight into the stowed `config.toml`. (Omarchy's own harness wrappers, e.g.
+  `opencode` or `gemini`, do the same on first run.)
+- **A desktop app:** add it to `install-apps.sh`. Plain packages go on the
+  `omarchy-pkg-add` line; apps with an `omarchy install ...` installer get an
+  `omarchy_install <package> <args>` line so Omarchy sets them up.
+- **A config:** put it at `omarchy/<tool>/<path under $HOME>` and call
+  `stow_package <tool>` (from `scripts/lib.sh`) in that tool's installer, which
+  moves Omarchy's copy aside to `.bak` first. Use `--no-folding` when the app also
+  writes its own files into that directory.
+- **A theme colour or template:** an overlay goes in
+  `omarchy/theme/.config/omarchy/themes/<theme>/`, a template (`{{ accent }}` and
+  the rest of `colors.toml`) in `omarchy/theme/.config/omarchy/themed/` under a
+  name of its own, so Omarchy's built-in templates stay untouched.
+  `install-look.sh` links these absolute rather than stowing them (Omarchy copies
+  theme folders without following links) and removes links whose file is gone.
+- **A bar change:** an `omarchy bar ...` line in `install-look.sh`, never a stowed
+  `shell.json` (the bar rewrites that file and would drop the symlink).
+- **Never** run `omarchy refresh` on a stowed config (it replaces the symlink;
+  re-run its installer to fix), and never edit `/usr/share/omarchy/`.
+- Hermes belongs to the desktop app, so don't add it to mise.
 
 ## 📦 Neovim Configuration
 

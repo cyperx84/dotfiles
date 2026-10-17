@@ -1,0 +1,6 @@
+[Unit]
+Description=Clear BD PROCHOT so the T2 SMC can't pin the CPU at 800 MHz
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/t2-clear-prochot

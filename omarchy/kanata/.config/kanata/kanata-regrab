@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Kanata sometimes misses a keyboard that reconnects (e.g. the MX Mechanical
+# waking from Bluetooth sleep), leaving it unremapped. Watch udev for new
+# keyboards; if kanata hasn't registered one a few seconds later, restart it.
+
+udevadm monitor --udev --property --subsystem-match=input | while IFS= read -r line; do
+  case "$line" in
+    ACTION=*) action=${line#ACTION=}; devname=; kbd= ;;
+    DEVNAME=/dev/input/event*) devname=${line#DEVNAME=} ;;
+    ID_INPUT_KEYBOARD=1) kbd=1 ;;
+    "")
+      # End of an event block.
+      if [[ $action == add && -n $devname && $kbd == 1 ]]; then
+        # Skip kanata's own virtual keyboard, or every restart would retrigger.
+        name=$(cat "/sys/class/input/${devname##*/}/device/name" 2>/dev/null)
+        [[ $name == kanata || -z $name ]] && continue
+        # Only care about devices kanata has grabbed before this boot (skips
+        # mice etc. that report as keyboards but kanata ignores).
+        journalctl --user -u kanata -b --no-pager -q | grep -qF "\"$name\"" || continue
+        since=$(( $(date +%s) - 5 ))
+        sleep 3
+        if ! journalctl --user -u kanata --since "@$since" --no-pager -q | grep -qF "registering $devname"; then
+          echo "kanata missed $devname, restarting"
+          systemctl --user restart kanata
+        fi
+      fi
+      ;;
+  esac
+done
