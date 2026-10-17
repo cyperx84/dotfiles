@@ -205,3 +205,21 @@ local function summonHerdr()
 end
 
 hs.hotkey.bind({ "alt" }, "e", summonHerdr)
+
+-- Hide sketchybar while WoW is frontmost (it runs windowed-maximized, so the
+-- bar draws over it). Event-driven here because a hidden bar stops running its
+-- own poll items, and front_app_switched never reaches sketchybar's Lua side.
+-- LaunchServices names the WoW process "Wow".
+local SKETCHYBAR = "/opt/homebrew/bin/sketchybar"
+local function isWow(name)
+  return name == "Wow" or (name or ""):find("^World of Warcraft") ~= nil
+end
+local function syncBarToApp(app)
+  local hide = app and isWow(app:name())
+  hs.execute(SKETCHYBAR .. " --bar hidden=" .. (hide and "on" or "off"))
+end
+barGameWatcher = hs.application.watcher.new(function(_, event, app)
+  if event == hs.application.watcher.activated then syncBarToApp(app) end
+end)
+barGameWatcher:start()
+syncBarToApp(hs.application.frontmostApplication())
