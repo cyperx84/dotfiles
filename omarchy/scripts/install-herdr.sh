@@ -4,6 +4,8 @@ set -e
 source "$(dirname "$0")/lib.sh"
 
 omarchy-pkg-add stow herdr
+# sesh-bro runtime deps: fzf/jq/zoxide required, eza/bat for richer previews
+omarchy-pkg-add fzf jq zoxide eza bat
 
 stow_package herdr
 
@@ -13,6 +15,7 @@ install_plugin() { # <github owner/repo> <plugin id>
   herdr plugin list 2>/dev/null | grep -q "^- $2 " || herdr plugin install "$1" --yes
 }
 install_plugin kaar/nvim-herdr-navigator herdr-navigator # ctrl+h/j/k/l across panes and nvim splits
+install_plugin cyperx84/herdr-sesh-bro sesh-bro         # alt+e picker, alt+. / alt+, next/prev agent needing you
 
 # The official skill ships inside the binary (`herdr --skill`), so it is generated,
 # not committed. Run it now and install it as an Omarchy post-update hook so it

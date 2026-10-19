@@ -156,6 +156,26 @@ key = "prefix+ctrl+l"
 type = "shell"
 command = "\"$HERDR_BIN_PATH\" pane send-keys \"$HERDR_ACTIVE_PANE_ID\" ctrl+l"
 
+# sesh-bro (cyperx84/herdr-sesh-bro, installed by scripts/install-herdr.sh).
+# Same keys as mac/herdr. alt+e opens the picker; alt+. / alt+, jump to the
+# next/previous agent that needs you (blocked first, then done-unseen).
+[[keys.command]]
+key = "alt+e"
+type = "plugin_action"
+command = "sesh-bro.open"
+
+[[keys.command]]
+key = "alt+."
+type = "plugin_action"
+command = "sesh-bro.next"
+description = "jump to the next agent needing attention"
+
+[[keys.command]]
+key = "alt+,"
+type = "plugin_action"
+command = "sesh-bro.prev"
+description = "jump to the previous agent needing attention"
+
 # Workspaces live on the harpoon letter set: alt+j/k/l/u/i/o = workspaces 1..6.
 # alt+digits are tabs (indexed bindings are all-or-nothing 1..9), so no 7/8/9 here.
 # Workspace numbers renumber as spaces open and close, so these follow position.
