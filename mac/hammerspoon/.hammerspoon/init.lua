@@ -122,22 +122,27 @@ local function focusHerdrWorkspace(win)
   return false
 end
 
--- keys.command alt+e = sesh-bro.open (see mac/herdr/.config/herdr/config.toml).
--- Rebind there and this must follow. Both keys go in one sequence — sending
--- the second from a timer callback left herdr stuck waiting for the chord.
-local function sendPickerChord()
-  local app = hs.application.get("Ghostty")
-  if not app then return end
-  hs.eventtap.keyStroke({ "alt" }, "e", 100000, app)
+-- sesh-bro's binary, from herdr's plugin registry (a linked checkout here, a
+-- GitHub install elsewhere), so this follows wherever the plugin lives.
+local PLUGINS_JSON = os.getenv("HOME") .. "/.config/herdr/plugins.json"
+
+local function seshBroBin()
+  local plugins = hs.json.read(PLUGINS_JSON)
+  for _, p in ipairs(plugins or {}) do
+    if p.plugin_id == "sesh-bro" and p.plugin_root then
+      return p.plugin_root .. "/bin/sesh-bro"
+    end
+  end
+  return nil
 end
 
 -- The popup is a pure overlay (not in `pane list`), so there's no pane id to
 -- close. Detect whether it's already open via `plugin pane open`'s
--- "popup already open" error, and close it by sending escape (fzf's exit key).
+-- "a popup pane is already open" error, and close it by sending escape (fzf's exit key).
 -- Returns "opened", "closed", or "error".
 local function togglePicker()
   local ok, out = pcall(hs.execute, HERDR .. " plugin pane open --plugin sesh-bro --entrypoint picker 2>&1")
-  local alreadyOpen = ok and (out or ""):find("popup already open", 1, true) ~= nil
+  local alreadyOpen = ok and (out or ""):find("already open", 1, true) ~= nil
   if not ok and not alreadyOpen then
     return "error"
   end
@@ -167,14 +172,25 @@ end
 
 -- On Local, open the popup through the API: that is what makes alt+e a toggle,
 -- since `plugin pane open` reports a popup that is already open and escape
--- closes it. On another machine, press the key instead and let herdr's own
--- binding (keys.command machine = "local") switch to Local and open it there.
+-- closes it. On another machine, first bring the window back to Local with
+-- `sesh-bro focus --machine local`, which on stock herdr presses alt+n
+-- (next_workspace) until the selection file says Local, then open it there.
+-- Async: the walk takes a second or two and must not block Hammerspoon.
 local function openOrToggle()
   if showingLocal() then
     return togglePicker()
   end
-  sendPickerChord()
-  return "chord"
+  local bin = seshBroBin()
+  if not bin then return "error" end
+  local task = hs.task.new(bin, function()
+    if showingLocal() then togglePicker() end
+  end, { "focus", "--machine", "local" })
+  -- hs.task gets Hammerspoon's bare PATH, where herdr is not.
+  local env = task:environment()
+  env.HERDR_BIN_PATH = HERDR
+  task:setEnvironment(env)
+  task:start()
+  return "stepping"
 end
 
 local function summonHerdr()

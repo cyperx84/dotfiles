@@ -61,6 +61,10 @@ o.bind("SHIFT + ALT + G", "Move window to next monitor", hl.dsp.window.move({ mo
 -- ── Apps ────────────────────────────────────────────────────────────────────
 o.bind("SUPER + SHIFT + T", "Activity", "omarchy-launch-tui btop")
 
+-- alt+e from any app: focus herdr (back on Local if it shows another machine)
+-- and toggle the sesh-bro picker. Same key and job as Hammerspoon on the mac.
+o.bind("ALT + E", "herdr: sesh-bro picker", os.getenv("HOME") .. "/.local/bin/herdr-summon")
+
 -- ── Dictation ───────────────────────────────────────────────────────────────
 -- voxtype's built-in hotkey can't take combos, so toggle it from Hyprland.
 o.bind("CTRL + SPACE", "Toggle dictation", "voxtype record toggle")

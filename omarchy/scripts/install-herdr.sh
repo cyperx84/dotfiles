@@ -7,7 +7,8 @@ omarchy-pkg-add stow herdr
 # sesh-bro runtime deps: fzf/jq/zoxide required, eza/bat for richer previews
 omarchy-pkg-add fzf jq zoxide eza bat
 
-stow_package herdr
+stow_package herdr     # config.toml + ~/.local/bin/herdr-summon (Hyprland ALT + E)
+stow_package sesh-bro  # ~/.config/sesh-bro/config.toml: machines in the picker
 
 # Plugins are machine state (plugins.json, plugins/), so install rather than stow.
 # --yes because these run unattended; each one is bound in config.toml.

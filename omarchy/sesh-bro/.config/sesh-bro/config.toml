@@ -1,0 +1,4 @@
+# Show saved herdr machines (herdr machine list) in the picker. Enter on one
+# moves this window there: client.focus on the herdr fork, otherwise by
+# pressing next_workspace (alt+n) until the window shows that machine.
+machines = true
