@@ -27,39 +27,15 @@ sesh_bro() {
   jq -r '.[] | select(.plugin_id == "sesh-bro") | .plugin_root + "/bin/sesh-bro"' "$PLUGINS" 2>/dev/null | head -1
 }
 
-LOG="${XDG_STATE_HOME:-$HOME/.local/state}/herdr-summon.log"
-log() { printf '%s %s\n' "$(date '+%F %T')" "$*" >>"$LOG"; }
-
-# Close the picker with ctrl-c, its quit key in every mode: escape only
-# switches its vim layer to normal mode. An explicit down then up, as Omarchy's
-# clipboard binds do: send_shortcut can leave ctrl held. No fallback: if this
-# cannot be sent cleanly, the picker stays open rather than a key going astray.
-close_picker() {
-  local state
-  for state in down up; do
-    hyprctl dispatch "hl.dsp.send_key_state({ mods = \"CTRL\", key = \"C\", state = \"$state\", window = \"address:$1\" })" >/dev/null 2>&1
-    sleep 0.05
-  done
-  hyprctl dispatch "hl.dsp.send_key_state({ mods = \"\", key = \"Control_L\", state = \"up\", window = \"address:$1\" })" >/dev/null 2>&1
-}
-
 # The popup is an overlay with no pane id, so "already open" is the only way to
-# know it is up.
+# know it is up, and escape (fzf's exit key) is the way to close it.
 toggle_picker() {
   local addr=$1 out
   out=$(herdr plugin pane open --plugin sesh-bro --entrypoint picker 2>&1)
   if [[ $out == *"already open"* ]]; then
-    close_picker "$addr"
-    log "closed picker"
-  else
-    log "opened picker: $out"
+    hyprctl dispatch "hl.dsp.send_shortcut({ mods = \"\", key = \"ESCAPE\", window = \"address:$addr\" })" >/dev/null
   fi
 }
-
-# One summon at a time: a second ALT + E while the first is still stepping
-# would press into the same window.
-exec 9>"${XDG_RUNTIME_DIR:-/tmp}/herdr-summon.lock"
-flock -n 9 || { log "already running"; exit 0; }
 
 addr=$(herdr_window)
 if [[ -z $addr ]]; then
@@ -69,7 +45,7 @@ if [[ -z $addr ]]; then
     addr=$(herdr_window)
     [[ -n $addr ]] && break
   done
-  [[ -z $addr ]] && { log "launched herdr, no window appeared"; exit 1; }
+  [[ -z $addr ]] && exit 1
   sleep 0.6 # let the TUI paint before the popup opens over it
 fi
 
@@ -80,11 +56,7 @@ hyprctl dispatch "hl.dsp.focus({ window = \"address:$addr\" })" >/dev/null
 # by pressing next_workspace until the selection file says Local.
 if ! showing_local; then
   bin=$(sesh_bro)
-  [[ -x $bin ]] || { log "no sesh-bro binary in $PLUGINS"; exit 1; }
-  if ! out=$("$bin" focus --machine local 2>&1); then
-    log "back to Local failed: $out"
-    exit 1
-  fi
-  log "stepped back to Local"
+  [[ -x $bin ]] || exit 1
+  "$bin" focus --machine local || exit 1
 fi
 toggle_picker "$addr"
