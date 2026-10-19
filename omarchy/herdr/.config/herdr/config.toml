@@ -106,11 +106,8 @@ tab_bar_right = [{ type = "zoom" }, { type = "hostname" }]
 
 # set -g set-titles on / set -g set-titles-string '#h:#W', where tmux's #W was
 # the basename of the pane cwd. This is what Hyprland shows in the group bar,
-# and it resolves on the server so remote sessions name the remote host. The
-# "herdr" prefix is how the alt+e summon finds this window, here
-# (.local/bin/herdr-summon) and on the mac (Hammerspoon) while a mac's window
-# shows this machine, so keep it first.
-window_title = "herdr · {hostname} · {workspace}"
+# and it resolves on the server so remote sessions name the remote host.
+window_title = "{hostname}: {workspace}"
 show_agent_labels_on_pane_borders = true
 status_indicators = "symbols"
 
