@@ -85,10 +85,13 @@ require("hs.ipc")
 
 local HERDR_PICKER = os.getenv("HOME") .. "/dotfiles/mac/scripts/herdr-picker.sh"
 local HERDR = "/opt/homebrew/bin/herdr"
+-- Ghostty by bundle id: by name, hs.application.get also matches the
+-- "Dock Extra (Ghostty.app)" helper and then returns nothing at random.
+local GHOSTTY = "com.mitchellh.ghostty"
 local AEROSPACE = "/opt/homebrew/bin/aerospace"
 
 local function herdrWindow()
-  local app = hs.application.get("Ghostty")
+  local app = hs.application.get(GHOSTTY)
   if not app then return nil end
   for _, w in ipairs(app:allWindows()) do
     local title = w:title() or ""
@@ -138,7 +141,8 @@ end
 
 -- The popup is a pure overlay (not in `pane list`), so there's no pane id to
 -- close. Detect whether it's already open via `plugin pane open`'s
--- "a popup pane is already open" error, and close it by sending escape (fzf's exit key).
+-- "a popup pane is already open" error, and close it with ctrl-c, the picker's
+-- quit key in every mode (escape only switches its vim layer to normal).
 -- Returns "opened", "closed", or "error".
 local function togglePicker()
   local ok, out = pcall(hs.execute, HERDR .. " plugin pane open --plugin sesh-bro --entrypoint picker 2>&1")
@@ -147,9 +151,9 @@ local function togglePicker()
     return "error"
   end
   if alreadyOpen then
-    local app = hs.application.get("Ghostty")
+    local app = hs.application.get(GHOSTTY)
     if app then
-      hs.eventtap.keyStroke({}, "escape", 100000, app)
+      hs.eventtap.keyStroke({ "ctrl" }, "c", 100000, app)
     end
     return "closed"
   end
