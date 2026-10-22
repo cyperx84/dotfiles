@@ -282,7 +282,7 @@ Utilities:
 **File**: `ghostty/.config/ghostty/config` (~56 lines)
 
 **Configuration:**
-- Font: ZedMono NFM Bold (16pt) + Monaspace variants
+- Font: JetBrainsMono Nerd Font (12pt), ligatures on (`liga`, `calt`)
 - Theme: Monokai Remastered
 - Opacity: 90%
 - Cursor: Bright green (#00FF00), block hollow, blinking
