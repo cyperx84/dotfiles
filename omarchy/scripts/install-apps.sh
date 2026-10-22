@@ -4,8 +4,9 @@
 set -e
 
 # Plain packages, straight from the Arch and Omarchy repos
-# (xorg-server-xvfb: invisible display for agent browser tests, so they never steal focus)
-omarchy-pkg-add godot blender grok-bot xorg-server-xvfb
+# (xorg-server-xvfb: invisible display for agent browser tests, so they never steal focus;
+# ttf-zed-mono-nerd + otf-monaspace: the ghostty fonts, same as the Mac's)
+omarchy-pkg-add godot blender grok-bot xorg-server-xvfb ttf-zed-mono-nerd otf-monaspace
 
 # Omarchy's curated installers set the app up (theming, web apps, services) and
 # often launch it, so only run each one while its package is still missing.

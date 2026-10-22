@@ -3,11 +3,25 @@ config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
 # Our accent tweaks on top, from omarchy/theme/.config/omarchy/themed/ghostty-accent.conf.tpl
 config-file = ?"~/.local/state/omarchy/current/theme/ghostty-accent.conf"
 
-# Font
+# Font: ZedMono regular, Monaspace Radon/Krypton bold and italic (packages from
+# install-apps.sh). fontconfig wants family and style apart, unlike macOS's
+# "ZedMono NFM Bold". JetBrainsMono stays as the fallback family.
+font-family = "ZedMono NFM"
 font-family = "JetBrainsMono Nerd Font"
+font-style = "Bold"
+font-family-bold = "Monaspace Radon"
+font-style-bold = "ExtraBold"
+font-family-italic = "Monaspace Radon"
+font-style-italic = "Italic"
+font-family-bold-italic = "Monaspace Krypton"
+font-style-bold-italic = "ExtraBold Italic"
 font-size = 9
 font-feature = "liga"
 font-feature = "calt"
+font-feature = "ss01"
+font-feature = "ss02"
+font-feature = "ss03"
+font-feature = "ss04"
 
 # Window
 window-theme = ghostty
