@@ -4,8 +4,8 @@ config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
 config-file = ?"~/.local/state/omarchy/current/theme/ghostty-accent.conf"
 
 # Font: ZedMono regular, Monaspace Radon/Krypton bold and italic (packages from
-# install-apps.sh). fontconfig wants family and style apart, unlike macOS's
-# "ZedMono NFM Bold". JetBrainsMono stays as the fallback family.
+# install-apps.sh). Family and style go apart: Ghostty doesn't match a
+# "ZedMono NFM Bold" style name. JetBrainsMono stays as the fallback family.
 font-family = "ZedMono NFM"
 font-family = "JetBrainsMono Nerd Font"
 font-style = "Bold"

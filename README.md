@@ -211,7 +211,8 @@ brew install --cask karabiner-elements      # Advanced keyboard remapping
 
 # Fonts
 brew install --cask font-monaspice-nerd-font      # MonaspiceKr/Rn Nerd Font (sketchybar)
-brew install --cask font-jetbrains-mono-nerd-font # JetBrainsMono Nerd Font (Ghostty)
+brew install --cask font-zed-mono-nerd-font      # ZedMono NFM (Ghostty regular)
+brew install --cask font-monaspace                # Monaspace Radon/Krypton (Ghostty bold/italic)
 brew install --cask font-sketchybar-app-font      # sketchybar app icons
 ```
 
@@ -277,7 +278,7 @@ brew install switchaudio-osx              # Audio source switcher
 For convenience, you can install all essential dependencies at once:
 ```bash
 # Essential packages only
-brew install --cask ghostty karabiner-elements font-monaspice-nerd-font font-jetbrains-mono-nerd-font font-sketchybar-app-font nikitabobko/tap/aerospace
+brew install --cask ghostty karabiner-elements font-monaspice-nerd-font font-zed-mono-nerd-font font-monaspace font-sketchybar-app-font nikitabobko/tap/aerospace
 brew tap FelixKratz/formulae && brew install borders
 brew tap narugit/tap && brew install narugit/tap/smctemp  # M4 temperature monitoring
 brew install sketchybar stow starship tmux herdr zsh-fast-syntax-highlighting zsh-autosuggestions fzf fd bat eza zoxide ripgrep nvim git gh yazi sesh jq wget curl

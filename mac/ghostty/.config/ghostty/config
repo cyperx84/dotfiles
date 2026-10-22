@@ -1,8 +1,19 @@
 theme = Monokai Remastered
+font-family = "ZedMono NFM"
 font-family = "JetBrainsMono Nerd Font"
+font-style = "Bold"
+font-family-bold = "Monaspace Radon"
+font-style-bold = "ExtraBold"
+font-family-italic = "Monaspace Radon"
+font-style-italic = "Italic"
+font-family-bold-italic = "Monaspace Krypton"
+font-style-bold-italic = "ExtraBold Italic"
 font-size = 12
+font-feature = "ss01"
+font-feature = "ss02"
+font-feature = "ss03"
+font-feature = "ss04"
 font-feature = "liga"
-font-feature = "calt"
 
 cursor-color = #0A84FF
 cursor-style = block_hollow
